@@ -1,4 +1,4 @@
-package logica;
+package logica;                                             
 
 public abstract class ClientesConUbicacion extends Cliente {
     // Atributos

@@ -4,13 +4,13 @@ public class PersonaJuridica extends Cliente {
     // Atributos
     private String nombreEmpresa;
     private String organismo;
-    private Representante representante;
+    private Representante representantePersonaJuridica;
     
     // Constructor
     public PersonaJuridica(String direccion, String nombreEmpresa, String organismo, Representante representante) {
         super(direccion);
         setNombreEmpresa(nombreEmpresa);
-        setRepresentante(representante);
+        setRepresentantePersonaJuridica(representante);
     }
 
     // Getters y Setters
@@ -31,11 +31,11 @@ public class PersonaJuridica extends Cliente {
     }
 
     // Representante
-    public Representante getRepresentante() {
-        return representante;
+    public Representante getRepresentantePersonaJuridica() {
+        return representantePersonaJuridica;
     }
-    public void setRepresentante(Representante representante) {
-        this.representante = representante;
+    public void setRepresentantePersonaJuridica(Representante representante) {
+        this.representantePersonaJuridica = representante;
     }
 
     
