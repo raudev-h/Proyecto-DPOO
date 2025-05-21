@@ -1,16 +1,18 @@
 package logica;
 
-public class PersonaJuridica extends Cliente {
+public class PersonaJuridica extends ClientesConUbicacion {
     // Atributos
     private String nombreEmpresa;
     private String organismo;
     private Representante representantePersonaJuridica;
     
     // Constructor
-    public PersonaJuridica(String direccion, String nombreEmpresa, String organismo, Representante representante) {
-        super(direccion);
+    public PersonaJuridica(String direccion, String municipio, String provincia, String nombreEmpresa,
+             String organismo, Representante representantePersonaJuridica) {
+        super(direccion, municipio, provincia);
         setNombreEmpresa(nombreEmpresa);
-        setRepresentantePersonaJuridica(representante);
+        setOrganismo(organismo);
+        setRepresentantePersonaJuridica(representantePersonaJuridica);        
     }
 
     // Getters y Setters

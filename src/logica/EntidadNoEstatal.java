@@ -1,14 +1,13 @@
 package logica;
 
-public class EntidadNoEstatal extends ClientesConUbicacion {
+public class EntidadNoEstatal extends Cliente {
     // Atributos
     private String nombreEntidad;
     private Representante representanteEntidad;
     
     // Constructor
-      public EntidadNoEstatal(String direccion, String municipio, String provincia, String nombreEntidad,
-            Representante representanteEntidad) {
-        super(direccion, municipio, provincia);
+      public EntidadNoEstatal(String direccion,String nombreEntidad ,Representante representanteEntidad) {
+        super(direccion);
         setNombreEntidad(nombreEntidad);
         setRepresentanteEntidad(representanteEntidad);        
     }
