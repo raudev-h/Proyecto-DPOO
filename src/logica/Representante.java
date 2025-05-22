@@ -2,32 +2,22 @@ package logica;
 
 public class Representante {
     //Atributos
-    private String nombre;
-    private String apellidos;
+    private String nombreCompleto;
     private String numId;
     
     // Constructor
-    public Representante(String nombre, String apellidos, String numId) {
-        this.nombre = nombre;
-        this.apellidos = apellidos;
+    public Representante(String nombreCompleto, String numId) {
+        this.nombreCompleto = nombreCompleto;
         this.numId = numId;
     }
 
     // Getters y Setters
     // NOmbre del Representante
-    public String getNombre() {
-        return nombre;
+    public String getNombreCompleto() {
+        return nombreCompleto;
     }
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    // Apellidos del Representante
-    public String getApellidos() {
-        return apellidos;
-    }
-    public void setApellidos(String apellidos) {
-        this.apellidos = apellidos;
+    public void setNombre(String nombreCompleto) {
+        this.nombreCompleto = nombreCompleto;
     }
 
     // Numero de id del Representante

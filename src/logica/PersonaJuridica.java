@@ -4,7 +4,7 @@ public class PersonaJuridica extends Cliente {
     // Atributos
     private String nombreEmpresa;
     private String organismo;
-    private Representante representante;
+    private Representante representantePersona;
     
     // Constructor
     public PersonaJuridica(String direccion, String nombreEmpresa, String organismo, Representante representante) {
@@ -32,10 +32,10 @@ public class PersonaJuridica extends Cliente {
 
     // Representante
     public Representante getRepresentante() {
-        return representante;
+        return representantePersona;
     }
-    public void setRepresentante(Representante representante) {
-        this.representante = representante;
+    public void setRepresentante(Representante representantePersona) {
+        this.representantePersona = representantePersona;
     }
 
     
