@@ -1,10 +1,11 @@
-package logica;
+package logica;                                             
 
 public abstract class ClientesConUbicacion extends Cliente {
     // Atributos
     protected String municipio;
     protected String provincia;
     
+    // Constructor
     public ClientesConUbicacion(String direccion, String municipio, String provincia) {
         super(direccion);
        setMunicipio(municipio);

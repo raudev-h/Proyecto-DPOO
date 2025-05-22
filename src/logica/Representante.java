@@ -7,8 +7,8 @@ public class Representante {
     
     // Constructor
     public Representante(String nombreCompleto, String numId) {
-        this.nombreCompleto = nombreCompleto;
-        this.numId = numId;
+        setNombreCompleto(nombreCompleto);
+        setNumId(numId);
     }
 
     // Getters y Setters
@@ -16,10 +16,9 @@ public class Representante {
     public String getNombreCompleto() {
         return nombreCompleto;
     }
-    public void setNombre(String nombreCompleto) {
+    public void setNombreCompleto(String nombreCompleto) {
         this.nombreCompleto = nombreCompleto;
     }
-
     // Numero de id del Representante
     public String getNumId() {
         return numId;
