@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="15.1">
-  <zoom_level>16</zoom_level>
+  <zoom_level>11</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>2816</x>
-      <y>448</y>
-      <w>336</w>
-      <h>272</h>
+      <x>1936</x>
+      <y>374</y>
+      <w>231</w>
+      <h>187</h>
     </coordinates>
     <panel_attributes>
 Cliente
@@ -23,10 +23,10 @@ Cliente
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>2016</x>
-      <y>0</y>
-      <w>720</w>
-      <h>304</h>
+      <x>1386</x>
+      <y>66</y>
+      <w>495</w>
+      <h>209</h>
     </coordinates>
     <panel_attributes>
 EmpresaTelecomunicaciones
@@ -36,16 +36,17 @@ EmpresaTelecomunicaciones
 --
 + telefonosMovilLLamadasMasCien(): ArrayList&lt;Telefono&gt;
 + clientesMasMilMontoNauta(): ArrayList&lt;Cliente&gt;
++ mesesMaskbGastadosCuentas(): ArrayList&lt;String&gt;
 </panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>2720</x>
-      <y>176</y>
-      <w>320</w>
-      <h>304</h>
+      <x>1870</x>
+      <y>187</y>
+      <w>220</w>
+      <h>209</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
                 p = *
@@ -58,10 +59,10 @@ EmpresaTelecomunicaciones
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1584</x>
-      <y>448</y>
-      <w>336</w>
-      <h>304</h>
+      <x>1089</x>
+      <y>374</y>
+      <w>231</w>
+      <h>209</h>
     </coordinates>
     <panel_attributes>
 Servicio	
@@ -79,10 +80,10 @@ Servicio
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1776</x>
-      <y>176</y>
-      <w>272</w>
-      <h>304</h>
+      <x>1221</x>
+      <y>187</y>
+      <w>187</w>
+      <h>209</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
 
@@ -93,10 +94,10 @@ Servicio
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1904</x>
-      <y>544</y>
-      <w>944</w>
-      <h>96</h>
+      <x>1309</x>
+      <y>440</y>
+      <w>649</w>
+      <h>66</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-
 
@@ -107,10 +108,10 @@ t = 1</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>800</x>
-      <y>832</y>
-      <w>528</w>
-      <h>208</h>
+      <x>550</x>
+      <y>638</y>
+      <w>363</w>
+      <h>143</h>
     </coordinates>
     <panel_attributes>
 Teléfono
@@ -126,10 +127,10 @@ Teléfono
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1056</x>
-      <y>640</y>
-      <w>560</w>
-      <h>224</h>
+      <x>726</x>
+      <y>506</y>
+      <w>385</w>
+      <h>154</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>330.0;10.0;10.0;10.0;10.0;120.0</additional_attributes>
@@ -137,10 +138,10 @@ Teléfono
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>992</x>
-      <y>1712</y>
-      <w>336</w>
-      <h>224</h>
+      <x>682</x>
+      <y>1243</y>
+      <w>231</w>
+      <h>154</h>
     </coordinates>
     <panel_attributes>
 Llamada
@@ -158,10 +159,10 @@ Llamada
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>912</x>
-      <y>1264</y>
-      <w>336</w>
-      <h>208</h>
+      <x>627</x>
+      <y>935</y>
+      <w>231</w>
+      <h>143</h>
     </coordinates>
     <panel_attributes>
 LLamador
@@ -178,10 +179,10 @@ LLamador
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1040</x>
-      <y>1024</y>
-      <w>48</w>
-      <h>272</h>
+      <x>715</x>
+      <y>770</y>
+      <w>33</w>
+      <h>187</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
     <additional_attributes>10.0;150.0;10.0;10.0</additional_attributes>
@@ -189,10 +190,10 @@ LLamador
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>448</x>
-      <y>1648</y>
-      <w>336</w>
-      <h>208</h>
+      <x>308</x>
+      <y>1199</y>
+      <w>231</w>
+      <h>143</h>
     </coordinates>
     <panel_attributes>
 LlamadaMovil
@@ -207,10 +208,10 @@ LlamadaMovil
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1504</x>
-      <y>1632</y>
-      <w>352</w>
-      <h>208</h>
+      <x>1034</x>
+      <y>1188</y>
+      <w>242</w>
+      <h>143</h>
     </coordinates>
     <panel_attributes>
 LlamadaFijo
@@ -227,10 +228,10 @@ LlamadaFijo
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1312</x>
-      <y>1712</y>
-      <w>224</w>
-      <h>128</h>
+      <x>902</x>
+      <y>1243</y>
+      <w>154</w>
+      <h>88</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;60.0;120.0;10.0</additional_attributes>
@@ -238,10 +239,10 @@ LlamadaFijo
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>768</x>
-      <y>1712</y>
-      <w>256</w>
-      <h>144</h>
+      <x>528</x>
+      <y>1243</y>
+      <w>176</w>
+      <h>99</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>140.0;70.0;10.0;10.0</additional_attributes>
@@ -249,10 +250,10 @@ LlamadaFijo
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1536</x>
-      <y>1024</y>
-      <w>496</w>
-      <h>208</h>
+      <x>1056</x>
+      <y>770</y>
+      <w>341</w>
+      <h>143</h>
     </coordinates>
     <panel_attributes>
 TeléfonoFijo
@@ -267,10 +268,10 @@ TeléfonoFijo
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>160</x>
-      <y>1072</y>
-      <w>336</w>
-      <h>208</h>
+      <x>110</x>
+      <y>803</y>
+      <w>231</w>
+      <h>143</h>
     </coordinates>
     <panel_attributes>
 TeléfonoMovil
@@ -285,10 +286,10 @@ TeléfonoMovil
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1216</x>
-      <y>1024</y>
-      <w>128</w>
-      <h>720</h>
+      <x>836</x>
+      <y>770</y>
+      <w>88</w>
+      <h>495</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
 p = *
@@ -299,10 +300,10 @@ t = 1
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1312</x>
-      <y>928</y>
-      <w>544</w>
-      <h>128</h>
+      <x>902</x>
+      <y>704</y>
+      <w>374</w>
+      <h>88</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;320.0;60.0</additional_attributes>
@@ -310,10 +311,10 @@ t = 1
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>368</x>
-      <y>928</y>
-      <w>464</w>
-      <h>176</h>
+      <x>253</x>
+      <y>704</y>
+      <w>319</w>
+      <h>121</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>270.0;10.0;10.0;90.0</additional_attributes>
@@ -321,10 +322,10 @@ t = 1
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>2208</x>
-      <y>1472</y>
-      <w>416</w>
-      <h>272</h>
+      <x>1518</x>
+      <y>1078</y>
+      <w>286</w>
+      <h>187</h>
     </coordinates>
     <panel_attributes>
 Factura
@@ -343,10 +344,10 @@ Factura
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1936</x>
-      <y>1904</y>
-      <w>336</w>
-      <h>208</h>
+      <x>1331</x>
+      <y>1375</y>
+      <w>231</w>
+      <h>143</h>
     </coordinates>
     <panel_attributes>
 LLamadaLargaDistancia
@@ -362,10 +363,10 @@ LLamadaLargaDistancia
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>2016</x>
-      <y>1152</y>
-      <w>416</w>
-      <h>352</h>
+      <x>1386</x>
+      <y>858</y>
+      <w>286</w>
+      <h>242</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
               p = 1..12
@@ -375,10 +376,10 @@ LLamadaLargaDistancia
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>2256</x>
-      <y>1728</y>
-      <w>160</w>
-      <h>320</h>
+      <x>1551</x>
+      <y>1254</y>
+      <w>110</w>
+      <h>220</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-
 p = *
@@ -388,10 +389,10 @@ t = 1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1840</x>
-      <y>1760</y>
-      <w>208</w>
-      <h>176</h>
+      <x>1265</x>
+      <y>1276</y>
+      <w>143</w>
+      <h>121</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;110.0;10.0;110.0;90.0</additional_attributes>
@@ -399,10 +400,10 @@ t = 1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>2016</x>
-      <y>1216</y>
-      <w>96</w>
-      <h>720</h>
+      <x>1386</x>
+      <y>902</y>
+      <w>66</w>
+      <h>495</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
 
@@ -413,10 +414,10 @@ t = 1</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>2736</x>
-      <y>1504</y>
-      <w>400</w>
-      <h>496</h>
+      <x>1837</x>
+      <y>1100</y>
+      <w>319</w>
+      <h>517</h>
     </coordinates>
     <panel_attributes>
 MesDatos
@@ -434,6 +435,18 @@ MesDatos
 - montoNavegacion: double
 - montoTotal: double
 --
++ setRecibidosNacional(double): void
++ getRecibidosNacional(): double
+
++ setEnviadoNacional(double): void
++ getEnviadoNacional(): double
+
++ setRecibidoInternacional(double): void
++ geRecibidoInternacional():  double
+
++ setEnviadoInternacional(double): void
++ getEnviadoInternacional(): double
+
 + setMontoTotal(double): void
 + setMontoTotal(): double
 
@@ -443,10 +456,10 @@ MesDatos
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>2480</x>
-      <y>992</y>
-      <w>544</w>
-      <h>208</h>
+      <x>1705</x>
+      <y>748</y>
+      <w>429</w>
+      <h>143</h>
     </coordinates>
     <panel_attributes>
 CuentaNauta
@@ -455,6 +468,7 @@ CuentaNauta
 - nick: String
 --
 + cantMesesMasMilGasto(): int 
++ calcularKbGastadosMeses(): HashMap&lt;String, double&gt;
 
 </panel_attributes>
     <additional_attributes/>
@@ -462,10 +476,10 @@ CuentaNauta
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>2736</x>
-      <y>1184</y>
-      <w>144</w>
-      <h>352</h>
+      <x>1881</x>
+      <y>880</y>
+      <w>99</w>
+      <h>242</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
 p = 1...12
@@ -475,10 +489,10 @@ t = 1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1872</x>
-      <y>640</y>
-      <w>864</w>
-      <h>384</h>
+      <x>1287</x>
+      <y>506</y>
+      <w>594</w>
+      <h>264</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;520.0;10.0;520.0;220.0</additional_attributes>
@@ -486,10 +500,10 @@ t = 1</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>3504</x>
-      <y>1344</y>
-      <w>416</w>
-      <h>272</h>
+      <x>2409</x>
+      <y>990</y>
+      <w>286</w>
+      <h>187</h>
     </coordinates>
     <panel_attributes>
 PersonaJurídica
@@ -508,10 +522,10 @@ PersonaJurídica
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>3376</x>
-      <y>912</y>
-      <w>336</w>
-      <h>272</h>
+      <x>2321</x>
+      <y>693</y>
+      <w>231</w>
+      <h>187</h>
     </coordinates>
     <panel_attributes>
 ClienteConUbicación
@@ -528,10 +542,10 @@ ClienteConUbicación
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>3936</x>
-      <y>1376</y>
-      <w>432</w>
-      <h>272</h>
+      <x>2706</x>
+      <y>1012</y>
+      <w>297</w>
+      <h>187</h>
     </coordinates>
     <panel_attributes>
 EntidadNoEstatal
@@ -547,10 +561,10 @@ EntidadNoEstatal
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>3152</x>
-      <y>1344</y>
-      <w>336</w>
-      <h>272</h>
+      <x>2167</x>
+      <y>990</y>
+      <w>231</w>
+      <h>187</h>
     </coordinates>
     <panel_attributes>
 PersonaNatural
@@ -565,10 +579,10 @@ PersonaNatural
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>3840</x>
-      <y>1792</y>
-      <w>336</w>
-      <h>272</h>
+      <x>2640</x>
+      <y>1298</y>
+      <w>231</w>
+      <h>187</h>
     </coordinates>
     <panel_attributes>
 Representante
@@ -583,10 +597,10 @@ Representante
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>4160</x>
-      <y>1632</y>
-      <w>96</w>
-      <h>336</h>
+      <x>2860</x>
+      <y>1188</y>
+      <w>66</w>
+      <h>231</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes>40.0;10.0;40.0;190.0;10.0;190.0</additional_attributes>
@@ -594,10 +608,10 @@ Representante
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>3744</x>
-      <y>1600</y>
-      <w>128</w>
-      <h>368</h>
+      <x>2574</x>
+      <y>1166</y>
+      <w>88</w>
+      <h>253</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes>10.0;10.0;10.0;210.0;60.0;210.0</additional_attributes>
@@ -605,10 +619,10 @@ Representante
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>3328</x>
-      <y>1168</y>
-      <w>192</w>
-      <h>208</h>
+      <x>2288</x>
+      <y>869</y>
+      <w>132</w>
+      <h>143</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>100.0;10.0;10.0;110.0</additional_attributes>
@@ -616,10 +630,10 @@ Representante
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>3568</x>
-      <y>1168</y>
-      <w>160</w>
-      <h>208</h>
+      <x>2453</x>
+      <y>869</y>
+      <w>110</w>
+      <h>143</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;80.0;110.0</additional_attributes>
@@ -627,10 +641,10 @@ Representante
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>3136</x>
-      <y>560</y>
-      <w>1040</w>
-      <h>848</h>
+      <x>2156</x>
+      <y>451</y>
+      <w>715</w>
+      <h>583</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;630.0;10.0;630.0;510.0</additional_attributes>
@@ -638,10 +652,10 @@ Representante
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>2720</x>
-      <y>144</y>
-      <w>1728</w>
-      <h>1872</h>
+      <x>1870</x>
+      <y>165</y>
+      <w>1188</w>
+      <h>1287</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
 p = *
@@ -652,10 +666,10 @@ t= 1
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>3136</x>
-      <y>624</y>
-      <w>432</w>
-      <h>320</h>
+      <x>2156</x>
+      <y>495</y>
+      <w>297</w>
+      <h>220</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;250.0;180.0</additional_attributes>
@@ -664,9 +678,9 @@ t= 1
     <id>UMLNote</id>
     <coordinates>
       <x>0</x>
-      <y>64</y>
-      <w>512</w>
-      <h>272</h>
+      <y>110</y>
+      <w>352</w>
+      <h>187</h>
     </coordinates>
     <panel_attributes>Metodos Abstractos
 
