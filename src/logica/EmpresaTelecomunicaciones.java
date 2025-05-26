@@ -2,7 +2,6 @@ package logica;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
-import java.util.TreeMap;
 
 public class EmpresaTelecomunicaciones {
     // Atributos
@@ -73,7 +72,7 @@ public class EmpresaTelecomunicaciones {
             }    
         }    
         
-        // Traspasar lo valores del HashMap al TreeMap
+        // Traspasar lo valores del HashMap al ArrayList para ordenarlo
         ArrayList<Map.Entry<String,Integer>> provinciasOrdenadas = new ArrayList<>(provinciasConCuenta.entrySet());
         provinciasOrdenadas.sort(Map.Entry.comparingByValue());
 
