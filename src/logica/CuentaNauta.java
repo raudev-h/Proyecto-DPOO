@@ -1,7 +1,6 @@
 package logica;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.ArrayList;
 
 public class CuentaNauta extends Servicio{
     // TODO
@@ -113,8 +112,6 @@ public class CuentaNauta extends Servicio{
                 }
             }
     }
-        
-
         return mesesMayoresKb;
     }
 }
