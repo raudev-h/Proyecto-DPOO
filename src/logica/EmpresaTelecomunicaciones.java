@@ -1,7 +1,9 @@
 package logica;
+
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Collections;
 
 public class EmpresaTelecomunicaciones {
     // Atributos
@@ -33,13 +35,106 @@ public class EmpresaTelecomunicaciones {
         this.servicios = servicios;
     }
 
-    // Representante
+    // Representantes
     public ArrayList<Representante> getRepresentantes() {
         return representantes;
     }
     public void setRepresentantes(ArrayList<Representante> representantes) {
         this.representantes = representantes;
     }   
+
+    // METODOS
+
+    // LLamadas de Movil que duraron mas de 100 minutos 
+    public ArrayList<TelefonoMovil> telefonosMovilLLamadasMasMin(int minutos){ 
+
+        ArrayList<TelefonoMovil> telefonosMovilMasMin = new ArrayList<TelefonoMovil>();
+        if(!servicios.isEmpty()){ //Se comprueba que hay al menos un servicio
+
+            for(Servicio s: servicios){
+                if(s instanceof Telefono){
+
+                    if(s  instanceof TelefonoMovil){
+
+                        //Buscamos la cantidad de llamadas que superan los 100 min del telefono
+                        int llamadasMasMin = ((TelefonoMovil)s).llamadasMasMin(minutos).size();
+                        if(llamadasMasMin > 0){
+                            telefonosMovilMasMin.add((TelefonoMovil)s);
+                        }
+                    }
+                }
+            }
+        }
+
+        return telefonosMovilMasMin;
+    }
+
+    //Buscar los clientes que tengan al menoos 30% (4 ) meses de mas de 1000 cup de montoTotal en sus Cuentas Nautas
+    public ArrayList<Cliente> clientesMasMilMontoNauta(){
+
+        ArrayList<Cliente> mejoresClientes = new ArrayList<Cliente>();
+
+        if( !servicios.isEmpty()){
+
+            for(Servicio s: servicios ){
+
+            if(s instanceof CuentaNauta){
+                
+                if(((CuentaNauta)s).cantMesesMasMilGasto() >= 4){
+                    mejoresClientes.add(s.getTitular());
+                }
+            }
+         }
+
+      }
+        
+        return mejoresClientes;
+    }
+
+    //Buscar los meses de mayor gasto en kb de todas las Cuentas Nautas
+    public ArrayList<String>  mesesMaskbGastadosCuentas(){
+        //Inicializamos el hashmap 
+        ArrayList<String> mesesMayorGastoCuentas = new ArrayList<String>();
+        double mayor = -1;
+
+        if(servicios != null){
+
+            for(Servicio s : servicios){
+                if(s instanceof CuentaNauta){
+                    CuentaNauta cuentaActual = (CuentaNauta)s;
+
+                    HashMap<String, Double > mesesGasto =cuentaActual.calcularKbGastadosMeses();
+                    HashMap<String, Double> mesesMayores = cuentaActual.buscarMesesMayores(mesesGasto);
+
+                    double gastoKbMesesMayores = Collections.max(mesesMayores.values()); //Obtener el primer valor(Todos iguales)
+                    
+                    if(gastoKbMesesMayores > mayor){ 
+                        //Se crea un nuevo techo
+                        mayor = gastoKbMesesMayores;
+                        mesesMayorGastoCuentas.clear();
+
+                        //Agrego el nombre de los meses
+                        for(String m: mesesMayores.keySet()){
+                            mesesMayorGastoCuentas.add(m);
+                        }
+                    }
+
+                    else if(gastoKbMesesMayores == mayor){
+
+                        for(String m: mesesMayores.keySet()){
+                            if(!(mesesMayorGastoCuentas.contains(m))) ///Evitamos que se guarden meses repetidos
+                                mesesMayorGastoCuentas.add(m);
+
+                            
+                        }
+                    }
+                
+                }
+            
+            }
+        }
+    return mesesMayorGastoCuentas;     
+    }     
 
     // Provincias con la menor cantidad de cuentas nauta de Personas Naturales
     public ArrayList<Map.Entry<String, Integer>> menorCantCuentasNauta(){
@@ -77,43 +172,5 @@ public class EmpresaTelecomunicaciones {
         provinciasOrdenadas.sort(Map.Entry.comparingByValue());
 
         return provinciasOrdenadas;
-    }
-
-    //Clientes con un Consumo mayor a 500 pesos en al menos 3 Llamadas de Larga Distancia
-    //Se puede mejorar el metodo devolviendo un hashmap con los nombres y el monto 
-    public ArrayList<Cliente> clientesAltoConsumoLlamadaFijo(){
-
-        ArrayList<Cliente> clientes = new ArrayList<Cliente>();
-        ArrayList<Cliente> clientesEvaluados = new ArrayList<Cliente>();
-        int cantLlamadas = 0;
-
-        for(Servicio s : servicios){
-            if(s instanceof TelefonoFijo){
-                TelefonoFijo tf = (TelefonoFijo)s;
-                Cliente titular = tf.getTitular();
-
-                // Analizamos a los clientes una sola vez
-                if(!clientesEvaluados.contains(titular)){
-                    clientesEvaluados.add(titular);
-                
-                // Buscamos nuevamente en todos los servicios si ese cliente tiene mas de 1 telefono fijo
-                for(Servicio otro : servicios){
-                    if(otro instanceof TelefonoFijo){
-                        TelefonoFijo otroTf = (TelefonoFijo)otro;
-                        if(otroTf.getTitular().equals(titular)){
-                            for(LlamadaLargaDistancia llamada : otroTf.getLlamadasLargas()){
-                                if(llamada.getTotalFacturar() >= 500)
-                                    cantLlamadas++;
-                            }
-                        }
-                        
-                    }
-                }
-                if(cantLlamadas >= 3)
-                    clientes.add(titular);
-                }
-            }
-        }
-        return clientes;
     }
 }
