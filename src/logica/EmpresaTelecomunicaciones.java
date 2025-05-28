@@ -7,18 +7,26 @@ import java.util.Collections;
 
 public class EmpresaTelecomunicaciones {
     // Atributos
+    private static EmpresaTelecomunicaciones empresa;
     private ArrayList<Cliente> clientes;
     private ArrayList<Servicio> servicios;
     private ArrayList<Representante> representantes;
     
     // Constructor
-    public EmpresaTelecomunicaciones() {
+    private EmpresaTelecomunicaciones() {
         clientes = new ArrayList<Cliente>();
         servicios = new ArrayList<Servicio>();
         representantes = new ArrayList<Representante>();
     }
 
     // Getters y setters
+    // Obtener la única instancia de la clase Empresa Telecomunicaciones
+    public static EmpresaTelecomunicaciones getInstancia(){
+        if(empresa == null){
+            empresa = new EmpresaTelecomunicaciones();
+        }
+        return empresa;
+    }
     // Clientes
     public ArrayList<Cliente> getClientes() {
         return clientes;
