@@ -17,6 +17,21 @@ public class TelefonoFijo  extends Telefono{
 
     }
     //GETTER Y SETTER 
+    // Facturas
+    public ArrayList<Factura> getFacturas() {
+        return facturas;
+    }
+    public void setFacturas(ArrayList<Factura> facturas) {
+        this.facturas = facturas;
+    }
+    // Llamadas de larga distancia
+    public ArrayList<LlamadaLargaDistancia> getLlamadasLargas() {
+        return llamadasLargas;
+    }
+    public void setLlamadasLargas(ArrayList<LlamadaLargaDistancia> llamadasLargas) {
+        this.llamadasLargas = llamadasLargas;
+    }
+
     //METODOS
     //Implementacion de prueba del metodo hacer llamada 
     @Override
