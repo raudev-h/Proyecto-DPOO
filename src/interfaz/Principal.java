@@ -1,4 +1,5 @@
 package interfaz;
+import imagenes.*;
 
 
 import java.awt.BorderLayout;
@@ -177,7 +178,7 @@ public class Principal extends JFrame {
 		mnAyuda.add(mntmAcercaDe);
 			contentPane = new JPanel(){
 				public void paintComponent(Graphics g){
-					Image img = Toolkit.getDefaultToolkit().getImage(Principal.class.getResource("/images/d.png"));
+					Image img = Toolkit.getDefaultToolkit().getImage(Principal.class.getResource("/imagenes/d.png"));
 					g.drawImage(img, 0, 0, this.getWidth(), this.getHeight(),this);
 				}
 			};
