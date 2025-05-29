@@ -1,7 +1,6 @@
 package logica;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.ArrayList;
 
 public class CuentaNauta extends Servicio{
     // TODO
@@ -62,12 +61,10 @@ public class CuentaNauta extends Servicio{
             if(datos.getMontoTotal() > 1000){
                 cantMeses++;
             }
-
-
         }
         return cantMeses;
-
     }
+
     //Buscar los KB gastados tanto internacionales como nacionales en todos los meses
     public HashMap<String, Double > calcularKbGastadosMeses(){
 
@@ -115,10 +112,6 @@ public class CuentaNauta extends Servicio{
                 }
             }
     }
-        
-
         return mesesMayoresKb;
     }
 }
-  
-   

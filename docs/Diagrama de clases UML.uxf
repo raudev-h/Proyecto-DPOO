@@ -311,10 +311,10 @@ t = 1
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>253</x>
-      <y>704</y>
-      <w>319</w>
-      <h>121</h>
+      <x>104</x>
+      <y>464</y>
+      <w>288</w>
+      <h>88</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>270.0;10.0;10.0;90.0</additional_attributes>
@@ -677,10 +677,10 @@ t= 1
   <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>0</x>
-      <y>110</y>
-      <w>352</w>
-      <h>187</h>
+      <x>1416</x>
+      <y>352</y>
+      <w>208</w>
+      <h>152</h>
     </coordinates>
     <panel_attributes>Metodos Abstractos
 

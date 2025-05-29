@@ -2,6 +2,9 @@ package logica;
 
 import java.util.ArrayList;
 
+
+
+
 public class TelefonoMovil extends Telefono {
 
      //ATRIBUTOS
@@ -24,7 +27,7 @@ public class TelefonoMovil extends Telefono {
         return montoApagar;
     }
     //METODOS
-    @Override
+    //@Override
     public Llamada hacerLlamada(String numeroDestino,double duracion, String ignored){
         LlamadaMovil llamada = new LlamadaMovil(duracion,numeroDestino);
 

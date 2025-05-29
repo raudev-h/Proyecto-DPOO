@@ -34,7 +34,7 @@ public class TelefonoFijo  extends Telefono{
 
     //METODOS
     //Implementacion de prueba del metodo hacer llamada 
-    @Override
+    //@Override
     public Llamada hacerLlamada(String numeroDestino,double duracion, String provincia){
         LlamadaFijo llamada = new LlamadaFijo(duracion,numeroDestino, provincia);
 
