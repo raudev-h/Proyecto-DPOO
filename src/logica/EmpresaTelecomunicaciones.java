@@ -1,12 +1,10 @@
 package logica;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Collections;
 import java.util.*
 
-;public class EmpresaTelecomunicaciones {
+;
+
+public class EmpresaTelecomunicaciones {
 	// Atributos
 	private static EmpresaTelecomunicaciones empresa;
 	private ArrayList<Cliente> clientes;
@@ -22,16 +20,18 @@ import java.util.*
 
 	// Getters y setters
 	// Obtener la Ãºnica instancia de la clase Empresa Telecomunicaciones
-	public static EmpresaTelecomunicaciones getInstancia(){
-		if(empresa == null){
+	public static EmpresaTelecomunicaciones getInstancia() {
+		if (empresa == null) {
 			empresa = new EmpresaTelecomunicaciones();
 		}
 		return empresa;
 	}
+
 	// Clientes
 	public ArrayList<Cliente> getClientes() {
 		return clientes;
 	}
+
 	public void setClientes(ArrayList<Cliente> clientes) {
 		this.clientes = clientes;
 	}
@@ -40,6 +40,7 @@ import java.util.*
 	public ArrayList<Servicio> getServicios() {
 		return servicios;
 	}
+
 	public void setServicios(ArrayList<Servicio> servicios) {
 		this.servicios = servicios;
 	}
@@ -48,27 +49,28 @@ import java.util.*
 	public ArrayList<Representante> getRepresentantes() {
 		return representantes;
 	}
+
 	public void setRepresentantes(ArrayList<Representante> representantes) {
 		this.representantes = representantes;
-	}   
+	}
 
 	// METODOS
 
-	// LLamadas de Movil que duraron mas de 100 minutos 
-	public ArrayList<TelefonoMovil> telefonosMovilLLamadasMasMin(int minutos){ 
+	// LLamadas de Movil que duraron mas de 100 minutos
+	public ArrayList<TelefonoMovil> telefonosMovilLLamadasMasMin(int minutos) {
 
 		ArrayList<TelefonoMovil> telefonosMovilMasMin = new ArrayList<TelefonoMovil>();
-		if(!servicios.isEmpty()){ //Se comprueba que hay al menos un servicio
+		if (!servicios.isEmpty()) { // Se comprueba que hay al menos un servicio
 
-			for(Servicio s: servicios){
-				if(s instanceof Telefono){
+			for (Servicio s : servicios) {
+				if (s instanceof Telefono) {
 
-					if(s  instanceof TelefonoMovil){
+					if (s instanceof TelefonoMovil) {
 
-						//Buscamos la cantidad de llamadas que superan los 100 min del telefono
-						int llamadasMasMin = ((TelefonoMovil)s).llamadasMasMin(minutos).size();
-						if(llamadasMasMin > 0){
-							telefonosMovilMasMin.add((TelefonoMovil)s);
+						// Buscamos la cantidad de llamadas que superan los 100 min del telefono
+						int llamadasMasMin = ((TelefonoMovil) s).llamadasMasMin(minutos).size();
+						if (llamadasMasMin > 0) {
+							telefonosMovilMasMin.add((TelefonoMovil) s);
 						}
 					}
 				}
@@ -78,18 +80,19 @@ import java.util.*
 		return telefonosMovilMasMin;
 	}
 
-	//Buscar los clientes que tengan al menoos 30% (4 ) meses de mas de 1000 cup de montoTotal en sus Cuentas Nautas
-	public ArrayList<Cliente> clientesMasMilMontoNauta(){
+	// Buscar los clientes que tengan al menoos 30% (4 ) meses de mas de 1000 cup de
+	// montoTotal en sus Cuentas Nautas
+	public ArrayList<Cliente> clientesMasMilMontoNauta() {
 
 		ArrayList<Cliente> mejoresClientes = new ArrayList<Cliente>();
 
-		if( !servicios.isEmpty()){
+		if (!servicios.isEmpty()) {
 
-			for(Servicio s: servicios ){
+			for (Servicio s : servicios) {
 
-				if(s instanceof CuentaNauta){
+				if (s instanceof CuentaNauta) {
 
-					if(((CuentaNauta)s).cantMesesMasMilGasto() >= 4){
+					if (((CuentaNauta) s).cantMesesMasMilGasto() >= 4) {
 						mejoresClientes.add(s.getTitular());
 					}
 				}
@@ -100,40 +103,40 @@ import java.util.*
 		return mejoresClientes;
 	}
 
-	//Buscar los meses de mayor gasto en kb de todas las Cuentas Nautas
-	public ArrayList<String>  mesesMaskbGastadosCuentas(){
-		//Inicializamos el hashmap 
+	// Buscar los meses de mayor gasto en kb de todas las Cuentas Nautas
+	public ArrayList<String> mesesMaskbGastadosCuentas() {
+		// Inicializamos el hashmap
 		ArrayList<String> mesesMayorGastoCuentas = new ArrayList<String>();
 		double mayor = -1;
 
-		if(servicios != null){
+		if (servicios != null) {
 
-			for(Servicio s : servicios){
-				if(s instanceof CuentaNauta){
-					CuentaNauta cuentaActual = (CuentaNauta)s;
+			for (Servicio s : servicios) {
+				if (s instanceof CuentaNauta) {
+					CuentaNauta cuentaActual = (CuentaNauta) s;
 
-					HashMap<String, Double > mesesGasto =cuentaActual.calcularKbGastadosMeses();
+					HashMap<String, Double> mesesGasto = cuentaActual.calcularKbGastadosMeses();
 					HashMap<String, Double> mesesMayores = cuentaActual.buscarMesesMayores(mesesGasto);
 
-					double gastoKbMesesMayores = Collections.max(mesesMayores.values()); //Obtener el primer valor(Todos iguales)
+					double gastoKbMesesMayores = Collections.max(mesesMayores.values()); // Obtener el primer
+																							// valor(Todos iguales)
 
-					if(gastoKbMesesMayores > mayor){ 
-						//Se crea un nuevo techo
+					if (gastoKbMesesMayores > mayor) {
+						// Se crea un nuevo techo
 						mayor = gastoKbMesesMayores;
 						mesesMayorGastoCuentas.clear();
 
-						//Agrego el nombre de los meses
-						for(String m: mesesMayores.keySet()){
+						// Agrego el nombre de los meses
+						for (String m : mesesMayores.keySet()) {
 							mesesMayorGastoCuentas.add(m);
 						}
 					}
 
-					else if(gastoKbMesesMayores == mayor){
+					else if (gastoKbMesesMayores == mayor) {
 
-						for(String m: mesesMayores.keySet()){
-							if(!(mesesMayorGastoCuentas.contains(m))) ///Evitamos que se guarden meses repetidos
+						for (String m : mesesMayores.keySet()) {
+							if (!(mesesMayorGastoCuentas.contains(m))) /// Evitamos que se guarden meses repetidos
 								mesesMayorGastoCuentas.add(m);
-
 
 						}
 					}
@@ -142,15 +145,14 @@ import java.util.*
 
 			}
 		}
-		return mesesMayorGastoCuentas;     
+		return mesesMayorGastoCuentas;
 	}
-
 
 	public ArrayList<Map.Entry<String, Integer>> menorCantCuentasNauta() {
 		ArrayList<PersonaNatural> personasNaturales = new ArrayList<PersonaNatural>();
-		String[] provincias = {"Pinar del Rio", "Artemisa", "La Habana", "Mayabeque", "Matanzas", "Cienfuegos",
-			"Villa Clara", "Sancti Spiritus", "Ciego de Avila", "Camagüey", "Las Tunas", "Holguín",
-			"Granma", "Santiago de Cuba", "Guantánamo", "Isla de la Juventud"};
+		String[] provincias = { "Pinar del Rio", "Artemisa", "La Habana", "Mayabeque", "Matanzas", "Cienfuegos",
+				"Villa Clara", "Sancti Spiritus", "Ciego de Avila", "Camagï¿½ey", "Las Tunas", "Holguï¿½n",
+				"Granma", "Santiago de Cuba", "Guantï¿½namo", "Isla de la Juventud" };
 		Map<String, Integer> provinciasConCuenta = new HashMap<String, Integer>();
 
 		// Guardar Personas Naturales con Cuenta Nauta
@@ -176,7 +178,8 @@ import java.util.*
 		}
 
 		// Ordenar provincias por cantidad de cuentas
-		ArrayList<Map.Entry<String, Integer>> provinciasOrdenadas = new ArrayList<Map.Entry<String, Integer>>(provinciasConCuenta.entrySet());
+		ArrayList<Map.Entry<String, Integer>> provinciasOrdenadas = new ArrayList<Map.Entry<String, Integer>>(
+				provinciasConCuenta.entrySet());
 
 		Collections.sort(provinciasOrdenadas, new Comparator<Map.Entry<String, Integer>>() {
 			public int compare(Map.Entry<String, Integer> e1, Map.Entry<String, Integer> e2) {
@@ -186,9 +189,31 @@ import java.util.*
 
 		return provinciasOrdenadas;
 	}
+
+	// Devolver clientes con todos los tipos de servicio
+	// TODO || Se puede mejorar el reporte haciendo un metodo en clientes (Por implementar)
+	public ArrayList<Cliente> clientesConTodosLosTiposDeServicio() {
+		ArrayList<Cliente> result = new ArrayList<>();
+
+		for (Cliente cliente : clientes) {
+			int tieneFijo = 0;
+			int tieneMovil = 0;
+			int tieneNauta = 0;
+
+			for (Servicio s : cliente.getServicios()) {
+				if (s instanceof TelefonoFijo) {
+					tieneFijo = 1;
+				} else if (s instanceof TelefonoMovil) {
+					tieneMovil = 1;
+				} else if (s instanceof CuentaNauta) {
+					tieneNauta = 1;
+				}
+			}
+
+			if (tieneFijo + tieneMovil + tieneNauta == 3) {
+				result.add(cliente);
+			}
+		}
+		return result;
+	}
 }
-
-
-
-
-
