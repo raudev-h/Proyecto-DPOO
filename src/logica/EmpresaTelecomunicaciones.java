@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Collections;
-import java.util.*
+import java.util.*;
 
-;public class EmpresaTelecomunicaciones {
+public class EmpresaTelecomunicaciones {
 	// Atributos
 	private static EmpresaTelecomunicaciones empresa;
 	private ArrayList<Cliente> clientes;
@@ -149,8 +149,8 @@ import java.util.*
 	public ArrayList<Map.Entry<String, Integer>> menorCantCuentasNauta() {
 		ArrayList<PersonaNatural> personasNaturales = new ArrayList<PersonaNatural>();
 		String[] provincias = {"Pinar del Rio", "Artemisa", "La Habana", "Mayabeque", "Matanzas", "Cienfuegos",
-			"Villa Clara", "Sancti Spiritus", "Ciego de Avila", "Camagüey", "Las Tunas", "Holguín",
-			"Granma", "Santiago de Cuba", "Guantánamo", "Isla de la Juventud"};
+			"Villa Clara", "Sancti Spiritus", "Ciego de Avila", "Camagï¿½ey", "Las Tunas", "Holguï¿½n",
+			"Granma", "Santiago de Cuba", "Guantï¿½namo", "Isla de la Juventud"};
 		Map<String, Integer> provinciasConCuenta = new HashMap<String, Integer>();
 
 		// Guardar Personas Naturales con Cuenta Nauta
