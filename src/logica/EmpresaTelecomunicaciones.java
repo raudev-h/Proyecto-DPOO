@@ -53,6 +53,48 @@ import java.util.*
 	}   
 
 	// METODOS
+	// Agregar Representante
+	public void agregarRepresentante(String nombreCompleto, String numId){
+		Representante r1 = new Representante(nombreCompleto, numId);
+		representantes.add(r1);
+	}
+
+	// Agregar Entidad no estatal
+	public void agregarEntidadNoEstatal(String direccion, String nombreEntidad, Representante representante){
+		Cliente c1 = new EntidadNoEstatal(direccion, nombreEntidad, representante);
+		clientes.add(c1);
+	}
+	
+	// Agregar Persona Natural
+	public void agregarPersonaNatural(String direccion, String municipio, String provincia, String nombre, String numId){
+		Cliente c1 = new PersonaNatural(direccion, municipio, provincia, nombre, numId);
+		clientes.add(c1);
+	}
+
+	// Agregar Persona Juridica 
+	public void agregarPersonaJuridica(String direccion, String municipio, String provincia, String nombreEmpresaString,
+									String organismo, Representante representante){
+		Cliente c1 = new PersonaJuridica(direccion, municipio, provincia, nombreEmpresaString, organismo, representante);
+		clientes.add(c1);
+	}
+
+	// Agregar Cuenta Nauta
+	public void crearCuentaNauta(Cliente titular, String nick){
+		Servicio s1 = new CuentaNauta(titular, nick);
+		servicios.add(s1);
+	}
+
+	// Agregar Telefono Fijo
+	public void agregarTelefonoFijo(Cliente titular, String numero){
+		Servicio s1 = new TelefonoFijo(titular, numero);
+		servicios.add(s1);
+	}
+
+	// Agregar Telefono Movil
+	public void agregarTelefonoMovil(Cliente titular, String numero, double montoPagar){
+		Servicio s1 = new TelefonoMovil(titular, numero, montoPagar);
+		servicios.add(s1);
+	}
 
 	// LLamadas de Movil que duraron mas de 100 minutos 
 	public ArrayList<TelefonoMovil> telefonosMovilLLamadasMasMin(int minutos){ 
@@ -149,8 +191,8 @@ import java.util.*
 	public ArrayList<Map.Entry<String, Integer>> menorCantCuentasNauta() {
 		ArrayList<PersonaNatural> personasNaturales = new ArrayList<PersonaNatural>();
 		String[] provincias = {"Pinar del Rio", "Artemisa", "La Habana", "Mayabeque", "Matanzas", "Cienfuegos",
-			"Villa Clara", "Sancti Spiritus", "Ciego de Avila", "Camagüey", "Las Tunas", "Holguín",
-			"Granma", "Santiago de Cuba", "Guantánamo", "Isla de la Juventud"};
+			"Villa Clara", "Sancti Spiritus", "Ciego de Avila", "Camagï¿½ey", "Las Tunas", "Holguï¿½n",
+			"Granma", "Santiago de Cuba", "Guantï¿½namo", "Isla de la Juventud"};
 		Map<String, Integer> provinciasConCuenta = new HashMap<String, Integer>();
 
 		// Guardar Personas Naturales con Cuenta Nauta
