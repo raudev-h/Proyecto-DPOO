@@ -1,7 +1,6 @@
 package interfaz;
 import imagenes.*;
 
-
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Graphics;
@@ -14,6 +13,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+
+import runner.Inicializadora;
 
 import java.awt.Font;
 import java.awt.event.ActionListener;
@@ -31,6 +32,7 @@ public class Principal extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					Inicializadora.Inicializar();
 					Principal frame = new Principal();
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -46,15 +48,22 @@ public class Principal extends JFrame {
 	public Principal() {
 		
 		
-		//Ventana a lo maximo de la pantalla 
-		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 896, 483);
+		setBounds(0, 0, 1800, 900);
+			contentPane = new JPanel(){
+				public void paintComponent(Graphics g){
+					Image img = Toolkit.getDefaultToolkit().getImage(Principal.class.getResource("/imagenes/d.png"));
+					g.drawImage(img, 0, 0, this.getWidth(), this.getHeight(),this);
+				}
+			};
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
 		
 		JMenuBar menuBar = new JMenuBar();
-		setJMenuBar(menuBar);
+		menuBar.setBounds(0, 0, 1830, 39);
+		contentPane.add(menuBar);
 		
 		JMenu menu = new JMenu("");
 		menuBar.add(menu);
@@ -176,15 +185,6 @@ public class Principal extends JFrame {
 		JMenuItem mntmAcercaDe = new JMenuItem("Acerca de");
 		mntmAcercaDe.setFont(new Font("Serif", Font.PLAIN, 21));
 		mnAyuda.add(mntmAcercaDe);
-			contentPane = new JPanel(){
-				public void paintComponent(Graphics g){
-					Image img = Toolkit.getDefaultToolkit().getImage(Principal.class.getResource("/imagenes/d.png"));
-					g.drawImage(img, 0, 0, this.getWidth(), this.getHeight(),this);
-				}
-			};
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
 		
 		
 		

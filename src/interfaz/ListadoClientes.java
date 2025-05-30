@@ -1,6 +1,8 @@
 package interfaz;
+import auxiliares.*;
 
 import java.awt.BorderLayout;
+
 import java.awt.FlowLayout;
 
 import javax.swing.JButton;
@@ -9,15 +11,19 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+
+import logica.*;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 import java.awt.Font;
+import java.util.ArrayList;
 
 public class ListadoClientes extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
-	private JTable table;
+	private static JTable table;
 
 	/**
 	 * Launch the application.
@@ -44,6 +50,7 @@ public class ListadoClientes extends JDialog {
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(667, 363, -650, -342);
+		scrollPane.setViewportView(table);
 		contentPanel.add(scrollPane);
 		
 		table = new JTable();
@@ -51,7 +58,7 @@ public class ListadoClientes extends JDialog {
 		contentPanel.add(table);
 		setLocationRelativeTo(null);
 		
-		
+		cargarTablaUsuarios();
 		
 		JButton btnNewButton = new JButton("Salir");
 		btnNewButton.setFont(new Font("Serif", Font.BOLD, 20));
@@ -62,6 +69,7 @@ public class ListadoClientes extends JDialog {
 				dispose();
 			}
 		});
+	
 		btnNewButton.setBounds(556, 319, 115, 29);
 		contentPanel.add(btnNewButton);
 		{
@@ -75,5 +83,22 @@ public class ListadoClientes extends JDialog {
 				buttonPane.add(cancelButton);
 			}
 		}
+	}
+	
+	// Funcion para guardar en un arreglo lo que vamos a mostrar
+	public static void cargarTablaUsuarios(){
+		
+		System.out.println("TABLA");
+		ArrayList<Cliente> usuarios = EmpresaTelecomunicaciones.getInstancia().getClientes();
+		Cliente[] tabla = new Cliente[usuarios.size()];
+		
+		for(int i = 0; i < tabla.length; i++){
+			
+			tabla[i] = usuarios.get(i);
+			
+		}
+		
+		UsuarioTableModel modelo = new UsuarioTableModel(tabla);
+		table.setModel(modelo);
 	}
 }

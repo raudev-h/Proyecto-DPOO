@@ -95,7 +95,7 @@ import java.util.*
 		Servicio s1 = new TelefonoMovil(titular, numero, montoPagar);
 		servicios.add(s1);
 	}
-
+/*
 	// LLamadas de Movil que duraron mas de 100 minutos 
 	public ArrayList<TelefonoMovil> telefonosMovilLLamadasMasMin(int minutos){ 
 
@@ -119,7 +119,7 @@ import java.util.*
 
 		return telefonosMovilMasMin;
 	}
-
+*/
 	//Buscar los clientes que tengan al menoos 30% (4 ) meses de mas de 1000 cup de montoTotal en sus Cuentas Nautas
 	public ArrayList<Cliente> clientesMasMilMontoNauta(){
 
@@ -192,7 +192,7 @@ import java.util.*
 		ArrayList<PersonaNatural> personasNaturales = new ArrayList<PersonaNatural>();
 		String[] provincias = {"Pinar del Rio", "Artemisa", "La Habana", "Mayabeque", "Matanzas", "Cienfuegos",
 			"Villa Clara", "Sancti Spiritus", "Ciego de Avila", "Camag�ey", "Las Tunas", "Holgu�n",
-			"Granma", "Santiago de Cuba", "Guant�namo", "Isla de la Juventud"};
+			"Granma", "Santiago de Cuba", "Guantanamo", "Isla de la Juventud"};
 		Map<String, Integer> provinciasConCuenta = new HashMap<String, Integer>();
 
 		// Guardar Personas Naturales con Cuenta Nauta

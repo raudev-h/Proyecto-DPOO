@@ -2,7 +2,7 @@ package logica;
 
 import java.util.ArrayList;
 
-public class TelefonoFijo  extends Telefono{
+public class TelefonoFijo extends Telefono{
 
      //ATRIBUTOS
      protected ArrayList<Factura> facturas;
