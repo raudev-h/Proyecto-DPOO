@@ -22,16 +22,18 @@ public class EmpresaTelecomunicaciones {
 
 	// Getters y setters
 	// Obtener la única instancia de la clase Empresa Telecomunicaciones
-	public static EmpresaTelecomunicaciones getInstancia(){
-		if(empresa == null){
+	public static EmpresaTelecomunicaciones getInstancia() {
+		if (empresa == null) {
 			empresa = new EmpresaTelecomunicaciones();
 		}
 		return empresa;
 	}
+
 	// Clientes
 	public ArrayList<Cliente> getClientes() {
 		return clientes;
 	}
+
 	public void setClientes(ArrayList<Cliente> clientes) {
 		this.clientes = clientes;
 	}
@@ -40,6 +42,7 @@ public class EmpresaTelecomunicaciones {
 	public ArrayList<Servicio> getServicios() {
 		return servicios;
 	}
+
 	public void setServicios(ArrayList<Servicio> servicios) {
 		this.servicios = servicios;
 	}
@@ -48,90 +51,96 @@ public class EmpresaTelecomunicaciones {
 	public ArrayList<Representante> getRepresentantes() {
 		return representantes;
 	}
+
 	public void setRepresentantes(ArrayList<Representante> representantes) {
 		this.representantes = representantes;
-	}   
+	}
 
 	// METODOS
 	// Agregar Representante
-	public void agregarRepresentante(String nombreCompleto, String numId){
+	public void agregarRepresentante(String nombreCompleto, String numId) {
 		Representante r1 = new Representante(nombreCompleto, numId);
 		representantes.add(r1);
 	}
 
 	// Agregar Entidad no estatal
-	public void agregarEntidadNoEstatal(String direccion, String nombreEntidad, Representante representante){
+	public void agregarEntidadNoEstatal(String direccion, String nombreEntidad, Representante representante) {
 		Cliente c1 = new EntidadNoEstatal(direccion, nombreEntidad, representante);
 		clientes.add(c1);
 	}
-	
+
 	// Agregar Persona Natural
-	public void agregarPersonaNatural(String direccion, String municipio, String provincia, String nombre, String numId){
+	public void agregarPersonaNatural(String direccion, String municipio, String provincia, String nombre,
+			String numId) {
 		Cliente c1 = new PersonaNatural(direccion, municipio, provincia, nombre, numId);
 		clientes.add(c1);
 	}
 
-	// Agregar Persona Juridica 
+	// Agregar Persona Juridica
 	public void agregarPersonaJuridica(String direccion, String municipio, String provincia, String nombreEmpresaString,
-									String organismo, Representante representante){
-		Cliente c1 = new PersonaJuridica(direccion, municipio, provincia, nombreEmpresaString, organismo, representante);
+			String organismo, Representante representante) {
+		Cliente c1 = new PersonaJuridica(direccion, municipio, provincia, nombreEmpresaString, organismo,
+				representante);
 		clientes.add(c1);
 	}
 
 	// Agregar Cuenta Nauta
-	public void crearCuentaNauta(Cliente titular, String nick){
+	public void crearCuentaNauta(Cliente titular, String nick) {
 		Servicio s1 = new CuentaNauta(titular, nick);
 		servicios.add(s1);
 	}
 
 	// Agregar Telefono Fijo
-	public void agregarTelefonoFijo(Cliente titular, String numero){
+	public void agregarTelefonoFijo(Cliente titular, String numero) {
 		Servicio s1 = new TelefonoFijo(titular, numero);
 		servicios.add(s1);
 	}
 
 	// Agregar Telefono Movil
-	public void agregarTelefonoMovil(Cliente titular, String numero, double montoPagar){
+	public void agregarTelefonoMovil(Cliente titular, String numero, double montoPagar) {
 		Servicio s1 = new TelefonoMovil(titular, numero, montoPagar);
 		servicios.add(s1);
 	}
 
-	// LLamadas de Movil que duraron mas de 100 minutos 
-	public ArrayList<TelefonoMovil> telefonosMovilLLamadasMasMin(int minutos){ 
-
-		ArrayList<TelefonoMovil> telefonosMovilMasMin = new ArrayList<TelefonoMovil>();
-		if(!servicios.isEmpty()){ //Se comprueba que hay al menos un servicio
-
-			for(Servicio s: servicios){
-				if(s instanceof Telefono){
-
-					if(s  instanceof TelefonoMovil){
-
-						//Buscamos la cantidad de llamadas que superan los 100 min del telefono
-						int llamadasMasMin = ((TelefonoMovil)s).llamadasMasMin(minutos).size();
-						if(llamadasMasMin > 0){
-							telefonosMovilMasMin.add((TelefonoMovil)s);
-						}
-					}
-				}
-			}
-		}
-
-		return telefonosMovilMasMin;
-	}
-
-	//Buscar los clientes que tengan al menoos 30% (4 ) meses de mas de 1000 cup de montoTotal en sus Cuentas Nautas
-	public ArrayList<Cliente> clientesMasMilMontoNauta(){
+	/*
+	 * // LLamadas de Movil que duraron mas de 100 minutos
+	 * public ArrayList<TelefonoMovil> telefonosMovilLLamadasMasMin(int minutos){
+	 * 
+	 * ArrayList<TelefonoMovil> telefonosMovilMasMin = new
+	 * ArrayList<TelefonoMovil>();
+	 * if(!servicios.isEmpty()){ //Se comprueba que hay al menos un servicio
+	 * 
+	 * for(Servicio s: servicios){
+	 * if(s instanceof Telefono){
+	 * 
+	 * if(s instanceof TelefonoMovil){
+	 * 
+	 * //Buscamos la cantidad de llamadas que superan los 100 min del telefono
+	 * int llamadasMasMin = ((TelefonoMovil)s).llamadasMasMin(minutos).size();
+	 * if(llamadasMasMin > 0){
+	 * telefonosMovilMasMin.add((TelefonoMovil)s);
+	 * }
+	 * }
+	 * }
+	 * }
+	 * }
+	 * 
+	 * return telefonosMovilMasMin;
+	 * }
+	 */
+	// Buscar los clientes que tengan al menoos 30% (4 ) meses de mas de 1000 cup de
+	// montoTotal en sus Cuentas Nautas
+	public ArrayList<Cliente> clientesMasMilMontoNauta() {
 
 		ArrayList<Cliente> mejoresClientes = new ArrayList<Cliente>();
 
-		if( !servicios.isEmpty()){
+		if (!servicios.isEmpty()) {
 
-			for(Servicio s: servicios ){
+			for (Servicio s : servicios) {
 
-				if(s instanceof CuentaNauta){
+				if (s instanceof CuentaNauta) {
 
-					if(((CuentaNauta)s).cantMesesMasMilGasto() >= 4){
+					if (((CuentaNauta) s).cantMesesMasMilGasto() >= 4) {
 						mejoresClientes.add(s.getTitular());
 					}
 				}
@@ -142,40 +151,40 @@ public class EmpresaTelecomunicaciones {
 		return mejoresClientes;
 	}
 
-	//Buscar los meses de mayor gasto en kb de todas las Cuentas Nautas
-	public ArrayList<String>  mesesMaskbGastadosCuentas(){
-		//Inicializamos el hashmap 
+	// Buscar los meses de mayor gasto en kb de todas las Cuentas Nautas
+	public ArrayList<String> mesesMaskbGastadosCuentas() {
+		// Inicializamos el hashmap
 		ArrayList<String> mesesMayorGastoCuentas = new ArrayList<String>();
 		double mayor = -1;
 
-		if(servicios != null){
+		if (servicios != null) {
 
-			for(Servicio s : servicios){
-				if(s instanceof CuentaNauta){
-					CuentaNauta cuentaActual = (CuentaNauta)s;
+			for (Servicio s : servicios) {
+				if (s instanceof CuentaNauta) {
+					CuentaNauta cuentaActual = (CuentaNauta) s;
 
-					HashMap<String, Double > mesesGasto =cuentaActual.calcularKbGastadosMeses();
+					HashMap<String, Double> mesesGasto = cuentaActual.calcularKbGastadosMeses();
 					HashMap<String, Double> mesesMayores = cuentaActual.buscarMesesMayores(mesesGasto);
 
-					double gastoKbMesesMayores = Collections.max(mesesMayores.values()); //Obtener el primer valor(Todos iguales)
+					double gastoKbMesesMayores = Collections.max(mesesMayores.values()); // Obtener el primer
+																							// valor(Todos iguales)
 
-					if(gastoKbMesesMayores > mayor){ 
-						//Se crea un nuevo techo
+					if (gastoKbMesesMayores > mayor) {
+						// Se crea un nuevo techo
 						mayor = gastoKbMesesMayores;
 						mesesMayorGastoCuentas.clear();
 
-						//Agrego el nombre de los meses
-						for(String m: mesesMayores.keySet()){
+						// Agrego el nombre de los meses
+						for (String m : mesesMayores.keySet()) {
 							mesesMayorGastoCuentas.add(m);
 						}
 					}
 
-					else if(gastoKbMesesMayores == mayor){
+					else if (gastoKbMesesMayores == mayor) {
 
-						for(String m: mesesMayores.keySet()){
-							if(!(mesesMayorGastoCuentas.contains(m))) ///Evitamos que se guarden meses repetidos
+						for (String m : mesesMayores.keySet()) {
+							if (!(mesesMayorGastoCuentas.contains(m))) /// Evitamos que se guarden meses repetidos
 								mesesMayorGastoCuentas.add(m);
-
 
 						}
 					}
@@ -184,23 +193,24 @@ public class EmpresaTelecomunicaciones {
 
 			}
 		}
-		return mesesMayorGastoCuentas;     
+		return mesesMayorGastoCuentas;
 	}
-
 
 	public ArrayList<Map.Entry<String, Integer>> menorCantCuentasNauta() {
 		ArrayList<PersonaNatural> personasNaturales = new ArrayList<PersonaNatural>();
-		String[] provincias = {"Pinar del Rio", "Artemisa", "La Habana", "Mayabeque", "Matanzas", "Cienfuegos",
-			"Villa Clara", "Sancti Spiritus", "Ciego de Avila", "Camag�ey", "Las Tunas", "Holgu�n",
-			"Granma", "Santiago de Cuba", "Guant�namo", "Isla de la Juventud"};
+		String[] provincias = { "Pinar del Rio", "Artemisa", "La Habana", "Mayabeque", "Matanzas", "Cienfuegos",
+				"Villa Clara", "Sancti Spiritus", "Ciego de Avila", "Camag�ey", "Las Tunas", "Holgu�n",
+				"Granma", "Santiago de Cuba", "Guantanamo", "Isla de la Juventud" };
 		Map<String, Integer> provinciasConCuenta = new HashMap<String, Integer>();
 
 		// Guardar Personas Naturales con Cuenta Nauta
-		for (Servicio s : servicios) {
-			if (s instanceof CuentaNauta) {
-				CuentaNauta cuentaNauta = (CuentaNauta) s;
-				if (cuentaNauta.getTitular() instanceof PersonaNatural)
-					personasNaturales.add((PersonaNatural) cuentaNauta.getTitular());
+		if (servicios != null) {
+			for (Servicio s : servicios) {
+				if (s instanceof CuentaNauta) {
+					CuentaNauta cuentaNauta = (CuentaNauta) s;
+					if (cuentaNauta.getTitular() != null && cuentaNauta.getTitular() instanceof PersonaNatural)
+						personasNaturales.add((PersonaNatural) cuentaNauta.getTitular());
+				}
 			}
 		}
 
@@ -210,6 +220,7 @@ public class EmpresaTelecomunicaciones {
 		}
 
 		// Contar por provincia
+
 		for (PersonaNatural p : personasNaturales) {
 			String provinciaCliente = p.getProvincia();
 			if (provinciasConCuenta.containsKey(provinciaCliente)) {
@@ -218,19 +229,11 @@ public class EmpresaTelecomunicaciones {
 		}
 
 		// Ordenar provincias por cantidad de cuentas
-		ArrayList<Map.Entry<String, Integer>> provinciasOrdenadas = new ArrayList<Map.Entry<String, Integer>>(provinciasConCuenta.entrySet());
+		ArrayList<Map.Entry<String, Integer>> provinciasOrdenadas = new ArrayList<Map.Entry<String, Integer>>(
+				provinciasConCuenta.entrySet());
 
-		Collections.sort(provinciasOrdenadas, new Comparator<Map.Entry<String, Integer>>() {
-			public int compare(Map.Entry<String, Integer> e1, Map.Entry<String, Integer> e2) {
-				return e1.getValue().compareTo(e2.getValue());
-			}
-		});
+		BubbleSort.sort(provinciasOrdenadas);
 
 		return provinciasOrdenadas;
 	}
 }
-
-
-
-
-

@@ -3,12 +3,14 @@ import java.util.ArrayList;
 
 public abstract class Cliente {
     // Atributos
+    protected String nombre;
     protected String direccion;
     protected ArrayList<Servicio> servicios;
         
     // Constructor
-    public Cliente(String direccion) {
+    public Cliente(String nombre,String direccion) {
         setDireccion(direccion);
+        setNombre(nombre);
         servicios = new ArrayList<Servicio>();
     }
 
@@ -27,8 +29,14 @@ public abstract class Cliente {
     public void setServicios(ArrayList<Servicio> servicios) {
         this.servicios = servicios;
     }
-    
-    
 
-    
+    // Nombre
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+        
 }
