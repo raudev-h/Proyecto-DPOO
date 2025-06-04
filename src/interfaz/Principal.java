@@ -48,7 +48,6 @@ public class Principal extends JFrame {
 	public Principal() {
 		
 		
-		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(0, 0, 1800, 900);
 			contentPane = new JPanel(){
@@ -99,52 +98,19 @@ public class Principal extends JFrame {
 		JMenuItem mntmClientes = new JMenuItem("Clientes");
 		mntmClientes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				ListadoClientes listadoC = new ListadoClientes();
-				listadoC.setVisible(true);
+				ListadoClientes.abrirListadoClientes();
 			}
 		});
 		mntmClientes.setFont(new Font("Serif", Font.PLAIN, 21));
 		mnGestion.add(mntmClientes);
 		
-		JMenu mnServicios = new JMenu("Servicios");
-		mnServicios.setFont(new Font("Serif", Font.PLAIN, 21));
-		mnGestion.add(mnServicios);
+		JMenuItem mntmServicios = new JMenuItem("Servicios");
+		mntmServicios.setFont(new Font("Serif", Font.PLAIN, 20));
+		mnGestion.add(mntmServicios);
 		
-		JMenuItem menuItem = new JMenuItem("Lista");
-		menuItem.setFont(new Font("Serif", Font.PLAIN, 21));
-		mnServicios.add(menuItem);
-		
-		JMenuItem menuItem_1 = new JMenuItem("Crear");
-		menuItem_1.setFont(new Font("Serif", Font.PLAIN, 21));
-		mnServicios.add(menuItem_1);
-		
-		JMenuItem menuItem_2 = new JMenuItem("Modificar");
-		menuItem_2.setFont(new Font("Serif", Font.PLAIN, 21));
-		mnServicios.add(menuItem_2);
-		
-		JMenuItem menuItem_3 = new JMenuItem("Eliminar");
-		menuItem_3.setFont(new Font("Serif", Font.PLAIN, 21));
-		mnServicios.add(menuItem_3);
-		
-		JMenu mnRepresentantes = new JMenu("Representantes");
-		mnRepresentantes.setFont(new Font("Serif", Font.PLAIN, 21));
-		mnGestion.add(mnRepresentantes);
-		
-		JMenuItem mntmListar = new JMenuItem("Lista");
-		mntmListar.setFont(new Font("Serif", Font.PLAIN, 21));
-		mnRepresentantes.add(mntmListar);
-		
-		JMenuItem mntmCrear = new JMenuItem("Crear");
-		mntmCrear.setFont(new Font("Serif", Font.PLAIN, 21));
-		mnRepresentantes.add(mntmCrear);
-		
-		JMenuItem mntmModificar = new JMenuItem("Modificar");
-		mntmModificar.setFont(new Font("Serif", Font.PLAIN, 21));
-		mnRepresentantes.add(mntmModificar);
-		
-		JMenuItem mntmEliminar = new JMenuItem("Eliminar");
-		mntmEliminar.setFont(new Font("Serif", Font.PLAIN, 21));
-		mnRepresentantes.add(mntmEliminar);
+		JMenuItem mntmRepresentantes = new JMenuItem("Representantes");
+		mntmRepresentantes.setFont(new Font("Serif", Font.PLAIN, 20));
+		mnGestion.add(mntmRepresentantes);
 		
 		JMenu mnReportes = new JMenu("Reportes        ");
 		mnReportes.setFont(new Font("Serif", Font.BOLD, 22));

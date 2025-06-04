@@ -38,5 +38,11 @@ public abstract class Cliente {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+    
+    //Agregar Servicio 
+    public void addServicio(Servicio s){
+    	servicios.add(s);
+    	
+    }
         
 }

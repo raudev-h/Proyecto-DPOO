@@ -1,9 +1,5 @@
 package logica;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Collections;
 import java.util.*;
 
 public class EmpresaTelecomunicaciones {
@@ -21,7 +17,7 @@ public class EmpresaTelecomunicaciones {
 	}
 
 	// Getters y setters
-	// Obtener la única instancia de la clase Empresa Telecomunicaciones
+	// Obtener la unica instancia de la clase Empresa Telecomunicaciones
 	public static EmpresaTelecomunicaciones getInstancia() {
 		if (empresa == null) {
 			empresa = new EmpresaTelecomunicaciones();
@@ -232,7 +228,7 @@ public class EmpresaTelecomunicaciones {
 		ArrayList<Map.Entry<String, Integer>> provinciasOrdenadas = new ArrayList<Map.Entry<String, Integer>>(
 				provinciasConCuenta.entrySet());
 
-		BubbleSort.sort(provinciasOrdenadas);
+//		BubbleSort.sort(provinciasOrdenadas);
 
 		return provinciasOrdenadas;
 	}
