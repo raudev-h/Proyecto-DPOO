@@ -33,7 +33,44 @@ public class EmpresaTelecomunicaciones {
 	public void setClientes(ArrayList<Cliente> clientes) {
 		this.clientes = clientes;
 	}
-
+	
+	//Eliminacion de un cliente pasandole al cliente seleccionado
+	public boolean eliminarCliente(Cliente cliente){
+		
+		boolean eliminado = false;
+		//Eliminar un cliente y todos sus servicios asociados 
+		if(clientes.contains(cliente)){
+					
+			for(Servicio s: cliente.getServicios()){
+				servicios.remove(s);				
+			}
+			clientes.remove(cliente);
+			eliminado = true;
+			
+		}
+		
+		return eliminado;
+		
+	}
+	
+public boolean eliminarCliente(String nombreCliente){
+		
+		boolean eliminado = false;
+		//Eliminar un cliente y todos sus servicios asociados 
+		Cliente cliente = this.buscarCliente(nombreCliente);
+		if(clientes.contains(cliente)){
+					
+			for(Servicio s: cliente.getServicios()){
+				servicios.remove(s);				
+			}
+			clientes.remove(cliente);
+			eliminado = true;
+			
+		}
+		
+		return eliminado;
+		
+	}
 	// Servicios
 	public ArrayList<Servicio> getServicios() {
 		return servicios;
@@ -97,6 +134,32 @@ public class EmpresaTelecomunicaciones {
 		Servicio s1 = new TelefonoMovil(titular, numero, montoPagar);
 		servicios.add(s1);
 	}
+	
+	//Buscar a un cliente por su nombre TODO: Testear metodo ya que se uso un while...algo poco convencional en estos tiempos 
+	public Cliente buscarCliente(String nombreCliente){
+		
+		Cliente clienteEncontrado = null;
+		boolean encontrado = false;
+		int i = 0; 
+		if(!(nombreCliente.trim().isEmpty()) && nombreCliente != null){
+			
+			while(i<clientes.size() && encontrado == false){
+				if(clientes.get(i).getNombre().equals(nombreCliente)){
+					
+					clienteEncontrado = clientes.get(i);
+				}
+				i++;
+			}		
+				
+		}
+		return clienteEncontrado;
+		
+	}
+		
+		
+		
+		
+	
 
 	/*
 	 * // LLamadas de Movil que duraron mas de 100 minutos

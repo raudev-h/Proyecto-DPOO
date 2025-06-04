@@ -1,5 +1,6 @@
 package auxiliares;
 import logica.*;
+
 import javax.swing.table.DefaultTableModel;
 
 public class ClienteTableModel  extends DefaultTableModel  {
@@ -42,8 +43,31 @@ public class ClienteTableModel  extends DefaultTableModel  {
 				
 				
 			}
-		}		
+		}
 		
+		@Override
+		public boolean isCellEditable(int row, int column){
+						
+			return false;
+		}
+		
+		  //Eliminar un cliente de la tabla 
+	    public void eliminarCliente(int indiceFila){
+	    	
+	    	Cliente cliente = EmpresaTelecomunicaciones.getInstancia().getClientes().get(indiceFila);
+	    	
+	    	EmpresaTelecomunicaciones.getInstancia().getClientes().remove(cliente);
+	    	
+	    	this.cargarClientes();
+	    	
+	    	
+	    	
+	    	
+	    	
+	    	
+	    	
+	    }
+	    
 		
 		
 	}
