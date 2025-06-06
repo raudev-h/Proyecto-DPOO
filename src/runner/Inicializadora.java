@@ -8,8 +8,8 @@ public class Inicializadora {
     public static void Inicializar(){
         
         // REPRESENTANTES
-        EmpresaTelecomunicaciones.getInstancia().agregarRepresentante("MarÃ­a Fernanda PÃ©rez", "05021768480");
-        EmpresaTelecomunicaciones.getInstancia().agregarRepresentante("Luis Alberto GÃ³mez", "05030567702");
+        EmpresaTelecomunicaciones.getInstancia().agregarRepresentante("María Fernanda Pérez", "05021768480");
+        EmpresaTelecomunicaciones.getInstancia().agregarRepresentante("Luis Alberto Gómez", "05030567702");
 
         //Representante r1 = EmpresaTelecomunicaciones.getInstancia().getRepresentantes().get(0);
         //Representante r2 = EmpresaTelecomunicaciones.getInstancia().getRepresentantes().get(1);
@@ -21,8 +21,9 @@ public class Inicializadora {
         // EmpresaTelecomunicaciones.getInstancia().agregarPersonaJuridica("Calle 45 #67", "Playa", "La Habana","Gran Caribe","MINTUR",r2);
 
         // PERSONA NATURAL
-        EmpresaTelecomunicaciones.getInstancia().agregarPersonaNatural("Calle LÃ­nea #456", "Vedado", "La Habana", "Raul Hechavarria", "97072468480");
+        EmpresaTelecomunicaciones.getInstancia().agregarPersonaNatural("Calle Línea #456", "Vedado", "La Habana", "Raul Hechavarria", "97072468480");
         Cliente c1 = EmpresaTelecomunicaciones.getInstancia().getClientes().get(0);
+        
         
         // TELEFONO FIJO
         EmpresaTelecomunicaciones.getInstancia().agregarTelefonoFijo(c1, "76378134");

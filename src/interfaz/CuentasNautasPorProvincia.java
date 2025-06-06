@@ -1,5 +1,8 @@
 package interfaz;
 
+import auxiliares.*;
+import runner.*;
+
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 
@@ -10,10 +13,13 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+import logica.EmpresaTelecomunicaciones;
+
 public class CuentasNautasPorProvincia extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
-	private JTable table;
+	private static JTable table;
+	
 
 	/**
 	 * Launch the application.
@@ -60,5 +66,14 @@ public class CuentasNautasPorProvincia extends JDialog {
 				buttonPane.add(cancelButton);
 			}
 		}
+		llenarTabla();
+	}
+	public static void llenarTabla(){
+		
+		CantidadCuentasNautasProvincias tablaCuentas = new CantidadCuentasNautasProvincias(EmpresaTelecomunicaciones.getInstancia().menorCantCuentasNauta());
+		
+		table.setModel(tablaCuentas);
+		table.repaint();
+		
 	}
 }
