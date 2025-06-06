@@ -134,6 +134,51 @@ public boolean eliminarCliente(String nombreCliente){
 		Servicio s1 = new TelefonoMovil(titular, numero, montoPagar);
 		servicios.add(s1);
 	}
+	//Obtener los TelefonosFijos
+	public ArrayList<TelefonoFijo> getTelefonosFijos(){
+		
+		ArrayList<TelefonoFijo> telefonosFijos = new ArrayList<TelefonoFijo>();
+		
+		for(Servicio s: servicios){
+			if(s instanceof TelefonoFijo){
+				telefonosFijos.add((TelefonoFijo)s);
+			}	
+		}
+				
+		return telefonosFijos;
+	}
+	
+	//Obtener los Telefonos Moviles
+	public ArrayList<TelefonoMovil> getTelefonosMoviles(){
+		
+		ArrayList<TelefonoMovil> telefonosMoviles = new ArrayList<TelefonoMovil>();
+		
+		for(Servicio s: servicios ){
+			if(s instanceof TelefonoMovil){
+				telefonosMoviles.add((TelefonoMovil)s);
+			}
+		}
+		
+		return telefonosMoviles;
+	}
+	
+	//Obtener las Cuentas Nautas
+	public ArrayList<CuentaNauta> getCuentasNautas(){
+		
+		ArrayList<CuentaNauta> cuentasNautas = new ArrayList<CuentaNauta>();
+		
+		for(Servicio s: servicios ){
+			if(s instanceof CuentaNauta){
+				cuentasNautas.add((CuentaNauta)s);
+			}
+		}
+		
+		return cuentasNautas;
+	}
+	
+	
+	
+	
 	
 	//Buscar a un cliente por su nombre TODO: Testear metodo ya que se uso un while...algo poco convencional en estos tiempos 
 	public Cliente buscarCliente(String nombreCliente){
@@ -161,7 +206,7 @@ public boolean eliminarCliente(String nombreCliente){
 		
 	
 
-	/*
+	/*	
 	 * // LLamadas de Movil que duraron mas de 100 minutos
 	 * public ArrayList<TelefonoMovil> telefonosMovilLLamadasMasMin(int minutos){
 	 * 

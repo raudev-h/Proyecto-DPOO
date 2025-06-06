@@ -77,6 +77,18 @@ public class CuentaNauta extends Servicio{
 
         return mesesKb;
     }
+    
+    public double calcularMbTotalesGastados(){
+    	
+    	double total = 0;
+    	
+    	for(MesDatos ms: mesDatos.values()){   		
+    		total += ms.calcularTotalGastadoKb();    		
+    	}
+    	    	
+    	return total/1024;
+    	
+    }
 
     //Calcular el gasto en kb Internacionales y nacionales de un mes en especifico en el mesDatos
     public double calcularGastoKbMes(String mes){

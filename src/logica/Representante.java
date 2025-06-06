@@ -4,6 +4,8 @@ public class Representante {
     //Atributos
     private String nombreCompleto;
     private String numId;
+
+    
     
     // Constructor
     public Representante(String nombreCompleto, String numId) {

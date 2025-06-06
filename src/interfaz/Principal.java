@@ -105,6 +105,12 @@ public class Principal extends JFrame {
 		mnGestion.add(mntmClientes);
 		
 		JMenuItem mntmServicios = new JMenuItem("Servicios");
+		mntmServicios.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				 ListadoServicios.abrirListadoServicio();
+			}
+		});
 		mntmServicios.setFont(new Font("Serif", Font.PLAIN, 20));
 		mnGestion.add(mntmServicios);
 		
