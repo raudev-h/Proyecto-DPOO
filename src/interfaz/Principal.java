@@ -181,6 +181,13 @@ public class Principal extends JFrame {
 		mnClientes_1.add(mntmNewMenuItem_1);
 		
 		JMenuItem mntmClientesCon = new JMenuItem("2. Clientes con mayor consumo en Llamadas de Larga Distancia");
+		mntmClientesCon.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				ClientesMayorConsumoLlamadasLargaDistancia llamadasLargaDistancia = new ClientesMayorConsumoLlamadasLargaDistancia();
+				llamadasLargaDistancia.setVisible(true);
+				
+			}
+		});
 		mntmClientesCon.setFont(new Font("Serif", Font.PLAIN, 21));
 		mnClientes_1.add(mntmClientesCon);
 		
