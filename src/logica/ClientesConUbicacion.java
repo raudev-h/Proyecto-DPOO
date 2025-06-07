@@ -6,8 +6,8 @@ public abstract class ClientesConUbicacion extends Cliente {
     protected String provincia;
     
     // Constructor
-    public ClientesConUbicacion(String direccion, String municipio, String provincia) {
-        super(direccion);
+    public ClientesConUbicacion(String nombre,String direccion, String municipio, String provincia) {
+        super(nombre,direccion);
        setMunicipio(municipio);
        setProvincia(provincia);
     }

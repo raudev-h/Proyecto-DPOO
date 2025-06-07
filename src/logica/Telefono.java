@@ -24,7 +24,12 @@ public abstract class Telefono extends Servicio implements Llamador {
     public String getNumero(){
         return numero;
     }
+    //Llamadas 
+    public ArrayList<Llamada> getLlamadas(){
+    	return llamadas;
+    }
     //METODOS
+    
     
     
 }
