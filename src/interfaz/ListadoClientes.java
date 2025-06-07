@@ -102,8 +102,7 @@ public class ListadoClientes extends JDialog {
         getContentPane().add(btnNewButton);
         
         configurarMenuContextual();
-        
-        
+            
         
         btnNewButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {

@@ -34,13 +34,8 @@ public class ClienteTableModel  extends DefaultTableModel  {
 				int cantServicios = cliente.getServicios().size();
 				String tipoCliente = cliente.getClass().getSimpleName();
 				
-				System.out.println(nombre);
-				System.out.println(direccion);
-				System.out.println(cantServicios);
 				
-				
-				this.adicionar(nombre, direccion, cantServicios, tipoCliente);
-				
+				this.adicionar(nombre, direccion, cantServicios, tipoCliente);			
 				
 			}
 		}
