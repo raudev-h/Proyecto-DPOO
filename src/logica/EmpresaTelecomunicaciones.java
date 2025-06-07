@@ -200,9 +200,9 @@ public class EmpresaTelecomunicaciones {
 
 	public ArrayList<Map.Entry<String, Integer>> menorCantCuentasNauta() {
 		ArrayList<PersonaNatural> personasNaturales = new ArrayList<PersonaNatural>();
-		String[] provincias = { "Pinar del Rio", "Artemisa", "La Habana", "Mayabeque", "Matanzas", "Cienfuegos",
-				"Villa Clara", "Sancti Spiritus", "Ciego de Avila", "Camagï¿½ey", "Las Tunas", "Holguï¿½n",
-				"Granma", "Santiago de Cuba", "Guantanamo", "Isla de la Juventud" };
+		String[] provincias = { "Pinar del Río", "Artemisa", "La Habana", "Mayabeque", "Matanzas", "Cienfuegos",
+				"Villa Clara", "Sancti Spiritus", "Ciego de Avila", "Camaguey", "Las Tunas", "Holguín",
+				"Granma", "Santiago de Cuba", "Guantánamo", "Isla de la Juventud" };
 		Map<String, Integer> provinciasConCuenta = new HashMap<String, Integer>();
 
 		// Guardar Personas Naturales con Cuenta Nauta
