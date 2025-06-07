@@ -88,6 +88,23 @@ public boolean eliminarCliente(String nombreCliente){
 	public void setRepresentantes(ArrayList<Representante> representantes) {
 		this.representantes = representantes;
 	}
+	
+	public boolean eliminarRepresentante(String id){
+		
+		boolean eliminado = false;
+		int i = 0;
+		
+		while(i<representantes.size() && !eliminado){
+			
+			if(representantes.get(i).getNumId().equals(id)){
+				representantes.remove(representantes.get(i));
+				eliminado = true;
+			}
+			i++;
+		}
+		
+		return eliminado;
+	}
 
 	// METODOS
 	// Agregar Representante
@@ -159,6 +176,7 @@ public boolean eliminarCliente(String nombreCliente){
 			}
 		}
 		
+		
 		return telefonosMoviles;
 	}
 	
@@ -176,7 +194,22 @@ public boolean eliminarCliente(String nombreCliente){
 		return cuentasNautas;
 	}
 	
-	
+	//METODOS
+	public Representante buscarRepresentante(String numId){
+		
+		Representante representanteEncontrado = null;
+		int i = 0;
+		
+		while(i<representantes.size() && representanteEncontrado != null){
+		
+			if(representantes.get(i).getNumId().equals(numId)){
+				representanteEncontrado = representantes.get(i);		
+			}
+			
+			i++;
+		}		
+		return representanteEncontrado;
+	}
 	
 	
 	
@@ -308,6 +341,8 @@ public boolean eliminarCliente(String nombreCliente){
 		Map<String, Integer> provinciasConCuenta = new HashMap<String, Integer>();
 
 		// Guardar Personas Naturales con Cuenta Nauta
+		
+		
 		if (servicios != null) {
 			for (Servicio s : servicios) {
 				if (s instanceof CuentaNauta) {

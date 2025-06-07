@@ -10,7 +10,7 @@ public class TelefonoFijoTableModel extends DefaultTableModel {
 	
 
     public TelefonoFijoTableModel() {
-        String[] columnNames = {"Número", "Cliente", "Llamadas", "Facturas", "Llam. Larga Distancia"};
+        String[] columnNames = {"Número", "Cliente", "Cant. Llamadas", "Facturas", "Llam. Larga Distancia"};
         setColumnIdentifiers(columnNames);
     }
     

@@ -44,5 +44,21 @@ public abstract class Cliente {
     	servicios.add(s);
     	
     }
+    //METODOS
+    public ArrayList<Telefono> obtenerTelefonos(){
+    	
+    	ArrayList<Telefono> telefonos = new ArrayList<Telefono>();
+    	
+    	for(Servicio s: servicios){
+    		
+    		if(s instanceof Telefono){
+    			telefonos.add((Telefono)s);
+    		}
+    	}	
+    	
+    	
+    	return telefonos;
+    	
+    }
         
 }

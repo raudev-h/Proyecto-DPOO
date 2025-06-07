@@ -7,16 +7,20 @@ public class TelefonoMovilTableModel extends DefaultTableModel {
 	
 	
     public TelefonoMovilTableModel() {
-        String[] columnNames = {"Número", "Cliente", "Llamadas", "Monto a Pagar"};
+        String[] columnNames = {"Número", "Cliente", "Cant. Llamadas", "Monto a Pagar"};
         setColumnIdentifiers(columnNames);
 
     }
     public void cargarDatos(List<TelefonoMovil> telefonos) {
         setRowCount(0);
         for (TelefonoMovil tm : telefonos) {
-        	addRow(new Object[]{ tm.getNumero(), tm.getTitular().getNombre(),tm.getMontoApagar(), tm.getLlamadas().size()
+        	addRow(new Object[]{ tm.getNumero(), tm.getTitular().getNombre(),tm.getLlamadas().size(), tm.getLlamadas().size()
             });
         }
+    }
+    @Override
+    public boolean isCellEditable(int row, int column) {
+        return false; // Esto hace que todas las celdas no sean editables
     }
 }
 

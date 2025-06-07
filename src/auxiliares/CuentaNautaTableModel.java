@@ -18,4 +18,8 @@ public class CuentaNautaTableModel extends DefaultTableModel {
         		});
         }
     }
+    @Override
+    public boolean isCellEditable(int row, int column) {
+        return false; // Esto hace que todas las celdas no sean editables
+    }
 }

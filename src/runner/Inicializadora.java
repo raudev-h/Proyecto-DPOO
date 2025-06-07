@@ -30,16 +30,20 @@ public class Inicializadora {
         // Personas Jurídicas
         empresa.agregarPersonaJuridica("Empresa XYZ", "Calle 42 #506", "Plaza", "La Habana", "CITMA", r1);
         Cliente pj1 = empresa.getClientes().get(2);
+        r1.setClienteRepresentado(pj1);
+        
         
         empresa.agregarPersonaJuridica("Hotel Caribe", "Avenida 1ra #1402", "Varadero", "Matanzas", "MINTUR", r2);
         Cliente pj2 = empresa.getClientes().get(3);
+        r2.setClienteRepresentado(pj2);
        
         // Entidades No Estatales
         empresa.agregarEntidadNoEstatal("Cooperativa La Esperanza", "Calle 23 #104", r3);
         Cliente ene1 = empresa.getClientes().get(4);
+        r3.setClienteRepresentado(ene1);
         
-        empresa.agregarEntidadNoEstatal("MIPYME TechSolutions", "Calle L #456", r1);
-        Cliente ene2 = empresa.getClientes().get(5);
+        
+        
 
 
         // Crear servicios a partir de que se crearon los clientes
@@ -47,6 +51,7 @@ public class Inicializadora {
         empresa.agregarTelefonoFijo(pn1, "78781234");
         empresa.agregarTelefonoMovil(pn1, "52345678", 350.50);
         empresa.crearCuentaNauta(pn1, "carlos_mtz");
+        
         
         empresa.agregarTelefonoMovil(pn2, "58901234", 420.75);
         empresa.crearCuentaNauta(pn2, "laura_dz");
@@ -60,7 +65,6 @@ public class Inicializadora {
 
         // Servicios para Entidades No Estatales
         empresa.crearCuentaNauta(ene1, "coop_esperanza");
-        empresa.agregarTelefonoMovil(ene2, "56781234", 300.25);
         
         //Agregar los servicios a los clientes
         empresa.getClientes().get(0).addServicio(empresa.getServicios().get(0));

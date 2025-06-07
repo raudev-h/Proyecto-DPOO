@@ -64,7 +64,7 @@ public class ListadoServicios extends JDialog {
         lblListadoDeServicios.setBounds(15, 0, 195, 20);
         panel.add(lblListadoDeServicios);
         
-        // Botón Cargar Datos (mismo estilo que en ListadoClientes)
+        // Botón Cargar Datos 
         JButton btnCargar = new JButton("Cargar Datos");
         btnCargar.setForeground(Color.WHITE);
         btnCargar.setBackground(new Color(0, 0, 153));
@@ -80,10 +80,6 @@ public class ListadoServicios extends JDialog {
         
         
 
-        
-        
-        // Cargar datos al iniciar
-        cargarDatos();
     }
 
     private JScrollPane crearTabla(DefaultTableModel model) {
@@ -109,6 +105,7 @@ public class ListadoServicios extends JDialog {
         modelFijos.cargarDatos(EmpresaTelecomunicaciones.getInstancia().getTelefonosFijos());
         modelMoviles.cargarDatos(EmpresaTelecomunicaciones.getInstancia().getTelefonosMoviles());
         modelNauta.cargarDatos(EmpresaTelecomunicaciones.getInstancia().getCuentasNautas());
+        
     }
     
     // Método estático para abrir la ventana, y asegurar que sea solo 1

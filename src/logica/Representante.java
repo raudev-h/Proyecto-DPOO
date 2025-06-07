@@ -4,9 +4,8 @@ public class Representante {
     //Atributos
     private String nombreCompleto;
     private String numId;
-
-    
-    
+    private Cliente clienteRepresentado;
+  
     // Constructor
     public Representante(String nombreCompleto, String numId) {
         setNombreCompleto(nombreCompleto);
@@ -27,5 +26,14 @@ public class Representante {
     }
     public void setNumId(String numId) {
         this.numId = numId;
+    } 
+    
+    // Cliente representadoS
+    public void setClienteRepresentado(Cliente clienteRepresentado){
+    	this.clienteRepresentado = clienteRepresentado;
+    	
+    }
+    public Cliente getClienteRepresentado(){
+    	return clienteRepresentado;
     } 
 }
