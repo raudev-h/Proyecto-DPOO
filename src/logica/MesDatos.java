@@ -108,6 +108,13 @@ public class MesDatos {
     public void setMontoTotal(double montoTotal) {
         this.montoTotal = montoTotal;
     }
+    
+    //METODOS
+    
+    public double calcularTotalGastadoKb(){
+    	
+    	return  kbRecibidosNacional+ kbEnviadosNacional + kbRecibidosInternacional + kbEnviadosInternacional + kbNavegacion;
+    }
 
     
 }

@@ -43,11 +43,27 @@ public abstract class Cliente {
         this.nombre = nombre;
     }
 
+    // MÉTODOS
     // Agregar Servicio
     public void addServicio(Servicio s) {
         servicios.add(s);
     }
-
+    
+  // Obtener todos los telefonos existentes
+    public ArrayList<Telefono> obtenerTelefonos(){
+    	
+    	ArrayList<Telefono> telefonos = new ArrayList<Telefono>();
+    	
+    	for(Servicio s: servicios){
+    		
+    		if(s instanceof Telefono){
+    			telefonos.add((Telefono)s);
+    		}
+    	}	
+    		
+    	return telefonos;
+    }
+  
     // Obtener el monto de las llamadas de los clientes
     public double getMontoLlamadasLargaDistancia() {
         double monto = 0;

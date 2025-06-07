@@ -1,12 +1,6 @@
 package logica;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Collections;
-import java.util.*
-
-;
+import java.util.*;
 
 public class EmpresaTelecomunicaciones {
 	// Atributos
@@ -23,7 +17,7 @@ public class EmpresaTelecomunicaciones {
 	}
 
 	// Getters y setters
-	// Obtener la única instancia de la clase Empresa Telecomunicaciones
+	// Obtener la unica instancia de la clase Empresa Telecomunicaciones
 	public static EmpresaTelecomunicaciones getInstancia() {
 		if (empresa == null) {
 			empresa = new EmpresaTelecomunicaciones();
@@ -39,7 +33,44 @@ public class EmpresaTelecomunicaciones {
 	public void setClientes(ArrayList<Cliente> clientes) {
 		this.clientes = clientes;
 	}
-
+	
+	//Eliminacion de un cliente pasandole al cliente seleccionado
+	public boolean eliminarCliente(Cliente cliente){
+		
+		boolean eliminado = false;
+		//Eliminar un cliente y todos sus servicios asociados 
+		if(clientes.contains(cliente)){
+					
+			for(Servicio s: cliente.getServicios()){
+				servicios.remove(s);				
+			}
+			clientes.remove(cliente);
+			eliminado = true;
+			
+		}
+		
+		return eliminado;
+		
+	}
+	
+public boolean eliminarCliente(String nombreCliente){
+		
+		boolean eliminado = false;
+		//Eliminar un cliente y todos sus servicios asociados 
+		Cliente cliente = this.buscarCliente(nombreCliente);
+		if(clientes.contains(cliente)){
+					
+			for(Servicio s: cliente.getServicios()){
+				servicios.remove(s);				
+			}
+			clientes.remove(cliente);
+			eliminado = true;
+			
+		}
+		
+		return eliminado;
+		
+	}
 	// Servicios
 	public ArrayList<Servicio> getServicios() {
 		return servicios;
@@ -56,6 +87,23 @@ public class EmpresaTelecomunicaciones {
 
 	public void setRepresentantes(ArrayList<Representante> representantes) {
 		this.representantes = representantes;
+	}
+	
+	public boolean eliminarRepresentante(String id){
+		
+		boolean eliminado = false;
+		int i = 0;
+		
+		while(i<representantes.size() && !eliminado){
+			
+			if(representantes.get(i).getNumId().equals(id)){
+				representantes.remove(representantes.get(i));
+				eliminado = true;
+			}
+			i++;
+		}
+		
+		return eliminado;
 	}
 
 	// METODOS
@@ -103,8 +151,95 @@ public class EmpresaTelecomunicaciones {
 		Servicio s1 = new TelefonoMovil(titular, numero, montoPagar);
 		servicios.add(s1);
 	}
+	//Obtener los TelefonosFijos
+	public ArrayList<TelefonoFijo> getTelefonosFijos(){
+		
+		ArrayList<TelefonoFijo> telefonosFijos = new ArrayList<TelefonoFijo>();
+		
+		for(Servicio s: servicios){
+			if(s instanceof TelefonoFijo){
+				telefonosFijos.add((TelefonoFijo)s);
+			}	
+		}
+				
+		return telefonosFijos;
+	}
+	
+	//Obtener los Telefonos Moviles
+	public ArrayList<TelefonoMovil> getTelefonosMoviles(){
+		
+		ArrayList<TelefonoMovil> telefonosMoviles = new ArrayList<TelefonoMovil>();
+		
+		for(Servicio s: servicios ){
+			if(s instanceof TelefonoMovil){
+				telefonosMoviles.add((TelefonoMovil)s);
+			}
+		}
+		
+		
+		return telefonosMoviles;
+	}
+	
+	//Obtener las Cuentas Nautas
+	public ArrayList<CuentaNauta> getCuentasNautas(){
+		
+		ArrayList<CuentaNauta> cuentasNautas = new ArrayList<CuentaNauta>();
+		
+		for(Servicio s: servicios ){
+			if(s instanceof CuentaNauta){
+				cuentasNautas.add((CuentaNauta)s);
+			}
+		}
+		
+		return cuentasNautas;
+	}
+	
+	//METODOS
+	public Representante buscarRepresentante(String numId){
+		
+		Representante representanteEncontrado = null;
+		int i = 0;
+		
+		while(i<representantes.size() && representanteEncontrado != null){
+		
+			if(representantes.get(i).getNumId().equals(numId)){
+				representanteEncontrado = representantes.get(i);		
+			}
+			
+			i++;
+		}		
+		return representanteEncontrado;
+	}
+	
+	
+	
+	//Buscar a un cliente por su nombre TODO: Testear metodo ya que se uso un while...algo poco convencional en estos tiempos 
+	public Cliente buscarCliente(String nombreCliente){
+		
+		Cliente clienteEncontrado = null;
+		boolean encontrado = false;
+		int i = 0; 
+		if(!(nombreCliente.trim().isEmpty()) && nombreCliente != null){
+			
+			while(i<clientes.size() && encontrado == false){
+				if(clientes.get(i).getNombre().equals(nombreCliente)){
+					
+					clienteEncontrado = clientes.get(i);
+				}
+				i++;
+			}		
+				
+		}
+		return clienteEncontrado;
+		
+	}
+		
+		
+		
+		
+	
 
-	/*
+	/*	
 	 * // LLamadas de Movil que duraron mas de 100 minutos
 	 * public ArrayList<TelefonoMovil> telefonosMovilLLamadasMasMin(int minutos){
 	 * 
@@ -206,6 +341,8 @@ public class EmpresaTelecomunicaciones {
 		Map<String, Integer> provinciasConCuenta = new HashMap<String, Integer>();
 
 		// Guardar Personas Naturales con Cuenta Nauta
+		
+		
 		if (servicios != null) {
 			for (Servicio s : servicios) {
 				if (s instanceof CuentaNauta) {
@@ -234,7 +371,7 @@ public class EmpresaTelecomunicaciones {
 		ArrayList<Map.Entry<String, Integer>> provinciasOrdenadas = new ArrayList<Map.Entry<String, Integer>>(
 				provinciasConCuenta.entrySet());
 
-		BubbleSort.sort(provinciasOrdenadas);
+//		BubbleSort.sort(provinciasOrdenadas);
 
 		return provinciasOrdenadas;
 	}
