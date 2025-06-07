@@ -335,9 +335,9 @@ public boolean eliminarCliente(String nombreCliente){
 
 	public ArrayList<Map.Entry<String, Integer>> menorCantCuentasNauta() {
 		ArrayList<PersonaNatural> personasNaturales = new ArrayList<PersonaNatural>();
-		String[] provincias = { "Pinar del Rio", "Artemisa", "La Habana", "Mayabeque", "Matanzas", "Cienfuegos",
-				"Villa Clara", "Sancti Spiritus", "Ciego de Avila", "Camagï¿½ey", "Las Tunas", "Holguï¿½n",
-				"Granma", "Santiago de Cuba", "Guantanamo", "Isla de la Juventud" };
+		String[] provincias = { "Pinar del Río", "Artemisa", "La Habana", "Mayabeque", "Matanzas", "Cienfuegos",
+				"Villa Clara", "Sancti Spiritus", "Ciego de Avila", "Camaguey", "Las Tunas", "Holguín",
+				"Granma", "Santiago de Cuba", "Guantánamo", "Isla de la Juventud" };
 		Map<String, Integer> provinciasConCuenta = new HashMap<String, Integer>();
 
 		// Guardar Personas Naturales con Cuenta Nauta
@@ -352,7 +352,7 @@ public boolean eliminarCliente(String nombreCliente){
 				}
 			}
 		}
-
+	
 		// Inicializar provincias
 		for (int i = 0; i < provincias.length; i++) {
 			provinciasConCuenta.put(provincias[i], 0);
@@ -375,4 +375,41 @@ public boolean eliminarCliente(String nombreCliente){
 
 		return provinciasOrdenadas;
 	}
+	
+	//Clientes con un Consumo mayor a 500 pesos en al menos 3 Llamadas de Larga Distancia
+    //Se puede mejorar el metodo devolviendo un hashmap con los nombres y el monto 
+    public ArrayList<Cliente> clientesAltoConsumoLlamadaFijo(){
+
+        ArrayList<Cliente> clientes = new ArrayList<Cliente>();
+        ArrayList<Cliente> clientesEvaluados = new ArrayList<Cliente>();
+        int cantLlamadas = 0;
+
+        for(Servicio s : servicios){
+            if(s instanceof TelefonoFijo){
+                TelefonoFijo tf = (TelefonoFijo)s;
+                Cliente titular = tf.getTitular();
+
+                // Analizamos a los clientes una sola vez
+                if(!clientesEvaluados.contains(titular)){
+                    clientesEvaluados.add(titular);
+                
+                // Buscamos nuevamente en todos los servicios si ese cliente tiene mas de 1 telefono fijo
+                for(Servicio otro : servicios){
+                    if(otro instanceof TelefonoFijo){
+                        TelefonoFijo otroTf = (TelefonoFijo)otro;
+                        if(otroTf.getTitular().equals(titular)){
+                            for(LlamadaLargaDistancia llamada : otroTf.getLlamadasLargas()){
+                                if(llamada.getTotalFacturar() >= 500)
+                                    cantLlamadas++;
+                            }
+                        }          
+                    }
+                }
+                if(cantLlamadas >= 3)
+                    clientes.add(titular);
+                }
+            }
+        }
+        return clientes;
+    }
 }
