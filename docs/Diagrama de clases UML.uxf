@@ -1,0 +1,691 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <zoom_level>11</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1936</x>
+      <y>374</y>
+      <w>231</w>
+      <h>187</h>
+    </coordinates>
+    <panel_attributes>
+Cliente
+&lt;&lt; abstract &gt;&gt;
+
+--
+# dirección: String
+--
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1386</x>
+      <y>66</y>
+      <w>495</w>
+      <h>209</h>
+    </coordinates>
+    <panel_attributes>
+EmpresaTelecomunicaciones
+
+--
+
+--
++ telefonosMovilLLamadasMasCien(): ArrayList&lt;Telefono&gt;
++ clientesMasMilMontoNauta(): ArrayList&lt;Cliente&gt;
++ mesesMaskbGastadosCuentas(): ArrayList&lt;String&gt;
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1870</x>
+      <y>187</y>
+      <w>220</w>
+      <h>209</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+                p = *
+                 t = 1
+
+
+</panel_attributes>
+    <additional_attributes>10.0;10.0;160.0;170.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1089</x>
+      <y>374</y>
+      <w>231</w>
+      <h>209</h>
+    </coordinates>
+    <panel_attributes>
+Servicio	
+&lt;&lt;abstract&gt;&gt;
+
+--
+# titular: Cliente
+--
++ setCliente(Cliente): void
++ getCliente(): Cliente
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1221</x>
+      <y>187</y>
+      <w>187</w>
+      <h>209</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+
+          p = 3
+     t = 1</panel_attributes>
+    <additional_attributes>150.0;10.0;10.0;170.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1309</x>
+      <y>440</y>
+      <w>649</w>
+      <h>66</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+
+p = *
+t = 1</panel_attributes>
+    <additional_attributes>570.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>550</x>
+      <y>638</y>
+      <w>363</w>
+      <h>143</h>
+    </coordinates>
+    <panel_attributes>
+Teléfono
+&lt;&lt;abstract &gt;&gt;
+--
+# número: String
+--
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>726</x>
+      <y>506</y>
+      <w>385</w>
+      <h>154</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>330.0;10.0;10.0;10.0;10.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>682</x>
+      <y>1243</y>
+      <w>231</w>
+      <h>154</h>
+    </coordinates>
+    <panel_attributes>
+Llamada
+&lt;&lt; abstract &gt;&gt;
+--
+# duración: double
+# numeroDestino: String
+--
++ getDuracion(): double
++ setDuracion(): void
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>627</x>
+      <y>935</y>
+      <w>231</w>
+      <h>143</h>
+    </coordinates>
+    <panel_attributes>
+LLamador
+&lt;&lt; interface&gt;&gt;
+
+--
+
+--
++ hacerLLamada(): Llamada
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>715</x>
+      <y>770</y>
+      <w>33</w>
+      <h>187</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;150.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>308</x>
+      <y>1199</y>
+      <w>231</w>
+      <h>143</h>
+    </coordinates>
+    <panel_attributes>
+LlamadaMovil
+
+--
+
+--
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1034</x>
+      <y>1188</y>
+      <w>242</w>
+      <h>143</h>
+    </coordinates>
+    <panel_attributes>
+LlamadaFijo
+
+
+--
+# provincia: String
+
+--
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>902</x>
+      <y>1243</y>
+      <w>154</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;60.0;120.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>528</x>
+      <y>1243</y>
+      <w>176</w>
+      <h>99</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>140.0;70.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1056</x>
+      <y>770</y>
+      <w>341</w>
+      <h>143</h>
+    </coordinates>
+    <panel_attributes>
+TeléfonoFijo
+
+--
+
+--
++ llamadasMasCienMin(): ArrayList&lt;Llamada&gt;
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>110</x>
+      <y>803</y>
+      <w>231</w>
+      <h>143</h>
+    </coordinates>
+    <panel_attributes>
+TeléfonoMovil
+
+--
+- montoApagar: double
+--
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>836</x>
+      <y>770</y>
+      <w>88</w>
+      <h>495</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+p = *
+t = 1
+</panel_attributes>
+    <additional_attributes>10.0;10.0;30.0;60.0;30.0;430.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>902</x>
+      <y>704</y>
+      <w>374</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;320.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>104</x>
+      <y>464</y>
+      <w>288</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>270.0;10.0;10.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1518</x>
+      <y>1078</y>
+      <w>286</w>
+      <h>187</h>
+    </coordinates>
+    <panel_attributes>
+Factura
+
+--
+- tarifaFija: double
+- montoLlamadasLocales: double
+- montoLLamdasLargaDistancia: double
+- atraso: double
+- totalPagar: double 
+--
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1331</x>
+      <y>1375</y>
+      <w>231</w>
+      <h>143</h>
+    </coordinates>
+    <panel_attributes>
+LLamadaLargaDistancia
+
+--
+- municipio: String
+- totalAFacturar: double
+--
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1386</x>
+      <y>858</y>
+      <w>286</w>
+      <h>242</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+              p = 1..12
+          t = 1</panel_attributes>
+    <additional_attributes>10.0;10.0;190.0;20.0;190.0;200.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1551</x>
+      <y>1254</y>
+      <w>110</w>
+      <h>220</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+p = *
+t = 1</panel_attributes>
+    <additional_attributes>50.0;10.0;50.0;180.0;10.0;180.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1265</x>
+      <y>1276</y>
+      <w>143</w>
+      <h>121</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;110.0;10.0;110.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1386</x>
+      <y>902</y>
+      <w>66</w>
+      <h>495</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+
+p = *
+t = 1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;430.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1837</x>
+      <y>1100</y>
+      <w>319</w>
+      <h>517</h>
+    </coordinates>
+    <panel_attributes>
+MesDatos
+
+--
+- kbRecibidosNacional: double
+- kbRecibidosInternacional: double
+- kbEnviadosNacional: double
+- kbEnviadosInternacional: double
+- kbNavegacion: double
+- montoEnvioNacional: double
+- montoEnvioInternacional: double
+- montoRecepcionNacional: double
+- montoRecepcionInternacional: double
+- montoNavegacion: double
+- montoTotal: double
+--
++ setRecibidosNacional(double): void
++ getRecibidosNacional(): double
+
++ setEnviadoNacional(double): void
++ getEnviadoNacional(): double
+
++ setRecibidoInternacional(double): void
++ geRecibidoInternacional():  double
+
++ setEnviadoInternacional(double): void
++ getEnviadoInternacional(): double
+
++ setMontoTotal(double): void
++ setMontoTotal(): double
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1705</x>
+      <y>748</y>
+      <w>429</w>
+      <h>143</h>
+    </coordinates>
+    <panel_attributes>
+CuentaNauta
+
+--
+- nick: String
+--
++ cantMesesMasMilGasto(): int 
++ calcularKbGastadosMeses(): HashMap&lt;String, double&gt;
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1881</x>
+      <y>880</y>
+      <w>99</w>
+      <h>242</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+p = 1...12
+t = 1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;200.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1287</x>
+      <y>506</y>
+      <w>594</w>
+      <h>264</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;520.0;10.0;520.0;220.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>2409</x>
+      <y>990</y>
+      <w>286</w>
+      <h>187</h>
+    </coordinates>
+    <panel_attributes>
+PersonaJurídica
+
+--
+- nombreEmpresa: String
+- institución: String
+- organismo: String
+- representantePersona: Representante
+
+--
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>2321</x>
+      <y>693</y>
+      <w>231</w>
+      <h>187</h>
+    </coordinates>
+    <panel_attributes>
+ClienteConUbicación
+&lt;&lt; abstract &gt;&gt;
+
+--
+# municipio: String
+# provincia: String
+--
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>2706</x>
+      <y>1012</y>
+      <w>297</w>
+      <h>187</h>
+    </coordinates>
+    <panel_attributes>
+EntidadNoEstatal
+
+--
+- nombreEntidad: String
+- representanteEntidad: Representante
+--
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>2167</x>
+      <y>990</y>
+      <w>231</w>
+      <h>187</h>
+    </coordinates>
+    <panel_attributes>
+PersonaNatural
+
+--
+- nombre: String
+--
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>2640</x>
+      <y>1298</y>
+      <w>231</w>
+      <h>187</h>
+    </coordinates>
+    <panel_attributes>
+Representante
+--
+- nombreCompleto: String 
+- numeroId: String
+--
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2860</x>
+      <y>1188</y>
+      <w>66</w>
+      <h>231</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>40.0;10.0;40.0;190.0;10.0;190.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2574</x>
+      <y>1166</y>
+      <w>88</w>
+      <h>253</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;10.0;210.0;60.0;210.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2288</x>
+      <y>869</y>
+      <w>132</w>
+      <h>143</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>100.0;10.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2453</x>
+      <y>869</y>
+      <w>110</w>
+      <h>143</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;80.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2156</x>
+      <y>451</y>
+      <w>715</w>
+      <h>583</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;630.0;10.0;630.0;510.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1870</x>
+      <y>165</y>
+      <w>1188</w>
+      <h>1287</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+p = *
+t= 1
+</panel_attributes>
+    <additional_attributes>10.0;10.0;1030.0;10.0;1040.0;1150.0;910.0;1150.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2156</x>
+      <y>495</y>
+      <w>297</w>
+      <h>220</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;250.0;180.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>1416</x>
+      <y>352</y>
+      <w>208</w>
+      <h>152</h>
+    </coordinates>
+    <panel_attributes>Metodos Abstractos
+
+-------Servicios--------
+- LlamadasMasCienMin(): ArrayList&lt;Llamada&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

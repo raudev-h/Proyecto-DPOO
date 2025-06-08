@@ -7,33 +7,95 @@ public class Inicializadora {
     // Metodo que inicializa servicios, clientes y representante
     public static void Inicializar(){
         
-        // REPRESENTANTES
-        EmpresaTelecomunicaciones.getInstancia().agregarRepresentante("Mar�a Fernanda P�rez", "05021768480");
-        EmpresaTelecomunicaciones.getInstancia().agregarRepresentante("Luis Alberto G�mez", "05030567702");
+    	EmpresaTelecomunicaciones empresa = EmpresaTelecomunicaciones.getInstancia();
+    	
+    	// Inicializar representantes
 
-        //Representante r1 = EmpresaTelecomunicaciones.getInstancia().getRepresentantes().get(0);
-        //Representante r2 = EmpresaTelecomunicaciones.getInstancia().getRepresentantes().get(1);
-
-        // ENTIDAD NO ESTATAL   
-        //EmpresaTelecomunicaciones.getInstancia().agregarEntidadNoEstatal("Calle 23 #104, Vedado", "MIPYME",r1);
+    	empresa.agregarRepresentante("María Fernanda Pérez", "05021768480");
+        Representante r1 = empresa.getRepresentantes().get(0);
         
-        // PERSONA JURIDICA
-        // EmpresaTelecomunicaciones.getInstancia().agregarPersonaJuridica("Calle 45 #67", "Playa", "La Habana","Gran Caribe","MINTUR",r2);
-
-        // PERSONA NATURAL
-        EmpresaTelecomunicaciones.getInstancia().agregarPersonaNatural("Calle L�nea #456", "Vedado", "La Habana", "Raul Hechavarria", "97072468480");
-        Cliente c1 = EmpresaTelecomunicaciones.getInstancia().getClientes().get(0);
+        empresa.agregarRepresentante("Luis Alberto Gómez", "05030567702");
+        Representante r2 = empresa.getRepresentantes().get(1);
         
-        // TELEFONO FIJO
-        EmpresaTelecomunicaciones.getInstancia().agregarTelefonoFijo(c1, "76378134");
+        empresa.agregarRepresentante("Ana López García", "91040312345");
 
-        // CUENTA NAUTA
-        EmpresaTelecomunicaciones.getInstancia().crearCuentaNauta(c1, "angell64"); 
+        Representante r3 = empresa.getRepresentantes().get(2);
+      
+        //  Crear clientes
+        // Personas Naturales
 
-        // TELEFONO MOVIL
-        EmpresaTelecomunicaciones.getInstancia().agregarTelefonoMovil(c1, "52387754", 250);
+        empresa.agregarPersonaNatural("Carlos Martínez", "Calle 10 #45", "Playa", "La Habana", "85102578945");
+        Cliente pn1 = empresa.getClientes().get(0);
+        
+        empresa.agregarPersonaNatural("Laura Díaz", "Avenida 5ta #1208", "Centro Habana", "La Habana", "90031545678");
+        Cliente pn2 = empresa.getClientes().get(1);
+             
+        // Personas Jurídicas
+        empresa.agregarPersonaJuridica("Empresa XYZ", "Calle 42 #506", "Plaza", "La Habana", "CITMA", r1);
+        Cliente pj1 = empresa.getClientes().get(2);
+        r1.setClienteRepresentado(pj1);
+        
+        
+        empresa.agregarPersonaJuridica("Hotel Caribe", "Avenida 1ra #1402", "Varadero", "Matanzas", "MINTUR", r2);
+        Cliente pj2 = empresa.getClientes().get(3);
+        r2.setClienteRepresentado(pj2);
+       
+        // Entidades No Estatales
+        empresa.agregarEntidadNoEstatal("Cooperativa La Esperanza", "Calle 23 #104", r3);
+        Cliente ene1 = empresa.getClientes().get(4);
+
+        
+        empresa.agregarEntidadNoEstatal("MIPYME TechSolutions", "Calle L #456", r1);
+        Cliente ene2 = empresa.getClientes().get(5);
+        
+      // Agregar un Representante a una entidad no estatal
+        r3.setClienteRepresentado(ene1);
+        
+      
+        // Crear servicios a partir de que se crearon los clientes
+        // Servicios para Personas Naturales
+        empresa.agregarTelefonoFijo(pn1, "78781234");
+        empresa.agregarTelefonoMovil(pn1, "52345678", 350.50);
+        empresa.crearCuentaNauta(pn1, "carlos_mtz");
+        
+      
+        empresa.agregarTelefonoMovil(pn2, "58901234", 420.75);
+        empresa.crearCuentaNauta(pn2, "laura_dz");
+
+        // Servicios para Personas Jurï¿½dicas
+        empresa.agregarTelefonoFijo(pj1, "78889999");
+        empresa.crearCuentaNauta(pj1, "empresa_xyz");
+        
+        empresa.agregarTelefonoMovil(pj2, "58432109", 600.00);
+        empresa.agregarTelefonoFijo(pj2, "45789012");
+
+        // Servicios para Entidades No Estatales
+        empresa.crearCuentaNauta(ene1, "coop_esperanza");
+        empresa.agregarTelefonoMovil(ene2, "56781234", 300.25);
+        
+        //Agregar los servicios a los clientes
+        empresa.getClientes().get(0).addServicio(empresa.getServicios().get(0));
+        empresa.getClientes().get(0).addServicio(empresa.getServicios().get(1));
+        empresa.getClientes().get(0).addServicio(empresa.getServicios().get(2));
+        
+        empresa.getClientes().get(1).addServicio(empresa.getServicios().get(3));
+        empresa.getClientes().get(1).addServicio(empresa.getServicios().get(4));
+        
+        empresa.getClientes().get(2).addServicio(empresa.getServicios().get(5));
+        empresa.getClientes().get(2).addServicio(empresa.getServicios().get(6));
+        
+        empresa.getClientes().get(3).addServicio(empresa.getServicios().get(7));
+        empresa.getClientes().get(3).addServicio(empresa.getServicios().get(8));
+
+        // Hacer que los clientes llamen
+        TelefonoFijo tf1 = (TelefonoFijo) empresa.getClientes().get(0).getServicios().get(0);
+        tf1.agregarLlamadaLargaDistancia(20, "12345678", "La Habana", "Cerro", 550.00);
+         
+        
     }
-}
+        
+    }
+
 
 
 

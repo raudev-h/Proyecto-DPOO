@@ -12,6 +12,7 @@ public class BubbleSort {
             }
         }
     }
+    
 
     private static void swap(ArrayList<Map.Entry<String,Integer>> list, int j){
         
