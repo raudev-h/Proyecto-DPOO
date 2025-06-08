@@ -2,121 +2,22 @@ package interfaz;
 import auxiliares.*;
 
 import java.awt.BorderLayout;
-<<<<<<< HEAD
-
-=======
->>>>>>> d4356db030773f4e8df4e2e87ede1d32e00f39e0
 import java.awt.FlowLayout;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
-<<<<<<< HEAD
-import javax.swing.JPanel;
-=======
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
->>>>>>> d4356db030773f4e8df4e2e87ede1d32e00f39e0
 import javax.swing.border.EmptyBorder;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-<<<<<<< HEAD
-import logica.*;
-
-=======
->>>>>>> d4356db030773f4e8df4e2e87ede1d32e00f39e0
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 import java.awt.Font;
-<<<<<<< HEAD
-import java.util.ArrayList;
-
-public class ListadoClientes extends JDialog {
-
-	private final JPanel contentPanel = new JPanel();
-	private static JTable table;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		try {
-			ListadoClientes dialog = new ListadoClientes();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Create the dialog.
-	 */
-	public ListadoClientes() {
-		setBounds(100, 100, 725, 462);
-		getContentPane().setLayout(new BorderLayout());
-		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		contentPanel.setLayout(null);
-		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(667, 363, -650, -342);
-		scrollPane.setViewportView(table);
-		contentPanel.add(scrollPane);
-		
-		table = new JTable();
-		table.setBounds(15, 20, 528, 337);
-		contentPanel.add(table);
-		setLocationRelativeTo(null);
-		
-		cargarTablaUsuarios();
-		
-		JButton btnNewButton = new JButton("Salir");
-		btnNewButton.setFont(new Font("Serif", Font.BOLD, 20));
-		btnNewButton.setBackground(new Color(0, 0, 153));
-		btnNewButton.setForeground(Color.WHITE);
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				dispose();
-			}
-		});
-	
-		btnNewButton.setBounds(556, 319, 115, 29);
-		contentPanel.add(btnNewButton);
-		{
-			JPanel buttonPane = new JPanel();
-			getContentPane().add(buttonPane, BorderLayout.SOUTH);
-			buttonPane.setLayout(null);
-			{
-				JButton cancelButton = new JButton("Cancel");
-				cancelButton.setBounds(602, 5, 79, 29);
-				cancelButton.setActionCommand("Cancel");
-				buttonPane.add(cancelButton);
-			}
-		}
-	}
-	
-	// Funcion para guardar en un arreglo lo que vamos a mostrar
-	public static void cargarTablaUsuarios(){
-		
-		System.out.println("TABLA");
-		ArrayList<Cliente> usuarios = EmpresaTelecomunicaciones.getInstancia().getClientes();
-		Cliente[] tabla = new Cliente[usuarios.size()];
-		
-		for(int i = 0; i < tabla.length; i++){
-			
-			tabla[i] = usuarios.get(i);
-			
-		}
-		
-		UsuarioTableModel modelo = new UsuarioTableModel(tabla);
-		table.setModel(modelo);
-	}
-}
-=======
 
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.TitledBorder;
@@ -179,7 +80,7 @@ public class ListadoClientes extends JDialog {
         table.setFont(new Font("Serif", Font.PLAIN, 18));
         scrollPane.setViewportView(table);
         
-        //Ajustar el diseño de la tabla(Header)
+        //Ajustar el diseï¿½o de la tabla(Header)
         JTableHeader header = table.getTableHeader();
         Font headerFont = new Font("Serif",Font.PLAIN, 20);
         header.setFont(headerFont);
@@ -262,12 +163,12 @@ public class ListadoClientes extends JDialog {
     	        
     	        if (selectedRow >= 0) { //Comprobar que la fila seleccionada es correcta
     	        	
-    	            // Confirmar la eliminación
+    	            // Confirmar la eliminaciï¿½n
     	            UIManager.put("OptionPane.messageFont", new Font("Serif", Font.BOLD, 20));
     	            UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.BOLD, 18));
     	            
-    	            int confirm = JOptionPane.showConfirmDialog(null,"¿Está seguro que desea eliminar este cliente?", 
-    	                "Confirmar eliminación",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
+    	            int confirm = JOptionPane.showConfirmDialog(null,"ï¿½Estï¿½ seguro que desea eliminar este cliente?", 
+    	                "Confirmar eliminaciï¿½n",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
     	            
     	            if (confirm == JOptionPane.YES_OPTION) {
     	                // Obtener el cliente de la fila correspondiente
@@ -282,7 +183,7 @@ public class ListadoClientes extends JDialog {
     	                    JOptionPane.showMessageDialog(
     	                        null, 
     	                        "Cliente eliminado correctamente", 
-    	                        "Éxito", 
+    	                        "ï¿½xito", 
     	                        JOptionPane.INFORMATION_MESSAGE);
     	                } else {
     	                    JOptionPane.showMessageDialog(
@@ -302,7 +203,7 @@ public class ListadoClientes extends JDialog {
     	    }
     	});
     	
-    	//Añadir los menuItem al popMenu
+    	//Aï¿½adir los menuItem al popMenu
     	popupMenu.add(menuEditar);
     	popupMenu.add(menuEliminar);
     	
@@ -346,4 +247,3 @@ public class ListadoClientes extends JDialog {
     
     
 }
->>>>>>> d4356db030773f4e8df4e2e87ede1d32e00f39e0
