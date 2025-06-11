@@ -1,12 +1,14 @@
 package logica;
 
+import excepciones.NombreInvalidoException;
+
 public class EntidadNoEstatal extends Cliente {
     // Atributos
    // private String nombreEntidad;
     private Representante representanteEntidad;
     
     // Constructor
-      public EntidadNoEstatal(String nombre,String direccion ,Representante representanteEntidad) {
+      public EntidadNoEstatal(String nombre,String direccion ,Representante representanteEntidad) throws NombreInvalidoException {
         super(nombre,direccion);
         //setNombreEntidad(nombreEntidad);
         setRepresentanteEntidad(representanteEntidad);        

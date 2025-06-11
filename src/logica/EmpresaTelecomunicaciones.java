@@ -2,6 +2,8 @@ package logica;
 
 import java.util.*;
 
+import excepciones.NombreInvalidoException;
+
 public class EmpresaTelecomunicaciones {
 	// Atributos
 	private static EmpresaTelecomunicaciones empresa;
@@ -114,21 +116,21 @@ public boolean eliminarCliente(String nombreCliente){
 	}
 
 	// Agregar Entidad no estatal
-	public void agregarEntidadNoEstatal(String direccion, String nombreEntidad, Representante representante) {
+	public void agregarEntidadNoEstatal(String direccion, String nombreEntidad, Representante representante) throws NombreInvalidoException {
 		Cliente c1 = new EntidadNoEstatal(direccion, nombreEntidad, representante);
 		clientes.add(c1);
 	}
 
 	// Agregar Persona Natural
 	public void agregarPersonaNatural(String direccion, String municipio, String provincia, String nombre,
-			String numId) {
+			String numId) throws NombreInvalidoException {
 		Cliente c1 = new PersonaNatural(direccion, municipio, provincia, nombre, numId);
 		clientes.add(c1);
 	}
 
 	// Agregar Persona Juridica
 	public void agregarPersonaJuridica(String direccion, String municipio, String provincia, String nombreEmpresaString,
-			String organismo, Representante representante) {
+			String organismo, Representante representante) throws NombreInvalidoException {
 		Cliente c1 = new PersonaJuridica(direccion, municipio, provincia, nombreEmpresaString, organismo,
 				representante);
 		clientes.add(c1);

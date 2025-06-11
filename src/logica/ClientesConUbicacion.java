@@ -1,4 +1,6 @@
-package logica;                                             
+package logica;
+
+import excepciones.NombreInvalidoException;
 
 public abstract class ClientesConUbicacion extends Cliente {
     // Atributos
@@ -6,7 +8,7 @@ public abstract class ClientesConUbicacion extends Cliente {
     protected String provincia;
     
     // Constructor
-    public ClientesConUbicacion(String nombre,String direccion, String municipio, String provincia) {
+    public ClientesConUbicacion(String nombre,String direccion, String municipio, String provincia) throws NombreInvalidoException {
         super(nombre,direccion);
        setMunicipio(municipio);
        setProvincia(provincia);
