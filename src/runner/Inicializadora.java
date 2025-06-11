@@ -1,11 +1,13 @@
 package runner;
+import excepciones.NombreInvalidoException;
 import logica.*;
+
 //import java.util.ArrayList;
 
 public class Inicializadora {
     
     // Metodo que inicializa servicios, clientes y representante
-    public static void Inicializar(){
+    public static void Inicializar() throws NombreInvalidoException{
         
     	EmpresaTelecomunicaciones empresa = EmpresaTelecomunicaciones.getInstancia();
     	
