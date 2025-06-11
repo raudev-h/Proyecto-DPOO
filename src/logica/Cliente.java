@@ -1,6 +1,7 @@
 package logica;
 
 import java.util.ArrayList;
+import excepciones.NombreInvalidoException;
 
 public abstract class Cliente {
     // Atributos
@@ -9,13 +10,13 @@ public abstract class Cliente {
     protected ArrayList<Servicio> servicios;
 
     // Constructor
-    public Cliente(String nombre, String direccion) {
+    public Cliente(String nombre, String direccion) throws NombreInvalidoException {
         setDireccion(direccion);
         setNombre(nombre);
         servicios = new ArrayList<Servicio>();
     }
 
-    // Getters y setters
+    // GETTERS Y SETTERS
     // Direccion
     public String getDireccion() {
         return direccion;
@@ -39,8 +40,15 @@ public abstract class Cliente {
         return nombre;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setNombre(String nombre) throws NombreInvalidoException {
+        if(nombre == null || nombre.trim().isEmpty()){
+            throw new NombreInvalidoException("El nombre no puede estar vacío");
+        }
+        else if(!(nombre.trim().matches(("[a-zA-ZáéíóúÁÉÍÓÚñÑ]+( [a-zA-ZáéíóúÁÉÍÓÚñÑ]+)*")))){
+            throw new NombreInvalidoException("El nombre solo puede contener letras");
+        }
+        else 
+            this.nombre = nombre.trim();
     }
 
     // MÉTODOS
