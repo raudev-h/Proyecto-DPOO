@@ -237,43 +237,44 @@ public class Inicializadora {
 
 		empresa.agregarTelefonoMovil(pj2, "58432109", 600.00);
 		empresa.agregarTelefonoFijo(pj2, "45789012");
-
+		
 		empresa.agregarTelefonoFijo(pj3, "78345678");
 		empresa.agregarTelefonoMovil(pj3, "57901234", 550.50);
 		empresa.crearCuentaNauta(pj3, "cubana_tech");
 
-		empresa.agregarTelefonoMovil(pj4, "58903456", 610.00);
+		
 		empresa.agregarTelefonoFijo(pj4, "45234567");
+		empresa.agregarTelefonoMovil(pj4, "58903456", 610.00);
 		empresa.crearCuentaNauta(pj4, "agrocuba_sa");
 
 		empresa.agregarTelefonoFijo(pj5, "78890012");
 		empresa.agregarTelefonoMovil(pj5, "58907654", 580.75);
 		empresa.crearCuentaNauta(pj5, "biofarm_habana");
 
-		empresa.agregarTelefonoMovil(pj6, "58451234", 590.25);
 		empresa.agregarTelefonoFijo(pj6, "45781234");
+		empresa.agregarTelefonoMovil(pj6, "58451234", 590.25);
 		empresa.crearCuentaNauta(pj6, "construc_caribe");
 
 		empresa.agregarTelefonoFijo(pj7, "78901234");
 		empresa.agregarTelefonoMovil(pj7, "57906543", 600.50);
 		empresa.crearCuentaNauta(pj7, "transhabana");
-
-		empresa.agregarTelefonoMovil(pj8, "58456789", 615.00);
+	
 		empresa.agregarTelefonoFijo(pj8, "45783456");
+		empresa.agregarTelefonoMovil(pj8, "58456789", 615.00);
 		empresa.crearCuentaNauta(pj8, "alimentos_sol");
 
 		empresa.agregarTelefonoFijo(pj9, "78892345");
 		empresa.agregarTelefonoMovil(pj9, "58904567", 620.00);
 		empresa.crearCuentaNauta(pj9, "habana_tur");
 
-		empresa.agregarTelefonoMovil(pj10, "58453456", 630.00);
 		empresa.agregarTelefonoFijo(pj10, "45789999");
+		empresa.agregarTelefonoMovil(pj10, "58453456", 630.00);
 		empresa.crearCuentaNauta(pj10, "telecom_caribe");
 
 		// Servicios para Entidades No Estatales
 		empresa.crearCuentaNauta(ene1, "mipyme_techsolutions");
-		empresa.agregarTelefonoMovil(ene2, "56781234", 300.25);
 		
+		empresa.agregarTelefonoMovil(ene2, "56781234", 300.25);
 		empresa.crearCuentaNauta(ene2, "panaderia_buenpan");
 
 		empresa.agregarTelefonoFijo(ene3, "56341234");
@@ -312,10 +313,99 @@ public class Inicializadora {
 		empresa.getClientes().get(0).addServicio(empresa.getServicios().get(1));
 		empresa.getClientes().get(0).addServicio(empresa.getServicios().get(2));
 
-		// Continúa igual para los demás clientes incrementando los índices:
-		// pn2 (cliente 1) tiene 2 servicios (3,4)
 		empresa.getClientes().get(1).addServicio(empresa.getServicios().get(3));
 		empresa.getClientes().get(1).addServicio(empresa.getServicios().get(4));
+
+		empresa.getClientes().get(2).addServicio(empresa.getServicios().get(5));
+		empresa.getClientes().get(2).addServicio(empresa.getServicios().get(6));
+
+		empresa.getClientes().get(3).addServicio(empresa.getServicios().get(7));
+		empresa.getClientes().get(3).addServicio(empresa.getServicios().get(8));
+
+		empresa.getClientes().get(4).addServicio(empresa.getServicios().get(9));
+		empresa.getClientes().get(4).addServicio(empresa.getServicios().get(10));
+		empresa.getClientes().get(4).addServicio(empresa.getServicios().get(11));
+
+		empresa.getClientes().get(5).addServicio(empresa.getServicios().get(12));
+		empresa.getClientes().get(5).addServicio(empresa.getServicios().get(13));
+
+		empresa.getClientes().get(6).addServicio(empresa.getServicios().get(14));
+		empresa.getClientes().get(6).addServicio(empresa.getServicios().get(15));
+
+		empresa.getClientes().get(7).addServicio(empresa.getServicios().get(16));
+		empresa.getClientes().get(7).addServicio(empresa.getServicios().get(17));
+
+		empresa.getClientes().get(8).addServicio(empresa.getServicios().get(18));
+		empresa.getClientes().get(8).addServicio(empresa.getServicios().get(19));
+
+		empresa.getClientes().get(9).addServicio(empresa.getServicios().get(20));
+		empresa.getClientes().get(9).addServicio(empresa.getServicios().get(21));
+
+		// Asignar servicios a Clientes Personas Jurídicas 
+		empresa.getClientes().get(10).addServicio(empresa.getServicios().get(22));
+		empresa.getClientes().get(10).addServicio(empresa.getServicios().get(23));
+
+		empresa.getClientes().get(11).addServicio(empresa.getServicios().get(24));
+		empresa.getClientes().get(11).addServicio(empresa.getServicios().get(25));
+		empresa.getClientes().get(11).addServicio(empresa.getServicios().get(26));
+
+		empresa.getClientes().get(12).addServicio(empresa.getServicios().get(27));
+		empresa.getClientes().get(12).addServicio(empresa.getServicios().get(28));
+
+		empresa.getClientes().get(13).addServicio(empresa.getServicios().get(29));
+		empresa.getClientes().get(13).addServicio(empresa.getServicios().get(30));
+		empresa.getClientes().get(13).addServicio(empresa.getServicios().get(31));
+
+		empresa.getClientes().get(14).addServicio(empresa.getServicios().get(32));
+		empresa.getClientes().get(14).addServicio(empresa.getServicios().get(33));
+
+		empresa.getClientes().get(15).addServicio(empresa.getServicios().get(34));
+		empresa.getClientes().get(15).addServicio(empresa.getServicios().get(35));
+
+		empresa.getClientes().get(16).addServicio(empresa.getServicios().get(36));
+		empresa.getClientes().get(16).addServicio(empresa.getServicios().get(37));
+		empresa.getClientes().get(16).addServicio(empresa.getServicios().get(38));
+
+		empresa.getClientes().get(17).addServicio(empresa.getServicios().get(39));
+		empresa.getClientes().get(17).addServicio(empresa.getServicios().get(40));
+
+		empresa.getClientes().get(18).addServicio(empresa.getServicios().get(41));
+		empresa.getClientes().get(18).addServicio(empresa.getServicios().get(42));
+		empresa.getClientes().get(18).addServicio(empresa.getServicios().get(43));
+
+		empresa.getClientes().get(19).addServicio(empresa.getServicios().get(44));
+		empresa.getClientes().get(19).addServicio(empresa.getServicios().get(45));
+
+		// Asignar servicios a Entidades No Estatales
+		empresa.getClientes().get(20).addServicio(empresa.getServicios().get(46));
+		empresa.getClientes().get(20).addServicio(empresa.getServicios().get(47));
+
+		empresa.getClientes().get(21).addServicio(empresa.getServicios().get(48));
+		empresa.getClientes().get(21).addServicio(empresa.getServicios().get(49));
+
+		empresa.getClientes().get(22).addServicio(empresa.getServicios().get(50));
+		empresa.getClientes().get(22).addServicio(empresa.getServicios().get(51));
+
+		empresa.getClientes().get(23).addServicio(empresa.getServicios().get(52));
+		empresa.getClientes().get(23).addServicio(empresa.getServicios().get(53));
+
+		empresa.getClientes().get(24).addServicio(empresa.getServicios().get(54));
+		empresa.getClientes().get(24).addServicio(empresa.getServicios().get(55));
+
+		empresa.getClientes().get(25).addServicio(empresa.getServicios().get(56));
+		empresa.getClientes().get(25).addServicio(empresa.getServicios().get(57));
+
+		empresa.getClientes().get(26).addServicio(empresa.getServicios().get(58));
+		empresa.getClientes().get(26).addServicio(empresa.getServicios().get(59));
+
+		empresa.getClientes().get(27).addServicio(empresa.getServicios().get(60));
+		empresa.getClientes().get(27).addServicio(empresa.getServicios().get(61));
+
+		empresa.getClientes().get(28).addServicio(empresa.getServicios().get(62));
+		empresa.getClientes().get(28).addServicio(empresa.getServicios().get(63));
+
+		empresa.getClientes().get(29).addServicio(empresa.getServicios().get(64));
+		empresa.getClientes().get(29).addServicio(empresa.getServicios().get(65));
 	}
 }
 
