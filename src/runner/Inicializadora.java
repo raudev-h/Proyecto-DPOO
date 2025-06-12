@@ -108,7 +108,7 @@ public class Inicializadora {
 		empresa.agregarPersonaNatural("Daniela Rivas", "Avenida Salvador Allende #78", "Cerro", "La Habana", "93031578941");
 		Cliente pn10 = empresa.getClientes().get(9);
 
-		// Personas JurÃ­dicas
+		// Personas Juridicas
 		empresa.agregarPersonaJuridica("Empresa XYZ", "Calle 42 #506", "Plaza", "La Habana", "CITMA", r1);
 		Cliente pj1 = empresa.getClientes().get(10);
 		r1.setClienteRepresentado(pj1);
@@ -195,50 +195,127 @@ public class Inicializadora {
 		
 
 
-		// Crear servicios a partir de que se crearon los clientes
 		// Servicios para Personas Naturales
 		empresa.agregarTelefonoFijo(pn1, "78781234");
 		empresa.agregarTelefonoMovil(pn1, "52345678", 350.50);
 		empresa.crearCuentaNauta(pn1, "carlos_mtz");
 
-
 		empresa.agregarTelefonoMovil(pn2, "58901234", 420.75);
 		empresa.crearCuentaNauta(pn2, "laura_dz");
 
-		// Servicios para Personas JurÃ¯Â¿Â½dicas
+		empresa.agregarTelefonoFijo(pn3, "78451233");
+		empresa.agregarTelefonoMovil(pn3, "53456789", 380.00);
+		empresa.crearCuentaNauta(pn3, "mario_perez");
+
+		empresa.agregarTelefonoMovil(pn4, "58907654", 450.25);
+		empresa.crearCuentaNauta(pn4, "ana_torres");
+
+		empresa.agregarTelefonoFijo(pn5, "78123456");
+		empresa.agregarTelefonoMovil(pn5, "52349876", 370.75);
+		empresa.crearCuentaNauta(pn5, "luis_gomez");
+
+		empresa.agregarTelefonoMovil(pn6, "58906543", 400.00);
+		empresa.crearCuentaNauta(pn6, "yasmin_rodriguez");
+
+		empresa.agregarTelefonoFijo(pn7, "78234567");
+		empresa.agregarTelefonoMovil(pn7, "53456701", 360.00);
+		empresa.crearCuentaNauta(pn7, "ernesto_lopez");
+
+		empresa.agregarTelefonoMovil(pn8, "58903456", 410.50);
+		empresa.crearCuentaNauta(pn8, "claudia_herrera");
+
+		empresa.agregarTelefonoFijo(pn9, "78567890");
+		empresa.agregarTelefonoMovil(pn9, "52345670", 390.00);
+		empresa.crearCuentaNauta(pn9, "jorge_suarez");
+
+		empresa.agregarTelefonoMovil(pn10, "58909999", 420.00);
+		empresa.crearCuentaNauta(pn10, "daniela_rivas");
+
+		// Servicios para Personas Jurídicas
 		empresa.agregarTelefonoFijo(pj1, "78889999");
 		empresa.crearCuentaNauta(pj1, "empresa_xyz");
 
 		empresa.agregarTelefonoMovil(pj2, "58432109", 600.00);
 		empresa.agregarTelefonoFijo(pj2, "45789012");
 
-		// Servicios para Entidades No Estatales
-		empresa.crearCuentaNauta(ene1, "coop_esperanza");
-		empresa.agregarTelefonoMovil(ene2, "56781234", 300.25);
+		empresa.agregarTelefonoFijo(pj3, "78345678");
+		empresa.agregarTelefonoMovil(pj3, "57901234", 550.50);
+		empresa.crearCuentaNauta(pj3, "cubana_tech");
 
-		//Agregar los servicios a los clientes
+		empresa.agregarTelefonoMovil(pj4, "58903456", 610.00);
+		empresa.agregarTelefonoFijo(pj4, "45234567");
+		empresa.crearCuentaNauta(pj4, "agrocuba_sa");
+
+		empresa.agregarTelefonoFijo(pj5, "78890012");
+		empresa.agregarTelefonoMovil(pj5, "58907654", 580.75);
+		empresa.crearCuentaNauta(pj5, "biofarm_habana");
+
+		empresa.agregarTelefonoMovil(pj6, "58451234", 590.25);
+		empresa.agregarTelefonoFijo(pj6, "45781234");
+		empresa.crearCuentaNauta(pj6, "construc_caribe");
+
+		empresa.agregarTelefonoFijo(pj7, "78901234");
+		empresa.agregarTelefonoMovil(pj7, "57906543", 600.50);
+		empresa.crearCuentaNauta(pj7, "transhabana");
+
+		empresa.agregarTelefonoMovil(pj8, "58456789", 615.00);
+		empresa.agregarTelefonoFijo(pj8, "45783456");
+		empresa.crearCuentaNauta(pj8, "alimentos_sol");
+
+		empresa.agregarTelefonoFijo(pj9, "78892345");
+		empresa.agregarTelefonoMovil(pj9, "58904567", 620.00);
+		empresa.crearCuentaNauta(pj9, "habana_tur");
+
+		empresa.agregarTelefonoMovil(pj10, "58453456", 630.00);
+		empresa.agregarTelefonoFijo(pj10, "45789999");
+		empresa.crearCuentaNauta(pj10, "telecom_caribe");
+
+		// Servicios para Entidades No Estatales
+		empresa.crearCuentaNauta(ene1, "mipyme_techsolutions");
+		empresa.agregarTelefonoMovil(ene2, "56781234", 300.25);
+		
+		empresa.crearCuentaNauta(ene2, "panaderia_buenpan");
+
+		empresa.agregarTelefonoFijo(ene3, "56341234");
+		empresa.agregarTelefonoMovil(ene3, "56432109", 320.50);
+		empresa.crearCuentaNauta(ene3, "mipyme_habanacode");
+
+		empresa.agregarTelefonoMovil(ene4, "56782345", 310.00);
+		empresa.crearCuentaNauta(ene4, "cafe_aromas");
+
+		empresa.agregarTelefonoFijo(ene5, "56234567");
+		empresa.agregarTelefonoMovil(ene5, "56430987", 305.75);
+		empresa.crearCuentaNauta(ene5, "disenos_creativos");
+
+		empresa.agregarTelefonoMovil(ene6, "56785432", 315.50);
+		empresa.crearCuentaNauta(ene6, "soluciones_medicas");
+
+		empresa.agregarTelefonoFijo(ene7, "56123456");
+		empresa.agregarTelefonoMovil(ene7, "56437890", 325.25);
+		empresa.crearCuentaNauta(ene7, "ecotrans");
+
+		empresa.agregarTelefonoMovil(ene8, "56789012", 330.00);
+		empresa.crearCuentaNauta(ene8, "arte_en_casa");
+
+		empresa.agregarTelefonoFijo(ene9, "56239876");
+		empresa.agregarTelefonoMovil(ene9, "56431234", 335.75);
+		empresa.crearCuentaNauta(ene9, "consultores_legales");
+
+		empresa.agregarTelefonoMovil(ene10, "56783456", 340.25);
+		empresa.crearCuentaNauta(ene10, "coop_esperanza");
+
+	
+
+		
+		// Ejemplo de asignación para pn1 (cliente 0), que tiene 3 servicios (índices 0,1,2):
 		empresa.getClientes().get(0).addServicio(empresa.getServicios().get(0));
 		empresa.getClientes().get(0).addServicio(empresa.getServicios().get(1));
 		empresa.getClientes().get(0).addServicio(empresa.getServicios().get(2));
 
+		// Continúa igual para los demás clientes incrementando los índices:
+		// pn2 (cliente 1) tiene 2 servicios (3,4)
 		empresa.getClientes().get(1).addServicio(empresa.getServicios().get(3));
 		empresa.getClientes().get(1).addServicio(empresa.getServicios().get(4));
-
-		empresa.getClientes().get(2).addServicio(empresa.getServicios().get(5));
-		empresa.getClientes().get(2).addServicio(empresa.getServicios().get(6));
-
-		empresa.getClientes().get(3).addServicio(empresa.getServicios().get(7));
-		empresa.getClientes().get(3).addServicio(empresa.getServicios().get(8));
-
-		// Hacer que los clientes llamen
-		TelefonoFijo tf1 = (TelefonoFijo) empresa.getClientes().get(0).getServicios().get(0);
-		tf1.agregarLlamadaLargaDistancia(20, "12345678", "La Habana", "Cerro", 550.00);
-
-
 	}
-
 }
-
-
-
 
