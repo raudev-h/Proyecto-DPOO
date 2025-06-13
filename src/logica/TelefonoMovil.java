@@ -37,7 +37,7 @@ public class TelefonoMovil extends Telefono {
     //Metodo para buscar todas las llamadas que superaron X min de duracion
     public ArrayList<Llamada> llamadasMasMin(int minutos){
 
-        ArrayList<Llamada> llamadasMasCienMin = new ArrayList<Llamada>();
+        ArrayList<Llamada> llamadasMayores = new ArrayList<Llamada>();
 
         for(Llamada ll: llamadas){
 
@@ -45,11 +45,26 @@ public class TelefonoMovil extends Telefono {
 
             //Se convierten la llamadas de segundos a minutos y se verifiaca si es mayor que 100 min
                 if((ll.getDuracion()/ 60) > minutos){
-                    llamadasMasCienMin.add(ll);
+                    llamadasMayores.add(ll);
                 }
             }
         }
 
-        return llamadasMasCienMin;
+        return llamadasMayores;
     }
+    
+    //Metodo para buscar la duracion Maxima de llamadas
+    public double duracionMaxima (ArrayList<Llamada> llamadas ){
+    	
+    	double duracionMax = -1;
+    	
+    	for(Llamada ll: llamadas){
+    		if(ll.getDuracion() > duracionMax)
+    			duracionMax = ll.getDuracion();
+    		
+    	}   	
+    		
+    	return duracionMax;
+    }
+    
 }

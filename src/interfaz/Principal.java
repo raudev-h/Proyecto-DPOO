@@ -142,6 +142,11 @@ public class Principal extends JFrame {
 		mnServicios_1.add(mntmNewMenuItem);
 		
 		JMenuItem mntmTelefonosMovil = new JMenuItem("3. Telefonos movil que tienen al menos una llamada que supera los 100 min de duracion ");
+		mntmTelefonosMovil.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				ListadoTlfLlamadasMayores.abrirListadoLlamadasMayores();	
+			}
+		});
 		mntmTelefonosMovil.setFont(new Font("Serif", Font.PLAIN, 21));
 		mnServicios_1.add(mntmTelefonosMovil);
 		
