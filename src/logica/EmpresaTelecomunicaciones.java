@@ -111,7 +111,7 @@ public boolean eliminarCliente(String nombreCliente){
 
 	// METODOS
 	// Agregar Representante
-	public void agregarRepresentante(String nombreCompleto, String numId) {
+	public void agregarRepresentante(String nombreCompleto, String numId) throws NombreInvalidoException {
 		Representante r1 = new Representante(nombreCompleto, numId);
 		representantes.add(r1);
 	}
