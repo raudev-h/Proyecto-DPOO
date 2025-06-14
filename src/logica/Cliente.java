@@ -26,6 +26,8 @@ public abstract class Cliente {
         if(direccion == null || direccion.trim().isEmpty()){
            throw new DireccionInvalidaException("La direccion no puede estar vacÃ­a");
         }
+        else 
+            this.direccion = direccion.trim();
     }
 
     // Servicios
@@ -47,7 +49,7 @@ public abstract class Cliente {
     	if(nombre == null || nombre.trim().isEmpty()){
             throw new NombreInvalidoException("El nombre no puede estar vacÃ­o");
         }
-        else if(!(nombre.trim().matches(("[a-zA-ZáéíóúÁÉÍÓÚñÑ]+( [a-zA-ZáéíóúÁÉÍÓÚñÑ]+)*")))){
+        else if(!(nombre.trim().matches(("[a-zA-Zï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½]+( [a-zA-Zï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½]+)*")))){
             throw new NombreInvalidoException("El nombre solo puede contener letras");
         }
         else 

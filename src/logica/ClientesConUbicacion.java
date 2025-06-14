@@ -9,7 +9,8 @@ public abstract class ClientesConUbicacion extends Cliente {
     
     // Constructor
     public ClientesConUbicacion(String nombre,String direccion, String municipio, 
-                                String provincia) throws NombreInvalidoException, DireccionInvalidaException {
+                                String provincia) throws NombreInvalidoException, DireccionInvalidaException,
+                                ProvinciaInvalidaException {
         super(nombre,direccion);
        setMunicipio(municipio);
        setProvincia(provincia);
@@ -28,8 +29,13 @@ public abstract class ClientesConUbicacion extends Cliente {
     public String getProvincia() {
         return provincia;
     }
-    public void setProvincia(String provincia) {
-        this.provincia = provincia;
+    // Esta validacion pienso que debemos mejorarla ya que no es dificil
+    // comprobar con las provincias reales de Cuba a pesar de no tener BD
+    public void setProvincia(String provincia) throws ProvinciaInvalidaException {
+        if(provincia == null || provincia.trim().isEmpty()){
+            throw new ProvinciaInvalidaException("La provincia no puede estar vacia");
+        }
+        else
+            this.provincia = provincia;
     }
-    
 }

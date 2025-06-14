@@ -1,6 +1,7 @@
 package runner;
-import excepciones.DireccionInvalidaException;
-import excepciones.NombreInvalidoException;
+import java.beans.PropertyVetoException;
+
+import excepciones.*;
 import logica.*;
 
 //import java.util.ArrayList;
@@ -8,7 +9,8 @@ import logica.*;
 public class Inicializadora {
 
 	// Metodo que inicializa servicios, clientes y representante
-	public static void Inicializar() throws NombreInvalidoException, DireccionInvalidaException{
+	public static void Inicializar() throws NombreInvalidoException, DireccionInvalidaException, 
+									ProvinciaInvalidaException{
 
 		EmpresaTelecomunicaciones empresa = EmpresaTelecomunicaciones.getInstancia();
 

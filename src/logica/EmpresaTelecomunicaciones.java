@@ -125,14 +125,15 @@ public boolean eliminarCliente(String nombreCliente){
 
 	// Agregar Persona Natural
 	public void agregarPersonaNatural(String direccion, String municipio, String provincia, String nombre,
-			String numId) throws NombreInvalidoException, DireccionInvalidaException {
+			String numId) throws NombreInvalidoException, DireccionInvalidaException, ProvinciaInvalidaException {
 		Cliente c1 = new PersonaNatural(direccion, municipio, provincia, nombre, numId);
 		clientes.add(c1);
 	}
 
 	// Agregar Persona Juridica
 	public void agregarPersonaJuridica(String direccion, String municipio, String provincia, String nombreEmpresaString,
-			String organismo, Representante representante) throws NombreInvalidoException, DireccionInvalidaException {
+			String organismo, Representante representante) throws NombreInvalidoException, DireccionInvalidaException,
+			ProvinciaInvalidaException{
 		
 		Cliente c1 = new PersonaJuridica(direccion, municipio, provincia, nombreEmpresaString, organismo,
 				representante);
@@ -376,7 +377,7 @@ public boolean eliminarCliente(String nombreCliente){
 		ArrayList<Map.Entry<String, Integer>> provinciasOrdenadas = new ArrayList<Map.Entry<String, Integer>>(
 				provinciasConCuenta.entrySet());
 
-//		BubbleSort.sort(provinciasOrdenadas);
+		BubbleSort.sort(provinciasOrdenadas);
 
 		return provinciasOrdenadas;
 	}
