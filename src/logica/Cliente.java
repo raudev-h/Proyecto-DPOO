@@ -10,7 +10,7 @@ public abstract class Cliente {
     protected ArrayList<Servicio> servicios;
 
     // Constructor
-    public Cliente(String nombre, String direccion) throws NombreInvalidoException, DireccionInvalidaException {
+    public Cliente(String nombre, String direccion) throws NombreInvalidoException, UbicacionInvalidaException {
         setDireccion(direccion);
         setNombre(nombre);
         servicios = new ArrayList<Servicio>();
@@ -22,9 +22,9 @@ public abstract class Cliente {
         return direccion;
     }
 
-    public void setDireccion(String direccion) throws DireccionInvalidaException {
+    public void setDireccion(String direccion) throws UbicacionInvalidaException {
         if(direccion == null || direccion.trim().isEmpty()){
-           throw new DireccionInvalidaException("La direccion no puede estar vacÃ­a");
+           throw new UbicacionInvalidaException("La direccion no puede estar vacÃ­a");
         }
         else 
             this.direccion = direccion.trim();
@@ -49,7 +49,7 @@ public abstract class Cliente {
     	if(nombre == null || nombre.trim().isEmpty()){
             throw new NombreInvalidoException("El nombre no puede estar vacÃ­o");
         }
-        else if(!(nombre.trim().matches(("[a-zA-ZáéíóúÁÉÍÓÚñÑ]+( [a-zA-ZáéíóúÁÉÍÓÚñÑ]+)*")))){
+        else if(!(nombre.trim().matches(("[a-zA-Zï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½]+( [a-zA-Zï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½]+)*")))){
             throw new NombreInvalidoException("El nombre solo puede contener letras");
         }
         else 

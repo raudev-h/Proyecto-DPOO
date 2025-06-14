@@ -9,7 +9,7 @@ public abstract class ClientesConUbicacion extends Cliente {
     
     // Constructor
     public ClientesConUbicacion(String nombre,String direccion, String municipio, 
-                                String provincia) throws NombreInvalidoException, DireccionInvalidaException,
+                                String provincia) throws NombreInvalidoException, UbicacionInvalidaException,
                                 ProvinciaInvalidaException {
         super(nombre,direccion);
        setMunicipio(municipio);
@@ -21,7 +21,10 @@ public abstract class ClientesConUbicacion extends Cliente {
     public String getMunicipio() {
         return municipio;
     }
-    public void setMunicipio(String municipio) {
+    public void setMunicipio(String municipio) throws UbicacionInvalidaException {
+        if(municipio == null || municipio.trim().isEmpty())
+            throw new UbicacionInvalidaException("El municipio no puede estar vacio");   
+        else
         this.municipio = municipio;
     }
 

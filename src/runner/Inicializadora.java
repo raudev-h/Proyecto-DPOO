@@ -9,7 +9,7 @@ import logica.*;
 public class Inicializadora {
 
 	// Metodo que inicializa servicios, clientes y representante
-	public static void Inicializar() throws NombreInvalidoException, DireccionInvalidaException, 
+	public static void Inicializar() throws NombreInvalidoException, UbicacionInvalidaException, 
 									ProvinciaInvalidaException{
 
 		EmpresaTelecomunicaciones empresa = EmpresaTelecomunicaciones.getInstancia();

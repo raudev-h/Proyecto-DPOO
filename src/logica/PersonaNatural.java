@@ -9,7 +9,7 @@ public class PersonaNatural extends ClientesConUbicacion {
     
     // Constructor
     public PersonaNatural(String nombre,String direccion, String municipio, String provincia, String numId)
-                         throws NombreInvalidoException, DireccionInvalidaException, ProvinciaInvalidaException{
+                         throws NombreInvalidoException, UbicacionInvalidaException, ProvinciaInvalidaException{
         super(nombre,direccion, municipio, provincia);
         setNumId(numId);
     }

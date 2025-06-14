@@ -11,7 +11,7 @@ public class EntidadNoEstatal extends Cliente {
     
     // Constructor
       public EntidadNoEstatal(String nombre,String direccion ,Representante representanteEntidad)
-                             throws NombreInvalidoException, DireccionInvalidaException {
+                             throws NombreInvalidoException, UbicacionInvalidaException {
         super(nombre,direccion);
         setRepresentanteEntidad(representanteEntidad);        
     }

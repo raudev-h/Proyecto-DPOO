@@ -118,21 +118,21 @@ public boolean eliminarCliente(String nombreCliente){
 
 	// Agregar Entidad no estatal
 	public void agregarEntidadNoEstatal(String direccion, String nombreEntidad, Representante representante) 
-			throws NombreInvalidoException, DireccionInvalidaException {
+			throws NombreInvalidoException, UbicacionInvalidaException {
 		Cliente c1 = new EntidadNoEstatal(direccion, nombreEntidad, representante);
 		clientes.add(c1);
 	}
 
 	// Agregar Persona Natural
 	public void agregarPersonaNatural(String direccion, String municipio, String provincia, String nombre,
-			String numId) throws NombreInvalidoException, DireccionInvalidaException, ProvinciaInvalidaException {
+			String numId) throws NombreInvalidoException, UbicacionInvalidaException, ProvinciaInvalidaException {
 		Cliente c1 = new PersonaNatural(direccion, municipio, provincia, nombre, numId);
 		clientes.add(c1);
 	}
 
 	// Agregar Persona Juridica
 	public void agregarPersonaJuridica(String direccion, String municipio, String provincia, String nombreEmpresaString,
-			String organismo, Representante representante) throws NombreInvalidoException, DireccionInvalidaException,
+			String organismo, Representante representante) throws NombreInvalidoException, UbicacionInvalidaException,
 			ProvinciaInvalidaException{
 		
 		Cliente c1 = new PersonaJuridica(direccion, municipio, provincia, nombreEmpresaString, organismo,

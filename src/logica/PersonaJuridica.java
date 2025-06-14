@@ -11,7 +11,7 @@ public class PersonaJuridica extends ClientesConUbicacion {
     // Constructor
     public PersonaJuridica(String nombre,String direccion, String municipio, String provincia,
              String organismo, Representante representantePersonaJuridica)
-              throws NombreInvalidoException, DireccionInvalidaException, ProvinciaInvalidaException{
+              throws NombreInvalidoException, UbicacionInvalidaException, ProvinciaInvalidaException{
         super(nombre,direccion, municipio, provincia);
 
         setOrganismo(organismo);
