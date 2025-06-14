@@ -198,7 +198,8 @@ public class EmpresaTelecomunicaciones {
 	}
 
 	//METODOS
-
+	
+	//Buscar representante a partir del ID
 	public Representante buscarRepresentante(String numId){
 
 		Representante representanteEncontrado = null;
@@ -217,7 +218,7 @@ public class EmpresaTelecomunicaciones {
 
 
 
-	//Buscar a un cliente por su nombre TODO: Testear metodo ya que se uso un while...algo poco convencional en estos tiempos 
+	//Buscar a un cliente por su nombre 
 	public Cliente buscarCliente(String nombreCliente){
 
 		Cliente clienteEncontrado = null;
@@ -237,7 +238,6 @@ public class EmpresaTelecomunicaciones {
 		return clienteEncontrado;
 
 	}
-
 
 
 	// LLamadas de Movil que duraron mas de X minutos
@@ -262,8 +262,8 @@ public class EmpresaTelecomunicaciones {
 		return telefonosMovilMasMin;
 	}
 
-	// Buscar los clientes que tengan al menoos 30% (4 ) meses de mas de 1000 cup de
-	// montoTotal en sus Cuentas Nautas
+	// Buscar los clientes que tengan al menoos 30% (4 ) meses de mas de 1000 cup de montoTotal en sus Cuentas Nautas
+	
 	public ArrayList<Cliente> clientesMasMilMontoNauta() {
 
 		ArrayList<Cliente> mejoresClientes = new ArrayList<Cliente>();
@@ -275,7 +275,10 @@ public class EmpresaTelecomunicaciones {
 				if (s instanceof CuentaNauta) {
 
 					if (((CuentaNauta) s).cantMesesMasMilGasto() >= 4) {
-						mejoresClientes.add(s.getTitular());
+						if(!mejoresClientes.contains(s.getTitular())){
+							mejoresClientes.add(s.getTitular());
+						}
+						
 					}
 				}
 			}
@@ -284,6 +287,9 @@ public class EmpresaTelecomunicaciones {
 
 		return mejoresClientes;
 	}
+	
+	
+		
 
 	// Buscar los meses de mayor gasto en kb de todas las Cuentas Nautas
 	public ArrayList<String> mesesMaskbGastadosCuentas() {
