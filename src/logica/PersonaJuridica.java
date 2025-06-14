@@ -25,8 +25,15 @@ public class PersonaJuridica extends ClientesConUbicacion {
     public String getOrganismo() {
         return organismo;
     }
-    public void setOrganismo(String organismo) {
-        this.organismo = organismo;
+    public void setOrganismo(String organismo) throws NombreInvalidoException {
+        if(organismo == null || organismo.trim().isEmpty())
+            throw new NombreInvalidoException("El organismo al que pertenece no puede estar vacio");
+        
+        else if(!(nombre.trim().matches(("[a-zA-Z������������]+( [a-zA-Z������������]+)*"))))
+            throw new NombreInvalidoException("El organismo al que pertenece solo puede contener letras");
+            
+        else    
+            this.organismo = organismo;
     }
 
     // Representante

@@ -20,12 +20,12 @@ public class Representante {
         return nombreCompleto;
     }
     public void setNombreCompleto(String nombreCompleto) throws NombreInvalidoException {
-        if(nombreCompleto == null || nombreCompleto.trim().isEmpty()){
+        if(nombreCompleto == null || nombreCompleto.trim().isEmpty())
             throw new NombreInvalidoException("El nombre no puede estar vacÃ­o");
-        }
-        else if(!(nombreCompleto.trim().matches(("[a-zA-ZáéíóúÁÉÍÓÚñÑ]+( [a-zA-ZáéíóúÁÉÍÓÚñÑ]+)*")))){
+        
+        else if(!(nombreCompleto.trim().matches(("[a-zA-ZáéíóúÁÉÍÓÚñÑ]+( [a-zA-ZáéíóúÁÉÍÓÚñÑ]+)*"))))
             throw new NombreInvalidoException("El nombre solo puede contener letras");
-        }
+        
         else 
             this.nombreCompleto = nombreCompleto.trim();
     }
