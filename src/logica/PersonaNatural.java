@@ -1,5 +1,6 @@
 package logica;
 
+import excepciones.DireccionInvalidaException;
 import excepciones.NombreInvalidoException;
 
 public class PersonaNatural extends ClientesConUbicacion {
@@ -8,7 +9,8 @@ public class PersonaNatural extends ClientesConUbicacion {
     private String numId;
     
     // Constructor
-    public PersonaNatural(String nombre,String direccion, String municipio, String provincia, String numId) throws NombreInvalidoException {
+    public PersonaNatural(String nombre,String direccion, String municipio, String provincia, String numId)
+                         throws NombreInvalidoException, DireccionInvalidaException{
         super(nombre,direccion, municipio, provincia);
         setNumId(numId);
     }

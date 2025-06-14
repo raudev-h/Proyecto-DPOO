@@ -1,7 +1,7 @@
 package logica;
 
 import java.util.ArrayList;
-import excepciones.NombreInvalidoException;
+import excepciones.*;
 
 public abstract class Cliente {
     // Atributos
@@ -10,7 +10,7 @@ public abstract class Cliente {
     protected ArrayList<Servicio> servicios;
 
     // Constructor
-    public Cliente(String nombre, String direccion) throws NombreInvalidoException {
+    public Cliente(String nombre, String direccion) throws NombreInvalidoException, DireccionInvalidaException {
         setDireccion(direccion);
         setNombre(nombre);
         servicios = new ArrayList<Servicio>();
@@ -22,8 +22,10 @@ public abstract class Cliente {
         return direccion;
     }
 
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
+    public void setDireccion(String direccion) throws DireccionInvalidaException {
+        if(direccion == null || direccion.trim().isEmpty()){
+           throw new DireccionInvalidaException("La direccion no puede estar vac√≠a");
+        }
     }
 
     // Servicios
@@ -41,10 +43,11 @@ public abstract class Cliente {
     }
 
     public void setNombre(String nombre) throws NombreInvalidoException {
-        if(nombre == null || nombre.trim().isEmpty()){
+    
+    	if(nombre == null || nombre.trim().isEmpty()){
             throw new NombreInvalidoException("El nombre no puede estar vac√≠o");
         }
-        else if(!(nombre.trim().matches(("[a-zA-Z√°√©√≠√≥√∫√Å√â√ç√ì√ö√±√ë]+( [a-zA-Z√°√©√≠√≥√∫√Å√â√ç√ì√ö√±√ë]+)*")))){
+        else if(!(nombre.trim().matches(("[a-zA-Z·ÈÌÛ˙¡…Õ”⁄Ò—]+( [a-zA-Z·ÈÌÛ˙¡…Õ”⁄Ò—]+)*")))){
             throw new NombreInvalidoException("El nombre solo puede contener letras");
         }
         else 

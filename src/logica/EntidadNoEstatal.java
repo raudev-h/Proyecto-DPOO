@@ -1,6 +1,8 @@
 package logica;
 
-import excepciones.NombreInvalidoException;
+import java.nio.file.DirectoryIteratorException;
+
+import excepciones.*;
 
 public class EntidadNoEstatal extends Cliente {
     // Atributos
@@ -8,9 +10,9 @@ public class EntidadNoEstatal extends Cliente {
     private Representante representanteEntidad;
     
     // Constructor
-      public EntidadNoEstatal(String nombre,String direccion ,Representante representanteEntidad) throws NombreInvalidoException {
+      public EntidadNoEstatal(String nombre,String direccion ,Representante representanteEntidad)
+                             throws NombreInvalidoException, DireccionInvalidaException {
         super(nombre,direccion);
-        //setNombreEntidad(nombreEntidad);
         setRepresentanteEntidad(representanteEntidad);        
     }
 

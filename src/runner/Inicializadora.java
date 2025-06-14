@@ -1,4 +1,5 @@
 package runner;
+import excepciones.DireccionInvalidaException;
 import excepciones.NombreInvalidoException;
 import logica.*;
 
@@ -7,7 +8,7 @@ import logica.*;
 public class Inicializadora {
 
 	// Metodo que inicializa servicios, clientes y representante
-	public static void Inicializar(){
+	public static void Inicializar() throws NombreInvalidoException, DireccionInvalidaException{
 
 		EmpresaTelecomunicaciones empresa = EmpresaTelecomunicaciones.getInstancia();
 
@@ -52,13 +53,13 @@ public class Inicializadora {
 		empresa.agregarRepresentante("Dayana Martinez Suarez", "93071825641");
 		Representante r13 = empresa.getRepresentantes().get(12);
 
-		empresa.agregarRepresentante("Yanet Gonz�lez Rojas", "95061478952");
+		empresa.agregarRepresentante("Yanet Gonzalez Rojas", "95061478952");
 		Representante r14 = empresa.getRepresentantes().get(13);
 
 		empresa.agregarRepresentante("Rafael Alvarez Quintana", "89081245236");
 		Representante r15 = empresa.getRepresentantes().get(14);
 
-		empresa.agregarRepresentante("Lianet Castillo P�rez", "91012987451");
+		empresa.agregarRepresentante("Lianet Castillo Perez", "91012987451");
 		Representante r16 = empresa.getRepresentantes().get(15);
 
 		empresa.agregarRepresentante("Jose Manuel Estrada", "94021036574");
@@ -67,12 +68,11 @@ public class Inicializadora {
 		empresa.agregarRepresentante("Camila Rodriguez Soto", "96083014523");
 		Representante r18 = empresa.getRepresentantes().get(17);
 
-		empresa.agregarRepresentante("Leonardo V�zquez D�az", "88041596324");
+		empresa.agregarRepresentante("Leonardo Vazquez Diaz", "88041596324");
 		Representante r19 = empresa.getRepresentantes().get(18);
 
-		empresa.agregarRepresentante("Patricia Montes P�rez", "92072315874");
+		empresa.agregarRepresentante("Patricia Montes Perez", "92072315874");
 		Representante r20 = empresa.getRepresentantes().get(19);
-
 
 
 
@@ -80,31 +80,31 @@ public class Inicializadora {
 		//  Crear clientes
 		// Personas Naturales
 
-		empresa.agregarPersonaNatural("Carlos Mart�nez", "Calle 10 #45", "Playa", "La Habana", "85102578945");
+		empresa.agregarPersonaNatural("Carlos Martinez", "Calle 10 #45", "Playa", "La Habana", "85102578945");
 		Cliente pn1 = empresa.getClientes().get(0);
 
-		empresa.agregarPersonaNatural("Laura D�az", "Avenida 5ta #1208", "Centro Habana", "La Habana", "90031545678");
+		empresa.agregarPersonaNatural("Laura Diaz", "Avenida 5ta #1208", "Centro Habana", "La Habana", "90031545678");
 		Cliente pn2 = empresa.getClientes().get(1);
 
-		empresa.agregarPersonaNatural("Mario P�rez", "Calle 12 #304", "Vedado", "La Habana", "87042178912");
+		empresa.agregarPersonaNatural("Mario Perez", "Calle 12 #304", "Vedado", "La Habana", "87042178912");
 		Cliente pn3 = empresa.getClientes().get(2);
 
 		empresa.agregarPersonaNatural("Ana Torres", "Calle 19 #89", "Miramar", "La Habana", "91061234567");
 		Cliente pn4 = empresa.getClientes().get(3);
 
-		empresa.agregarPersonaNatural("Luis G�mez", "Avenida 26 #150", "Nuevo Vedado", "La Habana", "88010145678");
+		empresa.agregarPersonaNatural("Luis Gomez", "Avenida 26 #150", "Nuevo Vedado", "La Habana", "88010145678");
 		Cliente pn5 = empresa.getClientes().get(4);
 
-		empresa.agregarPersonaNatural("Yasmin Rodr�guez", "Calle L�nea #502", "Vedado", "La Habana", "95072498765");
+		empresa.agregarPersonaNatural("Yasmin Rodriguez", "Calle Linea #502", "Vedado", "La Habana", "95072498765");
 		Cliente pn6 = empresa.getClientes().get(5);
 
-		empresa.agregarPersonaNatural("Ernesto L�pez", "Calle 100 #456", "Boyeros", "La Habana", "92031532145");
+		empresa.agregarPersonaNatural("Ernesto Lopez", "Calle 100 #456", "Boyeros", "La Habana", "92031532145");
 		Cliente pn7 = empresa.getClientes().get(6);
 
 		empresa.agregarPersonaNatural("Claudia Herrera", "Avenida Rancho Boyeros #789", "Boyeros", "La Habana", "89091465432");
 		Cliente pn8 = empresa.getClientes().get(7);
 
-		empresa.agregarPersonaNatural("Jorge Su�rez", "Calle San Miguel #23", "Centro Habana", "La Habana", "87082478910");
+		empresa.agregarPersonaNatural("Jorge Suarez", "Calle San Miguel #23", "Centro Habana", "La Habana", "87082478910");
 		Cliente pn9 = empresa.getClientes().get(8);
 
 		empresa.agregarPersonaNatural("Daniela Rivas", "Avenida Salvador Allende #78", "Cerro", "La Habana", "93031578941");
@@ -123,11 +123,11 @@ public class Inicializadora {
 		Cliente pj3 = empresa.getClientes().get(12);
 		r3.setClienteRepresentado(pj3);
 
-		empresa.agregarPersonaJuridica("AgroCuba S.A.", "Carretera Central #300", "Boyeros", "La Habana", "MINAG", r4);
+		empresa.agregarPersonaJuridica("AgroCuba SA", "Carretera Central #300", "Boyeros", "La Habana", "MINAG", r4);
 		Cliente pj4 = empresa.getClientes().get(13);
 		r4.setClienteRepresentado(pj4);
 
-		empresa.agregarPersonaJuridica("BioFarmac�utica Habana", "Avenida Independencia #456", "Cerro", "La Habana", "BIOCUBAFARMA", r5);
+		empresa.agregarPersonaJuridica("BioFarmaceutica Habana", "Avenida Independencia #456", "Cerro", "La Habana", "BIOCUBAFARMA", r5);
 		Cliente pj5 = empresa.getClientes().get(14);
 		r5.setClienteRepresentado(pj5);
 
@@ -143,7 +143,7 @@ public class Inicializadora {
 		Cliente pj8 = empresa.getClientes().get(17);
 		r8.setClienteRepresentado(pj8);
 
-		empresa.agregarPersonaJuridica("HabanaTur S.A.", "Avenida del Puerto #10", "Habana Vieja", "La Habana", "MINTUR", r9);
+		empresa.agregarPersonaJuridica("HabanaTur SA", "Avenida del Puerto #10", "Habana Vieja", "La Habana", "MINTUR", r9);
 		Cliente pj9 = empresa.getClientes().get(18);
 		r9.setClienteRepresentado(pj9);
 
@@ -157,7 +157,7 @@ public class Inicializadora {
 		Cliente ene1 = empresa.getClientes().get(20);
 		r11.setClienteRepresentado(ene1);
 
-		empresa.agregarEntidadNoEstatal("Panader�a El Buen Pan", "Calle M #12", r12);
+		empresa.agregarEntidadNoEstatal("Panaderia El Buen Pan", "Calle M #12", r12);
 		Cliente ene2 = empresa.getClientes().get(21);
 		r12.setClienteRepresentado(ene2);
 
@@ -165,15 +165,15 @@ public class Inicializadora {
 		Cliente ene3 = empresa.getClientes().get(22);
 		r13.setClienteRepresentado(ene3);
 
-		empresa.agregarEntidadNoEstatal("Caf� Aromas", "Calle 8 #43", r14);
+		empresa.agregarEntidadNoEstatal("Cafe Aromas", "Calle 8 #43", r14);
 		Cliente ene4 = empresa.getClientes().get(23);
 		r14.setClienteRepresentado(ene4);
 
-		empresa.agregarEntidadNoEstatal("Dise�os Creativos", "Calle F #55", r15);
+		empresa.agregarEntidadNoEstatal("Inventos Creativos", "Calle F #55", r15);
 		Cliente ene5 = empresa.getClientes().get(24);
 		r15.setClienteRepresentado(ene5);
 
-		empresa.agregarEntidadNoEstatal("Soluciones M�dicas", "Avenida 41 #900", r16);
+		empresa.agregarEntidadNoEstatal("Soluciones Modicas", "Avenida 41 #900", r16);
 		Cliente ene6 = empresa.getClientes().get(25);
 		r16.setClienteRepresentado(ene6);
 
@@ -185,7 +185,7 @@ public class Inicializadora {
 		Cliente ene8 = empresa.getClientes().get(27);
 		r18.setClienteRepresentado(ene8);
 
-		empresa.agregarEntidadNoEstatal("Consultores Legales S.A.", "Calle 25 #301", r19);
+		empresa.agregarEntidadNoEstatal("Consultores Legales SA", "Calle 25 #301", r19);
 		Cliente ene9 = empresa.getClientes().get(28);
 		r19.setClienteRepresentado(ene9);
 

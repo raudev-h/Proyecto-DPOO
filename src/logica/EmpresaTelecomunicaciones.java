@@ -2,7 +2,8 @@ package logica;
 
 import java.util.*;
 
-import excepciones.NombreInvalidoException;
+
+import excepciones.*;
 
 public class EmpresaTelecomunicaciones {
 	// Atributos
@@ -116,21 +117,23 @@ public boolean eliminarCliente(String nombreCliente){
 	}
 
 	// Agregar Entidad no estatal
-	public void agregarEntidadNoEstatal(String direccion, String nombreEntidad, Representante representante) throws NombreInvalidoException {
+	public void agregarEntidadNoEstatal(String direccion, String nombreEntidad, Representante representante) 
+			throws NombreInvalidoException, DireccionInvalidaException {
 		Cliente c1 = new EntidadNoEstatal(direccion, nombreEntidad, representante);
 		clientes.add(c1);
 	}
 
 	// Agregar Persona Natural
 	public void agregarPersonaNatural(String direccion, String municipio, String provincia, String nombre,
-			String numId) throws NombreInvalidoException {
+			String numId) throws NombreInvalidoException, DireccionInvalidaException {
 		Cliente c1 = new PersonaNatural(direccion, municipio, provincia, nombre, numId);
 		clientes.add(c1);
 	}
 
 	// Agregar Persona Juridica
 	public void agregarPersonaJuridica(String direccion, String municipio, String provincia, String nombreEmpresaString,
-			String organismo, Representante representante) throws NombreInvalidoException {
+			String organismo, Representante representante) throws NombreInvalidoException, DireccionInvalidaException {
+		
 		Cliente c1 = new PersonaJuridica(direccion, municipio, provincia, nombreEmpresaString, organismo,
 				representante);
 		clientes.add(c1);
@@ -337,9 +340,9 @@ public boolean eliminarCliente(String nombreCliente){
 
 	public ArrayList<Map.Entry<String, Integer>> menorCantCuentasNauta() {
 		ArrayList<PersonaNatural> personasNaturales = new ArrayList<PersonaNatural>();
-		String[] provincias = { "Pinar del R�o", "Artemisa", "La Habana", "Mayabeque", "Matanzas", "Cienfuegos",
-				"Villa Clara", "Sancti Spiritus", "Ciego de Avila", "Camaguey", "Las Tunas", "Holgu�n",
-				"Granma", "Santiago de Cuba", "Guant�namo", "Isla de la Juventud" };
+		String[] provincias = { "Pinar del Rio", "Artemisa", "La Habana", "Mayabeque", "Matanzas", "Cienfuegos",
+				"Villa Clara", "Sancti Spiritus", "Ciego de Avila", "Camaguey", "Las Tunas", "Holguin",
+				"Granma", "Santiago de Cuba", "Guantanamo", "Isla de la Juventud" };
 		Map<String, Integer> provinciasConCuenta = new HashMap<String, Integer>();
 
 		// Guardar Personas Naturales con Cuenta Nauta
