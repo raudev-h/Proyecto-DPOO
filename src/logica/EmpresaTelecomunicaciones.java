@@ -41,6 +41,7 @@ public class EmpresaTelecomunicaciones {
 		//Eliminar un cliente y todos sus servicios asociados 
 		if(clientes.contains(cliente)){
 
+			//Eliminacion de todos los servicios contratados de ese cliente
 			for(Servicio s: cliente.getServicios()){
 				servicios.remove(s);				
 			}
@@ -53,6 +54,7 @@ public class EmpresaTelecomunicaciones {
 
 	}
 
+	//Eliminacion de un cliente pasandole el nombre del cliente solamente
 	public boolean eliminarCliente(String nombreCliente){
 
 		boolean eliminado = false;
@@ -88,7 +90,8 @@ public class EmpresaTelecomunicaciones {
 	public void setRepresentantes(ArrayList<Representante> representantes) {
 		this.representantes = representantes;
 	}
-
+	
+	//Eliminar un representante pasandole solamente el ID
 	public boolean eliminarRepresentante(String id){
 
 		boolean eliminado = false;
@@ -237,31 +240,24 @@ public class EmpresaTelecomunicaciones {
 
 
 
-
-
-
-
 	// LLamadas de Movil que duraron mas de X minutos
 	public ArrayList<TelefonoMovil> telefonosMovilLLamadasMasMin(int minutos){
 
-		ArrayList<TelefonoMovil> telefonosMovilMasMin = new
-				ArrayList<TelefonoMovil>();
+		ArrayList<TelefonoMovil> telefonosMovilMasMin = new ArrayList<TelefonoMovil>();
+		
 		if(!servicios.isEmpty()){ //Se comprueba que hay al menos un servicio
-
 			for(Servicio s: servicios){
-				if(s instanceof Telefono){
-
 					if(s instanceof TelefonoMovil){
+						
+						TelefonoMovil tm = (TelefonoMovil)s;
 
-						//Buscamos la cantidad de llamadas que superan los X min del telefono
-						int llamadasMasMin = ((TelefonoMovil)s).llamadasMasMin(minutos).size();
-						if(llamadasMasMin > 0){
-							telefonosMovilMasMin.add((TelefonoMovil)s);
+						//Buscamos la cantidad de llamadas que superan los X min del telefono							
+							if(!tm.llamadasMasMin(minutos).isEmpty()) {
+			                    telefonosMovilMasMin.add(tm);
+			                }
 						}
 					}
 				}
-			}
-		}
 
 		return telefonosMovilMasMin;
 	}

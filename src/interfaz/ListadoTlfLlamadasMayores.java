@@ -2,11 +2,14 @@ package interfaz;
 
 import auxiliares.*;
 import logica.*;
+
 import javax.swing.*;
 import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.JTableHeader;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,7 +21,6 @@ public class ListadoTlfLlamadasMayores extends JDialog {
     private static ListadoTlfLlamadasMayores instance;
     private JSlider slider;
     private JTextField txtMinutos;
-    private JButton btnAplicar;
     
     public static void main(String[] args) {
         try {
@@ -31,16 +33,16 @@ public class ListadoTlfLlamadasMayores extends JDialog {
     }
 
     private ListadoTlfLlamadasMayores() {
-        setBounds(100, 100, 1126, 700); // Aumenté ligeramente la altura
+        setBounds(100, 100, 1126, 700); 
         setLocationRelativeTo(null);
         getContentPane().setLayout(null);
         
         JPanel panel = new JPanel();
-        panel.setBounds(15, 16, 1074, 550); // Ajusté altura del panel
+        panel.setBounds(15, 16, 1074, 550); 
         getContentPane().add(panel);
         panel.setLayout(null);
         
-        // Título de la ventana
+        // Título de la ventana - Estilo igual a otras ventanas
         JLabel lblTitulo = new JLabel("Teléfonos con Llamadas Largas");
         lblTitulo.setFont(new Font("Serif", Font.BOLD, 24));
         lblTitulo.setBounds(0, 0, 500, 30);
@@ -48,53 +50,64 @@ public class ListadoTlfLlamadasMayores extends JDialog {
         
         // Panel de controles
         JPanel panelControles = new JPanel();
-        panelControles.setBounds(10, 32, 1049, 84);
-        panelControles.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 10));
-        panelControles.setBorder(BorderFactory.createTitledBorder("Seleccione el límite de minutos"));
+        panelControles.setBounds(10, 32, 1049, 100);
+        panelControles.setBorder(BorderFactory.createTitledBorder(
+            BorderFactory.createLineBorder(Color.BLACK),
+            "Seleccione el limite de minutos",
+            TitledBorder.DEFAULT_JUSTIFICATION,
+            TitledBorder.DEFAULT_POSITION,
+            new Font("Serif", Font.BOLD, 18), // Fuente del título del borde
+            Color.BLACK
+        ));
         panel.add(panelControles);
         
-        // Slider para selección de minutos
+        // Slider para selección de minutos - Estilo mejorado
         slider = new JSlider(JSlider.HORIZONTAL, 1, 300, 100);
+        slider.setBounds(168, 23, 600, 60);
         slider.setMajorTickSpacing(50);
         slider.setMinorTickSpacing(10);
         slider.setPaintTicks(true);
         slider.setPaintLabels(true);
-        slider.setFont(new Font("Serif", Font.PLAIN, 14));
-        slider.setPreferredSize(new Dimension(500, 50));
+        slider.setFont(new Font("Serif", Font.PLAIN, 18)); // Fuente más grande
+        slider.setPreferredSize(new Dimension(600, 60)); 
+        panelControles.setLayout(null);
         
-        // Campo de texto para minutos
-        txtMinutos = new JTextField();
-        txtMinutos.setHorizontalAlignment(JTextField.CENTER);
-        txtMinutos.setFont(new Font("Serif", Font.PLAIN, 16));
-        txtMinutos.setPreferredSize(new Dimension(60, 30));
-        txtMinutos.setText("100");
+        // Etiquetas para el slider - Estilo consistente
+        JLabel lblMinimo = new JLabel("Minimo:");
+        lblMinimo.setBounds(93, 45, 60, 39);
+        lblMinimo.setFont(new Font("Serif", Font.PLAIN, 18));
+        panelControles.add(lblMinimo);
         
-        // Botón aplicar
-        btnAplicar = new JButton("Aplicar Filtro");
-        btnAplicar.setFont(new Font("Serif", Font.BOLD, 16));
-        btnAplicar.setBackground(new Color(0, 0, 153));
-        btnAplicar.setForeground(Color.WHITE);
-        
-        panelControles.add(new JLabel("Mínimo:"));
         panelControles.add(slider);
-        panelControles.add(new JLabel("Minutos:"));
-        panelControles.add(txtMinutos);
-        panelControles.add(btnAplicar);
         
-        // Tabla
+        JLabel lblMinutos = new JLabel("Minutos:");
+        lblMinutos.setBounds(793, 59, 63, 24);
+        lblMinutos.setFont(new Font("Serif", Font.PLAIN, 18));
+        panelControles.add(lblMinutos);
+        
+        // Campo de texto para minutos - Estilo consistente
+        txtMinutos = new JTextField();
+        txtMinutos.setBounds(876, 56, 80, 30);
+        txtMinutos.setHorizontalAlignment(JTextField.CENTER);
+        txtMinutos.setFont(new Font("Serif", Font.PLAIN, 18)); // Fuente más grande
+        txtMinutos.setPreferredSize(new Dimension(80, 30));
+        txtMinutos.setText("100");
+        panelControles.add(txtMinutos);
+        
+        // Tabla - Estilo idéntico a otras ventanas
         JScrollPane scrollPane = new JScrollPane();
         scrollPane.setViewportBorder(new LineBorder(new Color(0, 0, 0)));
-        scrollPane.setBounds(15, 120, 1044, 400); // Ajusté posición y altura
+        scrollPane.setBounds(15, 120, 1044, 400); 
         panel.add(scrollPane);
         
         table = new JTable();
         table.getTableHeader().setReorderingAllowed(false);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        table.setFont(new Font("Serif", Font.PLAIN, 16));
+        table.setFont(new Font("Serif", Font.PLAIN, 18)); // Fuente más grande
         scrollPane.setViewportView(table);
         
         JTableHeader header = table.getTableHeader();
-        header.setFont(new Font("Serif", Font.PLAIN, 18));
+        header.setFont(new Font("Serif", Font.PLAIN, 20)); // Igual que otras ventanas
         table.setRowHeight(25);
         
         // Listeners
@@ -124,19 +137,6 @@ public class ListadoTlfLlamadasMayores extends JDialog {
             }
         });
         
-        btnAplicar.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    int minutos = Integer.parseInt(txtMinutos.getText());
-                    if (minutos >= 1 && minutos <= 300) {
-                        cargarDatos(minutos);
-                    }
-                } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(null, "Ingrese un número válido", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
-        
         // Carga inicial
         cargarDatos(100);
     }
@@ -148,7 +148,7 @@ public class ListadoTlfLlamadasMayores extends JDialog {
         table.repaint();
     }
     
-    // Resto del código (Singleton, dispose) permanece igual
+    // Método para el patrón singleton
     public static void abrirListadoLlamadasMayores() {
         if (instance == null) {
             instance = new ListadoTlfLlamadasMayores();
@@ -171,7 +171,8 @@ public class ListadoTlfLlamadasMayores extends JDialog {
             }
         }
     }
-
+    
+    // Liberar la instancia al cerrar la pantalla
     @Override
     public void dispose() {
         instance = null;

@@ -41,6 +41,12 @@ public class TelefonoFijo extends Telefono{
         return llamada;
     }
     
+    //Ignored 
+   public Llamada hacerLlamada(String numero, double duracion){
+	   
+	   return null;
+   }
+    
 
     
 }

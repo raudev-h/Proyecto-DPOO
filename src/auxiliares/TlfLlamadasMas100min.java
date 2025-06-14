@@ -8,7 +8,7 @@ public class TlfLlamadasMas100min extends DefaultTableModel {
     
     public TlfLlamadasMas100min() {
         String[] columnNames = {"Indice", "Numero Telefono", "Titular", 
-                               "Cant. Llamadas >100 min", "Duracion Máxima (min)"};
+                               "Cant. Llamadas > limite", "Duracion Maxima (min)"};
         this.setColumnIdentifiers(columnNames);
     }
     
