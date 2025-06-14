@@ -29,7 +29,7 @@ public class PersonaJuridica extends ClientesConUbicacion {
         if(organismo == null || organismo.trim().isEmpty())
             throw new NombreInvalidoException("El organismo al que pertenece no puede estar vacio");
         
-        else if(!(nombre.trim().matches(("[a-zA-Zï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½]+( [a-zA-Zï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½]+)*"))))
+        else if(!(nombre.trim().matches(("[a-zA-ZáéíóúÁÉÍÓÚñÑ]+( [a-zA-ZáéíóúÁÉÍÓÚñÑ]+)*"))))
             throw new NombreInvalidoException("El organismo al que pertenece solo puede contener letras");
             
         else    

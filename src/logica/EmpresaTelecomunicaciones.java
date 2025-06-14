@@ -2,7 +2,6 @@ package logica;
 
 import java.util.*;
 
-
 import excepciones.*;
 
 public class EmpresaTelecomunicaciones {
@@ -111,7 +110,7 @@ public boolean eliminarCliente(String nombreCliente){
 
 	// METODOS
 	// Agregar Representante
-	public void agregarRepresentante(String nombreCompleto, String numId) throws NombreInvalidoException {
+	public void agregarRepresentante(String nombreCompleto, String numId) throws NombreInvalidoException, CarnetIdentidadInvalidoException {
 		Representante r1 = new Representante(nombreCompleto, numId);
 		representantes.add(r1);
 	}
@@ -125,7 +124,8 @@ public boolean eliminarCliente(String nombreCliente){
 
 	// Agregar Persona Natural
 	public void agregarPersonaNatural(String direccion, String municipio, String provincia, String nombre,
-			String numId) throws NombreInvalidoException, UbicacionInvalidaException, ProvinciaInvalidaException {
+			String numId) throws NombreInvalidoException, UbicacionInvalidaException, ProvinciaInvalidaException, CarnetIdentidadInvalidoException {
+		
 		Cliente c1 = new PersonaNatural(direccion, municipio, provincia, nombre, numId);
 		clientes.add(c1);
 	}

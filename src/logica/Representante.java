@@ -1,5 +1,6 @@
 package logica;
 
+import excepciones.CarnetIdentidadInvalidoException;
 import excepciones.NombreInvalidoException;
 
 public class Representante {
@@ -9,7 +10,7 @@ public class Representante {
     private Cliente clienteRepresentado;
   
     // Constructor
-    public Representante(String nombreCompleto, String numId) throws NombreInvalidoException {
+    public Representante(String nombreCompleto, String numId) throws NombreInvalidoException, CarnetIdentidadInvalidoException {
         setNombreCompleto(nombreCompleto);
         setNumId(numId);
     }
@@ -33,9 +34,17 @@ public class Representante {
     public String getNumId() {
         return numId;
     }
-    public void setNumId(String numId) {
-        this.numId = numId;
-    } 
+    public void setNumId(String numId) throws CarnetIdentidadInvalidoException{
+        if(numId == null || numId.trim().isEmpty())
+        	throw new CarnetIdentidadInvalidoException("El carnet no puede estar vacío");
+        
+        else if(!(numId.matches("\\d{11}"))){
+        	throw new CarnetIdentidadInvalidoException("El carnet debe tener 11 dígitos numéricos");
+        }
+        else
+        	this.numId = numId;
+        	
+    }
     
     // Cliente representadoS
     public void setClienteRepresentado(Cliente clienteRepresentado){
