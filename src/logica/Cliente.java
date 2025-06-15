@@ -76,7 +76,38 @@ public abstract class Cliente {
     		
     	return telefonos;
     }
-  
+        
+	//Buscar el primer telefono (Devuelve el numero solamente, No disponible en caso de no tener)
+	public String buscarPrimerTelefono(){
+		
+		String numeroTelefono = "No diponible";
+		
+				if(this.obtenerTelefonos().isEmpty()){
+					
+					numeroTelefono = this.obtenerTelefonos().get(0).getNumero();													
+				}
+		
+			
+		return numeroTelefono;
+	}
+	
+	//Buscar el total de meses que superaron los 1000 cup de todas sus Cuentas Nautas
+	public int cantMesesMasMilCuentasNautas(){
+		
+		int cantidad = 0;
+		
+		for(Servicio s: servicios ){
+			
+			if(s instanceof CuentaNauta){
+				
+				cantidad += ((CuentaNauta)s).cantMesesMasMilGasto();
+			}
+			
+		}
+		
+		return cantidad;
+	}
+	
     // Obtener el monto de las llamadas de los clientes
     public double getMontoLlamadasLargaDistancia() {
         double monto = 0;

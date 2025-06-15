@@ -45,6 +45,13 @@ public class TelefonoFijo extends Telefono {
 
         return llamada;
     }
+   
+    //Ignored 
+   public Llamada hacerLlamada(String numero, double duracion){
+	   
+	   return null;
+   }
+    
 
     // Agregar llamada larga distancia
     public void agregarLlamadaLargaDistancia(double duracion, String numeroDestino, String provincia,

@@ -26,30 +26,53 @@ public class TelefonoMovil extends Telefono {
     public double getMontoApagar(){
         return montoApagar;
     }
+    
+    
     //METODOS
     //@Override
-    public Llamada hacerLlamada(String numeroDestino,double duracion, String ignored){
+    //Metodo para hacer una llamada
+    public Llamada hacerLlamada(String numeroDestino,double duracion){
         LlamadaMovil llamada = new LlamadaMovil(duracion,numeroDestino);
 
         return llamada;
     }
     
+    //Ignored
+    public Llamada hacerLlamada(String numeroDestino,double duracion,String provincia){
+
+        return null;
+    }
+    
     //Metodo para buscar todas las llamadas que superaron X min de duracion
     public ArrayList<Llamada> llamadasMasMin(int minutos){
 
-        ArrayList<Llamada> llamadasMasCienMin = new ArrayList<Llamada>();
+        ArrayList<Llamada> llamadasMayores = new ArrayList<Llamada>();
 
         for(Llamada ll: llamadas){
 
             if(ll instanceof LlamadaMovil){
-
-            //Se convierten la llamadas de segundos a minutos y se verifiaca si es mayor que 100 min
-                if((ll.getDuracion()/ 60) > minutos){
-                    llamadasMasCienMin.add(ll);
+            //Se convierten la llamadas de segundos a minutos y se verifiaca si es mayor que el limite
+                if((ll.getDuracion()/ 60.0) > minutos){
+                    llamadasMayores.add(ll);
                 }
             }
         }
 
-        return llamadasMasCienMin;
+        return llamadasMayores;
     }
+    
+    //Metodo para buscar la duracion Maxima de llamadas
+    public int duracionMaxima (ArrayList<Llamada> llamadas ){
+    	
+    	double duracionMax = 0;
+    	
+    	for(Llamada ll: llamadas){
+    		if(ll.getDuracion() > duracionMax)
+    			duracionMax = ll.getDuracion();
+    		
+    	}   	
+    		
+    	return (int) Math.ceil(duracionMax / 60.0);
+    }
+    
 }
