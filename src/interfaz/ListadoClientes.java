@@ -10,6 +10,8 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.table.*;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class ListadoClientes extends JDialog {
     // Componentes de la interfaz
@@ -21,8 +23,8 @@ public class ListadoClientes extends JDialog {
     private JPanel panelEdicion;
     private JTextField txtNombre;
     private JTextField txtDireccion;
-    private JTextField txtMunicipio;
-    private JTextField txtProvincia;
+    private JComboBox<String> cbMunicipio;
+    private JComboBox<String> cbProvincia;
     private JTextField txtNumId;
     private JPanel panelPersonaNatural;
     private JTextField txtOrganismo;
@@ -40,6 +42,51 @@ public class ListadoClientes extends JDialog {
     private JLabel lblProvincia;
     private JLabel lblNumId;
     private JLabel lblOrganismo;
+
+    // Mapa de provincias y municipios de Cuba
+    private static final Map<String, String[]> PROVINCIAS_MUNICIPIOS = new LinkedHashMap<String, String[]>() {{
+        put("Pinar del Río", new String[]{"Consolación del Sur", "Guane", "La Palma", "Los Palacios", 
+            "Mantua", "Minas de Matahambre", "Pinar del Río", "San Juan y Martínez", 
+            "San Luis", "Sandino", "Viñales"});
+        put("Artemisa", new String[]{"Alquízar", "Artemisa", "Bahía Honda", "Bauta", 
+            "Caimito", "Candelaria", "Guanajay", "Güira de Melena", "Mariel", 
+            "San Antonio de los Baños", "San Cristóbal"});
+        put("La Habana", new String[]{"Arroyo Naranjo", "Boyeros", "Centro Habana", "Cerro", 
+            "Cotorro", "Diez de Octubre", "Guanabacoa", "La Habana del Este", 
+            "La Habana Vieja", "La Lisa", "Marianao", "Playa", "Plaza de la Revolución", 
+            "Regla", "San Miguel del Padrón"});
+        put("Mayabeque", new String[]{"Batabanó", "Bejucal", "Güines", "Jaruco", 
+            "Madruga", "Melena del Sur", "Nueva Paz", "Quivicán", 
+            "San José de las Lajas", "San Nicolás", "Santa Cruz del Norte"});
+        put("Matanzas", new String[]{"Calimete", "Cárdenas", "Ciudad de Matanzas", "Colón", 
+            "Jagüey Grande", "Jovellanos", "Limonar", "Los Arabos", 
+            "Martí", "Pedro Betancourt", "Perico", "Unión de Reyes", "Varadero"});
+        put("Cienfuegos", new String[]{"Abreus", "Aguada de Pasajeros", "Cienfuegos", "Cruces", 
+            "Cumanayagua", "Lajas", "Palmira", "Rodas"});
+        put("Villa Clara", new String[]{"Caibarién", "Camajuaní", "Cifuentes", "Corralillo", 
+            "Encrucijada", "Manicaragua", "Placetas", "Quemado de Güines", 
+            "Ranchuelo", "Remedios", "Sagua la Grande", "Santa Clara", "Santo Domingo"});
+        put("Sancti Spíritus", new String[]{"Cabaiguán", "Fomento", "Jatibonico", "La Sierpe", 
+            "Sancti Spíritus", "Taguasco", "Trinidad", "Yaguajay"});
+        put("Ciego de Ávila", new String[]{"Baraguá", "Bolivia", "Chambas", "Ciego de Ávila", 
+            "Ciro Redondo", "Florencia", "Majagua", "Morón", "Primero de Enero", "Venezuela"});
+        put("Camagüey", new String[]{"Camagüey", "Carlos M. de Céspedes", "Esmeralda", "Florida", 
+            "Guáimaro", "Jimaguayú", "Minas", "Najasa", "Nuevitas", "Santa Cruz del Sur", 
+            "Sibanicú", "Sierra de Cubitas", "Vertientes"});
+        put("Las Tunas", new String[]{"Amancio", "Colombia", "Jesús Menéndez", "Jobabo", 
+            "Las Tunas", "Majibacoa", "Manatí", "Puerto Padre"});
+        put("Holguín", new String[]{"Antilla", "Báguanos", "Banes", "Cacocum", 
+            "Calixto García", "Cueto", "Frank País", "Gibara", 
+            "Holguín", "Mayarí", "Moa", "Rafael Freyre", "Sagua de Tánamo", "Urbano Noris"});
+        put("Granma", new String[]{"Bartolomé Masó", "Bayamo", "Buey Arriba", "Campechuela", 
+            "Cauto Cristo", "Guisa", "Jiguaní", "Manzanillo", 
+            "Media Luna", "Niquero", "Pilón", "Río Cauto", "Yara"});
+        put("Santiago de Cuba", new String[]{"Contramaestre", "Guamá", "Mella", "Palma Soriano", 
+            "San Luis", "Santiago de Cuba", "Segundo Frente", "Songo-La Maya", "Tercer Frente"});
+        put("Guantánamo", new String[]{"Baracoa", "Caimanera", "El Salvador", "Guantánamo", 
+            "Imías", "Maisí", "Manuel Tames", "Niceto Pérez", "San Antonio del Sur", "Yateras"});
+        put("Isla de la Juventud", new String[]{"Isla de la Juventud"});
+    }};
 
     // Constructor privado para Singleton
     private ListadoClientes() {
@@ -138,20 +185,36 @@ public class ListadoClientes extends JDialog {
         lblMunicipio.setBounds(35, 210, 280, 20);
         panelEdicion.add(lblMunicipio);
         
-        txtMunicipio = new JTextField();
-        txtMunicipio.setBounds(35, 240, 280, 26);
-        panelEdicion.add(txtMunicipio);
-        txtMunicipio.setColumns(10);
+        cbMunicipio = new JComboBox<String>();
+        cbMunicipio.setBounds(35, 240, 280, 26);
+        panelEdicion.add(cbMunicipio);
         
         lblProvincia = new JLabel("Provincia");
         lblProvincia.setFont(new Font("Serif", Font.PLAIN, 19));
         lblProvincia.setBounds(35, 280, 280, 20);
         panelEdicion.add(lblProvincia);
         
-        txtProvincia = new JTextField();
-        txtProvincia.setBounds(35, 310, 280, 26);
-        panelEdicion.add(txtProvincia);
-        txtProvincia.setColumns(10);
+        cbProvincia = new JComboBox<String>();
+        cbProvincia.setBounds(35, 310, 280, 26);
+        // Cargar provincias
+        for (String provincia : PROVINCIAS_MUNICIPIOS.keySet()) {
+            cbProvincia.addItem(provincia);
+        }
+        // Establecer La Habana como selección por defecto
+        cbProvincia.setSelectedItem("La Habana");
+        // Cargar municipios de la provincia seleccionada
+        cargarMunicipios((String) cbProvincia.getSelectedItem());
+        
+        // Listener para cuando cambie la provincia
+        cbProvincia.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String provinciaSeleccionada = (String) cbProvincia.getSelectedItem();
+                cargarMunicipios(provinciaSeleccionada);
+            }
+        });
+        
+        panelEdicion.add(cbProvincia);
         
         // Panel para PersonaNatural
         panelPersonaNatural = new JPanel();
@@ -224,6 +287,17 @@ public class ListadoClientes extends JDialog {
         });
     }
 
+    // Método para cargar municipios según la provincia seleccionada
+    private void cargarMunicipios(String provincia) {
+        cbMunicipio.removeAllItems();
+        String[] municipios = PROVINCIAS_MUNICIPIOS.get(provincia);
+        if (municipios != null) {
+            for (String municipio : municipios) {
+                cbMunicipio.addItem(municipio);
+            }
+        }
+    }
+
     // Método para cerrar el panel de edición
     private void cerrarPanelEdicion() {
         panelEdicion.setVisible(false);
@@ -259,27 +333,27 @@ public class ListadoClientes extends JDialog {
         
         if (cliente instanceof PersonaNatural) {
             PersonaNatural pn = (PersonaNatural) cliente;
-            txtMunicipio.setText(pn.getMunicipio());
-            txtProvincia.setText(pn.getProvincia());
+            cbProvincia.setSelectedItem(pn.getProvincia());
+            cbMunicipio.setSelectedItem(pn.getMunicipio());
             txtNumId.setText(pn.getNumId());
             panelPersonaNatural.setVisible(true);
             
             // Mostrar campos de ubicación
-            txtMunicipio.setVisible(true);
-            txtProvincia.setVisible(true);
+            cbMunicipio.setVisible(true);
+            cbProvincia.setVisible(true);
             lblMunicipio.setVisible(true);
             lblProvincia.setVisible(true);
         } 
         else if (cliente instanceof PersonaJuridica) {
             PersonaJuridica pj = (PersonaJuridica) cliente;
-            txtMunicipio.setText(pj.getMunicipio());
-            txtProvincia.setText(pj.getProvincia());
+            cbProvincia.setSelectedItem(pj.getProvincia());
+            cbMunicipio.setSelectedItem(pj.getMunicipio());
             txtOrganismo.setText(pj.getOrganismo());
             panelPersonaJuridica.setVisible(true);
             
             // Mostrar campos de ubicación
-            txtMunicipio.setVisible(true);
-            txtProvincia.setVisible(true);
+            cbMunicipio.setVisible(true);
+            cbProvincia.setVisible(true);
             lblMunicipio.setVisible(true);
             lblProvincia.setVisible(true);
         } 
@@ -287,8 +361,8 @@ public class ListadoClientes extends JDialog {
             panelEntidadNoEstatal.setVisible(true);
             
             // Ocultar campos de ubicación
-            txtMunicipio.setVisible(false);
-            txtProvincia.setVisible(false);
+            cbMunicipio.setVisible(false);
+            cbProvincia.setVisible(false);
             lblMunicipio.setVisible(false);
             lblProvincia.setVisible(false);
         }
@@ -316,13 +390,9 @@ public class ListadoClientes extends JDialog {
             if (!validarDireccion(txtDireccion.getText())) valido = false;
             
             if (clienteSeleccionado instanceof PersonaNatural) {
-                if (!validarMunicipio(txtMunicipio.getText())) valido = false;
-                if (!validarProvincia(txtProvincia.getText())) valido = false;
                 if (!validarNumId(txtNumId.getText())) valido = false;
             } 
             else if (clienteSeleccionado instanceof PersonaJuridica) {
-                if (!validarMunicipio(txtMunicipio.getText())) valido = false;
-                if (!validarProvincia(txtProvincia.getText())) valido = false;
                 if (!validarOrganismo(txtOrganismo.getText())) valido = false;
             }
             
@@ -333,21 +403,23 @@ public class ListadoClientes extends JDialog {
             // Si todo está validado, proceder con la actualización
             String nombre = txtNombre.getText();
             String direccion = txtDireccion.getText();
+            String provincia = (String) cbProvincia.getSelectedItem();
+            String municipio = (String) cbMunicipio.getSelectedItem();
             
             if (clienteSeleccionado instanceof PersonaNatural) {
                 PersonaNatural pn = (PersonaNatural) clienteSeleccionado;
                 pn.setNombre(nombre);
                 pn.setDireccion(direccion);
-                pn.setMunicipio(txtMunicipio.getText());
-                pn.setProvincia(txtProvincia.getText());
+                pn.setMunicipio(municipio);
+                pn.setProvincia(provincia);
                 pn.setNumId(txtNumId.getText());
             } 
             else if (clienteSeleccionado instanceof PersonaJuridica) {
                 PersonaJuridica pj = (PersonaJuridica) clienteSeleccionado;
                 pj.setNombre(nombre);
                 pj.setDireccion(direccion);
-                pj.setMunicipio(txtMunicipio.getText());
-                pj.setProvincia(txtProvincia.getText());
+                pj.setMunicipio(municipio);
+                pj.setProvincia(provincia);
                 pj.setOrganismo(txtOrganismo.getText());
             } 
             else if (clienteSeleccionado instanceof EntidadNoEstatal) {
@@ -381,18 +453,6 @@ public class ListadoClientes extends JDialog {
         return valido;
     }
     
-    public boolean validarMunicipio(String municipio) {
-        boolean valido = !municipio.isEmpty();
-        lblMunicipio.setForeground(valido ? Color.BLACK : Color.RED);
-        return valido;
-    }
-    
-    public boolean validarProvincia(String provincia) {
-        boolean valido = !provincia.isEmpty();
-        lblProvincia.setForeground(valido ? Color.BLACK : Color.RED);
-        return valido;
-    }
-    
     public boolean validarNumId(String numId) {
         boolean valido = !numId.isEmpty();
         lblNumId.setForeground(valido ? Color.BLACK : Color.RED);
@@ -408,8 +468,6 @@ public class ListadoClientes extends JDialog {
     private void resetearValidaciones() {
         lblNombre.setForeground(Color.BLACK);
         lblDireccion.setForeground(Color.BLACK);
-        lblMunicipio.setForeground(Color.BLACK);
-        lblProvincia.setForeground(Color.BLACK);
         if (lblNumId != null) lblNumId.setForeground(Color.BLACK);
         if (lblOrganismo != null) lblOrganismo.setForeground(Color.BLACK);
     }
