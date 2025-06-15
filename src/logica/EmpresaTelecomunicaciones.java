@@ -110,6 +110,25 @@ public class EmpresaTelecomunicaciones {
 	}
 
 	// METODOS
+	
+	//Buscar un cliente con su nombre y actualizar sus datos de nombre y direccion
+	public boolean actualizarCliente(String nombreOriginal,String nuevoNombre, String nuevaDireccion){
+		
+		boolean actualizado = false;
+		
+		for(Cliente c: clientes){
+			if(c.getNombre().equals(nombreOriginal)){
+				c.setNombre(nuevoNombre);
+				c.setDireccion(nuevaDireccion);
+				actualizado = true;
+			}
+			
+		}
+		
+		return actualizado;
+	}
+	
+	
 	// Agregar Representante
 	public void agregarRepresentante(String nombreCompleto, String numId) {
 		Representante r1 = new Representante(nombreCompleto, numId);
