@@ -17,7 +17,7 @@ public class ListadoClientes extends JDialog {
     private ClienteTableModel tableModel;
     private static ListadoClientes instance;
     
-    // Campos de edición
+    // Campos de ediciÃ³n
     private JPanel panelEdicion;
     private JTextField txtNombre;
     private JTextField txtDireccion;
@@ -33,7 +33,7 @@ public class ListadoClientes extends JDialog {
     private Cliente clienteSeleccionado;
     private String nombreClienteSeleccionado;
     
-    // Etiquetas para validación
+    // Etiquetas para validaciÃ³n
     private JLabel lblNombre;
     private JLabel lblDireccion;
     private JLabel lblMunicipio;
@@ -52,7 +52,7 @@ public class ListadoClientes extends JDialog {
         configurarMenuContextual();
     }
 
-    // Método Singleton para obtener la instancia
+    // MÃ©todo Singleton para obtener la instancia
     public static synchronized ListadoClientes getInstance() {
         if (instance == null) {
             instance = new ListadoClientes();
@@ -60,7 +60,7 @@ public class ListadoClientes extends JDialog {
         return instance;
     }
 
-    // Inicialización de componentes principales
+    // InicializaciÃ³n de componentes principales
     private void initComponents() {
         tableModel = new ClienteTableModel();
         tableModel.cargarClientes();
@@ -81,6 +81,7 @@ public class ListadoClientes extends JDialog {
         table.setFont(new Font("Serif", Font.PLAIN, 18));
         scrollPane.setViewportView(table);
         
+
         JTableHeader header = table.getTableHeader();
         Font headerFont = new Font("Serif",Font.PLAIN, 20);
         header.setFont(headerFont);
@@ -96,7 +97,7 @@ public class ListadoClientes extends JDialog {
         initPanelEdicion();
     }
 
-    // Inicialización del panel de edición
+    // InicializaciÃ³n del panel de ediciÃ³n
     private void initPanelEdicion() {
         panelEdicion = new JPanel();
         panelEdicion.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -106,12 +107,12 @@ public class ListadoClientes extends JDialog {
         getContentPane().add(panelEdicion);
         
         // Componentes comunes
-        JLabel lblEdicionDeCliente = new JLabel("Edición de Cliente");
+        JLabel lblEdicionDeCliente = new JLabel("EdiciÃ³n de Cliente");
         lblEdicionDeCliente.setFont(new Font("Serif", Font.BOLD, 21));
         lblEdicionDeCliente.setBounds(32, 12, 280, 28);
         panelEdicion.add(lblEdicionDeCliente);
         
-        // Campos nombre y dirección
+        // Campos nombre y direcciÃ³n
         lblNombre = new JLabel("Nombre");
         lblNombre.setFont(new Font("Serif", Font.PLAIN, 19));
         lblNombre.setBounds(35, 70, 280, 20);
@@ -122,7 +123,7 @@ public class ListadoClientes extends JDialog {
         panelEdicion.add(txtNombre);
         txtNombre.setColumns(10);
         
-        lblDireccion = new JLabel("Dirección");
+        lblDireccion = new JLabel("DirecciÃ³n");
         lblDireccion.setFont(new Font("Serif", Font.PLAIN, 19));
         lblDireccion.setBounds(35, 140, 280, 20);
         panelEdicion.add(lblDireccion);
@@ -132,7 +133,7 @@ public class ListadoClientes extends JDialog {
         panelEdicion.add(txtDireccion);
         txtDireccion.setColumns(10);
         
-        // Campos para ubicación (solo para PersonaNatural y PersonaJuridica)
+        // Campos para ubicaciÃ³n (solo para PersonaNatural y PersonaJuridica)
         lblMunicipio = new JLabel("Municipio");
         lblMunicipio.setFont(new Font("Serif", Font.PLAIN, 19));
         lblMunicipio.setBounds(35, 210, 280, 20);
@@ -160,7 +161,7 @@ public class ListadoClientes extends JDialog {
         panelPersonaNatural.setVisible(false);
         panelEdicion.add(panelPersonaNatural);
         
-        lblNumId = new JLabel("Número de Identificación");
+        lblNumId = new JLabel("NÃºmero de IdentificaciÃ³n");
         lblNumId.setFont(new Font("Serif", Font.PLAIN, 19));
         lblNumId.setBounds(35, 0, 280, 20);
         panelPersonaNatural.add(lblNumId);
@@ -209,14 +210,14 @@ public class ListadoClientes extends JDialog {
         btnCancelar.setBounds(195, 450, 120, 30);
         panelEdicion.add(btnCancelar);
         
-        // Acción para Cancelar
+        // AcciÃ³n para Cancelar
         btnCancelar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 cerrarPanelEdicion();
             }
         });
         
-        // Acción para Aceptar
+        // AcciÃ³n para Aceptar
         btnAceptar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 actualizarCliente();
@@ -224,7 +225,7 @@ public class ListadoClientes extends JDialog {
         });
     }
 
-    // Método para cerrar el panel de edición
+    // MÃ©todo para cerrar el panel de ediciÃ³n
     private void cerrarPanelEdicion() {
         panelEdicion.setVisible(false);
         setSize(1090, 683);
@@ -233,7 +234,7 @@ public class ListadoClientes extends JDialog {
         nombreClienteSeleccionado = null;
     }
 
-    // Método para mostrar la ventana
+    // MÃ©todo para mostrar la ventana
     public void mostrarVentana() {
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setVisible(true);
@@ -245,8 +246,102 @@ public class ListadoClientes extends JDialog {
         instance = null;
         super.dispose();
     }
+    
+    //Configuracion del menu emergente de accion a un Cliente
+    private void configurarMenuContextual(){
+    	
+    	final JPopupMenu popupMenu = new JPopupMenu();
+    	
+    	JMenuItem menuEditar = new JMenuItem("Editar");
+    	JMenuItem menuEliminar = new JMenuItem("Eliminar");
+    	
+    	//Personalizacion de los menu
+    	menuEditar.setFont(new Font("Serif", Font.PLAIN, 20));
+    	menuEliminar.setFont(new Font("Serif", Font.PLAIN, 20));
+    	
+    	// Accion de eliminar el menuItem Eliminar
+    	menuEliminar.addActionListener(new ActionListener() {
+    	    public void actionPerformed(ActionEvent e) {
+    	        // Obtener la fila seleccionada
+    	        int selectedRow = table.getSelectedRow();
+    	        
+    	        if (selectedRow >= 0) { //Comprobar que la fila seleccionada es correcta
+    	        	
+    	            // Confirmar la eliminaciÃ¯Â¿Â½n
+    	            UIManager.put("OptionPane.messageFont", new Font("Serif", Font.BOLD, 20));
+    	            UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.BOLD, 18));
+    	            
+    	            int confirm = JOptionPane.showConfirmDialog(null,"Ã¯Â¿Â½EstÃ¯Â¿Â½ seguro que desea eliminar este cliente?", 
+    	                "Confirmar eliminaciÃ¯Â¿Â½n",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
+    	            
+    	            if (confirm == JOptionPane.YES_OPTION) {
+    	                // Obtener el cliente de la fila correspondiente
+    	                String nombreCliente = (String) tableModel.getValueAt(selectedRow, 0);
+    	                
+    	                // Eliminar el cliente de la empresa
+    	                boolean eliminado = EmpresaTelecomunicaciones.getInstancia().eliminarCliente(nombreCliente);
+    	                
+    	                if (eliminado) {
+    	                    // Actualizar la tabla
+    	                    tableModel.cargarClientes();
+    	                    JOptionPane.showMessageDialog(
+    	                        null, 
+    	                        "Cliente eliminado correctamente", 
+    	                        "Ã¯Â¿Â½xito", 
+    	                        JOptionPane.INFORMATION_MESSAGE);
+    	                } else {
+    	                    JOptionPane.showMessageDialog(
+    	                        null, 
+    	                        "No se pudo eliminar el cliente", 
+    	                        "Error", 
+    	                        JOptionPane.ERROR_MESSAGE);
+    	                }
+    	            }
+    	        } else {
+    	            JOptionPane.showMessageDialog(
+    	                null, 
+    	                "Por favor seleccione un cliente para eliminar", 
+    	                "Advertencia", 
+    	                JOptionPane.WARNING_MESSAGE);
+    	        }
+    	    }
+    	});
+    	
+    	//AÃ¯Â¿Â½adir los menuItem al popMenu
+    	popupMenu.add(menuEditar);
+    	popupMenu.add(menuEliminar);
+    	
+    	
+    	table.addMouseListener(new MouseAdapter() {
+    		
+    		/*Algunos  Sistemas Operativos activan el menu con el mousePressed y otros con el mouseReleased
+    		 * Implementando ambos nos aseguramos que siempre funcione, haciendo la app mas robusta
+    		 * */
+    	    @Override
+    	    public void mousePressed(MouseEvent e) {
+    	        showPopupIfTriggered(e);
+    	    }
+    	    
+    	    @Override
+    	    public void mouseReleased(MouseEvent e) {
+    	        showPopupIfTriggered(e);
+    	    }
+    	    
+    	    private void showPopupIfTriggered(MouseEvent e) {
+    	        if (e.getButton() == MouseEvent.BUTTON3) {  
+    	            int row = table.rowAtPoint(e.getPoint());
+    	            if (row >= 0) {
+    	                table.setRowSelectionInterval(row, row);
+    	                popupMenu.show(table, e.getX(), e.getY());
+    	            }
+    	        }
+    	    }
+    	});
+    	
+    	
+    	
 
-    // Muestra campos según el tipo de cliente
+    // Muestra campos segÃºn el tipo de cliente
     private void mostrarCamposSegunTipo(Cliente cliente) {
         resetearValidaciones();
         
@@ -264,7 +359,7 @@ public class ListadoClientes extends JDialog {
             txtNumId.setText(pn.getNumId());
             panelPersonaNatural.setVisible(true);
             
-            // Mostrar campos de ubicación
+            // Mostrar campos de ubicaciÃ³n
             txtMunicipio.setVisible(true);
             txtProvincia.setVisible(true);
             lblMunicipio.setVisible(true);
@@ -277,7 +372,7 @@ public class ListadoClientes extends JDialog {
             txtOrganismo.setText(pj.getOrganismo());
             panelPersonaJuridica.setVisible(true);
             
-            // Mostrar campos de ubicación
+            // Mostrar campos de ubicaciÃ³n
             txtMunicipio.setVisible(true);
             txtProvincia.setVisible(true);
             lblMunicipio.setVisible(true);
@@ -286,7 +381,7 @@ public class ListadoClientes extends JDialog {
         else if (cliente instanceof EntidadNoEstatal) {
             panelEntidadNoEstatal.setVisible(true);
             
-            // Ocultar campos de ubicación
+            // Ocultar campos de ubicaciÃ³n
             txtMunicipio.setVisible(false);
             txtProvincia.setVisible(false);
             lblMunicipio.setVisible(false);
@@ -330,7 +425,7 @@ public class ListadoClientes extends JDialog {
                 throw new Exception("Por favor complete todos los campos obligatorios");
             }
             
-            // Si todo está validado, proceder con la actualización
+            // Si todo estÃ¡ validado, proceder con la actualizaciÃ³n
             String nombre = txtNombre.getText();
             String direccion = txtDireccion.getText();
             
@@ -361,18 +456,19 @@ public class ListadoClientes extends JDialog {
             cerrarPanelEdicion();
             
             JOptionPane.showMessageDialog(this, "Cliente actualizado correctamente", 
-                "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                "Ã‰xito", JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), 
                 "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    // Métodos de validación
+    // MÃ©todos de validaciÃ³n
     public boolean validarNombre(String nombre) {
         boolean valido = !nombre.isEmpty();
         lblNombre.setForeground(valido ? Color.BLACK : Color.RED);
         return valido;
+      
     }
     
     public boolean validarDireccion(String direccion) {
@@ -405,6 +501,7 @@ public class ListadoClientes extends JDialog {
         return valido;
     }
     
+
     private void resetearValidaciones() {
         lblNombre.setForeground(Color.BLACK);
         lblDireccion.setForeground(Color.BLACK);
@@ -414,7 +511,7 @@ public class ListadoClientes extends JDialog {
         if (lblOrganismo != null) lblOrganismo.setForeground(Color.BLACK);
     }
 
-    // Método estático para abrir la ventana
+    // MÃ©todo estÃ¡tico para abrir la ventana
     public static void abrirListadoClientes() {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -435,7 +532,7 @@ public class ListadoClientes extends JDialog {
         });
     }
 
-    // Configuración del menú contextual
+    // ConfiguraciÃ³n del menÃº contextual
     private void configurarMenuContextual() {
         final JPopupMenu popupMenu = new JPopupMenu();
         
@@ -477,15 +574,15 @@ public class ListadoClientes extends JDialog {
                     String nombreCliente = (String) tableModel.getValueAt(selectedRow, 0);
                     
                     int confirm = JOptionPane.showConfirmDialog(null,
-                        "¿Está seguro que desea eliminar este cliente?", 
-                        "Confirmar eliminación", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                        "Â¿EstÃ¡ seguro que desea eliminar este cliente?", 
+                        "Confirmar eliminaciÃ³n", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
                     
                     if (confirm == JOptionPane.YES_OPTION) {
                         boolean eliminado = EmpresaTelecomunicaciones.getInstancia()
                             .eliminarCliente(nombreCliente);
                         
                         if (eliminado) {
-                            // Si el cliente eliminado es el mismo que se está editando, cerrar el panel
+                            // Si el cliente eliminado es el mismo que se estÃ¡ editando, cerrar el panel
                             if (nombreClienteSeleccionado != null && 
                                 nombreClienteSeleccionado.equals(nombreCliente)) {
                                 cerrarPanelEdicion();
@@ -494,7 +591,7 @@ public class ListadoClientes extends JDialog {
                             tableModel.cargarClientes();
                             JOptionPane.showMessageDialog(null, 
                                 "Cliente eliminado correctamente", 
-                                "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                                "Ã‰xito", JOptionPane.INFORMATION_MESSAGE);
                         } else {
                             JOptionPane.showMessageDialog(null, 
                                 "No se pudo eliminar el cliente", 
@@ -535,3 +632,4 @@ public class ListadoClientes extends JDialog {
         });
     }
 }
+

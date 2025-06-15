@@ -51,6 +51,11 @@ public class Principal extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(0, 0, 1800, 900);
 			contentPane = new JPanel(){
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;// me recomendaba esto para corregir errores 
+
 				public void paintComponent(Graphics g){
 					Image img = Toolkit.getDefaultToolkit().getImage(Principal.class.getResource("/imagenes/d.png"));
 					g.drawImage(img, 0, 0, this.getWidth(), this.getHeight(),this);
