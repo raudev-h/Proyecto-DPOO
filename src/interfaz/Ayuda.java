@@ -5,6 +5,7 @@ import java.awt.FlowLayout;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
@@ -23,33 +24,28 @@ public class Ayuda extends JDialog {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 	}
 
 	/**
 	 * Create the dialog.
 	 */
 	public Ayuda() {
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 655, 383);
 		getContentPane().setLayout(new BorderLayout());
-		contentPanel.setLayout(new FlowLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		{
-			JPanel buttonPane = new JPanel();
-			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
-			getContentPane().add(buttonPane, BorderLayout.SOUTH);
-			{
-				JButton okButton = new JButton("OK");
-				okButton.setActionCommand("OK");
-				buttonPane.add(okButton);
-				getRootPane().setDefaultButton(okButton);
-			}
-			{
-				JButton cancelButton = new JButton("Cancel");
-				cancelButton.setActionCommand("Cancel");
-				buttonPane.add(cancelButton);
-			}
-		}
+		contentPanel.setLayout(null);
+		
+		JPanel panel = new JPanel();
+		panel.setBounds(10, 11, 619, 312);
+		contentPanel.add(panel);
+		panel.setLayout(null);
+		
+		JOptionPane.showMessageDialog(null,
+			    "MotoApp\nVersión: 1.0\nDesarrollado por: TuNombre\nJunio 2025",
+			    "Acerca de",
+			    JOptionPane.INFORMATION_MESSAGE);
 	}
 
 }

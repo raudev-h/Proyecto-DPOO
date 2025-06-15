@@ -13,6 +13,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 import runner.Inicializadora;
 
@@ -180,8 +181,21 @@ public class Principal extends JFrame {
 		menuBar.add(mnAyuda);
 		
 		JMenuItem mntmAcercaDe = new JMenuItem("Acerca de");
+		mntmAcercaDe.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				JOptionPane.showMessageDialog(null,
+					    "*Servicios Telefonicos de ETECSA\n*Versión: 1.0\n*Lanzada en junio de 2025\n*Desarrolladores:\n-Raul Hechavarria\n-Aniel Varela\n-Ruben Anazco ",
+					    "Acerca de",
+					    JOptionPane.INFORMATION_MESSAGE);
+				
+				
+				
+			}
+		});
 		mntmAcercaDe.setFont(new Font("Serif", Font.PLAIN, 21));
 		mnAyuda.add(mntmAcercaDe);
+	
 		
 		
 		
