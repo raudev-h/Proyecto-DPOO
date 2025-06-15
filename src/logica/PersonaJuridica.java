@@ -26,6 +26,9 @@ public class PersonaJuridica extends ClientesConUbicacion {
         this.organismo = organismo;
     }
 
+    public Representante getRepresentante(){
+    	return representantePersonaJuridica;
+    }
     // Representante
     public Representante getRepresentantePersonaJuridica() {
         return representantePersonaJuridica;

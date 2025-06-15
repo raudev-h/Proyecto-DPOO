@@ -26,9 +26,7 @@ public class ClienteTableModel  extends DefaultTableModel  {
 			
 			//Obtener la informacion de todos los clientes de la empresa
 			for(Cliente cliente: EmpresaTelecomunicaciones.getInstancia().getClientes()){
-				
-				System.out.println("Si, he encontrado un cliente");
-				
+								
 				String nombre = cliente.getNombre();
 				String direccion = cliente.getDireccion();
 				int cantServicios = cliente.getServicios().size();

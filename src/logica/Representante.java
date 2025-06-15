@@ -20,6 +20,10 @@ public class Representante {
     public void setNombreCompleto(String nombreCompleto) {
         this.nombreCompleto = nombreCompleto;
     }
+    
+    public void setNombre(String nombreCompleto){
+    	this.nombreCompleto = nombreCompleto;
+    }
     // Numero de id del Representante
     public String getNumId() {
         return numId;
