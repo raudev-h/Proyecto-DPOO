@@ -110,22 +110,47 @@ public boolean eliminarCliente(String nombreCliente){
 
 	// METODOS
 	// Agregar Representante
-	public void agregarRepresentante(String nombreCompleto, String numId) throws NombreInvalidoException, CarnetIdentidadInvalidoException {
+	public void agregarRepresentante(String nombreCompleto, String numId) throws NombreInvalidoException, CarnetIdentidadInvalidoException,
+									DuplicadosException{
+		
+		for(Representante r : representantes){
+			if(r.getNumId().equals(numId))
+				throw new DuplicadosException("Ese representante ya existe");
+		}
+		
 		Representante r1 = new Representante(nombreCompleto, numId);
 		representantes.add(r1);
 	}
 
 	// Agregar Entidad no estatal
 	public void agregarEntidadNoEstatal(String direccion, String nombreEntidad, Representante representante) 
-			throws NombreInvalidoException, UbicacionInvalidaException {
+			throws NombreInvalidoException, UbicacionInvalidaException, DuplicadosException {
+		
+		for(Cliente c : clientes){
+			if(c instanceof EntidadNoEstatal){
+				EntidadNoEstatal ene = (EntidadNoEstatal)c;
+				if(ene.getDireccion().equalsIgnoreCase(direccion))
+					throw new DuplicadosException("Esa persona ya existe en nuestro sistema");
+			}
+		}
+		
 		Cliente c1 = new EntidadNoEstatal(direccion, nombreEntidad, representante);
 		clientes.add(c1);
 	}
 
 	// Agregar Persona Natural
 	public void agregarPersonaNatural(String direccion, String municipio, String provincia, String nombre,
-			String numId) throws NombreInvalidoException, UbicacionInvalidaException, ProvinciaInvalidaException, CarnetIdentidadInvalidoException {
+			String numId) throws NombreInvalidoException, UbicacionInvalidaException, ProvinciaInvalidaException,
+			CarnetIdentidadInvalidoException, DuplicadosException {
 		
+		for(Cliente c : clientes){
+			if(c instanceof PersonaNatural){
+				PersonaNatural pn = (PersonaNatural)c;
+				if(pn.getNumId().equals(numId))
+					throw new DuplicadosException("Esa persona ya existe en nuestro sistema");
+			}
+		}
+			
 		Cliente c1 = new PersonaNatural(direccion, municipio, provincia, nombre, numId);
 		clientes.add(c1);
 	}
@@ -133,7 +158,15 @@ public boolean eliminarCliente(String nombreCliente){
 	// Agregar Persona Juridica
 	public void agregarPersonaJuridica(String direccion, String municipio, String provincia, String nombreEmpresaString,
 			String organismo, Representante representante) throws NombreInvalidoException, UbicacionInvalidaException,
-			ProvinciaInvalidaException{
+			ProvinciaInvalidaException, DuplicadosException{
+		
+		for(Cliente c : clientes){
+			if(c instanceof PersonaJuridica){
+				PersonaJuridica pj = (PersonaJuridica)c;
+				if(pj.getDireccion().equalsIgnoreCase(direccion))
+					throw new DuplicadosException("Esa persona jurídica ya existe en nuestro sistema");
+			}
+		}
 		
 		Cliente c1 = new PersonaJuridica(direccion, municipio, provincia, nombreEmpresaString, organismo,
 				representante);

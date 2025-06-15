@@ -10,7 +10,7 @@ public class Inicializadora {
 
 	// Metodo que inicializa servicios, clientes y representante
 	public static void Inicializar() throws NombreInvalidoException, UbicacionInvalidaException, 
-									ProvinciaInvalidaException, CarnetIdentidadInvalidoException{
+									ProvinciaInvalidaException, CarnetIdentidadInvalidoException, DuplicadosException{
 
 		EmpresaTelecomunicaciones empresa = EmpresaTelecomunicaciones.getInstancia();
 
