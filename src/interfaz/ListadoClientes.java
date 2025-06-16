@@ -246,99 +246,6 @@ public class ListadoClientes extends JDialog {
         instance = null;
         super.dispose();
     }
-    
-    //Configuracion del menu emergente de accion a un Cliente
-    private void configurarMenuContextual(){
-    	
-    	final JPopupMenu popupMenu = new JPopupMenu();
-    	
-    	JMenuItem menuEditar = new JMenuItem("Editar");
-    	JMenuItem menuEliminar = new JMenuItem("Eliminar");
-    	
-    	//Personalizacion de los menu
-    	menuEditar.setFont(new Font("Serif", Font.PLAIN, 20));
-    	menuEliminar.setFont(new Font("Serif", Font.PLAIN, 20));
-    	
-    	// Accion de eliminar el menuItem Eliminar
-    	menuEliminar.addActionListener(new ActionListener() {
-    	    public void actionPerformed(ActionEvent e) {
-    	        // Obtener la fila seleccionada
-    	        int selectedRow = table.getSelectedRow();
-    	        
-    	        if (selectedRow >= 0) { //Comprobar que la fila seleccionada es correcta
-    	        	
-    	            // Confirmar la eliminaciï¿½n
-    	            UIManager.put("OptionPane.messageFont", new Font("Serif", Font.BOLD, 20));
-    	            UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.BOLD, 18));
-    	            
-    	            int confirm = JOptionPane.showConfirmDialog(null,"ï¿½Estï¿½ seguro que desea eliminar este cliente?", 
-    	                "Confirmar eliminaciï¿½n",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
-    	            
-    	            if (confirm == JOptionPane.YES_OPTION) {
-    	                // Obtener el cliente de la fila correspondiente
-    	                String nombreCliente = (String) tableModel.getValueAt(selectedRow, 0);
-    	                
-    	                // Eliminar el cliente de la empresa
-    	                boolean eliminado = EmpresaTelecomunicaciones.getInstancia().eliminarCliente(nombreCliente);
-    	                
-    	                if (eliminado) {
-    	                    // Actualizar la tabla
-    	                    tableModel.cargarClientes();
-    	                    JOptionPane.showMessageDialog(
-    	                        null, 
-    	                        "Cliente eliminado correctamente", 
-    	                        "ï¿½xito", 
-    	                        JOptionPane.INFORMATION_MESSAGE);
-    	                } else {
-    	                    JOptionPane.showMessageDialog(
-    	                        null, 
-    	                        "No se pudo eliminar el cliente", 
-    	                        "Error", 
-    	                        JOptionPane.ERROR_MESSAGE);
-    	                }
-    	            }
-    	        } else {
-    	            JOptionPane.showMessageDialog(
-    	                null, 
-    	                "Por favor seleccione un cliente para eliminar", 
-    	                "Advertencia", 
-    	                JOptionPane.WARNING_MESSAGE);
-    	        }
-    	    }
-    	});
-    	
-    	//Aï¿½adir los menuItem al popMenu
-    	popupMenu.add(menuEditar);
-    	popupMenu.add(menuEliminar);
-    	
-    	
-    	table.addMouseListener(new MouseAdapter() {
-    		
-    		/*Algunos  Sistemas Operativos activan el menu con el mousePressed y otros con el mouseReleased
-    		 * Implementando ambos nos aseguramos que siempre funcione, haciendo la app mas robusta
-    		 * */
-    	    @Override
-    	    public void mousePressed(MouseEvent e) {
-    	        showPopupIfTriggered(e);
-    	    }
-    	    
-    	    @Override
-    	    public void mouseReleased(MouseEvent e) {
-    	        showPopupIfTriggered(e);
-    	    }
-    	    
-    	    private void showPopupIfTriggered(MouseEvent e) {
-    	        if (e.getButton() == MouseEvent.BUTTON3) {  
-    	            int row = table.rowAtPoint(e.getPoint());
-    	            if (row >= 0) {
-    	                table.setRowSelectionInterval(row, row);
-    	                popupMenu.show(table, e.getX(), e.getY());
-    	            }
-    	        }
-    	    }
-    	});
-    	
-    	
     	
 
     // Muestra campos según el tipo de cliente
@@ -574,8 +481,8 @@ public class ListadoClientes extends JDialog {
                     String nombreCliente = (String) tableModel.getValueAt(selectedRow, 0);
                     
                     int confirm = JOptionPane.showConfirmDialog(null,
-                        "¿Está seguro que desea eliminar este cliente?", 
-                        "Confirmar eliminación", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                        "�Est� seguro que desea eliminar este cliente?", 
+                        "Confirmar eliminaci�n", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
                     
                     if (confirm == JOptionPane.YES_OPTION) {
                         boolean eliminado = EmpresaTelecomunicaciones.getInstancia()

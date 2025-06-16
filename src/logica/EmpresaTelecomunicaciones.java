@@ -114,7 +114,8 @@ public class EmpresaTelecomunicaciones {
 	// METODOS
 	
 	//Buscar un cliente con su nombre y actualizar sus datos de nombre y direccion
-	public boolean actualizarCliente(String nombreOriginal,String nuevoNombre, String nuevaDireccion){
+	public boolean actualizarCliente(String nombreOriginal,String nuevoNombre, String nuevaDireccion) throws UbicacionInvalidaException,
+										NombreInvalidoException{
 		
 		boolean actualizado = false;
 		
