@@ -29,6 +29,11 @@ public abstract class Telefono extends Servicio implements Llamador {
     	return llamadas;
     }
     //METODOS
+  //Agregar una llamada a la lista de llamadas del telefono
+    public void agregarLlamada(Llamada ll){
+    	llamadas.add(ll);
+    	
+    }
     
     
     

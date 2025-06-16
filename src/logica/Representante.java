@@ -33,6 +33,10 @@ public class Representante {
         else 
             this.nombreCompleto = nombreCompleto.trim();
     }
+    
+    public void setNombre(String nombreCompleto){
+    	this.nombreCompleto = nombreCompleto;
+    }
     // Numero de id del Representante
     public String getNumId() {
         return numId;
