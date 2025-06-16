@@ -51,6 +51,11 @@ public class Principal extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(0, 0, 1800, 900);
 			contentPane = new JPanel(){
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;// me recomendaba esto para corregir errores 
+
 				public void paintComponent(Graphics g){
 					Image img = Toolkit.getDefaultToolkit().getImage(Principal.class.getResource("/imagenes/d.png"));
 					g.drawImage(img, 0, 0, this.getWidth(), this.getHeight(),this);
@@ -147,7 +152,12 @@ public class Principal extends JFrame {
 		mntmNewMenuItem.setFont(new Font("Serif", Font.PLAIN, 21));
 		mnServicios_1.add(mntmNewMenuItem);
 		
-		JMenuItem mntmTelefonosMovil = new JMenuItem("3. Telefonos movil que tienen al menos una llamada que supera los 100 min de duracion ");
+		JMenuItem mntmTelefonosMovil = new JMenuItem("3. Telefonos movil que tienen al menos una llamada que supera la duracion ");
+		mntmTelefonosMovil.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				ListadoTlfLlamadasMayores.abrirListadoLlamadasMayores();	
+			}
+		});
 		mntmTelefonosMovil.setFont(new Font("Serif", Font.PLAIN, 21));
 		mnServicios_1.add(mntmTelefonosMovil);
 		
@@ -156,6 +166,12 @@ public class Principal extends JFrame {
 		mnReportes.add(mnClientes_1);
 		
 		JMenuItem mntmNewMenuItem_1 = new JMenuItem("1. Clientes Premium de Cuenta Nauta");
+		mntmNewMenuItem_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				ListadoClientesPremiumNauta.abrirListadoClientesPremium();
+				
+			}
+		});
 		mntmNewMenuItem_1.setFont(new Font("Serif", Font.PLAIN, 21));
 		mnClientes_1.add(mntmNewMenuItem_1);
 		
