@@ -88,8 +88,8 @@ public class CuentasNautasPorProvincia extends JDialog {
                 UIManager.put("Panel.background", new Color(240, 240, 240));
                 
                 JOptionPane.showMessageDialog(null, 
-                    "La ventana de Cuentas Nautas por Provincia ya estï¿½ abierta",
-                    "Informaciï¿½n",
+                    "La ventana de Cuentas Nautas por Provincia ya está abierta",
+                    "Información",
                     JOptionPane.INFORMATION_MESSAGE);
                 instance.toFront();
             }
