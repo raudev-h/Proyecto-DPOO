@@ -4,7 +4,7 @@ import logica.*;
 
 public class Inicializadora {
 
-	// Metodo que inicializa servicios, clientes y representante
+  // Metodo que inicializa servicios, clientes y representante
 	public static void Inicializar(){
 
 		EmpresaTelecomunicaciones empresa = EmpresaTelecomunicaciones.getInstancia();
@@ -70,10 +70,6 @@ public class Inicializadora {
 
 		empresa.agregarRepresentante("Patricia Montes PÃ©rez", "92072315874");
 		Representante r20 = empresa.getRepresentantes().get(19);
-
-
-
-
 
 		//  Crear clientes
 		// Personas Naturales
@@ -414,14 +410,14 @@ public class Inicializadora {
         TelefonoMovil movil3 = empresa.getTelefonosMoviles().get(2);
 		
 //		Agregarle 10 llamadas a los telefonos Moviles obtenidos
-		// Llamadas para el teléfono móvil 1 (52345678)
+		// Llamadas para el telï¿½fono mï¿½vil 1 (52345678)
 
      // ==============================================
-     // AGREGAR LLAMADAS MANUALMENTE A CADA TELÉFONO
+     // AGREGAR LLAMADAS MANUALMENTE A CADA TELï¿½FONO
      // ==============================================
         //TODO Arreglar los numeros de los telefonos de los destinatarios 
 
-     // Llamadas para el teléfono móvil 1 (52345678)
+     // Llamadas para el telï¿½fono mï¿½vil 1 (52345678)
         movil1.agregarLlamada(movil1.hacerLlamada("5355551111", 1500));    //  25 min = 180 min
         movil1.agregarLlamada(movil1.hacerLlamada("5355552222", 10800));   // 180 min = 10800 seg
         movil1.agregarLlamada(movil1.hacerLlamada("5355553333", 2700));    // 45 min = 2700 seg
@@ -433,7 +429,7 @@ public class Inicializadora {
         movil1.agregarLlamada(movil1.hacerLlamada("5355559999", 12000));    // 200 min = 12000 seg
         movil1.agregarLlamada(movil1.hacerLlamada("5355550000", 900));      // 15 min = 900 seg
 
-        // Llamadas para el teléfono móvil 2 (58901234)
+        // Llamadas para el telï¿½fono mï¿½vil 2 (58901234)
         movil2.agregarLlamada(movil2.hacerLlamada("5377771111", 1800));     // 30 min = 1800 seg
         movil2.agregarLlamada(movil2.hacerLlamada("5377772222", 2700));     // 45 min = 2700 seg
         movil2.agregarLlamada(movil2.hacerLlamada("5377773333", 6600));     // 110 min = 6600 seg
@@ -445,7 +441,7 @@ public class Inicializadora {
         movil2.agregarLlamada(movil2.hacerLlamada("5377779999", 4200));     // 70 min = 4200 seg
         movil2.agregarLlamada(movil2.hacerLlamada("5377770000", 9600));     // 160 min = 9600 seg
 
-        // Llamadas para el teléfono móvil 3 (58432109)
+        // Llamadas para el telï¿½fono mï¿½vil 3 (58432109)
         movil3.agregarLlamada(movil3.hacerLlamada("5388881111", 2700));     // 45 min = 2700 seg
         movil3.agregarLlamada(movil3.hacerLlamada("5388882222", 1800));     // 30 min = 1800 seg
         movil3.agregarLlamada(movil3.hacerLlamada("5388883333", 8400));     // 140 min = 8400 seg
