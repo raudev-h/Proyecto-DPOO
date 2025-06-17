@@ -2,6 +2,8 @@ package logica;
 
 import java.util.*;
 
+import excepciones.*;
+
 public class EmpresaTelecomunicaciones {
 	// Atributos
 	private static EmpresaTelecomunicaciones empresa;
@@ -112,7 +114,8 @@ public class EmpresaTelecomunicaciones {
 	// METODOS
 	
 	//Buscar un cliente con su nombre y actualizar sus datos de nombre y direccion
-	public boolean actualizarCliente(String nombreOriginal,String nuevoNombre, String nuevaDireccion){
+	public boolean actualizarCliente(String nombreOriginal,String nuevoNombre, String nuevaDireccion) throws UbicacionInvalidaException,
+										NombreInvalidoException{
 		
 		boolean actualizado = false;
 		
@@ -130,27 +133,64 @@ public class EmpresaTelecomunicaciones {
 	
 	
 	// Agregar Representante
-	public void agregarRepresentante(String nombreCompleto, String numId) {
+	public void agregarRepresentante(String nombreCompleto, String numId) throws NombreInvalidoException, CarnetIdentidadInvalidoException,
+									DuplicadosException{
+		
+		for(Representante r : representantes){
+			if(r.getNumId().equals(numId))
+				throw new DuplicadosException("Ese representante ya existe");
+		}
+		
 		Representante r1 = new Representante(nombreCompleto, numId);
 		representantes.add(r1);
 	}
 
 	// Agregar Entidad no estatal
-	public void agregarEntidadNoEstatal(String direccion, String nombreEntidad, Representante representante) {
+	public void agregarEntidadNoEstatal(String direccion, String nombreEntidad, Representante representante) 
+			throws NombreInvalidoException, UbicacionInvalidaException, DuplicadosException {
+		
+		for(Cliente c : clientes){
+			if(c instanceof EntidadNoEstatal){
+				EntidadNoEstatal ene = (EntidadNoEstatal)c;
+				if(ene.getDireccion().equalsIgnoreCase(direccion))
+					throw new DuplicadosException("Esa persona ya existe en nuestro sistema");
+			}
+		}
+		
 		Cliente c1 = new EntidadNoEstatal(direccion, nombreEntidad, representante);
 		clientes.add(c1);
 	}
 
 	// Agregar Persona Natural
 	public void agregarPersonaNatural(String direccion, String municipio, String provincia, String nombre,
-			String numId) {
+			String numId) throws NombreInvalidoException, UbicacionInvalidaException, ProvinciaInvalidaException,
+			CarnetIdentidadInvalidoException, DuplicadosException {
+		
+		for(Cliente c : clientes){
+			if(c instanceof PersonaNatural){
+				PersonaNatural pn = (PersonaNatural)c;
+				if(pn.getNumId().equals(numId))
+					throw new DuplicadosException("Esa persona ya existe en nuestro sistema");
+			}
+		}
+			
 		Cliente c1 = new PersonaNatural(direccion, municipio, provincia, nombre, numId);
 		clientes.add(c1);
 	}
 
 	// Agregar Persona Juridica
 	public void agregarPersonaJuridica(String direccion, String municipio, String provincia, String nombreEmpresaString,
-			String organismo, Representante representante) {
+			String organismo, Representante representante) throws NombreInvalidoException, UbicacionInvalidaException,
+			ProvinciaInvalidaException, DuplicadosException{
+		
+		for(Cliente c : clientes){
+			if(c instanceof PersonaJuridica){
+				PersonaJuridica pj = (PersonaJuridica)c;
+				if(pj.getDireccion().equalsIgnoreCase(direccion))
+					throw new DuplicadosException("Esa persona jurÃ­dica ya existe en nuestro sistema");
+			}
+		}
+		
 		Cliente c1 = new PersonaJuridica(direccion, municipio, provincia, nombreEmpresaString, organismo,
 				representante);
 		clientes.add(c1);
@@ -358,9 +398,9 @@ public class EmpresaTelecomunicaciones {
 	// Buscar las provincias con la menor cant de Cuentas Nautas
 	public ArrayList<Map.Entry<String, Integer>> menorCantCuentasNauta() {
 		ArrayList<PersonaNatural> personasNaturales = new ArrayList<PersonaNatural>();
-		String[] provincias = { "Pinar del Río", "Artemisa", "La Habana", "Mayabeque", "Matanzas", "Cienfuegos",
-				"Villa Clara", "Sancti Spiritus", "Ciego de Avila", "Camaguey", "Las Tunas", "Holguín",
-				"Granma", "Santiago de Cuba", "Guantánamo", "Isla de la Juventud" };
+		String[] provincias = { "Pinar del Rio", "Artemisa", "La Habana", "Mayabeque", "Matanzas", "Cienfuegos",
+				"Villa Clara", "Sancti Spiritus", "Ciego de Avila", "Camaguey", "Las Tunas", "Holguin",
+				"Granma", "Santiago de Cuba", "Guantanamo", "Isla de la Juventud" };
 		Map<String, Integer> provinciasConCuenta = new HashMap<String, Integer>();
 
 		// Guardar Personas Naturales con Cuenta Nauta
@@ -394,7 +434,8 @@ public class EmpresaTelecomunicaciones {
 		ArrayList<Map.Entry<String, Integer>> provinciasOrdenadas = new ArrayList<Map.Entry<String, Integer>>(
 				provinciasConCuenta.entrySet());
 
-		//		BubbleSort.sort(provinciasOrdenadas);
+
+		BubbleSort.sort(provinciasOrdenadas);
 
 		return provinciasOrdenadas;
 	}

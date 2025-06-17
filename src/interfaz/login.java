@@ -143,7 +143,7 @@ public class login extends JFrame {
 		
 		return !usuario.trim().isEmpty() && usuario.equals("Admin");
 	}
-	//Validar que la contraseña este correcta y no vacia 
+	//Validar que la contraseï¿½a este correcta y no vacia 
 	public boolean validarPassword(String password){
 		
 		return !password.trim().isEmpty() && password.equals("etecsa");
