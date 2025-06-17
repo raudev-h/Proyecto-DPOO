@@ -211,5 +211,10 @@ public class ListadoRepresentante extends JDialog {
         super.dispose();
     }
     
+    public static Representante getRepresentanteSeleccionado(){
+    	
+    	return EmpresaTelecomunicaciones.getInstancia().getRepresentantes().get(0);
+    }
+    
     
 }
