@@ -14,12 +14,16 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
+import auxiliares.CuentaNautaTableModel;
 import runner.Inicializadora;
 
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 
 public class Principal extends JFrame {
 
@@ -55,7 +59,7 @@ public class Principal extends JFrame {
 				/**
 				 * 
 				 */
-				private static final long serialVersionUID = 1L;// me recomendaba esto para corregir errores 
+				private static final long serialVersionUID = 1L;
 
 				public void paintComponent(Graphics g){
 					Image img = Toolkit.getDefaultToolkit().getImage(Principal.class.getResource("/imagenes/d.png"));
@@ -140,6 +144,16 @@ public class Principal extends JFrame {
 		mnReportes.add(mnServicios_1);
 		
 		JMenuItem mntmMesesConMayor = new JMenuItem("1. Meses con mayor gasto en kb de Cuentas Nautas");
+		mntmMesesConMayor.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+			MesesMayorConsumoMBnauta frame = new MesesMayorConsumoMBnauta();
+		     frame.setVisible(true);
+		  }
+	    });
+			
+		
+	
 		mntmMesesConMayor.setFont(new Font("Serif", Font.PLAIN, 21));
 		mnServicios_1.add(mntmMesesConMayor);
 		
