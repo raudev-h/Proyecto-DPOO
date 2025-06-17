@@ -43,7 +43,7 @@ public class CuentasNautasPorProvincia extends JDialog {
         
         table = new JTable();
         
-        // Configuración de estilo consistente
+        // Configuraciï¿½n de estilo consistente
         table.getTableHeader().setReorderingAllowed(false);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.setFont(new Font("Serif", Font.PLAIN, 18));
@@ -55,7 +55,7 @@ public class CuentasNautasPorProvincia extends JDialog {
         header.setFont(headerFont);
         table.setRowHeight(25);
         
-        // Título
+        // Tï¿½tulo
         JLabel lblTitulo = new JLabel("Cuentas Nautas por Provincia");
         lblTitulo.setFont(new Font("Serif", Font.BOLD, 21));
         lblTitulo.setBounds(15, 0, 300, 20);
@@ -72,7 +72,7 @@ public class CuentasNautasPorProvincia extends JDialog {
         table.repaint();
     }
     
-    // Patrón Singleton como en las otras ventanas
+    // Patrï¿½n Singleton como en las otras ventanas
     public static void abrirCuentasNautasPorProvincia() {
         if (instance == null) {
             instance = new CuentasNautasPorProvincia();
