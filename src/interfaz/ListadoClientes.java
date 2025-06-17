@@ -21,27 +21,44 @@ public class ListadoClientes extends JDialog {
     
     // Campos de edición
     private JPanel panelEdicion;
-    private JTextField txtNombre;
-    private JTextField txtDireccion;
-    private JComboBox<String> cbMunicipio;
-    private JComboBox<String> cbProvincia;
-    private JTextField txtNumId;
-    private JPanel panelPersonaNatural;
-    private JTextField txtOrganismo;
-    private JPanel panelPersonaJuridica;
-    private JPanel panelEntidadNoEstatal;
-    private JButton btnAceptar;
-    private JButton btnCancelar;
+    private JTextField txtNombreEdit;
+    private JTextField txtDireccionEdit;
+    private JComboBox<String> cbMunicipioEdit;
+    private JComboBox<String> cbProvinciaEdit;
+    private JTextField txtNumIdEdit;
+    private JPanel panelPersonaNaturalEdit;
+    private JTextField txtOrganismoEdit;
+    private JPanel panelPersonaJuridicaEdit;
+    private JPanel panelEntidadNoEstatalEdit;
+    private JButton btnAceptarEdit;
+    private JButton btnCancelarEdit;
+    
+    // Campos de creación
+    private JPanel panelCreacion;
+    private JTextField txtNombreCreate;
+    private JTextField txtDireccionCreate;
+    private JComboBox<String> cbMunicipioCreate;
+    private JComboBox<String> cbProvinciaCreate;
+    private JTextField txtNumIdCreate;
+    private JPanel panelPersonaNaturalCreate;
+    private JTextField txtOrganismoCreate;
+    private JPanel panelPersonaJuridicaCreate;
+    private JPanel panelEntidadNoEstatalCreate;
+    private JButton btnAceptarCreate;
+    private JButton btnCancelarCreate;
+    private JButton btnCrearCliente;
+    private JComboBox<String> cbTipoCliente;
+    
     private Cliente clienteSeleccionado;
     private String nombreClienteSeleccionado;
+    private boolean modoEdicion;
     
     // Etiquetas para validación
-    private JLabel lblNombre;
-    private JLabel lblDireccion;
-    private JLabel lblMunicipio;
-    private JLabel lblProvincia;
-    private JLabel lblNumId;
-    private JLabel lblOrganismo;
+    private JLabel lblNombreEdit, lblDireccionEdit, lblMunicipioEdit, lblProvinciaEdit, lblNumIdEdit, lblOrganismoEdit;
+    private JLabel lblNombreCreate, lblDireccionCreate, lblMunicipioCreate, lblProvinciaCreate, lblNumIdCreate, lblOrganismoCreate;
+    private JLabel lblTipoCliente;
+    private JLabel lblTituloEdicion;
+
 
     // Mapa de provincias y municipios de Cuba
     private static final Map<String, String[]> PROVINCIAS_MUNICIPIOS = new LinkedHashMap<String, String[]>() {{
@@ -94,6 +111,7 @@ public class ListadoClientes extends JDialog {
         setLocationRelativeTo(null);
         getContentPane().setLayout(null);
         setTitle("Listado de Clientes");
+        setModal(true); // Hacer la ventana modal
         
         initComponents();
         configurarMenuContextual();
@@ -107,7 +125,45 @@ public class ListadoClientes extends JDialog {
         return instance;
     }
 
-    // Inicialización de componentes principales
+    // Método estático para abrir la ventana
+    public static void abrirListadoClientes() {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                // Verificar si ya existe una instancia visible
+                if (instance != null && instance.isVisible()) {
+                    JOptionPane.showMessageDialog(null, 
+                        "El listado de clientes ya está abierto", 
+                        "Advertencia", JOptionPane.WARNING_MESSAGE);
+                    instance.toFront(); // Traer al frente la ventana existente
+                    return;
+                }
+                
+                ListadoClientes dialog = ListadoClientes.getInstance();
+                dialog.mostrarVentana();
+                
+                if (dialog.isVisible()) {
+                    UIManager.put("OptionPane.messageFont", new Font("Serif", Font.BOLD, 20));
+                    UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.BOLD, 18));
+                    UIManager.put("OptionPane.background", new Color(240, 240, 240));
+                    UIManager.put("Panel.background", new Color(240, 240, 240));
+                    UIManager.put("OptionPane.title", new Font("Serif",Font.PLAIN,20));
+                    
+                    dialog.toFront();
+                }
+            }
+        });
+    }
+
+    @Override
+    public void dispose() {
+        instance = null;
+        super.dispose();
+    }
+
+
+    
+
     private void initComponents() {
         tableModel = new ClienteTableModel();
         tableModel.cargarClientes();
@@ -140,287 +196,610 @@ public class ListadoClientes extends JDialog {
         lblListadoDeClientes.setBounds(15, 0, 195, 20);
         panel.add(lblListadoDeClientes);
         
+        // Botón Crear Cliente
+        btnCrearCliente = new JButton("Crear Cliente");
+        btnCrearCliente.setForeground(new Color(0, 0, 153));
+        btnCrearCliente.setBackground(Color.WHITE);
+        btnCrearCliente.setFont(new Font("Serif", Font.PLAIN, 18));
+        btnCrearCliente.setBounds(850, 0, 180, 30);
+        btnCrearCliente.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                abrirPanelCreacion();
+            }
+        });
+        panel.add(btnCrearCliente);
+        
         initPanelEdicion();
+        initPanelCreacion();
     }
 
-    // Inicialización del panel de edición
+    private void abrirPanelCreacion() {
+        modoEdicion = false;
+        resetearCamposCreacion();
+        panelEdicion.setVisible(false);
+        panelCreacion.setVisible(true);
+        setSize(1478, 683);
+    }
+    
+    private void resetearCamposCreacion() {
+        txtNombreCreate.setText("");
+        txtDireccionCreate.setText("");
+        txtNumIdCreate.setText("");
+        txtOrganismoCreate.setText("");
+        cbProvinciaCreate.setSelectedItem("La Habana");
+        cbTipoCliente.setSelectedItem("Persona Natural");
+        mostrarCamposSegunTipoCreacion("Persona Natural");
+    }
+
+    // ============ PANEL DE CREACIÓN ============
+    private void initPanelCreacion() {
+        panelCreacion = new JPanel();
+        panelCreacion.setBorder(new LineBorder(new Color(0, 0, 0)));
+        panelCreacion.setBounds(1074, 55, 350, 550);
+        panelCreacion.setVisible(false);
+        panelCreacion.setLayout(null);
+        getContentPane().add(panelCreacion);
+        
+        // Componentes comunes
+        JLabel lblCreacionDeCliente = new JLabel("Creación de Cliente");
+        lblCreacionDeCliente.setFont(new Font("Serif", Font.BOLD, 21));
+        lblCreacionDeCliente.setBounds(32, 12, 280, 28);
+        panelCreacion.add(lblCreacionDeCliente);
+        
+        // Combo box para selección de tipo de cliente
+        lblTipoCliente = new JLabel("Tipo de Cliente");
+        lblTipoCliente.setFont(new Font("Serif", Font.PLAIN, 19));
+        lblTipoCliente.setBounds(35, 50, 280, 20);
+        panelCreacion.add(lblTipoCliente);
+        
+        cbTipoCliente = new JComboBox<String>();
+        cbTipoCliente.setFont(new Font("Serif", Font.PLAIN, 18));
+        cbTipoCliente.setBounds(35, 80, 280, 30);
+        cbTipoCliente.addItem("Persona Natural");
+        cbTipoCliente.addItem("Persona Jurídica");
+        cbTipoCliente.addItem("Entidad No Estatal");
+        cbTipoCliente.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String tipoSeleccionado = (String) cbTipoCliente.getSelectedItem();
+                mostrarCamposSegunTipoCreacion(tipoSeleccionado);
+            }
+        });
+        panelCreacion.add(cbTipoCliente);
+        
+        // Campos nombre y dirección
+        lblNombreCreate = new JLabel("Nombre");
+        lblNombreCreate.setFont(new Font("Serif", Font.PLAIN, 19));
+        lblNombreCreate.setBounds(35, 120, 280, 20);
+        panelCreacion.add(lblNombreCreate);
+        
+        txtNombreCreate = new JTextField();
+        txtNombreCreate.setBounds(35, 150, 280, 26);
+        panelCreacion.add(txtNombreCreate);
+        txtNombreCreate.setColumns(10);
+        
+        lblDireccionCreate = new JLabel("Dirección");
+        lblDireccionCreate.setFont(new Font("Serif", Font.PLAIN, 19));
+        lblDireccionCreate.setBounds(35, 190, 280, 20);
+        panelCreacion.add(lblDireccionCreate);
+        
+        txtDireccionCreate = new JTextField();
+        txtDireccionCreate.setBounds(35, 220, 280, 26);
+        panelCreacion.add(txtDireccionCreate);
+        txtDireccionCreate.setColumns(10);
+        
+        // Campos para ubicación
+        lblMunicipioCreate = new JLabel("Municipio");
+        lblMunicipioCreate.setFont(new Font("Serif", Font.PLAIN, 19));
+        lblMunicipioCreate.setBounds(35, 260, 280, 20);
+        panelCreacion.add(lblMunicipioCreate);
+        
+        cbMunicipioCreate = new JComboBox<String>();
+        cbMunicipioCreate.setFont(new Font("Serif", Font.PLAIN, 18));
+        cbMunicipioCreate.setBounds(35, 290, 280, 30);
+        panelCreacion.add(cbMunicipioCreate);
+        
+        lblProvinciaCreate = new JLabel("Provincia");
+        lblProvinciaCreate.setFont(new Font("Serif", Font.PLAIN, 19));
+        lblProvinciaCreate.setBounds(35, 330, 280, 20);
+        panelCreacion.add(lblProvinciaCreate);
+        
+        cbProvinciaCreate = new JComboBox<String>();
+        cbProvinciaCreate.setFont(new Font("Serif", Font.PLAIN, 18));
+        cbProvinciaCreate.setBounds(35, 360, 280, 30);
+        for (String provincia : PROVINCIAS_MUNICIPIOS.keySet()) {
+            cbProvinciaCreate.addItem(provincia);
+        }
+        cbProvinciaCreate.setSelectedItem("La Habana");
+        cargarMunicipiosCreacion((String) cbProvinciaCreate.getSelectedItem());
+        
+        cbProvinciaCreate.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String provinciaSeleccionada = (String) cbProvinciaCreate.getSelectedItem();
+                cargarMunicipiosCreacion(provinciaSeleccionada);
+            }
+        });
+        panelCreacion.add(cbProvinciaCreate);
+        
+        // Panel para PersonaNatural
+        panelPersonaNaturalCreate = new JPanel();
+        panelPersonaNaturalCreate.setBounds(0, 400, 350, 80);
+        panelPersonaNaturalCreate.setLayout(null);
+        panelPersonaNaturalCreate.setVisible(false);
+        panelCreacion.add(panelPersonaNaturalCreate);
+        
+        lblNumIdCreate = new JLabel("Número de Identificación");
+        lblNumIdCreate.setFont(new Font("Serif", Font.PLAIN, 19));
+        lblNumIdCreate.setBounds(35, 0, 280, 20);
+        panelPersonaNaturalCreate.add(lblNumIdCreate);
+        
+        txtNumIdCreate = new JTextField();
+        txtNumIdCreate.setBounds(35, 30, 280, 26);
+        panelPersonaNaturalCreate.add(txtNumIdCreate);
+        txtNumIdCreate.setColumns(10);
+        
+        // Panel para PersonaJuridica
+        panelPersonaJuridicaCreate = new JPanel();
+        panelPersonaJuridicaCreate.setBounds(0, 400, 350, 80);
+        panelPersonaJuridicaCreate.setLayout(null);
+        panelPersonaJuridicaCreate.setVisible(false);
+        panelCreacion.add(panelPersonaJuridicaCreate);
+        
+        lblOrganismoCreate = new JLabel("Organismo");
+        lblOrganismoCreate.setFont(new Font("Serif", Font.PLAIN, 19));
+        lblOrganismoCreate.setBounds(35, 0, 280, 20);
+        panelPersonaJuridicaCreate.add(lblOrganismoCreate);
+        
+        txtOrganismoCreate = new JTextField();
+        txtOrganismoCreate.setBounds(35, 30, 280, 26);
+        panelPersonaJuridicaCreate.add(txtOrganismoCreate);
+        txtOrganismoCreate.setColumns(10);
+        
+        // Panel para EntidadNoEstatal
+        panelEntidadNoEstatalCreate = new JPanel();
+        panelEntidadNoEstatalCreate.setBounds(0, 400, 350, 50);
+        panelEntidadNoEstatalCreate.setLayout(null);
+        panelEntidadNoEstatalCreate.setVisible(false);
+        panelCreacion.add(panelEntidadNoEstatalCreate);
+        
+        // Botones
+        btnAceptarCreate = new JButton("Aceptar");
+        btnAceptarCreate.setForeground(new Color(255, 255, 255));
+        btnAceptarCreate.setBackground(new Color(0, 0, 153));
+        btnAceptarCreate.setFont(new Font("Serif", Font.PLAIN, 19));
+        btnAceptarCreate.setBounds(35, 500, 120, 30);
+        btnAceptarCreate.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+              crearCliente();
+            }
+        });
+        panelCreacion.add(btnAceptarCreate);
+        
+        btnCancelarCreate = new JButton("Cancelar");
+        btnCancelarCreate.setBackground(new Color(255, 255, 255));
+        btnCancelarCreate.setForeground(new Color(0, 0, 153));
+        btnCancelarCreate.setFont(new Font("Serif", Font.PLAIN, 19));
+        btnCancelarCreate.setBounds(195, 500, 120, 30);
+        btnCancelarCreate.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                cerrarPanelEdicion();
+            }
+        });
+        panelCreacion.add(btnCancelarCreate);
+    }
+
+    private void cargarMunicipiosCreacion(String provincia) {
+        cbMunicipioCreate.removeAllItems();
+        String[] municipios = PROVINCIAS_MUNICIPIOS.get(provincia);
+        if (municipios != null) {
+            for (String municipio : municipios) {
+                cbMunicipioCreate.addItem(municipio);
+            }
+        }
+    }
+
+    private void mostrarCamposSegunTipoCreacion(String tipoCliente) {
+        resetearValidacionesCreacion();
+        
+        panelPersonaNaturalCreate.setVisible(false);
+        panelPersonaJuridicaCreate.setVisible(false);
+        panelEntidadNoEstatalCreate.setVisible(false);
+        
+        if (tipoCliente.equals("Persona Natural")) {
+            panelPersonaNaturalCreate.setVisible(true);
+            cbMunicipioCreate.setVisible(true);
+            cbProvinciaCreate.setVisible(true);
+            lblMunicipioCreate.setVisible(true);
+            lblProvinciaCreate.setVisible(true);
+        } 
+        else if (tipoCliente.equals("Persona Jurídica")) {
+            panelPersonaJuridicaCreate.setVisible(true);
+            cbMunicipioCreate.setVisible(true);
+            cbProvinciaCreate.setVisible(true);
+            lblMunicipioCreate.setVisible(true);
+            lblProvinciaCreate.setVisible(true);
+        } 
+        else if (tipoCliente.equals("Entidad No Estatal")) {
+            panelEntidadNoEstatalCreate.setVisible(true);
+            cbMunicipioCreate.setVisible(false);
+            cbProvinciaCreate.setVisible(false);
+            lblMunicipioCreate.setVisible(false);
+            lblProvinciaCreate.setVisible(false);
+        }
+    }
+
+    private void resetearValidacionesCreacion() {
+        lblNombreCreate.setForeground(Color.BLACK);
+        lblDireccionCreate.setForeground(Color.BLACK);
+        lblNumIdCreate.setForeground(Color.BLACK);
+        lblOrganismoCreate.setForeground(Color.BLACK);
+    }
+    private void crearCliente() {
+        boolean agregado = false;
+        
+        try {
+            // Validar campos comunes
+            boolean nombreValido = validarNombreCreacion(txtNombreCreate.getText());
+            boolean direccionValida = validarDireccionCreacion(txtDireccionCreate.getText());
+            boolean valido = nombreValido && direccionValida;
+            
+            String tipoCliente = (String) cbTipoCliente.getSelectedItem();
+            Cliente nuevoCliente = null;
+            
+            // Validar campos específicos según el tipo de cliente
+            if (tipoCliente.equals("Persona Natural")) {
+                boolean numIdValido = validarNumIdCreacion(txtNumIdCreate.getText());
+                valido = valido && numIdValido;
+                
+                if (valido) {
+                    nuevoCliente = new PersonaNatural(
+                        txtNombreCreate.getText(),
+                        txtDireccionCreate.getText(),
+                        (String) cbMunicipioCreate.getSelectedItem(),
+                        (String) cbProvinciaCreate.getSelectedItem(),
+                        txtNumIdCreate.getText()
+                    );
+                    EmpresaTelecomunicaciones.getInstancia().agregarPersonaNatural(
+                        txtDireccionCreate.getText(),
+                        (String) cbMunicipioCreate.getSelectedItem(),
+                        (String) cbProvinciaCreate.getSelectedItem(),
+                        txtNombreCreate.getText(), 
+                        txtNumIdCreate.getText()
+                    );
+                    agregado = true;
+                }
+            } 
+            else if (tipoCliente.equals("Persona Jurídica")) {
+                boolean organismoValido = validarOrganismoCreacion(txtOrganismoCreate.getText());
+                valido = valido && organismoValido;
+                
+                if (valido) {
+                    nuevoCliente = new PersonaJuridica(
+                        txtNombreCreate.getText(), 
+                        txtDireccionCreate.getText(),
+                        (String) cbMunicipioCreate.getSelectedItem(),
+                        (String) cbProvinciaCreate.getSelectedItem(),
+                        txtOrganismoCreate.getText(),
+                        null
+                    );
+                    EmpresaTelecomunicaciones.getInstancia().agregarPersonaJuridica(
+                        txtDireccionCreate.getText(), 
+                        (String) cbMunicipioCreate.getSelectedItem(), 
+                        (String) cbProvinciaCreate.getSelectedItem(), 
+                        txtNombreCreate.getText(), 
+                        txtOrganismoCreate.getText(), 
+                        null
+                    );
+                    agregado = true;
+                }
+            } 
+            else if (tipoCliente.equals("Entidad No Estatal")) {
+                if (valido) {
+                    nuevoCliente = new EntidadNoEstatal(
+                        txtNombreCreate.getText(),
+                        txtDireccionCreate.getText(),
+                        null
+                    );
+                    EmpresaTelecomunicaciones.getInstancia().agregarEntidadNoEstatal(
+                        txtDireccionCreate.getText(), 
+                        txtNombreCreate.getText(), 
+                        null
+                    );
+                    agregado = true;
+                }
+            }
+            
+            if (!valido) {
+                // Configurar fuente para los mensajes de error
+                UIManager.put("OptionPane.messageFont", new Font("Serif", Font.PLAIN, 18));
+                UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.PLAIN, 16));
+                
+                throw new Exception("Complete todos los campos obligatorios marcados en rojo");
+            }
+            
+            // Verificar si el cliente ya existe
+            if (EmpresaTelecomunicaciones.getInstancia().buscarCliente(nuevoCliente.getNombre()) != null) {
+                throw new Exception("Ya existe un cliente con ese nombre");
+            }
+            
+            if (agregado) {
+                tableModel.cargarClientes();
+                cerrarPanelEdicion();
+                
+                // Configurar fuente para el mensaje de éxito
+                UIManager.put("OptionPane.messageFont", new Font("Serif", Font.PLAIN, 18));
+                UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.PLAIN, 16));
+                
+                JOptionPane.showMessageDialog(this, "Cliente creado exitosamente", 
+                    "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                throw new Exception("No se pudo crear el cliente");
+            }
+        } catch (Exception e) {
+            // Configurar fuente para los mensajes de error
+            UIManager.put("OptionPane.messageFont", new Font("Serif", Font.PLAIN, 18));
+            UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.PLAIN, 16));
+            
+            JOptionPane.showMessageDialog(this, e.getMessage(), 
+                "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+ // ============ PANEL DE EDICIÓN ============
     private void initPanelEdicion() {
-        panelEdicion = new JPanel();
+    	panelEdicion = new JPanel();
         panelEdicion.setBorder(new LineBorder(new Color(0, 0, 0)));
         panelEdicion.setBounds(1074, 55, 350, 550);
         panelEdicion.setVisible(false);
         panelEdicion.setLayout(null);
         getContentPane().add(panelEdicion);
         
-        // Componentes comunes
-        JLabel lblEdicionDeCliente = new JLabel("Edición de Cliente");
-        lblEdicionDeCliente.setFont(new Font("Serif", Font.BOLD, 21));
-        lblEdicionDeCliente.setBounds(32, 12, 280, 28);
-        panelEdicion.add(lblEdicionDeCliente);
+        lblTituloEdicion = new JLabel("Edición de Cliente");
+        lblTituloEdicion.setFont(new Font("Serif", Font.BOLD, 21));
+        lblTituloEdicion.setBounds(32, 12, 280, 28);
+        panelEdicion.add(lblTituloEdicion);
         
         // Campos nombre y dirección
-        lblNombre = new JLabel("Nombre");
-        lblNombre.setFont(new Font("Serif", Font.PLAIN, 19));
-        lblNombre.setBounds(35, 70, 280, 20);
-        panelEdicion.add(lblNombre);
+        lblNombreEdit = new JLabel("Nombre");
+        lblNombreEdit.setFont(new Font("Serif", Font.PLAIN, 19));
+        lblNombreEdit.setBounds(35, 50, 280, 20);
+        panelEdicion.add(lblNombreEdit);
         
-        txtNombre = new JTextField();
-        txtNombre.setBounds(35, 100, 280, 26);
-        panelEdicion.add(txtNombre);
-        txtNombre.setColumns(10);
+        txtNombreEdit = new JTextField();
+        txtNombreEdit.setBounds(35, 80, 280, 26);
+        panelEdicion.add(txtNombreEdit);
+        txtNombreEdit.setColumns(10);
         
-        lblDireccion = new JLabel("Dirección");
-        lblDireccion.setFont(new Font("Serif", Font.PLAIN, 19));
-        lblDireccion.setBounds(35, 140, 280, 20);
-        panelEdicion.add(lblDireccion);
+        lblDireccionEdit = new JLabel("Dirección");
+        lblDireccionEdit.setFont(new Font("Serif", Font.PLAIN, 19));
+        lblDireccionEdit.setBounds(35, 120, 280, 20);
+        panelEdicion.add(lblDireccionEdit);
         
-        txtDireccion = new JTextField();
-        txtDireccion.setBounds(35, 170, 280, 26);
-        panelEdicion.add(txtDireccion);
-        txtDireccion.setColumns(10);
+        txtDireccionEdit = new JTextField();
+        txtDireccionEdit.setBounds(35, 150, 280, 26);
+        panelEdicion.add(txtDireccionEdit);
+        txtDireccionEdit.setColumns(10);
         
-        // Campos para ubicación (solo para PersonaNatural y PersonaJuridica)
-        lblMunicipio = new JLabel("Municipio");
-        lblMunicipio.setFont(new Font("Serif", Font.PLAIN, 19));
-        lblMunicipio.setBounds(35, 210, 280, 20);
-        panelEdicion.add(lblMunicipio);
+        // Campos para ubicación
+        lblMunicipioEdit = new JLabel("Municipio");
+        lblMunicipioEdit.setFont(new Font("Serif", Font.PLAIN, 19));
+        lblMunicipioEdit.setBounds(35, 190, 280, 20);
+        panelEdicion.add(lblMunicipioEdit);
         
-        cbMunicipio = new JComboBox<String>();
-        cbMunicipio.setBounds(35, 240, 280, 26);
-        panelEdicion.add(cbMunicipio);
+        cbMunicipioEdit = new JComboBox<String>();
+        cbMunicipioEdit.setFont(new Font("Serif", Font.PLAIN, 18));
+        cbMunicipioEdit.setBounds(35, 220, 280, 30);
+        panelEdicion.add(cbMunicipioEdit);
         
-        lblProvincia = new JLabel("Provincia");
-        lblProvincia.setFont(new Font("Serif", Font.PLAIN, 19));
-        lblProvincia.setBounds(35, 280, 280, 20);
-        panelEdicion.add(lblProvincia);
+        lblProvinciaEdit = new JLabel("Provincia");
+        lblProvinciaEdit.setFont(new Font("Serif", Font.PLAIN, 19));
+        lblProvinciaEdit.setBounds(35, 260, 280, 20);
+        panelEdicion.add(lblProvinciaEdit);
         
-        cbProvincia = new JComboBox<String>();
-        cbProvincia.setBounds(35, 310, 280, 26);
-        // Cargar provincias
+        cbProvinciaEdit = new JComboBox<String>();
+        cbProvinciaEdit.setFont(new Font("Serif", Font.PLAIN, 18));
+        cbProvinciaEdit.setBounds(35, 290, 280, 30);
         for (String provincia : PROVINCIAS_MUNICIPIOS.keySet()) {
-            cbProvincia.addItem(provincia);
+            cbProvinciaEdit.addItem(provincia);
         }
-        // Establecer La Habana como selección por defecto
-        cbProvincia.setSelectedItem("La Habana");
-        // Cargar municipios de la provincia seleccionada
-        cargarMunicipios((String) cbProvincia.getSelectedItem());
+        cbProvinciaEdit.setSelectedItem("La Habana");
+        cargarMunicipiosEdicion((String) cbProvinciaEdit.getSelectedItem());
         
-        // Listener para cuando cambie la provincia
-        cbProvincia.addActionListener(new ActionListener() {
+        cbProvinciaEdit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String provinciaSeleccionada = (String) cbProvincia.getSelectedItem();
-                cargarMunicipios(provinciaSeleccionada);
+                String provinciaSeleccionada = (String) cbProvinciaEdit.getSelectedItem();
+                cargarMunicipiosEdicion(provinciaSeleccionada);
             }
         });
-        
-        panelEdicion.add(cbProvincia);
+        panelEdicion.add(cbProvinciaEdit);
         
         // Panel para PersonaNatural
-        panelPersonaNatural = new JPanel();
-        panelPersonaNatural.setBounds(0, 350, 350, 80);
-        panelPersonaNatural.setLayout(null);
-        panelPersonaNatural.setVisible(false);
-        panelEdicion.add(panelPersonaNatural);
+        panelPersonaNaturalEdit = new JPanel();
+        panelPersonaNaturalEdit.setBounds(0, 330, 350, 80);
+        panelPersonaNaturalEdit.setLayout(null);
+        panelPersonaNaturalEdit.setVisible(false);
+        panelEdicion.add(panelPersonaNaturalEdit);
         
-        lblNumId = new JLabel("Número de Identificación");
-        lblNumId.setFont(new Font("Serif", Font.PLAIN, 19));
-        lblNumId.setBounds(35, 0, 280, 20);
-        panelPersonaNatural.add(lblNumId);
+        lblNumIdEdit = new JLabel("Número de Identificación");
+        lblNumIdEdit.setFont(new Font("Serif", Font.PLAIN, 19));
+        lblNumIdEdit.setBounds(35, 0, 280, 20);
+        panelPersonaNaturalEdit.add(lblNumIdEdit);
         
-        txtNumId = new JTextField();
-        txtNumId.setBounds(35, 30, 280, 26);
-        panelPersonaNatural.add(txtNumId);
-        txtNumId.setColumns(10);
+        txtNumIdEdit = new JTextField();
+        txtNumIdEdit.setBounds(35, 30, 280, 26);
+        panelPersonaNaturalEdit.add(txtNumIdEdit);
+        txtNumIdEdit.setColumns(10);
         
         // Panel para PersonaJuridica
-        panelPersonaJuridica = new JPanel();
-        panelPersonaJuridica.setBounds(0, 350, 350, 80);
-        panelPersonaJuridica.setLayout(null);
-        panelPersonaJuridica.setVisible(false);
-        panelEdicion.add(panelPersonaJuridica);
+        panelPersonaJuridicaEdit = new JPanel();
+        panelPersonaJuridicaEdit.setBounds(0, 330, 350, 80);
+        panelPersonaJuridicaEdit.setLayout(null);
+        panelPersonaJuridicaEdit.setVisible(false);
+        panelEdicion.add(panelPersonaJuridicaEdit);
         
-        lblOrganismo = new JLabel("Organismo");
-        lblOrganismo.setFont(new Font("Serif", Font.PLAIN, 19));
-        lblOrganismo.setBounds(35, 0, 280, 20);
-        panelPersonaJuridica.add(lblOrganismo);
+        lblOrganismoEdit = new JLabel("Organismo");
+        lblOrganismoEdit.setFont(new Font("Serif", Font.PLAIN, 19));
+        lblOrganismoEdit.setBounds(35, 0, 280, 20);
+        panelPersonaJuridicaEdit.add(lblOrganismoEdit);
         
-        txtOrganismo = new JTextField();
-        txtOrganismo.setBounds(35, 30, 280, 26);
-        panelPersonaJuridica.add(txtOrganismo);
-        txtOrganismo.setColumns(10);
+        txtOrganismoEdit = new JTextField();
+        txtOrganismoEdit.setBounds(35, 30, 280, 26);
+        panelPersonaJuridicaEdit.add(txtOrganismoEdit);
+        txtOrganismoEdit.setColumns(10);
         
-        // Panel para EntidadNoEstatal (sin campos adicionales)
-        panelEntidadNoEstatal = new JPanel();
-        panelEntidadNoEstatal.setBounds(0, 350, 350, 50);
-        panelEntidadNoEstatal.setLayout(null);
-        panelEntidadNoEstatal.setVisible(false);
-        panelEdicion.add(panelEntidadNoEstatal);
+        // Panel para EntidadNoEstatal
+        panelEntidadNoEstatalEdit = new JPanel();
+        panelEntidadNoEstatalEdit.setBounds(0, 330, 350, 50);
+        panelEntidadNoEstatalEdit.setLayout(null);
+        panelEntidadNoEstatalEdit.setVisible(false);
+        panelEdicion.add(panelEntidadNoEstatalEdit);
         
         // Botones
-        btnAceptar = new JButton("Aceptar");
-        btnAceptar.setForeground(new Color(255, 255, 255));
-        btnAceptar.setBackground(new Color(0, 0, 153));
-        btnAceptar.setFont(new Font("Serif", Font.PLAIN, 19));
-        btnAceptar.setBounds(35, 450, 120, 30);
-        panelEdicion.add(btnAceptar);
-        
-        btnCancelar = new JButton("Cancelar");
-        btnCancelar.setBackground(new Color(255, 255, 255));
-        btnCancelar.setForeground(new Color(0, 0, 153));
-        btnCancelar.setFont(new Font("Serif", Font.PLAIN, 19));
-        btnCancelar.setBounds(195, 450, 120, 30);
-        panelEdicion.add(btnCancelar);
-        
-        // Acción para Cancelar
-        btnCancelar.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                cerrarPanelEdicion();
-            }
-        });
-        
-        // Acción para Aceptar
-        btnAceptar.addActionListener(new ActionListener() {
+        btnAceptarEdit = new JButton("Aceptar");
+        btnAceptarEdit.setForeground(new Color(255, 255, 255));
+        btnAceptarEdit.setBackground(new Color(0, 0, 153));
+        btnAceptarEdit.setFont(new Font("Serif", Font.PLAIN, 19));
+        btnAceptarEdit.setBounds(35, 430, 120, 30);
+        btnAceptarEdit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 actualizarCliente();
             }
         });
+        panelEdicion.add(btnAceptarEdit);
+        
+        btnCancelarEdit = new JButton("Cancelar");
+        btnCancelarEdit.setBackground(new Color(255, 255, 255));
+        btnCancelarEdit.setForeground(new Color(0, 0, 153));
+        btnCancelarEdit.setFont(new Font("Serif", Font.PLAIN, 19));
+        btnCancelarEdit.setBounds(195, 430, 120, 30);
+        btnCancelarEdit.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                cerrarPanelEdicion();
+            }
+        });
+        panelEdicion.add(btnCancelarEdit);
     }
 
-    // Método para cargar municipios según la provincia seleccionada
-    private void cargarMunicipios(String provincia) {
-        cbMunicipio.removeAllItems();
+    private void cargarMunicipiosEdicion(String provincia) {
+        cbMunicipioEdit.removeAllItems();
         String[] municipios = PROVINCIAS_MUNICIPIOS.get(provincia);
         if (municipios != null) {
             for (String municipio : municipios) {
-                cbMunicipio.addItem(municipio);
+                cbMunicipioEdit.addItem(municipio);
             }
         }
     }
 
-    // Método para cerrar el panel de edición
-    private void cerrarPanelEdicion() {
-        panelEdicion.setVisible(false);
-        setSize(1090, 683);
-        resetearValidaciones();
-        clienteSeleccionado = null;
-        nombreClienteSeleccionado = null;
-    }
-
-    // Método para mostrar la ventana
-    public void mostrarVentana() {
-        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        setVisible(true);
-        tableModel.cargarClientes();
-    }
-
-    @Override
-    public void dispose() {
-        instance = null;
-        super.dispose();
-    }
-
-    // Muestra campos según el tipo de cliente
-    private void mostrarCamposSegunTipo(Cliente cliente) {
-        resetearValidaciones();
+    private void mostrarCamposSegunTipoEdicion(Cliente cliente) {
+        resetearValidacionesEdicion();
         
-        panelPersonaNatural.setVisible(false);
-        panelPersonaJuridica.setVisible(false);
-        panelEntidadNoEstatal.setVisible(false);
+        panelPersonaNaturalEdit.setVisible(false);
+        panelPersonaJuridicaEdit.setVisible(false);
+        panelEntidadNoEstatalEdit.setVisible(false);
         
-        txtNombre.setText(cliente.getNombre());
-        txtDireccion.setText(cliente.getDireccion());
+        txtNombreEdit.setText(cliente.getNombre());
+        txtDireccionEdit.setText(cliente.getDireccion());
         
         if (cliente instanceof PersonaNatural) {
             PersonaNatural pn = (PersonaNatural) cliente;
-            cbProvincia.setSelectedItem(pn.getProvincia());
-            cbMunicipio.setSelectedItem(pn.getMunicipio());
-            txtNumId.setText(pn.getNumId());
-            panelPersonaNatural.setVisible(true);
+            cbProvinciaEdit.setSelectedItem(pn.getProvincia());
+            cbMunicipioEdit.setSelectedItem(pn.getMunicipio());
+            txtNumIdEdit.setText(pn.getNumId());
+            panelPersonaNaturalEdit.setVisible(true);
             
-            // Mostrar campos de ubicación
-            cbMunicipio.setVisible(true);
-            cbProvincia.setVisible(true);
-            lblMunicipio.setVisible(true);
-            lblProvincia.setVisible(true);
+            cbMunicipioEdit.setVisible(true);
+            cbProvinciaEdit.setVisible(true);
+            lblMunicipioEdit.setVisible(true);
+            lblProvinciaEdit.setVisible(true);
         } 
         else if (cliente instanceof PersonaJuridica) {
             PersonaJuridica pj = (PersonaJuridica) cliente;
-            cbProvincia.setSelectedItem(pj.getProvincia());
-            cbMunicipio.setSelectedItem(pj.getMunicipio());
-            txtOrganismo.setText(pj.getOrganismo());
-            panelPersonaJuridica.setVisible(true);
+            cbProvinciaEdit.setSelectedItem(pj.getProvincia());
+            cbMunicipioEdit.setSelectedItem(pj.getMunicipio());
+            txtOrganismoEdit.setText(pj.getOrganismo());
+            panelPersonaJuridicaEdit.setVisible(true);
             
-            // Mostrar campos de ubicación
-            cbMunicipio.setVisible(true);
-            cbProvincia.setVisible(true);
-            lblMunicipio.setVisible(true);
-            lblProvincia.setVisible(true);
+            cbMunicipioEdit.setVisible(true);
+            cbProvinciaEdit.setVisible(true);
+            lblMunicipioEdit.setVisible(true);
+            lblProvinciaEdit.setVisible(true);
         } 
         else if (cliente instanceof EntidadNoEstatal) {
-            panelEntidadNoEstatal.setVisible(true);
+            panelEntidadNoEstatalEdit.setVisible(true);
             
-            // Ocultar campos de ubicación
-            cbMunicipio.setVisible(false);
-            cbProvincia.setVisible(false);
-            lblMunicipio.setVisible(false);
-            lblProvincia.setVisible(false);
+            cbMunicipioEdit.setVisible(false);
+            cbProvinciaEdit.setVisible(false);
+            lblMunicipioEdit.setVisible(false);
+            lblProvinciaEdit.setVisible(false);
         }
     }
 
-    // Actualiza los datos del cliente
+    private void resetearValidacionesEdicion() {
+        lblNombreEdit.setForeground(Color.BLACK);
+        lblDireccionEdit.setForeground(Color.BLACK);
+        lblNumIdEdit.setForeground(Color.BLACK);
+        lblOrganismoEdit.setForeground(Color.BLACK);
+    }
+
     private void actualizarCliente() {
         if (clienteSeleccionado == null) return;
         
         try {
-            // Verificar si el cliente sigue existente
-            Cliente clienteActual = EmpresaTelecomunicaciones.getInstancia().buscarCliente(nombreClienteSeleccionado);
+            Cliente clienteActual = EmpresaTelecomunicaciones.getInstancia()
+                              .buscarCliente(nombreClienteSeleccionado);
             if (clienteActual == null) {
+                // Configurar fuente para los mensajes de error
+                UIManager.put("OptionPane.messageFont", new Font("Serif", Font.PLAIN, 18));
+                UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.PLAIN, 16));
+                
                 JOptionPane.showMessageDialog(this, 
-                    "El cliente ha sido eliminado y no puede ser editado", 
+                    "El cliente ha sido eliminado", 
                     "Error", JOptionPane.ERROR_MESSAGE);
                 cerrarPanelEdicion();
                 return;
             }
             
-            // Validar campos comunes
-            boolean valido = true;
-            
-            if (!validarNombre(txtNombre.getText())) valido = false;
-            if (!validarDireccion(txtDireccion.getText())) valido = false;
+            boolean nombreValido = validarNombreEdicion(txtNombreEdit.getText());
+            boolean direccionValida = validarDireccionEdicion(txtDireccionEdit.getText());
+            boolean valido = nombreValido && direccionValida;
             
             if (clienteSeleccionado instanceof PersonaNatural) {
-                if (!validarNumId(txtNumId.getText())) valido = false;
+                boolean numIdValido = validarNumIdEdicion(txtNumIdEdit.getText());
+                valido = valido && numIdValido;
             } 
             else if (clienteSeleccionado instanceof PersonaJuridica) {
-                if (!validarOrganismo(txtOrganismo.getText())) valido = false;
+                boolean organismoValido = validarOrganismoEdicion(txtOrganismoEdit.getText());
+                valido = valido && organismoValido;
             }
             
             if (!valido) {
-                throw new Exception("Por favor complete todos los campos obligatorios");
+                // Configurar fuente para los mensajes de error
+                UIManager.put("OptionPane.messageFont", new Font("Serif", Font.PLAIN, 18));
+                UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.PLAIN, 16));
+                
+                throw new Exception("Complete todos los campos obligatorios marcados en rojo");
             }
             
-            // Si todo está validado, proceder con la actualización
-            String nombre = txtNombre.getText();
-            String direccion = txtDireccion.getText();
-            String provincia = (String) cbProvincia.getSelectedItem();
-            String municipio = (String) cbMunicipio.getSelectedItem();
+            String nombre = txtNombreEdit.getText();
+            String direccion = txtDireccionEdit.getText();
             
             if (clienteSeleccionado instanceof PersonaNatural) {
                 PersonaNatural pn = (PersonaNatural) clienteSeleccionado;
                 pn.setNombre(nombre);
                 pn.setDireccion(direccion);
-                pn.setMunicipio(municipio);
-                pn.setProvincia(provincia);
-                pn.setNumId(txtNumId.getText());
+                pn.setMunicipio((String) cbMunicipioEdit.getSelectedItem());
+                pn.setProvincia((String) cbProvinciaEdit.getSelectedItem());
+                pn.setNumId(txtNumIdEdit.getText());
             } 
             else if (clienteSeleccionado instanceof PersonaJuridica) {
                 PersonaJuridica pj = (PersonaJuridica) clienteSeleccionado;
                 pj.setNombre(nombre);
                 pj.setDireccion(direccion);
-                pj.setMunicipio(municipio);
-                pj.setProvincia(provincia);
-                pj.setOrganismo(txtOrganismo.getText());
+                pj.setMunicipio((String) cbMunicipioEdit.getSelectedItem());
+                pj.setProvincia((String) cbProvinciaEdit.getSelectedItem());
+                pj.setOrganismo(txtOrganismoEdit.getText());
             } 
             else if (clienteSeleccionado instanceof EntidadNoEstatal) {
                 EntidadNoEstatal ene = (EntidadNoEstatal) clienteSeleccionado;
@@ -428,71 +807,77 @@ public class ListadoClientes extends JDialog {
                 ene.setDireccion(direccion);
             }
             
-            // Actualizar la tabla
             tableModel.cargarClientes();
             cerrarPanelEdicion();
             
-            JOptionPane.showMessageDialog(this, "Cliente actualizado correctamente", 
+            // Configurar fuente para el mensaje de éxito
+            UIManager.put("OptionPane.messageFont", new Font("Serif", Font.PLAIN, 18));
+            UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.PLAIN, 16));
+            
+            JOptionPane.showMessageDialog(this, "Cliente actualizado", 
                 "Éxito", JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception e) {
+            // Configurar fuente para los mensajes de error
+            UIManager.put("OptionPane.messageFont", new Font("Serif", Font.PLAIN, 18));
+            UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.PLAIN, 16));
+            
             JOptionPane.showMessageDialog(this, e.getMessage(), 
                 "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-
-    // Métodos de validación
-    public boolean validarNombre(String nombre) {
-        boolean valido = !nombre.isEmpty();
-        lblNombre.setForeground(valido ? Color.BLACK : Color.RED);
+    
+    
+    
+    
+    // Métodos de validación para creación
+    private boolean validarNombreCreacion(String nombre) {
+        boolean valido = !nombre.trim().isEmpty();
+        lblNombreCreate.setForeground(valido ? Color.BLACK : Color.RED);
         return valido;
     }
     
-    public boolean validarDireccion(String direccion) {
-        boolean valido = !direccion.isEmpty();
-        lblDireccion.setForeground(valido ? Color.BLACK : Color.RED);
+    private boolean validarDireccionCreacion(String direccion) {
+        boolean valido = !direccion.trim().isEmpty();
+        lblDireccionCreate.setForeground(valido ? Color.BLACK : Color.RED);
         return valido;
     }
     
-    public boolean validarNumId(String numId) {
-        boolean valido = !numId.isEmpty();
-        lblNumId.setForeground(valido ? Color.BLACK : Color.RED);
+    private boolean validarNumIdCreacion(String numId) {
+        boolean valido = !numId.trim().isEmpty();
+        lblNumIdCreate.setForeground(valido ? Color.BLACK : Color.RED);
         return valido;
     }
     
-    public boolean validarOrganismo(String organismo) {
-        boolean valido = !organismo.isEmpty();
-        lblOrganismo.setForeground(valido ? Color.BLACK : Color.RED);
+    private boolean validarOrganismoCreacion(String organismo) {
+        boolean valido = !organismo.trim().isEmpty();
+        lblOrganismoCreate.setForeground(valido ? Color.BLACK : Color.RED);
         return valido;
-    }
-    
-    private void resetearValidaciones() {
-        lblNombre.setForeground(Color.BLACK);
-        lblDireccion.setForeground(Color.BLACK);
-        if (lblNumId != null) lblNumId.setForeground(Color.BLACK);
-        if (lblOrganismo != null) lblOrganismo.setForeground(Color.BLACK);
     }
 
-    // Método estático para abrir la ventana
-    public static void abrirListadoClientes() {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                ListadoClientes dialog = ListadoClientes.getInstance();
-                dialog.mostrarVentana();
-                
-                if (dialog.isVisible()) {
-                    UIManager.put("OptionPane.messageFont", new Font("Serif", Font.BOLD, 20));
-                    UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.BOLD, 18));
-                    UIManager.put("OptionPane.background", new Color(240, 240, 240));
-                    UIManager.put("Panel.background", new Color(240, 240, 240));
-                    UIManager.put("OptionPane.title", new Font("Serif",Font.PLAIN,20));
-                    
-                    dialog.toFront();
-                }
-            }
-        });
+    // Métodos de validación para edición
+    private boolean validarNombreEdicion(String nombre) {
+        boolean valido = !nombre.trim().isEmpty();
+        lblNombreEdit.setForeground(valido ? Color.BLACK : Color.RED);
+        return valido;
     }
-
+    
+    private boolean validarDireccionEdicion(String direccion) {
+        boolean valido = !direccion.trim().isEmpty();
+        lblDireccionEdit.setForeground(valido ? Color.BLACK : Color.RED);
+        return valido;
+    }
+    
+    private boolean validarNumIdEdicion(String numId) {
+        boolean valido = !numId.trim().isEmpty();
+        lblNumIdEdit.setForeground(valido ? Color.BLACK : Color.RED);
+        return valido;
+    }
+    
+    private boolean validarOrganismoEdicion(String organismo) {
+        boolean valido = !organismo.trim().isEmpty();
+        lblOrganismoEdit.setForeground(valido ? Color.BLACK : Color.RED);
+        return valido;
+    }
     // Configuración del menú contextual
     private void configurarMenuContextual() {
         final JPopupMenu popupMenu = new JPopupMenu();
@@ -512,9 +897,11 @@ public class ListadoClientes extends JDialog {
                         .buscarCliente(nombreClienteSeleccionado);
                     
                     if (clienteSeleccionado != null) {
+                        modoEdicion = true;
+                        panelCreacion.setVisible(false);
                         panelEdicion.setVisible(true);
                         setSize(1478, 683);
-                        mostrarCamposSegunTipo(clienteSeleccionado);
+                        mostrarCamposSegunTipoEdicion(clienteSeleccionado);
                     }
                 } else {
                     JOptionPane.showMessageDialog(null, 
@@ -543,7 +930,6 @@ public class ListadoClientes extends JDialog {
                             .eliminarCliente(nombreCliente);
                         
                         if (eliminado) {
-                            // Si el cliente eliminado es el mismo que se está editando, cerrar el panel
                             if (nombreClienteSeleccionado != null && 
                                 nombreClienteSeleccionado.equals(nombreCliente)) {
                                 cerrarPanelEdicion();
@@ -591,5 +977,23 @@ public class ListadoClientes extends JDialog {
                 }
             }
         });
+    }
+
+    // Método para mostrar la ventana
+    public void mostrarVentana() {
+        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        setVisible(true);
+        tableModel.cargarClientes();
+    }
+
+    // Método para cerrar el panel de edición/creación
+    private void cerrarPanelEdicion() {
+        panelEdicion.setVisible(false);
+        panelCreacion.setVisible(false);
+        setSize(1090, 683);
+        resetearValidacionesCreacion();
+        resetearValidacionesEdicion();
+        clienteSeleccionado = null;
+        nombreClienteSeleccionado = null;
     }
 }
