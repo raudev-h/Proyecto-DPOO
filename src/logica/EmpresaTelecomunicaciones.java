@@ -113,6 +113,7 @@ public class EmpresaTelecomunicaciones {
 
 	// METODOS
 	
+	
 	//Buscar un cliente con su nombre y actualizar sus datos de nombre y direccion
 	public boolean actualizarCliente(String nombreOriginal,String nuevoNombre, String nuevaDireccion) throws UbicacionInvalidaException,
 										NombreInvalidoException{
@@ -257,6 +258,8 @@ public class EmpresaTelecomunicaciones {
 	}
 
 	//METODOS
+	
+	//Buscar representantes sin clientes a representar(representantes libres)
 	
 	//Buscar representante a partir del ID
 	public Representante buscarRepresentante(String numId){
@@ -476,4 +479,28 @@ public class EmpresaTelecomunicaciones {
         }
         return clientes;
     }
+    
+    //Buscar los representantes que no tienen clientes a representar (representantes libres)
+    
+    public ArrayList<Representante> buscarRepresentantesLibres(){
+    	
+    	ArrayList<Representante> representantesLibres = new ArrayList<Representante>();
+    	
+    	for(Representante r: representantes ){
+    		
+    		if(r.getClienteRepresentado() == null){
+    			representantesLibres.add(r);
+    		}		
+    	}
+    	
+    	return representantesLibres;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
 }

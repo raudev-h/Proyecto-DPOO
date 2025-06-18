@@ -19,7 +19,7 @@ public class ListadoClientes extends JDialog {
     private ClienteTableModel tableModel;
     private static ListadoClientes instance;
     
-    // Campos de edici√É¬≥n
+    // Campos de ediciÛn
     private JPanel panelEdicion;
     private JTextField txtNombreEdit;
     private JTextField txtDireccionEdit;
@@ -33,7 +33,7 @@ public class ListadoClientes extends JDialog {
     private JButton btnAceptarEdit;
     private JButton btnCancelarEdit;
     
-    // Campos de creaci√≥n
+    // Campos de creaciÛn
     private JPanel panelCreacion;
     private JTextField txtNombreCreate;
     private JTextField txtDireccionCreate;
@@ -53,8 +53,7 @@ public class ListadoClientes extends JDialog {
     private String nombreClienteSeleccionado;
     private boolean modoEdicion;
     
-
-    // Etiquetas para validaci√≥n
+    // Etiquetas para validaciÛn
     private JLabel lblNombreEdit, lblDireccionEdit, lblMunicipioEdit, lblProvinciaEdit, lblNumIdEdit, lblOrganismoEdit;
     private JLabel lblNombreCreate, lblDireccionCreate, lblMunicipioCreate, lblProvinciaCreate, lblNumIdCreate, lblOrganismoCreate;
     private JLabel lblTipoCliente;
@@ -63,49 +62,49 @@ public class ListadoClientes extends JDialog {
 
     // Mapa de provincias y municipios de Cuba
     private static final Map<String, String[]> PROVINCIAS_MUNICIPIOS = new LinkedHashMap<String, String[]>() {{
-        put("Pinar del R√≠o", new String[]{"Consolaci√≥n del Sur", "Guane", "La Palma", "Los Palacios", 
-            "Mantua", "Minas de Matahambre", "Pinar del R√≠o", "San Juan y Mart√≠nez", 
-            "San Luis", "Sandino", "Vi√±ales"});
-        put("Artemisa", new String[]{"Alqu√≠zar", "Artemisa", "Bah√≠a Honda", "Bauta", 
-            "Caimito", "Candelaria", "Guanajay", "G√ºira de Melena", "Mariel", 
-            "San Antonio de los Ba√±os", "San Crist√≥bal"});
+        put("Pinar del RÌo", new String[]{"ConsolaciÛn del Sur", "Guane", "La Palma", "Los Palacios", 
+            "Mantua", "Minas de Matahambre", "Pinar del RÌo", "San Juan y MartÌnez", 
+            "San Luis", "Sandino", "ViÒales"});
+        put("Artemisa", new String[]{"AlquÌzar", "Artemisa", "BahÌa Honda", "Bauta", 
+            "Caimito", "Candelaria", "Guanajay", "G¸ira de Melena", "Mariel", 
+            "San Antonio de los BaÒos", "San CristÛbal"});
         put("La Habana", new String[]{"Arroyo Naranjo", "Boyeros", "Centro Habana", "Cerro", 
             "Cotorro", "Diez de Octubre", "Guanabacoa", "La Habana del Este", 
-            "La Habana Vieja", "La Lisa", "Marianao", "Playa", "Plaza de la Revoluci√≥n", 
-            "Regla", "San Miguel del Padr√≥n"});
-        put("Mayabeque", new String[]{"Bataban√≥", "Bejucal", "G√ºines", "Jaruco", 
-            "Madruga", "Melena del Sur", "Nueva Paz", "Quivic√°n", 
-            "San Jos√© de las Lajas", "San Nicol√°s", "Santa Cruz del Norte"});
-        put("Matanzas", new String[]{"Calimete", "C√°rdenas", "Ciudad de Matanzas", "Col√≥n", 
-            "Jag√ºey Grande", "Jovellanos", "Limonar", "Los Arabos", 
-            "Mart√≠", "Pedro Betancourt", "Perico", "Uni√≥n de Reyes", "Varadero"});
+            "La Habana Vieja", "La Lisa", "Marianao", "Playa", "Plaza de la RevoluciÛn", 
+            "Regla", "San Miguel del PadrÛn"});
+        put("Mayabeque", new String[]{"BatabanÛ", "Bejucal", "G¸ines", "Jaruco", 
+            "Madruga", "Melena del Sur", "Nueva Paz", "Quivic·n", 
+            "San JosÈ de las Lajas", "San Nicol·s", "Santa Cruz del Norte"});
+        put("Matanzas", new String[]{"Calimete", "C·rdenas", "Ciudad de Matanzas", "ColÛn", 
+            "Jag¸ey Grande", "Jovellanos", "Limonar", "Los Arabos", 
+            "MartÌ", "Pedro Betancourt", "Perico", "UniÛn de Reyes", "Varadero"});
         put("Cienfuegos", new String[]{"Abreus", "Aguada de Pasajeros", "Cienfuegos", "Cruces", 
             "Cumanayagua", "Lajas", "Palmira", "Rodas"});
-        put("Villa Clara", new String[]{"Caibari√©n", "Camajuan√≠", "Cifuentes", "Corralillo", 
-            "Encrucijada", "Manicaragua", "Placetas", "Quemado de G√ºines", 
+        put("Villa Clara", new String[]{"CaibariÈn", "CamajuanÌ", "Cifuentes", "Corralillo", 
+            "Encrucijada", "Manicaragua", "Placetas", "Quemado de G¸ines", 
             "Ranchuelo", "Remedios", "Sagua la Grande", "Santa Clara", "Santo Domingo"});
-        put("Sancti Sp√≠ritus", new String[]{"Cabaigu√°n", "Fomento", "Jatibonico", "La Sierpe", 
-            "Sancti Sp√≠ritus", "Taguasco", "Trinidad", "Yaguajay"});
-        put("Ciego de √Åvila", new String[]{"Baragu√°", "Bolivia", "Chambas", "Ciego de √Åvila", 
-            "Ciro Redondo", "Florencia", "Majagua", "Mor√≥n", "Primero de Enero", "Venezuela"});
-        put("Camag√ºey", new String[]{"Camag√ºey", "Carlos M. de C√©spedes", "Esmeralda", "Florida", 
-            "Gu√°imaro", "Jimaguay√∫", "Minas", "Najasa", "Nuevitas", "Santa Cruz del Sur", 
-            "Sibanic√∫", "Sierra de Cubitas", "Vertientes"});
-        put("Las Tunas", new String[]{"Amancio", "Colombia", "Jes√∫s Men√©ndez", "Jobabo", 
-            "Las Tunas", "Majibacoa", "Manat√≠", "Puerto Padre"});
-        put("Holgu√≠n", new String[]{"Antilla", "B√°guanos", "Banes", "Cacocum", 
-            "Calixto Garc√≠a", "Cueto", "Frank Pa√≠s", "Gibara", 
-            "Holgu√≠n", "Mayar√≠", "Moa", "Rafael Freyre", "Sagua de T√°namo", "Urbano Noris"});
-        put("Granma", new String[]{"Bartolom√© Mas√≥", "Bayamo", "Buey Arriba", "Campechuela", 
-            "Cauto Cristo", "Guisa", "Jiguan√≠", "Manzanillo", 
-            "Media Luna", "Niquero", "Pil√≥n", "R√≠o Cauto", "Yara"});
-        put("Santiago de Cuba", new String[]{"Contramaestre", "Guam√°", "Mella", "Palma Soriano", 
+        put("Sancti SpÌritus", new String[]{"Cabaigu·n", "Fomento", "Jatibonico", "La Sierpe", 
+            "Sancti SpÌritus", "Taguasco", "Trinidad", "Yaguajay"});
+        put("Ciego de ¡vila", new String[]{"Baragu·", "Bolivia", "Chambas", "Ciego de ¡vila", 
+            "Ciro Redondo", "Florencia", "Majagua", "MorÛn", "Primero de Enero", "Venezuela"});
+        put("Camag¸ey", new String[]{"Camag¸ey", "Carlos M. de CÈspedes", "Esmeralda", "Florida", 
+            "Gu·imaro", "Jimaguay˙", "Minas", "Najasa", "Nuevitas", "Santa Cruz del Sur", 
+            "Sibanic˙", "Sierra de Cubitas", "Vertientes"});
+        put("Las Tunas", new String[]{"Amancio", "Colombia", "Jes˙s MenÈndez", "Jobabo", 
+            "Las Tunas", "Majibacoa", "ManatÌ", "Puerto Padre"});
+        put("HolguÌn", new String[]{"Antilla", "B·guanos", "Banes", "Cacocum", 
+            "Calixto GarcÌa", "Cueto", "Frank PaÌs", "Gibara", 
+            "HolguÌn", "MayarÌ", "Moa", "Rafael Freyre", "Sagua de T·namo", "Urbano Noris"});
+        put("Granma", new String[]{"BartolomÈ MasÛ", "Bayamo", "Buey Arriba", "Campechuela", 
+            "Cauto Cristo", "Guisa", "JiguanÌ", "Manzanillo", 
+            "Media Luna", "Niquero", "PilÛn", "RÌo Cauto", "Yara"});
+        put("Santiago de Cuba", new String[]{"Contramaestre", "Guam·", "Mella", "Palma Soriano", 
             "San Luis", "Santiago de Cuba", "Segundo Frente", "Songo-La Maya", "Tercer Frente"});
-        put("Guant√°namo", new String[]{"Baracoa", "Caimanera", "El Salvador", "Guant√°namo", 
-            "Im√≠as", "Mais√≠", "Manuel Tames", "Niceto P√©rez", "San Antonio del Sur", "Yateras"});
+        put("Guant·namo", new String[]{"Baracoa", "Caimanera", "El Salvador", "Guant·namo", 
+            "ImÌas", "MaisÌ", "Manuel Tames", "Niceto PÈrez", "San Antonio del Sur", "Yateras"});
         put("Isla de la Juventud", new String[]{"Isla de la Juventud"});
     }};
-  
+
     // Constructor privado para Singleton
     private ListadoClientes() {
         setBounds(100, 100, 1087, 684);
@@ -118,7 +117,7 @@ public class ListadoClientes extends JDialog {
         configurarMenuContextual();
     }
 
-    // M√É¬©todo Singleton para obtener la instancia
+    // MÈtodo Singleton para obtener la instancia
     public static synchronized ListadoClientes getInstance() {
         if (instance == null) {
             instance = new ListadoClientes();
@@ -126,8 +125,7 @@ public class ListadoClientes extends JDialog {
         return instance;
     }
 
-
-    // M√©todo est√°tico para abrir la ventana
+    // MÈtodo est·tico para abrir la ventana
     public static void abrirListadoClientes() {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -135,7 +133,7 @@ public class ListadoClientes extends JDialog {
                 // Verificar si ya existe una instancia visible
                 if (instance != null && instance.isVisible()) {
                     JOptionPane.showMessageDialog(null, 
-                        "El listado de clientes ya est√° abierto", 
+                        "El listado de clientes ya est· abierto", 
                         "Advertencia", JOptionPane.WARNING_MESSAGE);
                     instance.toFront(); // Traer al frente la ventana existente
                     return;
@@ -163,8 +161,8 @@ public class ListadoClientes extends JDialog {
         super.dispose();
     }
 
-  
-    // Inicializaci√É¬≥n de componentes principales
+
+    
 
     private void initComponents() {
         tableModel = new ClienteTableModel();
@@ -186,7 +184,6 @@ public class ListadoClientes extends JDialog {
         table.setFont(new Font("Serif", Font.PLAIN, 18));
         scrollPane.setViewportView(table);
         
-
         JTableHeader header = table.getTableHeader();
         Font headerFont = new Font("Serif",Font.PLAIN, 20);
         header.setFont(headerFont);
@@ -199,7 +196,7 @@ public class ListadoClientes extends JDialog {
         lblListadoDeClientes.setBounds(15, 0, 195, 20);
         panel.add(lblListadoDeClientes);
         
-        // Bot√≥n Crear Cliente
+        // BotÛn Crear Cliente
         btnCrearCliente = new JButton("Crear Cliente");
         btnCrearCliente.setForeground(new Color(0, 0, 153));
         btnCrearCliente.setBackground(Color.WHITE);
@@ -216,17 +213,9 @@ public class ListadoClientes extends JDialog {
         initPanelCreacion();
     }
 
-
     private void abrirPanelCreacion() {
         modoEdicion = false;
         resetearCamposCreacion();
-
-    // Inicializaci√É¬≥n del panel de edici√É¬≥n
-    private void initPanelEdicion() {
-        panelEdicion = new JPanel();
-        panelEdicion.setBorder(new LineBorder(new Color(0, 0, 0)));
-        panelEdicion.setBounds(1074, 55, 350, 550);
-
         panelEdicion.setVisible(false);
         panelCreacion.setVisible(true);
         setSize(1478, 683);
@@ -242,7 +231,7 @@ public class ListadoClientes extends JDialog {
         mostrarCamposSegunTipoCreacion("Persona Natural");
     }
 
-    // ============ PANEL DE CREACI√ìN ============
+    // ============ PANEL DE CREACI”N ============
     private void initPanelCreacion() {
         panelCreacion = new JPanel();
         panelCreacion.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -252,13 +241,12 @@ public class ListadoClientes extends JDialog {
         getContentPane().add(panelCreacion);
         
         // Componentes comunes
-
-        JLabel lblCreacionDeCliente = new JLabel("Creaci√≥n de Cliente");
+        JLabel lblCreacionDeCliente = new JLabel("CreaciÛn de Cliente");
         lblCreacionDeCliente.setFont(new Font("Serif", Font.BOLD, 21));
         lblCreacionDeCliente.setBounds(32, 12, 280, 28);
         panelCreacion.add(lblCreacionDeCliente);
         
-        // Combo box para selecci√≥n de tipo de cliente
+        // Combo box para selecciÛn de tipo de cliente
         lblTipoCliente = new JLabel("Tipo de Cliente");
         lblTipoCliente.setFont(new Font("Serif", Font.PLAIN, 19));
         lblTipoCliente.setBounds(35, 50, 280, 20);
@@ -268,7 +256,7 @@ public class ListadoClientes extends JDialog {
         cbTipoCliente.setFont(new Font("Serif", Font.PLAIN, 18));
         cbTipoCliente.setBounds(35, 80, 280, 30);
         cbTipoCliente.addItem("Persona Natural");
-        cbTipoCliente.addItem("Persona Jur√≠dica");
+        cbTipoCliente.addItem("Persona JurÌdica");
         cbTipoCliente.addItem("Entidad No Estatal");
         cbTipoCliente.addActionListener(new ActionListener() {
             @Override
@@ -279,7 +267,7 @@ public class ListadoClientes extends JDialog {
         });
         panelCreacion.add(cbTipoCliente);
         
-        // Campos nombre y direcci√≥n
+        // Campos nombre y direcciÛn
         lblNombreCreate = new JLabel("Nombre");
         lblNombreCreate.setFont(new Font("Serif", Font.PLAIN, 19));
         lblNombreCreate.setBounds(35, 120, 280, 20);
@@ -290,7 +278,7 @@ public class ListadoClientes extends JDialog {
         panelCreacion.add(txtNombreCreate);
         txtNombreCreate.setColumns(10);
         
-        lblDireccionCreate = new JLabel("Direcci√≥n");
+        lblDireccionCreate = new JLabel("DirecciÛn");
         lblDireccionCreate.setFont(new Font("Serif", Font.PLAIN, 19));
         lblDireccionCreate.setBounds(35, 190, 280, 20);
         panelCreacion.add(lblDireccionCreate);
@@ -300,7 +288,7 @@ public class ListadoClientes extends JDialog {
         panelCreacion.add(txtDireccionCreate);
         txtDireccionCreate.setColumns(10);
         
-        // Campos para ubicaci√≥n
+        // Campos para ubicaciÛn
         lblMunicipioCreate = new JLabel("Municipio");
         lblMunicipioCreate.setFont(new Font("Serif", Font.PLAIN, 19));
         lblMunicipioCreate.setBounds(35, 260, 280, 20);
@@ -341,7 +329,7 @@ public class ListadoClientes extends JDialog {
         panelPersonaNaturalCreate.setVisible(false);
         panelCreacion.add(panelPersonaNaturalCreate);
         
-        lblNumIdCreate = new JLabel("N√∫mero de Identificaci√≥n");
+        lblNumIdCreate = new JLabel("N˙mero de IdentificaciÛn");
         lblNumIdCreate.setFont(new Font("Serif", Font.PLAIN, 19));
         lblNumIdCreate.setBounds(35, 0, 280, 20);
         panelPersonaNaturalCreate.add(lblNumIdCreate);
@@ -350,71 +338,6 @@ public class ListadoClientes extends JDialog {
         txtNumIdCreate.setBounds(35, 30, 280, 26);
         panelPersonaNaturalCreate.add(txtNumIdCreate);
         txtNumIdCreate.setColumns(10);
-
-        JLabel lblEdicionDeCliente = new JLabel("Edici√≥n de Cliente");
-        lblEdicionDeCliente.setFont(new Font("Serif", Font.BOLD, 21));
-        lblEdicionDeCliente.setBounds(32, 12, 280, 28);
-        panelEdicion.add(lblEdicionDeCliente);
-        
-        // Campos nombre y direcci√É¬≥n
-        lblNombre = new JLabel("Nombre");
-        lblNombre.setFont(new Font("Serif", Font.PLAIN, 19));
-        lblNombre.setBounds(35, 70, 280, 20);
-        panelEdicion.add(lblNombre);
-        
-        txtNombre = new JTextField();
-        txtNombre.setBounds(35, 100, 280, 26);
-        panelEdicion.add(txtNombre);
-        txtNombre.setColumns(10);
-        
-        lblDireccion = new JLabel("Direcci√≥n");
-        lblDireccion.setFont(new Font("Serif", Font.PLAIN, 19));
-        lblDireccion.setBounds(35, 140, 280, 20);
-        panelEdicion.add(lblDireccion);
-        
-        txtDireccion = new JTextField();
-        txtDireccion.setBounds(35, 170, 280, 26);
-        panelEdicion.add(txtDireccion);
-        txtDireccion.setColumns(10);
-        
-        // Campos para ubicaci√É¬≥n (solo para PersonaNatural y PersonaJuridica)
-        lblMunicipio = new JLabel("Municipio");
-        lblMunicipio.setFont(new Font("Serif", Font.PLAIN, 19));
-        lblMunicipio.setBounds(35, 210, 280, 20);
-        panelEdicion.add(lblMunicipio);
-        
-        txtMunicipio = new JTextField();
-        txtMunicipio.setBounds(35, 240, 280, 26);
-        panelEdicion.add(txtMunicipio);
-        txtMunicipio.setColumns(10);
-        
-        lblProvincia = new JLabel("Provincia");
-        lblProvincia.setFont(new Font("Serif", Font.PLAIN, 19));
-        lblProvincia.setBounds(35, 280, 280, 20);
-        panelEdicion.add(lblProvincia);
-        
-        txtProvincia = new JTextField();
-        txtProvincia.setBounds(35, 310, 280, 26);
-        panelEdicion.add(txtProvincia);
-        txtProvincia.setColumns(10);
-        
-        // Panel para PersonaNatural
-        panelPersonaNatural = new JPanel();
-        panelPersonaNatural.setBounds(0, 350, 350, 80);
-        panelPersonaNatural.setLayout(null);
-        panelPersonaNatural.setVisible(false);
-        panelEdicion.add(panelPersonaNatural);
-        
-        lblNumId = new JLabel("N√É¬∫mero de Identificaci√É¬≥n");
-        lblNumId.setFont(new Font("Serif", Font.PLAIN, 19));
-        lblNumId.setBounds(35, 0, 280, 20);
-        panelPersonaNatural.add(lblNumId);
-        
-        txtNumId = new JTextField();
-        txtNumId.setBounds(35, 30, 280, 26);
-        panelPersonaNatural.add(txtNumId);
-        txtNumId.setColumns(10);
-
         
         // Panel para PersonaJuridica
         panelPersonaJuridicaCreate = new JPanel();
@@ -441,23 +364,16 @@ public class ListadoClientes extends JDialog {
         panelCreacion.add(panelEntidadNoEstatalCreate);
         
         // Botones
-
         btnAceptarCreate = new JButton("Aceptar");
         btnAceptarCreate.setForeground(new Color(255, 255, 255));
         btnAceptarCreate.setBackground(new Color(0, 0, 153));
         btnAceptarCreate.setFont(new Font("Serif", Font.PLAIN, 19));
         btnAceptarCreate.setBounds(35, 500, 120, 30);
         btnAceptarCreate.addActionListener(new ActionListener() {
-
-        
-        // Acci√≥n para Cancelar
-        btnCancelar.addActionListener(new ActionListener() {
-
             public void actionPerformed(ActionEvent e) {
               crearCliente();
             }
         });
-
         panelCreacion.add(btnAceptarCreate);
         
         btnCancelarCreate = new JButton("Cancelar");
@@ -466,18 +382,12 @@ public class ListadoClientes extends JDialog {
         btnCancelarCreate.setFont(new Font("Serif", Font.PLAIN, 19));
         btnCancelarCreate.setBounds(195, 500, 120, 30);
         btnCancelarCreate.addActionListener(new ActionListener() {
-
-        
-        // Acci√≥n para Aceptar
-        btnAceptar.addActionListener(new ActionListener() {
-
             public void actionPerformed(ActionEvent e) {
                 cerrarPanelEdicion();
             }
         });
         panelCreacion.add(btnCancelarCreate);
     }
-
 
     private void cargarMunicipiosCreacion(String provincia) {
         cbMunicipioCreate.removeAllItems();
@@ -503,7 +413,7 @@ public class ListadoClientes extends JDialog {
             lblMunicipioCreate.setVisible(true);
             lblProvinciaCreate.setVisible(true);
         } 
-        else if (tipoCliente.equals("Persona Jur√≠dica")) {
+        else if (tipoCliente.equals("Persona JurÌdica")) {
             panelPersonaJuridicaCreate.setVisible(true);
             cbMunicipioCreate.setVisible(true);
             cbProvinciaCreate.setVisible(true);
@@ -517,22 +427,6 @@ public class ListadoClientes extends JDialog {
             lblMunicipioCreate.setVisible(false);
             lblProvinciaCreate.setVisible(false);
         }
-
-    // M√©todo para cerrar el panel de edici√≥n
-    private void cerrarPanelEdicion() {
-        panelEdicion.setVisible(false);
-        setSize(1090, 683);
-        resetearValidaciones();
-        clienteSeleccionado = null;
-        nombreClienteSeleccionado = null;
-    }
-
-    // M√É¬©todo para mostrar la ventana
-    public void mostrarVentana() {
-        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        setVisible(true);
-        tableModel.cargarClientes();
-
     }
 
     private void resetearValidacionesCreacion() {
@@ -553,7 +447,7 @@ public class ListadoClientes extends JDialog {
             String tipoCliente = (String) cbTipoCliente.getSelectedItem();
             Cliente nuevoCliente = null;
             
-            // Validar campos espec√≠ficos seg√∫n el tipo de cliente
+            // Validar campos especÌficos seg˙n el tipo de cliente
             if (tipoCliente.equals("Persona Natural")) {
                 boolean numIdValido = validarNumIdCreacion(txtNumIdCreate.getText());
                 valido = valido && numIdValido;
@@ -576,7 +470,7 @@ public class ListadoClientes extends JDialog {
                     agregado = true;
                 }
             } 
-            else if (tipoCliente.equals("Persona Jur√≠dica")) {
+            else if (tipoCliente.equals("Persona JurÌdica")) {
                 boolean organismoValido = validarOrganismoCreacion(txtOrganismoCreate.getText());
                 valido = valido && organismoValido;
                 
@@ -633,12 +527,12 @@ public class ListadoClientes extends JDialog {
                 tableModel.cargarClientes();
                 cerrarPanelEdicion();
                 
-                // Configurar fuente para el mensaje de √©xito
+                // Configurar fuente para el mensaje de Èxito
                 UIManager.put("OptionPane.messageFont", new Font("Serif", Font.PLAIN, 18));
                 UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.PLAIN, 16));
                 
                 JOptionPane.showMessageDialog(this, "Cliente creado exitosamente", 
-                    "√âxito", JOptionPane.INFORMATION_MESSAGE);
+                    "…xito", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 throw new Exception("No se pudo crear el cliente");
             }
@@ -651,10 +545,8 @@ public class ListadoClientes extends JDialog {
                 "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-    	
 
-
- // ============ PANEL DE EDICI√ìN ============
+ // ============ PANEL DE EDICI”N ============
     private void initPanelEdicion() {
     	panelEdicion = new JPanel();
         panelEdicion.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -662,18 +554,13 @@ public class ListadoClientes extends JDialog {
         panelEdicion.setVisible(false);
         panelEdicion.setLayout(null);
         getContentPane().add(panelEdicion);
-
-    // Muestra campos seg√∫n el tipo de cliente
-    private void mostrarCamposSegunTipo(Cliente cliente) {
-        resetearValidaciones();
-
         
-        lblTituloEdicion = new JLabel("Edici√≥n de Cliente");
+        lblTituloEdicion = new JLabel("EdiciÛn de Cliente");
         lblTituloEdicion.setFont(new Font("Serif", Font.BOLD, 21));
         lblTituloEdicion.setBounds(32, 12, 280, 28);
         panelEdicion.add(lblTituloEdicion);
         
-        // Campos nombre y direcci√≥n
+        // Campos nombre y direcciÛn
         lblNombreEdit = new JLabel("Nombre");
         lblNombreEdit.setFont(new Font("Serif", Font.PLAIN, 19));
         lblNombreEdit.setBounds(35, 50, 280, 20);
@@ -684,7 +571,7 @@ public class ListadoClientes extends JDialog {
         panelEdicion.add(txtNombreEdit);
         txtNombreEdit.setColumns(10);
         
-        lblDireccionEdit = new JLabel("Direcci√≥n");
+        lblDireccionEdit = new JLabel("DirecciÛn");
         lblDireccionEdit.setFont(new Font("Serif", Font.PLAIN, 19));
         lblDireccionEdit.setBounds(35, 120, 280, 20);
         panelEdicion.add(lblDireccionEdit);
@@ -694,7 +581,7 @@ public class ListadoClientes extends JDialog {
         panelEdicion.add(txtDireccionEdit);
         txtDireccionEdit.setColumns(10);
         
-        // Campos para ubicaci√≥n
+        // Campos para ubicaciÛn
         lblMunicipioEdit = new JLabel("Municipio");
         lblMunicipioEdit.setFont(new Font("Serif", Font.PLAIN, 19));
         lblMunicipioEdit.setBounds(35, 190, 280, 20);
@@ -735,7 +622,7 @@ public class ListadoClientes extends JDialog {
         panelPersonaNaturalEdit.setVisible(false);
         panelEdicion.add(panelPersonaNaturalEdit);
         
-        lblNumIdEdit = new JLabel("N√∫mero de Identificaci√≥n");
+        lblNumIdEdit = new JLabel("N˙mero de IdentificaciÛn");
         lblNumIdEdit.setFont(new Font("Serif", Font.PLAIN, 19));
         lblNumIdEdit.setBounds(35, 0, 280, 20);
         panelPersonaNaturalEdit.add(lblNumIdEdit);
@@ -822,13 +709,10 @@ public class ListadoClientes extends JDialog {
             txtNumIdEdit.setText(pn.getNumId());
             panelPersonaNaturalEdit.setVisible(true);
             
-
-            // Mostrar campos de ubicaci√≥n
-            txtMunicipio.setVisible(true);
-            txtProvincia.setVisible(true);
-            lblMunicipio.setVisible(true);
-            lblProvincia.setVisible(true);
-
+            cbMunicipioEdit.setVisible(true);
+            cbProvinciaEdit.setVisible(true);
+            lblMunicipioEdit.setVisible(true);
+            lblProvinciaEdit.setVisible(true);
         } 
         else if (cliente instanceof PersonaJuridica) {
             PersonaJuridica pj = (PersonaJuridica) cliente;
@@ -837,23 +721,18 @@ public class ListadoClientes extends JDialog {
             txtOrganismoEdit.setText(pj.getOrganismo());
             panelPersonaJuridicaEdit.setVisible(true);
             
-    // Mostrar campos de ubicaci√≥n
-            txtMunicipio.setVisible(true);
-            txtProvincia.setVisible(true);
-            lblMunicipio.setVisible(true);
-            lblProvincia.setVisible(true);
-
+            cbMunicipioEdit.setVisible(true);
+            cbProvinciaEdit.setVisible(true);
+            lblMunicipioEdit.setVisible(true);
+            lblProvinciaEdit.setVisible(true);
         } 
         else if (cliente instanceof EntidadNoEstatal) {
             panelEntidadNoEstatalEdit.setVisible(true);
             
-
-            // Ocultar campos de ubicaci√≥n
-            txtMunicipio.setVisible(false);
-            txtProvincia.setVisible(false);
-            lblMunicipio.setVisible(false);
-            lblProvincia.setVisible(false);
-
+            cbMunicipioEdit.setVisible(false);
+            cbProvinciaEdit.setVisible(false);
+            lblMunicipioEdit.setVisible(false);
+            lblProvinciaEdit.setVisible(false);
         }
     }
 
@@ -903,11 +782,8 @@ public class ListadoClientes extends JDialog {
                 throw new Exception("Complete todos los campos obligatorios marcados en rojo");
             }
             
-
-            // Si todo est√° validado, proceder con la actualizaci√≥n
-            String nombre = txtNombre.getText();
-            String direccion = txtDireccion.getText();
-
+            String nombre = txtNombreEdit.getText();
+            String direccion = txtDireccionEdit.getText();
             
             if (clienteSeleccionado instanceof PersonaNatural) {
                 PersonaNatural pn = (PersonaNatural) clienteSeleccionado;
@@ -934,14 +810,12 @@ public class ListadoClientes extends JDialog {
             tableModel.cargarClientes();
             cerrarPanelEdicion();
             
-
-            // Configurar fuente para el mensaje de √©xito
+            // Configurar fuente para el mensaje de Èxito
             UIManager.put("OptionPane.messageFont", new Font("Serif", Font.PLAIN, 18));
             UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.PLAIN, 16));
             
             JOptionPane.showMessageDialog(this, "Cliente actualizado", 
-                "√âxito", JOptionPane.INFORMATION_MESSAGE);
-
+                "…xito", JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception e) {
             // Configurar fuente para los mensajes de error
             UIManager.put("OptionPane.messageFont", new Font("Serif", Font.PLAIN, 18));
@@ -951,15 +825,15 @@ public class ListadoClientes extends JDialog {
                 "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-
-  
-    // M√©todos de validaci√≥n para creaci√≥n
+    
+    
+    
+    
+    // MÈtodos de validaciÛn para creaciÛn
     private boolean validarNombreCreacion(String nombre) {
         boolean valido = !nombre.trim().isEmpty();
         lblNombreCreate.setForeground(valido ? Color.BLACK : Color.RED);
-
         return valido;
-      
     }
     
     private boolean validarDireccionCreacion(String direccion) {
@@ -980,7 +854,7 @@ public class ListadoClientes extends JDialog {
         return valido;
     }
 
-    // M√©todos de validaci√≥n para edici√≥n
+    // MÈtodos de validaciÛn para ediciÛn
     private boolean validarNombreEdicion(String nombre) {
         boolean valido = !nombre.trim().isEmpty();
         lblNombreEdit.setForeground(valido ? Color.BLACK : Color.RED);
@@ -993,7 +867,6 @@ public class ListadoClientes extends JDialog {
         return valido;
     }
     
-
     private boolean validarNumIdEdicion(String numId) {
         boolean valido = !numId.trim().isEmpty();
         lblNumIdEdit.setForeground(valido ? Color.BLACK : Color.RED);
@@ -1005,40 +878,7 @@ public class ListadoClientes extends JDialog {
         lblOrganismoEdit.setForeground(valido ? Color.BLACK : Color.RED);
         return valido;
     }
-   
-
-    private void resetearValidaciones() {
-        lblNombre.setForeground(Color.BLACK);
-        lblDireccion.setForeground(Color.BLACK);
-        lblMunicipio.setForeground(Color.BLACK);
-        lblProvincia.setForeground(Color.BLACK);
-        if (lblNumId != null) lblNumId.setForeground(Color.BLACK);
-        if (lblOrganismo != null) lblOrganismo.setForeground(Color.BLACK);
-    }
-
-    // M√©todo est√°tico para abrir la ventana
-    public static void abrirListadoClientes() {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                ListadoClientes dialog = ListadoClientes.getInstance();
-                dialog.mostrarVentana();
-                
-                if (dialog.isVisible()) {
-                    UIManager.put("OptionPane.messageFont", new Font("Serif", Font.BOLD, 20));
-                    UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.BOLD, 18));
-                    UIManager.put("OptionPane.background", new Color(240, 240, 240));
-                    UIManager.put("Panel.background", new Color(240, 240, 240));
-                    UIManager.put("OptionPane.title", new Font("Serif",Font.PLAIN,20));
-                    
-                    dialog.toFront();
-                }
-            }
-        });
-    }
-
-    // Configuraci√≥n del men√∫ contextual
-
+    // ConfiguraciÛn del men˙ contextual
     private void configurarMenuContextual() {
         final JPopupMenu popupMenu = new JPopupMenu();
         
@@ -1082,17 +922,14 @@ public class ListadoClientes extends JDialog {
                     String nombreCliente = (String) tableModel.getValueAt(selectedRow, 0);
                     
                     int confirm = JOptionPane.showConfirmDialog(null,
-                        "¬øEst√° seguro que desea eliminar este cliente?", 
-                        "Confirmar eliminaci√≥n", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                        "øEst· seguro que desea eliminar este cliente?", 
+                        "Confirmar eliminaciÛn", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
                     
                     if (confirm == JOptionPane.YES_OPTION) {
                         boolean eliminado = EmpresaTelecomunicaciones.getInstancia()
                             .eliminarCliente(nombreCliente);
                         
                         if (eliminado) {
-
-                            // Si el cliente eliminado es el mismo que se est√° editando, cerrar el panel
-
                             if (nombreClienteSeleccionado != null && 
                                 nombreClienteSeleccionado.equals(nombreCliente)) {
                                 cerrarPanelEdicion();
@@ -1101,7 +938,7 @@ public class ListadoClientes extends JDialog {
                             tableModel.cargarClientes();
                             JOptionPane.showMessageDialog(null, 
                                 "Cliente eliminado correctamente", 
-                                "√É¬âxito", JOptionPane.INFORMATION_MESSAGE);
+                                "…xito", JOptionPane.INFORMATION_MESSAGE);
                         } else {
                             JOptionPane.showMessageDialog(null, 
                                 "No se pudo eliminar el cliente", 
@@ -1142,15 +979,14 @@ public class ListadoClientes extends JDialog {
         });
     }
 
-
-    // M√©todo para mostrar la ventana
+    // MÈtodo para mostrar la ventana
     public void mostrarVentana() {
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setVisible(true);
         tableModel.cargarClientes();
     }
 
-    // M√©todo para cerrar el panel de edici√≥n/creaci√≥n
+    // MÈtodo para cerrar el panel de ediciÛn/creaciÛn
     private void cerrarPanelEdicion() {
         panelEdicion.setVisible(false);
         panelCreacion.setVisible(false);
