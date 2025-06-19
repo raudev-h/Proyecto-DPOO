@@ -518,7 +518,9 @@ public class ListadoClientes extends JDialog {
         lblOrganismoCreate.setForeground(Color.BLACK);
     }
 
+    //Metodo para crear un nuevo cliente en dependencia del cliente que se este intentnando crear
     private void crearCliente() {
+    	
         boolean agregado = false;
         Cliente nuevoCliente = null;
         
@@ -563,10 +565,10 @@ public class ListadoClientes extends JDialog {
                 
                 if (valido) {
                     nuevoCliente = new PersonaJuridica(
+                    	txtNombreCreate.getText(),
                         txtDireccionCreate.getText(), 
                         (String) cbMunicipioCreate.getSelectedItem(), 
-                        (String) cbProvinciaCreate.getSelectedItem(), 
-                        txtNombreCreate.getText(), 
+                        (String) cbProvinciaCreate.getSelectedItem(),  
                         txtOrganismoCreate.getText(), 
                         representanteSeleccionado
                     );
