@@ -48,7 +48,8 @@ public class ListadoClientes extends JDialog {
     private JButton btnCrearCliente;
     private JButton btnSeleccionarRepresentanteCreate;
     private JComboBox<String> cbTipoCliente;
-    private JLabel lblRepresentanteSeleccionadoCreate;
+    private JLabel lblRepresentanteJuridicaCreate;  // Para Persona Jurídica (creación)
+    private JLabel lblRepresentanteEntidadCreate;   // Para Entidad No Estatal (creación)
     private JLabel lblRepresentanteSeleccionadoEdit;
     private JLabel lblRepresentanteSeleccionadoEdit1;
     
@@ -156,7 +157,9 @@ public class ListadoClientes extends JDialog {
             }
         });
     }
-
+    
+    
+    //Liberar la instancia al cerrar el listado
     @Override
     public void dispose() {
         instance = null;
@@ -227,7 +230,15 @@ public class ListadoClientes extends JDialog {
         txtOrganismoCreate.setText("");
         cbProvinciaCreate.setSelectedItem("La Habana");
         cbTipoCliente.setSelectedItem("Persona Natural");
-        lblRepresentanteSeleccionadoCreate.setText("Representante: Ninguno");
+        
+        // Resetear ambas etiquetas
+        if (lblRepresentanteJuridicaCreate != null) {
+            lblRepresentanteJuridicaCreate.setText("Representante: Ninguno");
+        }
+        if (lblRepresentanteEntidadCreate != null) {
+            lblRepresentanteEntidadCreate.setText("Representante: Ninguno");
+        }
+        
         representanteSeleccionado = null;
         mostrarCamposSegunTipoCreacion("Persona Natural");
     }
@@ -243,7 +254,7 @@ public class ListadoClientes extends JDialog {
         getContentPane().add(panelCreacion);
         
         
-        // Componentes comunes
+        // COMPONENTES COMUNES
         JLabel lblCreacionDeCliente = new JLabel("Creación de Cliente");
         lblCreacionDeCliente.setFont(new Font("Serif", Font.BOLD, 21));
         lblCreacionDeCliente.setBounds(32, 12, 280, 28);
@@ -374,13 +385,11 @@ public class ListadoClientes extends JDialog {
         });
         panelPersonaJuridicaCreate.add(btnSeleccionarRepresentanteCreate);
         
-        lblRepresentanteSeleccionadoCreate = new JLabel("Representante: Ninguno");
-        lblRepresentanteSeleccionadoCreate.setFont(new Font("Serif", Font.PLAIN, 16));
-        lblRepresentanteSeleccionadoCreate.setBounds(35, 90, 280, 30);
-        panelPersonaJuridicaCreate.add(lblRepresentanteSeleccionadoCreate);
-        
-        
-        
+        lblRepresentanteJuridicaCreate = new JLabel("Representante: Ninguno");
+        lblRepresentanteJuridicaCreate.setFont(new Font("Serif", Font.PLAIN, 16));
+        lblRepresentanteJuridicaCreate.setBounds(35, 90, 280, 30);
+        panelPersonaJuridicaCreate.add(lblRepresentanteJuridicaCreate);
+         
         
         // Panel para EntidadNoEstatal
         panelEntidadNoEstatalCreate = new JPanel();
@@ -400,11 +409,10 @@ public class ListadoClientes extends JDialog {
                 seleccionarRepresentanteCreacion();
             }
         });
-        panelEntidadNoEstatalCreate.add(btnSeleccionarRepresentanteCreate);
-        lblRepresentanteSeleccionadoCreate = new JLabel("Representante: Ninguno");
-        lblRepresentanteSeleccionadoCreate.setFont(new Font("Serif", Font.PLAIN, 16));
-        lblRepresentanteSeleccionadoCreate.setBounds(35, 40, 280, 30);
-        panelEntidadNoEstatalCreate.add(lblRepresentanteSeleccionadoCreate);
+        lblRepresentanteEntidadCreate = new JLabel("Representante: Ninguno");
+        lblRepresentanteEntidadCreate.setFont(new Font("Serif", Font.PLAIN, 16));
+        lblRepresentanteEntidadCreate.setBounds(35, 40, 280, 30);
+        panelEntidadNoEstatalCreate.add(lblRepresentanteEntidadCreate);
         
         // Botón para seleccionar representante
         btnSeleccionarRepresentanteCreate = new JButton("Seleccionar Representante");
@@ -419,11 +427,6 @@ public class ListadoClientes extends JDialog {
         });
         panelEntidadNoEstatalCreate.add(btnSeleccionarRepresentanteCreate);
         
-        // Etiqueta para mostrar el representante seleccionado
-        lblRepresentanteSeleccionadoCreate = new JLabel("Ningún representante seleccionado");
-        lblRepresentanteSeleccionadoCreate.setFont(new Font("Serif", Font.PLAIN, 16));
-        lblRepresentanteSeleccionadoCreate.setBounds(35, 40, 280, 30);
-        panelEntidadNoEstatalCreate.add(lblRepresentanteSeleccionadoCreate);
         
         // Botones
         btnAceptarCreate = new JButton("Aceptar");
@@ -458,19 +461,26 @@ public class ListadoClientes extends JDialog {
             Representante rep = ListadoSeleccionRepresentante.abrirYSeleccionar();
             if (rep != null) {
                 representanteSeleccionado = rep;
-                // Actualizar todas las etiquetas de representante
-                lblRepresentanteSeleccionadoCreate.setText("Representante: " + rep.getNombreCompleto());
-                lblRepresentanteSeleccionadoEdit.setText("Representante: " + rep.getNombreCompleto());
-                lblRepresentanteSeleccionadoEdit1.setText("Representante: " + rep.getNombreCompleto());
+                
+                // Actualizar ambas etiquetas de creación
+                if (lblRepresentanteJuridicaCreate != null) {
+                    lblRepresentanteJuridicaCreate.setText("Representante: " + rep.getNombreCompleto());
+                }
+                if (lblRepresentanteEntidadCreate != null) {
+                    lblRepresentanteEntidadCreate.setText("Representante: " + rep.getNombreCompleto());
+                }
             }
         }
         else{
             UIManager.put("OptionPane.messageFont", new Font("Serif", Font.PLAIN, 18));
-            JOptionPane.showMessageDialog(this, "No hay representantes disponibles ", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, 
+                "No hay representantes disponibles", 
+                "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
    
 
+    //Metodo para cargar los municipios en el ComboBox en dependencia de la provincia actual
     private void cargarMunicipiosCreacion(String provincia) {
         cbMunicipioCreate.removeAllItems();
         String[] municipios = PROVINCIAS_MUNICIPIOS.get(provincia);
@@ -480,7 +490,8 @@ public class ListadoClientes extends JDialog {
             }
         }
     }
-
+    
+    //Metodo para mostrar solamente los campos necesarios para cada tipo de cliente
     private void mostrarCamposSegunTipoCreacion(String tipoCliente) {
         resetearValidacionesCreacion();
         
@@ -511,6 +522,7 @@ public class ListadoClientes extends JDialog {
         }
     }
 
+    
     private void resetearValidacionesCreacion() {
         lblNombreCreate.setForeground(Color.BLACK);
         lblDireccionCreate.setForeground(Color.BLACK);
