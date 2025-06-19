@@ -2,6 +2,7 @@ package logica;
 
 import java.util.*;
 
+
 import excepciones.*;
 
 public class EmpresaTelecomunicaciones {
@@ -10,12 +11,14 @@ public class EmpresaTelecomunicaciones {
 	private ArrayList<Cliente> clientes;
 	private ArrayList<Servicio> servicios;
 	private ArrayList<Representante> representantes;
+	private ArrayList<Servicio> serviciosDisponibles;
 
 	// Constructor
 	private EmpresaTelecomunicaciones() {
 		clientes = new ArrayList<Cliente>();
 		servicios = new ArrayList<Servicio>();
 		representantes = new ArrayList<Representante>();
+		serviciosDisponibles = new ArrayList<Servicio> ();
 	}
 
 	// Getters y setters
@@ -83,6 +86,13 @@ public class EmpresaTelecomunicaciones {
 	public void setServicios(ArrayList<Servicio> servicios) {
 		this.servicios = servicios;
 	}
+	// Servicios Disponibles
+	public ArrayList<Servicio> getServicioDisponible(){
+		return serviciosDisponibles;
+	}
+	public void setServiciosDisponibles(ArrayList<Servicio> serviciosDisponibles){
+		this.serviciosDisponibles = serviciosDisponibles;
+	}
 
 	// Representantes
 	public ArrayList<Representante> getRepresentantes() {
@@ -92,7 +102,7 @@ public class EmpresaTelecomunicaciones {
 	public void setRepresentantes(ArrayList<Representante> representantes) {
 		this.representantes = representantes;
 	}
-	
+
 	//Eliminar un representante pasandole solamente el ID
 	public boolean eliminarRepresentante(String id){
 
@@ -112,36 +122,36 @@ public class EmpresaTelecomunicaciones {
 	}
 
 	// METODOS
-	
-	
+
+
 	//Buscar un cliente con su nombre y actualizar sus datos de nombre y direccion
 	public boolean actualizarCliente(String nombreOriginal,String nuevoNombre, String nuevaDireccion) throws UbicacionInvalidaException,
-										NombreInvalidoException{
-		
+	NombreInvalidoException{
+
 		boolean actualizado = false;
-		
+
 		for(Cliente c: clientes){
 			if(c.getNombre().equals(nombreOriginal)){
 				c.setNombre(nuevoNombre);
 				c.setDireccion(nuevaDireccion);
 				actualizado = true;
 			}
-			
+
 		}
-		
+
 		return actualizado;
 	}
-	
-	
+
+
 	// Agregar Representante
 	public void agregarRepresentante(String nombreCompleto, String numId) throws NombreInvalidoException, CarnetIdentidadInvalidoException,
-									DuplicadosException{
-		
+	DuplicadosException{
+
 		for(Representante r : representantes){
 			if(r.getNumId().equals(numId))
 				throw new DuplicadosException("Ese representante ya existe");
 		}
-		
+
 		Representante r1 = new Representante(nombreCompleto, numId);
 		representantes.add(r1);
 	}
@@ -149,7 +159,7 @@ public class EmpresaTelecomunicaciones {
 	// Agregar Entidad no estatal
 	public void agregarEntidadNoEstatal(String direccion, String nombreEntidad, Representante representante) 
 			throws NombreInvalidoException, UbicacionInvalidaException, DuplicadosException {
-		
+
 		for(Cliente c : clientes){
 			if(c instanceof EntidadNoEstatal){
 				EntidadNoEstatal ene = (EntidadNoEstatal)c;
@@ -157,7 +167,7 @@ public class EmpresaTelecomunicaciones {
 					throw new DuplicadosException("Esa persona ya existe en nuestro sistema");
 			}
 		}
-		
+
 		Cliente c1 = new EntidadNoEstatal(direccion, nombreEntidad, representante);
 		clientes.add(c1);
 	}
@@ -166,7 +176,7 @@ public class EmpresaTelecomunicaciones {
 	public void agregarPersonaNatural(String direccion, String municipio, String provincia, String nombre,
 			String numId) throws NombreInvalidoException, UbicacionInvalidaException, ProvinciaInvalidaException,
 			CarnetIdentidadInvalidoException, DuplicadosException {
-		
+
 		for(Cliente c : clientes){
 			if(c instanceof PersonaNatural){
 				PersonaNatural pn = (PersonaNatural)c;
@@ -174,7 +184,7 @@ public class EmpresaTelecomunicaciones {
 					throw new DuplicadosException("Esa persona ya existe en nuestro sistema");
 			}
 		}
-			
+
 		Cliente c1 = new PersonaNatural(direccion, municipio, provincia, nombre, numId);
 		clientes.add(c1);
 	}
@@ -183,15 +193,15 @@ public class EmpresaTelecomunicaciones {
 	public void agregarPersonaJuridica(String direccion, String municipio, String provincia, String nombreEmpresaString,
 			String organismo, Representante representante) throws NombreInvalidoException, UbicacionInvalidaException,
 			ProvinciaInvalidaException, DuplicadosException{
-		
+
 		for(Cliente c : clientes){
 			if(c instanceof PersonaJuridica){
 				PersonaJuridica pj = (PersonaJuridica)c;
 				if(pj.getDireccion().equalsIgnoreCase(direccion))
-					throw new DuplicadosException("Esa persona jurÃ­dica ya existe en nuestro sistema");
+					throw new DuplicadosException("Esa persona jurídica ya existe en nuestro sistema");
 			}
 		}
-		
+
 		Cliente c1 = new PersonaJuridica(direccion, municipio, provincia, nombreEmpresaString, organismo,
 				representante);
 		clientes.add(c1);
@@ -199,21 +209,87 @@ public class EmpresaTelecomunicaciones {
 
 	// Agregar Cuenta Nauta
 	public void crearCuentaNauta(Cliente titular, String nick) {
+		
+		boolean tieneTelefono = false;
+		
+		for(int i = 0; i < titular.getServicios().size() && !tieneTelefono ; i++){
+			if(titular.getServicios().get(i) instanceof TelefonoFijo){
+				tieneTelefono = true;
+			}
+		}
+		if(!tieneTelefono)
+			throw new IllegalArgumentException("Para contratar el nauta debe tener teléfono fijo");	
+		
 		Servicio s1 = new CuentaNauta(titular, nick);
 		servicios.add(s1);
 	}
 
+
 	// Agregar Telefono Fijo
 	public void agregarTelefonoFijo(Cliente titular, String numero) {
-		Servicio s1 = new TelefonoFijo(titular, numero);
-		servicios.add(s1);
+
+		if(titular == null){
+			Servicio s1 = new TelefonoFijo(null, numero);
+			serviciosDisponibles.add(s1);
+		}
+		else{
+			Servicio s1 = new TelefonoFijo(titular, numero);
+			servicios.add(s1);
+		}
+	}
+
+	// Asignar un telefono Fijo ya existente
+	public void asignarTelefonoFijo(Cliente titular){
+		Servicio disponible = null;
+		
+		for(int i = 0; i < serviciosDisponibles.size() && disponible == null; i++){
+			if(serviciosDisponibles.get(i) instanceof TelefonoFijo){
+				disponible = serviciosDisponibles.get(i);
+			}
+		}
+		if(disponible == null)
+			throw new IllegalArgumentException("No hay telefono Fijo disponible");
+		
+		disponible.setTitular(titular);
+		servicios.add(disponible);
+		serviciosDisponibles.remove(disponible);
+		
 	}
 
 	// Agregar Telefono Movil
 	public void agregarTelefonoMovil(Cliente titular, String numero, double montoPagar) {
-		Servicio s1 = new TelefonoMovil(titular, numero, montoPagar);
-		servicios.add(s1);
+
+		if(titular == null){
+			Servicio s1 = new TelefonoMovil(null, numero, montoPagar);
+			serviciosDisponibles.add(s1);
+		}
+		else{
+			Servicio s1 = new TelefonoMovil(titular, numero, montoPagar);
+			servicios.add(s1);
+		}
 	}
+
+	// Asignar un telefono Movil ya existente a un cliente
+	public void asignarTelefonoMovil(Cliente titular){
+		TelefonoMovil disponible = null;
+
+		for (int i = 0; i < serviciosDisponibles.size() && disponible == null; i++) {
+			if (serviciosDisponibles.get(i) instanceof TelefonoMovil) {
+				disponible = (TelefonoMovil) serviciosDisponibles.get(i);
+			}
+		}
+		// mï¿½s adelante le cambio la excepcion	
+		if (disponible == null) 
+			throw new IllegalArgumentException("No hay teléfono móvil disponible");
+
+		disponible.setTitular(titular);
+		servicios.add(disponible);
+		serviciosDisponibles.remove(disponible);
+
+	}
+
+
+
 	//Obtener los TelefonosFijos
 	public ArrayList<TelefonoFijo> getTelefonosFijos(){
 
@@ -258,9 +334,9 @@ public class EmpresaTelecomunicaciones {
 	}
 
 	//METODOS
-	
+
 	//Buscar representantes sin clientes a representar(representantes libres)
-	
+
 	//Buscar representante a partir del ID
 	public Representante buscarRepresentante(String numId){
 
@@ -306,26 +382,26 @@ public class EmpresaTelecomunicaciones {
 	public ArrayList<TelefonoMovil> telefonosMovilLLamadasMasMin(int minutos){
 
 		ArrayList<TelefonoMovil> telefonosMovilMasMin = new ArrayList<TelefonoMovil>();
-		
+
 		if(!servicios.isEmpty()){ //Se comprueba que hay al menos un servicio
 			for(Servicio s: servicios){
-					if(s instanceof TelefonoMovil){
-						
-						TelefonoMovil tm = (TelefonoMovil)s;
+				if(s instanceof TelefonoMovil){
 
-						//Buscamos la cantidad de llamadas que superan los X min del telefono							
-							if(!tm.llamadasMasMin(minutos).isEmpty()) {
-			                    telefonosMovilMasMin.add(tm);
-			                }
-						}
+					TelefonoMovil tm = (TelefonoMovil)s;
+
+					//Buscamos la cantidad de llamadas que superan los X min del telefono							
+					if(!tm.llamadasMasMin(minutos).isEmpty()) {
+						telefonosMovilMasMin.add(tm);
 					}
 				}
+			}
+		}
 
 		return telefonosMovilMasMin;
 	}
 
 	// Buscar los clientes que tengan al menoos 30% (4 ) meses de mas de 1000 cup de montoTotal en sus Cuentas Nautas
-	
+
 	public ArrayList<Cliente> clientesMasMilMontoNauta() {
 
 		ArrayList<Cliente> mejoresClientes = new ArrayList<Cliente>();
@@ -340,7 +416,7 @@ public class EmpresaTelecomunicaciones {
 						if(!mejoresClientes.contains(s.getTitular())){
 							mejoresClientes.add(s.getTitular());
 						}
-						
+
 					}
 				}
 			}
@@ -349,9 +425,9 @@ public class EmpresaTelecomunicaciones {
 
 		return mejoresClientes;
 	}
-	
-	
-		
+
+
+
 
 	// Buscar los meses de mayor gasto en kb de todas las Cuentas Nautas
 	public ArrayList<String> mesesMaskbGastadosCuentas() {
@@ -418,7 +494,7 @@ public class EmpresaTelecomunicaciones {
 				}
 			}
 		}
-	
+
 		// Inicializar provincias
 		for (int i = 0; i < provincias.length; i++) {
 			provinciasConCuenta.put(provincias[i], 0);
@@ -442,115 +518,115 @@ public class EmpresaTelecomunicaciones {
 
 		return provinciasOrdenadas;
 	}
-	
+
 	//Clientes con un Consumo mayor a 500 pesos en al menos 3 Llamadas de Larga Distancia
-    //Se puede mejorar el metodo devolviendo un hashmap con los nombres y el monto 
-    public ArrayList<Cliente> clientesAltoConsumoLlamadaFijo(){
+	//Se puede mejorar el metodo devolviendo un hashmap con los nombres y el monto 
+	public ArrayList<Cliente> clientesAltoConsumoLlamadaFijo(){
 
-        ArrayList<Cliente> clientes = new ArrayList<Cliente>();
-        ArrayList<Cliente> clientesEvaluados = new ArrayList<Cliente>();
-        int cantLlamadas = 0;
+		ArrayList<Cliente> clientes = new ArrayList<Cliente>();
+		ArrayList<Cliente> clientesEvaluados = new ArrayList<Cliente>();
+		int cantLlamadas = 0;
 
-        for(Servicio s : servicios){
-            if(s instanceof TelefonoFijo){
-                TelefonoFijo tf = (TelefonoFijo)s;
-                Cliente titular = tf.getTitular();
+		for(Servicio s : servicios){
+			if(s instanceof TelefonoFijo){
+				TelefonoFijo tf = (TelefonoFijo)s;
+				Cliente titular = tf.getTitular();
 
-                // Analizamos a los clientes una sola vez
-                if(!clientesEvaluados.contains(titular)){
-                    clientesEvaluados.add(titular);
-                
-                // Buscamos nuevamente en todos los servicios si ese cliente tiene mas de 1 telefono fijo
-                for(Servicio otro : servicios){
-                    if(otro instanceof TelefonoFijo){
-                        TelefonoFijo otroTf = (TelefonoFijo)otro;
-                        if(otroTf.getTitular().equals(titular)){
-                            for(LlamadaLargaDistancia llamada : otroTf.getLlamadasLargas()){
-                                if(llamada.getTotalFacturar() >= 500)
-                                    cantLlamadas++;
-                            }
-                        }          
-                    }
-                }
-                if(cantLlamadas >= 3)
-                    clientes.add(titular);
-                }
-            }
-        }
-        return clientes;
-    }
-    
-    //Buscar los representantes que no tienen clientes a representar (representantes libres)
-    
-    public synchronized ArrayList<Representante> buscarRepresentantesLibres(){
-    	
-    	ArrayList<Representante> representantesLibres = new ArrayList<Representante>();
-    	
-    	for(Representante r: representantes ){
-    		
-    		if(r.getClienteRepresentado() == null){
-    			representantesLibres.add(r);
-    		}		
-    	}
-    	
-    	return representantesLibres;
-    }
-    
- // Método para asignar representante a un cliente (Persona Jurídica o Entidad No Estatal)
-    public void asignarRepresentanteACliente(Cliente cliente, Representante representante) {
-    	
-        if (cliente != null && representante != null){
-        	
-        	
-	        // Si el cliente ya tenía un representante, lo liberamos
-	        if (cliente instanceof PersonaJuridica) {
-	            PersonaJuridica pj = (PersonaJuridica) cliente;
-	            if (pj.getRepresentantePersonaJuridica() != null) {
-	                pj.getRepresentantePersonaJuridica().setClienteRepresentado(null);
-	            }
-	            pj.setRepresentantePersonaJuridica(representante);
-	        } 
-	        else if (cliente instanceof EntidadNoEstatal) {
-	            EntidadNoEstatal ene = (EntidadNoEstatal) cliente;
-	            if (ene.getRepresentanteEntidad() != null) {
-	                ene.getRepresentanteEntidad().setClienteRepresentado(null);
-	            }
-	            ene.setRepresentanteEntidad(representante);
-	        }
-	        
-	        // Asignamos el cliente al representante
-	        representante.setClienteRepresentado(cliente);
-        }
-    }
+				// Analizamos a los clientes una sola vez
+				if(!clientesEvaluados.contains(titular)){
+					clientesEvaluados.add(titular);
 
-    // Método para desasignar representante de un cliente
-    public synchronized void desasignarRepresentanteDeCliente(Cliente cliente) {
-        if (cliente != null){
-        
-	        if (cliente instanceof PersonaJuridica) {
-	            PersonaJuridica pj = (PersonaJuridica) cliente;
-	            if (pj.getRepresentantePersonaJuridica() != null) {
-	                pj.getRepresentantePersonaJuridica().setClienteRepresentado(null);
-	                System.out.print("Se ha deshasignado un representante");
-	                pj.setRepresentantePersonaJuridica(null);
-	            }
-	        } 
-	        else if (cliente instanceof EntidadNoEstatal) {
-	            EntidadNoEstatal ene = (EntidadNoEstatal) cliente;
-	            if (ene.getRepresentanteEntidad() != null) {
-	            	System.out.print("Se ha deshasignado un representante");
-	                ene.getRepresentanteEntidad().setClienteRepresentado(null);
-	                ene.setRepresentanteEntidad(null);
-	            }
-	        }
-        }
-    }
-    
-    
-    
-    
-    
-    
-    
-    
+					// Buscamos nuevamente en todos los servicios si ese cliente tiene mas de 1 telefono fijo
+					for(Servicio otro : servicios){
+						if(otro instanceof TelefonoFijo){
+							TelefonoFijo otroTf = (TelefonoFijo)otro;
+							if(otroTf.getTitular().equals(titular)){
+								for(LlamadaLargaDistancia llamada : otroTf.getLlamadasLargas()){
+									if(llamada.getTotalFacturar() >= 500)
+										cantLlamadas++;
+								}
+							}          
+						}
+					}
+					if(cantLlamadas >= 3)
+						clientes.add(titular);
+				}
+			}
+		}
+		return clientes;
+	}
+
+	//Buscar los representantes que no tienen clientes a representar (representantes libres)
+
+	public synchronized ArrayList<Representante> buscarRepresentantesLibres(){
+
+		ArrayList<Representante> representantesLibres = new ArrayList<Representante>();
+
+		for(Representante r: representantes ){
+
+			if(r.getClienteRepresentado() == null){
+				representantesLibres.add(r);
+			}		
+		}
+
+		return representantesLibres;
+	}
+
+	// Mï¿½todo para asignar representante a un cliente (Persona Jurï¿½dica o Entidad No Estatal)
+	public void asignarRepresentanteACliente(Cliente cliente, Representante representante) {
+
+		if (cliente != null && representante != null){
+
+
+			// Si el cliente ya tenï¿½a un representante, lo liberamos
+			if (cliente instanceof PersonaJuridica) {
+				PersonaJuridica pj = (PersonaJuridica) cliente;
+				if (pj.getRepresentantePersonaJuridica() != null) {
+					pj.getRepresentantePersonaJuridica().setClienteRepresentado(null);
+				}
+				pj.setRepresentantePersonaJuridica(representante);
+			} 
+			else if (cliente instanceof EntidadNoEstatal) {
+				EntidadNoEstatal ene = (EntidadNoEstatal) cliente;
+				if (ene.getRepresentanteEntidad() != null) {
+					ene.getRepresentanteEntidad().setClienteRepresentado(null);
+				}
+				ene.setRepresentanteEntidad(representante);
+			}
+
+			// Asignamos el cliente al representante
+			representante.setClienteRepresentado(cliente);
+		}
+	}
+
+	// Mï¿½todo para desasignar representante de un cliente
+	public synchronized void desasignarRepresentanteDeCliente(Cliente cliente) {
+		if (cliente != null){
+
+			if (cliente instanceof PersonaJuridica) {
+				PersonaJuridica pj = (PersonaJuridica) cliente;
+				if (pj.getRepresentantePersonaJuridica() != null) {
+					pj.getRepresentantePersonaJuridica().setClienteRepresentado(null);
+					System.out.print("Se ha deshasignado un representante");
+					pj.setRepresentantePersonaJuridica(null);
+				}
+			} 
+			else if (cliente instanceof EntidadNoEstatal) {
+				EntidadNoEstatal ene = (EntidadNoEstatal) cliente;
+				if (ene.getRepresentanteEntidad() != null) {
+					System.out.print("Se ha deshasignado un representante");
+					ene.getRepresentanteEntidad().setClienteRepresentado(null);
+					ene.setRepresentanteEntidad(null);
+				}
+			}
+		}
+	}
+
+
+
+
+
+
+
+
 }
