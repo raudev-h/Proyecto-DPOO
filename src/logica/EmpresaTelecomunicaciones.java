@@ -267,7 +267,7 @@ public class EmpresaTelecomunicaciones {
 		Representante representanteEncontrado = null;
 		int i = 0;
 
-		while(i<representantes.size() && representanteEncontrado != null){
+		while(i<representantes.size() && representanteEncontrado == null){
 
 			if(representantes.get(i).getNumId().equals(numId)){
 				representanteEncontrado = representantes.get(i);		
@@ -482,7 +482,7 @@ public class EmpresaTelecomunicaciones {
     
     //Buscar los representantes que no tienen clientes a representar (representantes libres)
     
-    public ArrayList<Representante> buscarRepresentantesLibres(){
+    public synchronized ArrayList<Representante> buscarRepresentantesLibres(){
     	
     	ArrayList<Representante> representantesLibres = new ArrayList<Representante>();
     	
@@ -494,6 +494,56 @@ public class EmpresaTelecomunicaciones {
     	}
     	
     	return representantesLibres;
+    }
+    
+ // Método para asignar representante a un cliente (Persona Jurídica o Entidad No Estatal)
+    public void asignarRepresentanteACliente(Cliente cliente, Representante representante) {
+    	
+        if (cliente != null && representante != null){
+        	
+        	
+	        // Si el cliente ya tenía un representante, lo liberamos
+	        if (cliente instanceof PersonaJuridica) {
+	            PersonaJuridica pj = (PersonaJuridica) cliente;
+	            if (pj.getRepresentantePersonaJuridica() != null) {
+	                pj.getRepresentantePersonaJuridica().setClienteRepresentado(null);
+	            }
+	            pj.setRepresentantePersonaJuridica(representante);
+	        } 
+	        else if (cliente instanceof EntidadNoEstatal) {
+	            EntidadNoEstatal ene = (EntidadNoEstatal) cliente;
+	            if (ene.getRepresentanteEntidad() != null) {
+	                ene.getRepresentanteEntidad().setClienteRepresentado(null);
+	            }
+	            ene.setRepresentanteEntidad(representante);
+	        }
+	        
+	        // Asignamos el cliente al representante
+	        representante.setClienteRepresentado(cliente);
+        }
+    }
+
+    // Método para desasignar representante de un cliente
+    public synchronized void desasignarRepresentanteDeCliente(Cliente cliente) {
+        if (cliente != null){
+        
+	        if (cliente instanceof PersonaJuridica) {
+	            PersonaJuridica pj = (PersonaJuridica) cliente;
+	            if (pj.getRepresentantePersonaJuridica() != null) {
+	                pj.getRepresentantePersonaJuridica().setClienteRepresentado(null);
+	                System.out.print("Se ha deshasignado un representante");
+	                pj.setRepresentantePersonaJuridica(null);
+	            }
+	        } 
+	        else if (cliente instanceof EntidadNoEstatal) {
+	            EntidadNoEstatal ene = (EntidadNoEstatal) cliente;
+	            if (ene.getRepresentanteEntidad() != null) {
+	            	System.out.print("Se ha deshasignado un representante");
+	                ene.getRepresentanteEntidad().setClienteRepresentado(null);
+	                ene.setRepresentanteEntidad(null);
+	            }
+	        }
+        }
     }
     
     

@@ -678,5 +678,24 @@ public class Inicializadora {
         movil3.agregarLlamada(movil3.hacerLlamada("5388888888", 2400));     // 40 min = 2400 seg
         movil3.agregarLlamada(movil3.hacerLlamada("5388889999", 10200));    // 170 min = 10200 seg
         movil3.agregarLlamada(movil3.hacerLlamada("5388880000", 2100));     // 35 min = 2100 seg
+        
+        //Creacion de al menos 20 representantes
+     // Representantes adicionales libres (sin cliente asignado)
+        empresa.agregarRepresentante("Zurdokar Plasencia", "84121501001");
+        empresa.agregarRepresentante("Yaxiry Solunare", "90070102002");
+        empresa.agregarRepresentante("Quiruvio Noreste", "78030603003");
+        empresa.agregarRepresentante("Xilena Marabú", "85082204004");
+        empresa.agregarRepresentante("Ozmart Yerbabuena", "91103005005");
+        empresa.agregarRepresentante("Ufrano Calipso", "79041406006");
+        empresa.agregarRepresentante("Ixchel Toronja", "88052507007");
+        empresa.agregarRepresentante("Yovankor del Monte", "83070808008");
+        empresa.agregarRepresentante("Zuleyka Ombú", "92090909009");
+        empresa.agregarRepresentante("Quirino Almíbar", "87121210010");
+        empresa.agregarRepresentante("Xarandí Cósmico", "89111111011");
+        empresa.agregarRepresentante("Odalisca Mercurio", "94020212012");
+        empresa.agregarRepresentante("Yerutí Pandora", "80030313013");
+        empresa.agregarRepresentante("Zacarias Neptuno", "91040414014");
+        empresa.agregarRepresentante("Ulpiano Cerezo", "85050515015");
 	}
+	
 }
