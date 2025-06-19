@@ -17,6 +17,7 @@ public class ListadoClientes extends JDialog {
     private ClienteTableModel tableModel;
     private static ListadoClientes instance;
     
+
     // Campos de edición
     private JPanel panelEdicion;
     private JTextField txtNombreEdit;
@@ -32,7 +33,9 @@ public class ListadoClientes extends JDialog {
     private JButton btnCancelarEdit;
     private JButton btnSeleccionarRepresentanteEdit;
     
+
     // Campos de creación
+
     private JPanel panelCreacion;
     private JTextField txtNombreCreate;
     private JTextField txtDireccionCreate;
@@ -58,6 +61,7 @@ public class ListadoClientes extends JDialog {
     private boolean modoEdicion;
     private Representante representanteSeleccionado;
     
+
     // Etiquetas para validación
     private JLabel lblNombreEdit, lblDireccionEdit, lblMunicipioEdit, lblProvinciaEdit, lblNumIdEdit, lblOrganismoEdit;
     private JLabel lblNombreCreate, lblDireccionCreate, lblMunicipioCreate, lblProvinciaCreate, lblNumIdCreate, lblOrganismoCreate;
@@ -84,13 +88,17 @@ public class ListadoClientes extends JDialog {
             "Martí", "Pedro Betancourt", "Perico", "Unión de Reyes", "Varadero"});
         put("Cienfuegos", new String[]{"Abreus", "Aguada de Pasajeros", "Cienfuegos", "Cruces", 
             "Cumanayagua", "Lajas", "Palmira", "Rodas"});
+
         put("Villa Clara", new String[]{"Caibarién", "Camajuaní", "Cifuentes", "Corralillo", 
+
             "Encrucijada", "Manicaragua", "Placetas", "Quemado de Güines", 
             "Ranchuelo", "Remedios", "Sagua la Grande", "Santa Clara", "Santo Domingo"});
         put("Sancti Spíritus", new String[]{"Cabaiguán", "Fomento", "Jatibonico", "La Sierpe", 
             "Sancti Spíritus", "Taguasco", "Trinidad", "Yaguajay"});
         put("Ciego de Ávila", new String[]{"Baraguá", "Bolivia", "Chambas", "Ciego de Ávila", 
+
             "Ciro Redondo", "Florencia", "Majagua", "Morón", "Primero de Enero", "Venezuela"});
+
         put("Camagüey", new String[]{"Camagüey", "Carlos M. de Céspedes", "Esmeralda", "Florida", 
             "Guáimaro", "Jimaguayú", "Minas", "Najasa", "Nuevitas", "Santa Cruz del Sur", 
             "Sibanicú", "Sierra de Cubitas", "Vertientes"});
@@ -98,7 +106,9 @@ public class ListadoClientes extends JDialog {
             "Las Tunas", "Majibacoa", "Manatí", "Puerto Padre"});
         put("Holguín", new String[]{"Antilla", "Báguanos", "Banes", "Cacocum", 
             "Calixto García", "Cueto", "Frank País", "Gibara", 
+
             "Holguín", "Mayarí", "Moa", "Rafael Freyre", "Sagua de Tánamo", "Urbano Noris"});
+
         put("Granma", new String[]{"Bartolomé Masó", "Bayamo", "Buey Arriba", "Campechuela", 
             "Cauto Cristo", "Guisa", "Jiguaní", "Manzanillo", 
             "Media Luna", "Niquero", "Pilón", "Río Cauto", "Yara"});
@@ -121,7 +131,9 @@ public class ListadoClientes extends JDialog {
         configurarMenuContextual();
     }
 
+
     // Método Singleton para obtener la instancia
+
     public static synchronized ListadoClientes getInstance() {
         if (instance == null) {
             instance = new ListadoClientes();
@@ -130,6 +142,7 @@ public class ListadoClientes extends JDialog {
     }
 
     // Método estático para abrir la ventana
+
     public static void abrirListadoClientes() {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -143,7 +156,7 @@ public class ListadoClientes extends JDialog {
                 }
                 
                 ListadoClientes dialog = ListadoClientes.getInstance();
-                dialog.mostrarVentana();
+               dialog.mostrarVentana();
                 
                 if (dialog.isVisible()) {
                     UIManager.put("OptionPane.messageFont", new Font("Serif", Font.BOLD, 20));
@@ -199,6 +212,7 @@ public class ListadoClientes extends JDialog {
         panel.add(lblListadoDeClientes);
         
         // Botón Crear Cliente
+
         btnCrearCliente = new JButton("Crear Cliente");
         btnCrearCliente.setForeground(new Color(0, 0, 153));
         btnCrearCliente.setBackground(Color.WHITE);
@@ -244,7 +258,9 @@ public class ListadoClientes extends JDialog {
     }
 
 
+
     // ============ PANEL DE CREACIÓN ============
+
     private void initPanelCreacion() {
     	panelCreacion = new JPanel();
         panelCreacion.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -253,14 +269,18 @@ public class ListadoClientes extends JDialog {
         panelCreacion.setLayout(null);
         getContentPane().add(panelCreacion);
         
+
         
         // COMPONENTES COMUNES
+
         JLabel lblCreacionDeCliente = new JLabel("Creación de Cliente");
         lblCreacionDeCliente.setFont(new Font("Serif", Font.BOLD, 21));
         lblCreacionDeCliente.setBounds(32, 12, 280, 28);
         panelCreacion.add(lblCreacionDeCliente);
         
+
         // Combo box para selección de tipo de cliente
+
         lblTipoCliente = new JLabel("Tipo de Cliente");
         lblTipoCliente.setFont(new Font("Serif", Font.PLAIN, 19));
         lblTipoCliente.setBounds(35, 50, 280, 20);
@@ -270,7 +290,9 @@ public class ListadoClientes extends JDialog {
         cbTipoCliente.setFont(new Font("Serif", Font.PLAIN, 18));
         cbTipoCliente.setBounds(35, 80, 280, 30);
         cbTipoCliente.addItem("Persona Natural");
+
         cbTipoCliente.addItem("Persona Jurídica");
+
         cbTipoCliente.addItem("Entidad No Estatal");
         cbTipoCliente.addActionListener(new ActionListener() {
             @Override
@@ -281,7 +303,9 @@ public class ListadoClientes extends JDialog {
         });
         panelCreacion.add(cbTipoCliente);
         
+
         // Campos nombre y dirección
+
         lblNombreCreate = new JLabel("Nombre");
         lblNombreCreate.setFont(new Font("Serif", Font.PLAIN, 19));
         lblNombreCreate.setBounds(35, 120, 280, 20);
@@ -301,8 +325,9 @@ public class ListadoClientes extends JDialog {
         txtDireccionCreate.setBounds(35, 220, 280, 26);
         panelCreacion.add(txtDireccionCreate);
         txtDireccionCreate.setColumns(10);
-        
+
         // Campos para ubicación
+
         lblMunicipioCreate = new JLabel("Municipio");
         lblMunicipioCreate.setFont(new Font("Serif", Font.PLAIN, 19));
         lblMunicipioCreate.setBounds(35, 260, 280, 20);
@@ -544,6 +569,7 @@ public class ListadoClientes extends JDialog {
             
             String tipoCliente = (String) cbTipoCliente.getSelectedItem();
             
+
             // Validar representante para tipos que lo requieren
             if ((tipoCliente.equals("Persona Jurídica") || tipoCliente.equals("Entidad No Estatal")) && 
                 representanteSeleccionado == null) {
@@ -630,7 +656,9 @@ public class ListadoClientes extends JDialog {
                 representanteSeleccionado = null;
                 cerrarPanelEdicion();
                 
+
                 // Mostrar mensaje de éxito
+
                 UIManager.put("OptionPane.messageFont", new Font("Serif", Font.PLAIN, 18));
                 UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.PLAIN, 16));
                 JOptionPane.showMessageDialog(this, "Cliente creado exitosamente", 
@@ -652,7 +680,9 @@ public class ListadoClientes extends JDialog {
         }
     }
 
+
     // ============ PANEL DE EDICIÓN ============
+
     private void initPanelEdicion() {
         panelEdicion = new JPanel();
         panelEdicion.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -666,7 +696,9 @@ public class ListadoClientes extends JDialog {
         lblTituloEdicion.setBounds(32, 12, 280, 28);
         panelEdicion.add(lblTituloEdicion);
         
+
         // Campos nombre y dirección
+
         lblNombreEdit = new JLabel("Nombre");
         lblNombreEdit.setFont(new Font("Serif", Font.PLAIN, 19));
         lblNombreEdit.setBounds(35, 50, 280, 20);
@@ -687,7 +719,9 @@ public class ListadoClientes extends JDialog {
         panelEdicion.add(txtDireccionEdit);
         txtDireccionEdit.setColumns(10);
         
+
         // Campos para ubicación
+
         lblMunicipioEdit = new JLabel("Municipio");
         lblMunicipioEdit.setFont(new Font("Serif", Font.PLAIN, 19));
         lblMunicipioEdit.setBounds(35, 190, 280, 20);
@@ -1027,12 +1061,18 @@ public class ListadoClientes extends JDialog {
             // Cerrar el panel de edición y limpiar
             cerrarPanelEdicion();
             
+
             // Mostrar mensaje de éxito
+
             UIManager.put("OptionPane.messageFont", new Font("Serif", Font.PLAIN, 18));
             UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.PLAIN, 16));
             JOptionPane.showMessageDialog(this, "Cliente actualizado correctamente", 
                 "Éxito", JOptionPane.INFORMATION_MESSAGE);
             
+
+            JOptionPane.showMessageDialog(this, "Cliente actualizado", 
+                "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
         } catch (Exception e) {
             // Manejo de errores
             UIManager.put("OptionPane.messageFont", new Font("Serif", Font.PLAIN, 18));
@@ -1042,7 +1082,9 @@ public class ListadoClientes extends JDialog {
         }
     }
     
+
     // Métodos de validación para creación
+
     private boolean validarNombreCreacion(String nombre) {
         boolean valido = !nombre.trim().isEmpty();
         lblNombreCreate.setForeground(valido ? Color.BLACK : Color.RED);
@@ -1067,7 +1109,9 @@ public class ListadoClientes extends JDialog {
         return valido;
     }
 
+
     // Métodos de validación para edición
+
     private boolean validarNombreEdicion(String nombre) {
         boolean valido = !nombre.trim().isEmpty();
         lblNombreEdit.setForeground(valido ? Color.BLACK : Color.RED);
@@ -1092,7 +1136,9 @@ public class ListadoClientes extends JDialog {
         return valido;
     }
 
+
     // Configuración del menú contextual
+
     private void configurarMenuContextual() {
         final JPopupMenu popupMenu = new JPopupMenu();
         
@@ -1193,14 +1239,18 @@ public class ListadoClientes extends JDialog {
         });
     }
 
+
     // Método para mostrar la ventana
+
     public void mostrarVentana() {
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setVisible(true);
         tableModel.cargarClientes();
     }
 
+
     // Método para cerrar el panel de edición/creación
+
     private void cerrarPanelEdicion() {
         panelEdicion.setVisible(false);
         panelCreacion.setVisible(false);
