@@ -1,6 +1,7 @@
 package runner;
 import java.beans.PropertyVetoException;
 
+
 import excepciones.*;
 import logica.*;
 
@@ -236,7 +237,7 @@ public class Inicializadora {
 		empresa.agregarTelefonoMovil(pn10, "58909999", 420.00);
 		empresa.crearCuentaNauta(pn10, "daniela_rivas");
 
-		// Servicios para Personas Jurï¿½dicas
+		// Servicios para Personas Jurídicas
 		empresa.agregarTelefonoFijo(pj1, "78889999");
 		empresa.crearCuentaNauta(pj1, "empresa_xyz");
 
@@ -313,7 +314,7 @@ public class Inicializadora {
 	
 
 		
-		// Ejemplo de asignaciï¿½n para pn1 (cliente 0), que tiene 3 servicios (ï¿½ndices 0,1,2):
+		// Ejemplo de asignación para pn1 (cliente 0), que tiene 3 servicios (índices 0,1,2):
 		empresa.getClientes().get(0).addServicio(empresa.getServicios().get(0));
 		empresa.getClientes().get(0).addServicio(empresa.getServicios().get(1));
 		empresa.getClientes().get(0).addServicio(empresa.getServicios().get(2));
@@ -346,7 +347,7 @@ public class Inicializadora {
 		empresa.getClientes().get(9).addServicio(empresa.getServicios().get(20));
 		empresa.getClientes().get(9).addServicio(empresa.getServicios().get(21));
 
-		// Asignar servicios a Clientes Personas Jurï¿½dicas 
+		// Asignar servicios a Clientes Personas Jurídicas 
 		empresa.getClientes().get(10).addServicio(empresa.getServicios().get(22));
 		empresa.getClientes().get(10).addServicio(empresa.getServicios().get(23));
 
@@ -639,7 +640,7 @@ public class Inicializadora {
 		// Llamadas para el telÃ©fono mÃ³vil 1 (52345678)
 
      // ==============================================
-     // AGREGAR LLAMADAS MANUALMENTE A CADA TELÃ‰FONO
+     // AGREGAR LLAMADAS MANUALMENTE A CADA TELéFONO
      // ==============================================
         //TODO Arreglar los numeros de los telefonos de los destinatarios 
 

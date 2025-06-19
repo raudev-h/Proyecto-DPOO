@@ -2,6 +2,7 @@ package logica;
 
 import java.util.*;
 
+
 import excepciones.*;
 
 public class EmpresaTelecomunicaciones {
@@ -197,7 +198,7 @@ public class EmpresaTelecomunicaciones {
 			if(c instanceof PersonaJuridica){
 				PersonaJuridica pj = (PersonaJuridica)c;
 				if(pj.getDireccion().equalsIgnoreCase(direccion))
-					throw new DuplicadosException("Esa persona jurÃ­dica ya existe en nuestro sistema");
+					throw new DuplicadosException("Esa persona jurídica ya existe en nuestro sistema");
 			}
 		}
 
@@ -208,6 +209,17 @@ public class EmpresaTelecomunicaciones {
 
 	// Agregar Cuenta Nauta
 	public void crearCuentaNauta(Cliente titular, String nick) {
+		System.out.println(titular.getNombre());
+		boolean tieneTelefono = false;
+		
+		for(int i = 0; i < titular.getServicios().size() && !tieneTelefono ; i++){
+			if(titular.getServicios().get(i) instanceof TelefonoFijo){
+				tieneTelefono = true;
+			}
+		}
+		if(!tieneTelefono)
+			throw new IllegalArgumentException("Para contratar el nauta debe tener teléfono fijo");	
+		
 		Servicio s1 = new CuentaNauta(titular, nick);
 		servicios.add(s1);
 	}
@@ -268,7 +280,7 @@ public class EmpresaTelecomunicaciones {
 		}
 		// mï¿½s adelante le cambio la excepcion	
 		if (disponible == null) 
-			throw new IllegalArgumentException("No hay telï¿½fono mï¿½vil disponible");
+			throw new IllegalArgumentException("No hay teléfono móvil disponible");
 
 		disponible.setTitular(titular);
 		servicios.add(disponible);
