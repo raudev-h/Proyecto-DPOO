@@ -240,9 +240,9 @@ public class EmpresaTelecomunicaciones {
 				disponible = (TelefonoMovil) serviciosDisponibles.get(i);
 			}
 		}
-		// más adelante le cambio la excepcion	
+		// mï¿½s adelante le cambio la excepcion	
 		if (disponible == null) 
-			throw new IllegalArgumentException("No hay teléfono móvil disponible");
+			throw new IllegalArgumentException("No hay telï¿½fono mï¿½vil disponible");
 
 		disponible.setTitular(titular);
 		servicios.add(disponible);
@@ -305,7 +305,7 @@ public class EmpresaTelecomunicaciones {
 		Representante representanteEncontrado = null;
 		int i = 0;
 
-		while(i<representantes.size() && representanteEncontrado != null){
+		while(i<representantes.size() && representanteEncontrado == null){
 
 			if(representantes.get(i).getNumId().equals(numId)){
 				representanteEncontrado = representantes.get(i);		
@@ -494,51 +494,101 @@ public class EmpresaTelecomunicaciones {
 				TelefonoFijo tf = (TelefonoFijo)s;
 				Cliente titular = tf.getTitular();
 
-				// Analizamos a los clientes una sola vez
-				if(!clientesEvaluados.contains(titular)){
-					clientesEvaluados.add(titular);
+                // Analizamos a los clientes una sola vez
+                if(!clientesEvaluados.contains(titular)){
+                    clientesEvaluados.add(titular);
+                
+                // Buscamos nuevamente en todos los servicios si ese cliente tiene mas de 1 telefono fijo
+                for(Servicio otro : servicios){
+                    if(otro instanceof TelefonoFijo){
+                        TelefonoFijo otroTf = (TelefonoFijo)otro;
+                        if(otroTf.getTitular().equals(titular)){
+                            for(LlamadaLargaDistancia llamada : otroTf.getLlamadasLargas()){
+                                if(llamada.getTotalFacturar() >= 500)
+                                    cantLlamadas++;
+                            }
+                        }          
+                    }
+                }
+                if(cantLlamadas >= 3)
+                    clientes.add(titular);
+                }
+            }
+        }
+        return clientes;
+    }
+    
+    //Buscar los representantes que no tienen clientes a representar (representantes libres)
+    
+    public synchronized ArrayList<Representante> buscarRepresentantesLibres(){
+    	
+    	ArrayList<Representante> representantesLibres = new ArrayList<Representante>();
+    	
+    	for(Representante r: representantes ){
+    		
+    		if(r.getClienteRepresentado() == null){
+    			representantesLibres.add(r);
+    		}		
+    	}
+    	
+    	return representantesLibres;
+    }
+    
+ // Mï¿½todo para asignar representante a un cliente (Persona Jurï¿½dica o Entidad No Estatal)
+    public void asignarRepresentanteACliente(Cliente cliente, Representante representante) {
+    	
+        if (cliente != null && representante != null){
+        	
+        	
+	        // Si el cliente ya tenï¿½a un representante, lo liberamos
+	        if (cliente instanceof PersonaJuridica) {
+	            PersonaJuridica pj = (PersonaJuridica) cliente;
+	            if (pj.getRepresentantePersonaJuridica() != null) {
+	                pj.getRepresentantePersonaJuridica().setClienteRepresentado(null);
+	            }
+	            pj.setRepresentantePersonaJuridica(representante);
+	        } 
+	        else if (cliente instanceof EntidadNoEstatal) {
+	            EntidadNoEstatal ene = (EntidadNoEstatal) cliente;
+	            if (ene.getRepresentanteEntidad() != null) {
+	                ene.getRepresentanteEntidad().setClienteRepresentado(null);
+	            }
+	            ene.setRepresentanteEntidad(representante);
+	        }
+	        
+	        // Asignamos el cliente al representante
+	        representante.setClienteRepresentado(cliente);
+        }
+    }
 
-					// Buscamos nuevamente en todos los servicios si ese cliente tiene mas de 1 telefono fijo
-					for(Servicio otro : servicios){
-						if(otro instanceof TelefonoFijo){
-							TelefonoFijo otroTf = (TelefonoFijo)otro;
-							if(otroTf.getTitular().equals(titular)){
-								for(LlamadaLargaDistancia llamada : otroTf.getLlamadasLargas()){
-									if(llamada.getTotalFacturar() >= 500)
-										cantLlamadas++;
-								}
-							}          
-						}
-					}
-					if(cantLlamadas >= 3)
-						clientes.add(titular);
-				}
-			}
-		}
-		return clientes;
-	}
-
-	//Buscar los representantes que no tienen clientes a representar (representantes libres)
-
-	public ArrayList<Representante> buscarRepresentantesLibres(){
-
-		ArrayList<Representante> representantesLibres = new ArrayList<Representante>();
-
-		for(Representante r: representantes ){
-
-			if(r.getClienteRepresentado() == null){
-				representantesLibres.add(r);
-			}		
-		}
-
-		return representantesLibres;
-	}
-
-
-
-
-
-
-
-
+    // Mï¿½todo para desasignar representante de un cliente
+    public synchronized void desasignarRepresentanteDeCliente(Cliente cliente) {
+        if (cliente != null){
+        
+	        if (cliente instanceof PersonaJuridica) {
+	            PersonaJuridica pj = (PersonaJuridica) cliente;
+	            if (pj.getRepresentantePersonaJuridica() != null) {
+	                pj.getRepresentantePersonaJuridica().setClienteRepresentado(null);
+	                System.out.print("Se ha deshasignado un representante");
+	                pj.setRepresentantePersonaJuridica(null);
+	            }
+	        } 
+	        else if (cliente instanceof EntidadNoEstatal) {
+	            EntidadNoEstatal ene = (EntidadNoEstatal) cliente;
+	            if (ene.getRepresentanteEntidad() != null) {
+	            	System.out.print("Se ha deshasignado un representante");
+	                ene.getRepresentanteEntidad().setClienteRepresentado(null);
+	                ene.setRepresentanteEntidad(null);
+	            }
+	        }
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
 }

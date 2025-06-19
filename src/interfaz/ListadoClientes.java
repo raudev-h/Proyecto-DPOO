@@ -1,9 +1,7 @@
 package interfaz;
+
 import auxiliares.*;
 import logica.*;
-
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
@@ -19,7 +17,8 @@ public class ListadoClientes extends JDialog {
     private ClienteTableModel tableModel;
     private static ListadoClientes instance;
     
-    // Campos de edici�n
+
+    // Campos de edición
     private JPanel panelEdicion;
     private JTextField txtNombreEdit;
     private JTextField txtDireccionEdit;
@@ -32,8 +31,11 @@ public class ListadoClientes extends JDialog {
     private JPanel panelEntidadNoEstatalEdit;
     private JButton btnAceptarEdit;
     private JButton btnCancelarEdit;
+    private JButton btnSeleccionarRepresentanteEdit;
     
-    // Campos de creaci�n
+
+    // Campos de creación
+
     private JPanel panelCreacion;
     private JTextField txtNombreCreate;
     private JTextField txtDireccionCreate;
@@ -47,18 +49,24 @@ public class ListadoClientes extends JDialog {
     private JButton btnAceptarCreate;
     private JButton btnCancelarCreate;
     private JButton btnCrearCliente;
+    private JButton btnSeleccionarRepresentanteCreate;
     private JComboBox<String> cbTipoCliente;
+    private JLabel lblRepresentanteJuridicaCreate;  // Para Persona Jurídica (creación)
+    private JLabel lblRepresentanteEntidadCreate;   // Para Entidad No Estatal (creación)
+    private JLabel lblRepresentanteSeleccionadoEdit;
+    private JLabel lblRepresentanteSeleccionadoEdit1;
     
     private Cliente clienteSeleccionado;
     private String nombreClienteSeleccionado;
     private boolean modoEdicion;
+    private Representante representanteSeleccionado;
     
-    // Etiquetas para validaci�n
+
+    // Etiquetas para validación
     private JLabel lblNombreEdit, lblDireccionEdit, lblMunicipioEdit, lblProvinciaEdit, lblNumIdEdit, lblOrganismoEdit;
     private JLabel lblNombreCreate, lblDireccionCreate, lblMunicipioCreate, lblProvinciaCreate, lblNumIdCreate, lblOrganismoCreate;
     private JLabel lblTipoCliente;
     private JLabel lblTituloEdicion;
-
 
     // Mapa de provincias y municipios de Cuba
     private static final Map<String, String[]> PROVINCIAS_MUNICIPIOS = new LinkedHashMap<String, String[]>() {{
@@ -80,13 +88,17 @@ public class ListadoClientes extends JDialog {
             "Martí", "Pedro Betancourt", "Perico", "Unión de Reyes", "Varadero"});
         put("Cienfuegos", new String[]{"Abreus", "Aguada de Pasajeros", "Cienfuegos", "Cruces", 
             "Cumanayagua", "Lajas", "Palmira", "Rodas"});
-        put("Villa Clara", new String[]{"Caibariín", "Camajuaní", "Cifuentes", "Corralillo", 
+
+        put("Villa Clara", new String[]{"Caibarién", "Camajuaní", "Cifuentes", "Corralillo", 
+
             "Encrucijada", "Manicaragua", "Placetas", "Quemado de Güines", 
             "Ranchuelo", "Remedios", "Sagua la Grande", "Santa Clara", "Santo Domingo"});
         put("Sancti Spíritus", new String[]{"Cabaiguán", "Fomento", "Jatibonico", "La Sierpe", 
             "Sancti Spíritus", "Taguasco", "Trinidad", "Yaguajay"});
         put("Ciego de Ávila", new String[]{"Baraguá", "Bolivia", "Chambas", "Ciego de Ávila", 
-            "Ciro Redondo", "Florencia", "Majagua", "Mor�n", "Primero de Enero", "Venezuela"});
+
+            "Ciro Redondo", "Florencia", "Majagua", "Morón", "Primero de Enero", "Venezuela"});
+
         put("Camagüey", new String[]{"Camagüey", "Carlos M. de Céspedes", "Esmeralda", "Florida", 
             "Guáimaro", "Jimaguayú", "Minas", "Najasa", "Nuevitas", "Santa Cruz del Sur", 
             "Sibanicú", "Sierra de Cubitas", "Vertientes"});
@@ -94,7 +106,9 @@ public class ListadoClientes extends JDialog {
             "Las Tunas", "Majibacoa", "Manatí", "Puerto Padre"});
         put("Holguín", new String[]{"Antilla", "Báguanos", "Banes", "Cacocum", 
             "Calixto García", "Cueto", "Frank País", "Gibara", 
-            "Holguín", "Mayarí", "Moa", "Rafael Freyre", "Sagua de T�namo", "Urbano Noris"});
+
+            "Holguín", "Mayarí", "Moa", "Rafael Freyre", "Sagua de Tánamo", "Urbano Noris"});
+
         put("Granma", new String[]{"Bartolomé Masó", "Bayamo", "Buey Arriba", "Campechuela", 
             "Cauto Cristo", "Guisa", "Jiguaní", "Manzanillo", 
             "Media Luna", "Niquero", "Pilón", "Río Cauto", "Yara"});
@@ -107,17 +121,19 @@ public class ListadoClientes extends JDialog {
 
     // Constructor privado para Singleton
     private ListadoClientes() {
-        setBounds(100, 100, 1087, 684);
+        setBounds(100, 100, 1087, 790);
         setLocationRelativeTo(null);
         getContentPane().setLayout(null);
         setTitle("Listado de Clientes");
-        setModal(true); // Hacer la ventana modal
+        setModal(true);
         
         initComponents();
         configurarMenuContextual();
     }
 
-    // M�todo Singleton para obtener la instancia
+
+    // Método Singleton para obtener la instancia
+
     public static synchronized ListadoClientes getInstance() {
         if (instance == null) {
             instance = new ListadoClientes();
@@ -125,22 +141,22 @@ public class ListadoClientes extends JDialog {
         return instance;
     }
 
-    // M�todo est�tico para abrir la ventana
+    // Método estático para abrir la ventana
+
     public static void abrirListadoClientes() {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                // Verificar si ya existe una instancia visible
                 if (instance != null && instance.isVisible()) {
                     JOptionPane.showMessageDialog(null, 
                         "El listado de clientes ya está abierto", 
                         "Advertencia", JOptionPane.WARNING_MESSAGE);
-                    instance.toFront(); // Traer al frente la ventana existente
+                    instance.toFront();
                     return;
                 }
                 
                 ListadoClientes dialog = ListadoClientes.getInstance();
-                dialog.mostrarVentana();
+               dialog.mostrarVentana();
                 
                 if (dialog.isVisible()) {
                     UIManager.put("OptionPane.messageFont", new Font("Serif", Font.BOLD, 20));
@@ -154,28 +170,27 @@ public class ListadoClientes extends JDialog {
             }
         });
     }
-
+    
+    
+    //Liberar la instancia al cerrar el listado
     @Override
     public void dispose() {
         instance = null;
         super.dispose();
     }
 
-
-    
-
     private void initComponents() {
         tableModel = new ClienteTableModel();
         tableModel.cargarClientes();
         
         JPanel panel = new JPanel();
-        panel.setBounds(15, 16, 1044, 600);
+        panel.setBounds(15, 16, 1044, 650);
         getContentPane().add(panel);
         panel.setLayout(null);
         
         JScrollPane scrollPane = new JScrollPane();
         scrollPane.setViewportBorder(new LineBorder(new Color(0, 0, 0)));
-        scrollPane.setBounds(15, 36, 1014, 552);
+        scrollPane.setBounds(15, 36, 1014, 598);
         panel.add(scrollPane);
         
         table = new JTable(tableModel);
@@ -196,7 +211,8 @@ public class ListadoClientes extends JDialog {
         lblListadoDeClientes.setBounds(15, 0, 195, 20);
         panel.add(lblListadoDeClientes);
         
-        // Bot�n Crear Cliente
+        // Botón Crear Cliente
+
         btnCrearCliente = new JButton("Crear Cliente");
         btnCrearCliente.setForeground(new Color(0, 0, 153));
         btnCrearCliente.setBackground(Color.WHITE);
@@ -218,7 +234,7 @@ public class ListadoClientes extends JDialog {
         resetearCamposCreacion();
         panelEdicion.setVisible(false);
         panelCreacion.setVisible(true);
-        setSize(1478, 683);
+        setSize(1478, 790);
     }
     
     private void resetearCamposCreacion() {
@@ -228,25 +244,43 @@ public class ListadoClientes extends JDialog {
         txtOrganismoCreate.setText("");
         cbProvinciaCreate.setSelectedItem("La Habana");
         cbTipoCliente.setSelectedItem("Persona Natural");
+        
+        // Resetear ambas etiquetas
+        if (lblRepresentanteJuridicaCreate != null) {
+            lblRepresentanteJuridicaCreate.setText("Representante: Ninguno");
+        }
+        if (lblRepresentanteEntidadCreate != null) {
+            lblRepresentanteEntidadCreate.setText("Representante: Ninguno");
+        }
+        
+        representanteSeleccionado = null;
         mostrarCamposSegunTipoCreacion("Persona Natural");
     }
 
-    // ============ PANEL DE CREACI�N ============
+
+
+    // ============ PANEL DE CREACIÓN ============
+
     private void initPanelCreacion() {
-        panelCreacion = new JPanel();
+    	panelCreacion = new JPanel();
         panelCreacion.setBorder(new LineBorder(new Color(0, 0, 0)));
-        panelCreacion.setBounds(1074, 55, 350, 550);
+        panelCreacion.setBounds(1074, 55, 350, 650);
         panelCreacion.setVisible(false);
         panelCreacion.setLayout(null);
         getContentPane().add(panelCreacion);
         
-        // Componentes comunes
+
+        
+        // COMPONENTES COMUNES
+
         JLabel lblCreacionDeCliente = new JLabel("Creación de Cliente");
         lblCreacionDeCliente.setFont(new Font("Serif", Font.BOLD, 21));
         lblCreacionDeCliente.setBounds(32, 12, 280, 28);
         panelCreacion.add(lblCreacionDeCliente);
         
-        // Combo box para selecci�n de tipo de cliente
+
+        // Combo box para selección de tipo de cliente
+
         lblTipoCliente = new JLabel("Tipo de Cliente");
         lblTipoCliente.setFont(new Font("Serif", Font.PLAIN, 19));
         lblTipoCliente.setBounds(35, 50, 280, 20);
@@ -256,7 +290,9 @@ public class ListadoClientes extends JDialog {
         cbTipoCliente.setFont(new Font("Serif", Font.PLAIN, 18));
         cbTipoCliente.setBounds(35, 80, 280, 30);
         cbTipoCliente.addItem("Persona Natural");
-        cbTipoCliente.addItem("Persona Jur�dica");
+
+        cbTipoCliente.addItem("Persona Jurídica");
+
         cbTipoCliente.addItem("Entidad No Estatal");
         cbTipoCliente.addActionListener(new ActionListener() {
             @Override
@@ -267,7 +303,9 @@ public class ListadoClientes extends JDialog {
         });
         panelCreacion.add(cbTipoCliente);
         
-        // Campos nombre y direcci�n
+
+        // Campos nombre y dirección
+
         lblNombreCreate = new JLabel("Nombre");
         lblNombreCreate.setFont(new Font("Serif", Font.PLAIN, 19));
         lblNombreCreate.setBounds(35, 120, 280, 20);
@@ -287,8 +325,9 @@ public class ListadoClientes extends JDialog {
         txtDireccionCreate.setBounds(35, 220, 280, 26);
         panelCreacion.add(txtDireccionCreate);
         txtDireccionCreate.setColumns(10);
-        
-        // Campos para ubicaci�n
+
+        // Campos para ubicación
+
         lblMunicipioCreate = new JLabel("Municipio");
         lblMunicipioCreate.setFont(new Font("Serif", Font.PLAIN, 19));
         lblMunicipioCreate.setBounds(35, 260, 280, 20);
@@ -322,6 +361,8 @@ public class ListadoClientes extends JDialog {
         });
         panelCreacion.add(cbProvinciaCreate);
         
+        
+        
         // Panel para PersonaNatural
         panelPersonaNaturalCreate = new JPanel();
         panelPersonaNaturalCreate.setBounds(0, 400, 350, 80);
@@ -341,7 +382,7 @@ public class ListadoClientes extends JDialog {
         
         // Panel para PersonaJuridica
         panelPersonaJuridicaCreate = new JPanel();
-        panelPersonaJuridicaCreate.setBounds(0, 400, 350, 80);
+        panelPersonaJuridicaCreate.setBounds(0, 400, 350, 131);
         panelPersonaJuridicaCreate.setLayout(null);
         panelPersonaJuridicaCreate.setVisible(false);
         panelCreacion.add(panelPersonaJuridicaCreate);
@@ -355,23 +396,72 @@ public class ListadoClientes extends JDialog {
         txtOrganismoCreate.setBounds(35, 30, 280, 26);
         panelPersonaJuridicaCreate.add(txtOrganismoCreate);
         txtOrganismoCreate.setColumns(10);
+        //Aqui va lo que tiene que ver con representantes
+        
+        btnSeleccionarRepresentanteCreate = new JButton("Seleccionar Representante");
+        btnSeleccionarRepresentanteCreate.setForeground(Color.WHITE);
+        btnSeleccionarRepresentanteCreate.setBackground(new Color(0, 0, 153));
+        btnSeleccionarRepresentanteCreate.setFont(new Font("Serif", Font.PLAIN, 16));
+        btnSeleccionarRepresentanteCreate.setBounds(35, 60, 280, 30);
+        btnSeleccionarRepresentanteCreate.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                seleccionarRepresentanteCreacion();
+            }
+        });
+        panelPersonaJuridicaCreate.add(btnSeleccionarRepresentanteCreate);
+        
+        lblRepresentanteJuridicaCreate = new JLabel("Representante: Ninguno");
+        lblRepresentanteJuridicaCreate.setFont(new Font("Serif", Font.PLAIN, 16));
+        lblRepresentanteJuridicaCreate.setBounds(35, 90, 280, 30);
+        panelPersonaJuridicaCreate.add(lblRepresentanteJuridicaCreate);
+         
         
         // Panel para EntidadNoEstatal
         panelEntidadNoEstatalCreate = new JPanel();
-        panelEntidadNoEstatalCreate.setBounds(0, 400, 350, 50);
+        panelEntidadNoEstatalCreate.setBounds(0, 400, 350, 120);
         panelEntidadNoEstatalCreate.setLayout(null);
         panelEntidadNoEstatalCreate.setVisible(false);
         panelCreacion.add(panelEntidadNoEstatalCreate);
+        
+     // Ahora puedes agregar componentes a panelEntidadNoEstatalCreate
+        btnSeleccionarRepresentanteCreate = new JButton("Seleccionar Representante");
+        btnSeleccionarRepresentanteCreate.setForeground(Color.WHITE);
+        btnSeleccionarRepresentanteCreate.setBackground(new Color(0, 0, 153));
+        btnSeleccionarRepresentanteCreate.setFont(new Font("Serif", Font.PLAIN, 16));
+        btnSeleccionarRepresentanteCreate.setBounds(35, 0, 280, 30);
+        btnSeleccionarRepresentanteCreate.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                seleccionarRepresentanteCreacion();
+            }
+        });
+        lblRepresentanteEntidadCreate = new JLabel("Representante: Ninguno");
+        lblRepresentanteEntidadCreate.setFont(new Font("Serif", Font.PLAIN, 16));
+        lblRepresentanteEntidadCreate.setBounds(35, 40, 280, 30);
+        panelEntidadNoEstatalCreate.add(lblRepresentanteEntidadCreate);
+        
+        // Botón para seleccionar representante
+        btnSeleccionarRepresentanteCreate = new JButton("Seleccionar Representante");
+        btnSeleccionarRepresentanteCreate.setForeground(Color.WHITE);
+        btnSeleccionarRepresentanteCreate.setBackground(new Color(0, 0, 153));
+        btnSeleccionarRepresentanteCreate.setFont(new Font("Serif", Font.PLAIN, 16));
+        btnSeleccionarRepresentanteCreate.setBounds(35, 0, 280, 30);
+        btnSeleccionarRepresentanteCreate.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                seleccionarRepresentanteCreacion();
+            }
+        });
+        panelEntidadNoEstatalCreate.add(btnSeleccionarRepresentanteCreate);
+        
         
         // Botones
         btnAceptarCreate = new JButton("Aceptar");
         btnAceptarCreate.setForeground(new Color(255, 255, 255));
         btnAceptarCreate.setBackground(new Color(0, 0, 153));
         btnAceptarCreate.setFont(new Font("Serif", Font.PLAIN, 19));
-        btnAceptarCreate.setBounds(35, 500, 120, 30);
+        btnAceptarCreate.setBounds(35, 580, 120, 30);
         btnAceptarCreate.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-              crearCliente();
+                crearCliente();
             }
         });
         panelCreacion.add(btnAceptarCreate);
@@ -380,15 +470,42 @@ public class ListadoClientes extends JDialog {
         btnCancelarCreate.setBackground(new Color(255, 255, 255));
         btnCancelarCreate.setForeground(new Color(0, 0, 153));
         btnCancelarCreate.setFont(new Font("Serif", Font.PLAIN, 19));
-        btnCancelarCreate.setBounds(195, 500, 120, 30);
+        btnCancelarCreate.setBounds(195, 580, 120, 30);
         btnCancelarCreate.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 cerrarPanelEdicion();
             }
         });
         panelCreacion.add(btnCancelarCreate);
+        
+        
     }
 
+    private void seleccionarRepresentanteCreacion() {
+        if(EmpresaTelecomunicaciones.getInstancia().buscarRepresentantesLibres().size()>0){
+            Representante rep = ListadoSeleccionRepresentante.abrirYSeleccionar();
+            if (rep != null) {
+                representanteSeleccionado = rep;
+                
+                // Actualizar ambas etiquetas de creación
+                if (lblRepresentanteJuridicaCreate != null) {
+                    lblRepresentanteJuridicaCreate.setText("Representante: " + rep.getNombreCompleto());
+                }
+                if (lblRepresentanteEntidadCreate != null) {
+                    lblRepresentanteEntidadCreate.setText("Representante: " + rep.getNombreCompleto());
+                }
+            }
+        }
+        else{
+            UIManager.put("OptionPane.messageFont", new Font("Serif", Font.PLAIN, 18));
+            JOptionPane.showMessageDialog(this, 
+                "No hay representantes disponibles", 
+                "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+   
+
+    //Metodo para cargar los municipios en el ComboBox en dependencia de la provincia actual
     private void cargarMunicipiosCreacion(String provincia) {
         cbMunicipioCreate.removeAllItems();
         String[] municipios = PROVINCIAS_MUNICIPIOS.get(provincia);
@@ -398,7 +515,8 @@ public class ListadoClientes extends JDialog {
             }
         }
     }
-
+    
+    //Metodo para mostrar solamente los campos necesarios para cada tipo de cliente
     private void mostrarCamposSegunTipoCreacion(String tipoCliente) {
         resetearValidacionesCreacion();
         
@@ -429,14 +547,19 @@ public class ListadoClientes extends JDialog {
         }
     }
 
+    
     private void resetearValidacionesCreacion() {
         lblNombreCreate.setForeground(Color.BLACK);
         lblDireccionCreate.setForeground(Color.BLACK);
         lblNumIdCreate.setForeground(Color.BLACK);
         lblOrganismoCreate.setForeground(Color.BLACK);
     }
+
+    //Metodo para crear un nuevo cliente en dependencia del cliente que se este intentnando crear
     private void crearCliente() {
+    	
         boolean agregado = false;
+        Cliente nuevoCliente = null;
         
         try {
             // Validar campos comunes
@@ -445,7 +568,17 @@ public class ListadoClientes extends JDialog {
             boolean valido = nombreValido && direccionValida;
             
             String tipoCliente = (String) cbTipoCliente.getSelectedItem();
-            Cliente nuevoCliente = null;
+            
+
+            // Validar representante para tipos que lo requieren
+            if ((tipoCliente.equals("Persona Jurídica") || tipoCliente.equals("Entidad No Estatal")) && 
+                representanteSeleccionado == null) {
+                UIManager.put("OptionPane.messageFont", new Font("Serif", Font.PLAIN, 18));
+                JOptionPane.showMessageDialog(this, 
+                    "Debe seleccionar un representante para este tipo de cliente", 
+                    "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             
             // Validar campos específicos según el tipo de cliente
             if (tipoCliente.equals("Persona Natural")) {
@@ -454,19 +587,13 @@ public class ListadoClientes extends JDialog {
                 
                 if (valido) {
                     nuevoCliente = new PersonaNatural(
-                        txtNombreCreate.getText(),
-                        txtDireccionCreate.getText(),
-                        (String) cbMunicipioCreate.getSelectedItem(),
-                        (String) cbProvinciaCreate.getSelectedItem(),
-                        txtNumIdCreate.getText()
-                    );
-                    EmpresaTelecomunicaciones.getInstancia().agregarPersonaNatural(
                         txtDireccionCreate.getText(),
                         (String) cbMunicipioCreate.getSelectedItem(),
                         (String) cbProvinciaCreate.getSelectedItem(),
                         txtNombreCreate.getText(), 
                         txtNumIdCreate.getText()
                     );
+                    EmpresaTelecomunicaciones.getInstancia().getClientes().add(nuevoCliente);
                     agregado = true;
                 }
             } 
@@ -476,81 +603,90 @@ public class ListadoClientes extends JDialog {
                 
                 if (valido) {
                     nuevoCliente = new PersonaJuridica(
-                        txtNombreCreate.getText(), 
-                        txtDireccionCreate.getText(),
-                        (String) cbMunicipioCreate.getSelectedItem(),
-                        (String) cbProvinciaCreate.getSelectedItem(),
-                        txtOrganismoCreate.getText(),
-                        null
-                    );
-                    EmpresaTelecomunicaciones.getInstancia().agregarPersonaJuridica(
+                    	txtNombreCreate.getText(),
                         txtDireccionCreate.getText(), 
                         (String) cbMunicipioCreate.getSelectedItem(), 
-                        (String) cbProvinciaCreate.getSelectedItem(), 
-                        txtNombreCreate.getText(), 
+                        (String) cbProvinciaCreate.getSelectedItem(),  
                         txtOrganismoCreate.getText(), 
-                        null
+                        representanteSeleccionado
                     );
+                    
+                    // Asignación bidireccional
+                    if (representanteSeleccionado != null) {
+                        EmpresaTelecomunicaciones.getInstancia()
+                            .asignarRepresentanteACliente(nuevoCliente, representanteSeleccionado);
+                    }
+                    
+                    EmpresaTelecomunicaciones.getInstancia().getClientes().add(nuevoCliente);
                     agregado = true;
                 }
             } 
             else if (tipoCliente.equals("Entidad No Estatal")) {
                 if (valido) {
+                	
                     nuevoCliente = new EntidadNoEstatal(
-                        txtNombreCreate.getText(),
-                        txtDireccionCreate.getText(),
-                        null
-                    );
-                    EmpresaTelecomunicaciones.getInstancia().agregarEntidadNoEstatal(
+                    	txtNombreCreate.getText(),
                         txtDireccionCreate.getText(), 
-                        txtNombreCreate.getText(), 
-                        null
+                        representanteSeleccionado
                     );
+                    
+                    // Asignación bidireccional
+                    if (representanteSeleccionado != null) {
+                        EmpresaTelecomunicaciones.getInstancia()
+                            .asignarRepresentanteACliente(nuevoCliente, representanteSeleccionado);
+                    }
+                    
+                    EmpresaTelecomunicaciones.getInstancia().getClientes().add(nuevoCliente);
                     agregado = true;
                 }
             }
             
             if (!valido) {
-                // Configurar fuente para los mensajes de error
                 UIManager.put("OptionPane.messageFont", new Font("Serif", Font.PLAIN, 18));
                 UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.PLAIN, 16));
-                
                 throw new Exception("Complete todos los campos obligatorios marcados en rojo");
             }
             
-            // Verificar si el cliente ya existe
-            if (EmpresaTelecomunicaciones.getInstancia().buscarCliente(nuevoCliente.getNombre()) != null) {
-                throw new Exception("Ya existe un cliente con ese nombre");
-            }
-            
             if (agregado) {
+                // Actualizar la tabla
                 tableModel.cargarClientes();
+                
+                // Limpiar y liberar recursos
+                resetearCamposCreacion();
+                representanteSeleccionado = null;
                 cerrarPanelEdicion();
                 
-                // Configurar fuente para el mensaje de éxito
+
+                // Mostrar mensaje de éxito
+
                 UIManager.put("OptionPane.messageFont", new Font("Serif", Font.PLAIN, 18));
                 UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.PLAIN, 16));
-                
                 JOptionPane.showMessageDialog(this, "Cliente creado exitosamente", 
                     "Éxito", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 throw new Exception("No se pudo crear el cliente");
             }
         } catch (Exception e) {
-            // Configurar fuente para los mensajes de error
+            // En caso de error, liberar cualquier recurso asignado
+            if (nuevoCliente != null) {
+                EmpresaTelecomunicaciones.getInstancia().getClientes().remove(nuevoCliente);
+            }
+            
+            // Mostrar mensaje de error
             UIManager.put("OptionPane.messageFont", new Font("Serif", Font.PLAIN, 18));
             UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.PLAIN, 16));
-            
             JOptionPane.showMessageDialog(this, e.getMessage(), 
                 "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
- // ============ PANEL DE EDICI�N ============
+
+    // ============ PANEL DE EDICIÓN ============
+
     private void initPanelEdicion() {
-    	panelEdicion = new JPanel();
+        panelEdicion = new JPanel();
         panelEdicion.setBorder(new LineBorder(new Color(0, 0, 0)));
-        panelEdicion.setBounds(1074, 55, 350, 550);
+        panelEdicion.setBounds(1074, 55, 350, 650);
         panelEdicion.setVisible(false);
         panelEdicion.setLayout(null);
         getContentPane().add(panelEdicion);
@@ -560,7 +696,9 @@ public class ListadoClientes extends JDialog {
         lblTituloEdicion.setBounds(32, 12, 280, 28);
         panelEdicion.add(lblTituloEdicion);
         
-        // Campos nombre y direcci�n
+
+        // Campos nombre y dirección
+
         lblNombreEdit = new JLabel("Nombre");
         lblNombreEdit.setFont(new Font("Serif", Font.PLAIN, 19));
         lblNombreEdit.setBounds(35, 50, 280, 20);
@@ -581,7 +719,9 @@ public class ListadoClientes extends JDialog {
         panelEdicion.add(txtDireccionEdit);
         txtDireccionEdit.setColumns(10);
         
-        // Campos para ubicaci�n
+
+        // Campos para ubicación
+
         lblMunicipioEdit = new JLabel("Municipio");
         lblMunicipioEdit.setFont(new Font("Serif", Font.PLAIN, 19));
         lblMunicipioEdit.setBounds(35, 190, 280, 20);
@@ -634,7 +774,7 @@ public class ListadoClientes extends JDialog {
         
         // Panel para PersonaJuridica
         panelPersonaJuridicaEdit = new JPanel();
-        panelPersonaJuridicaEdit.setBounds(0, 330, 350, 80);
+        panelPersonaJuridicaEdit.setBounds(0, 330, 350, 120);
         panelPersonaJuridicaEdit.setLayout(null);
         panelPersonaJuridicaEdit.setVisible(false);
         panelEdicion.add(panelPersonaJuridicaEdit);
@@ -649,19 +789,55 @@ public class ListadoClientes extends JDialog {
         panelPersonaJuridicaEdit.add(txtOrganismoEdit);
         txtOrganismoEdit.setColumns(10);
         
+        btnSeleccionarRepresentanteEdit = new JButton("Seleccionar Representante");
+        btnSeleccionarRepresentanteEdit.setForeground(Color.WHITE);
+        btnSeleccionarRepresentanteEdit.setBackground(new Color(0, 0, 153));
+        btnSeleccionarRepresentanteEdit.setFont(new Font("Serif", Font.PLAIN, 16));
+        btnSeleccionarRepresentanteEdit.setBounds(35, 60, 280, 30);
+        btnSeleccionarRepresentanteEdit.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                seleccionarRepresentanteEdicion();
+            }
+        });
+        panelPersonaJuridicaEdit.add(btnSeleccionarRepresentanteEdit);
+        
+        lblRepresentanteSeleccionadoEdit = new JLabel("Representante: Ninguno");
+        lblRepresentanteSeleccionadoEdit.setFont(new Font("Serif", Font.PLAIN, 16));
+        lblRepresentanteSeleccionadoEdit.setBounds(35, 90, 280, 30);
+        panelPersonaJuridicaEdit.add(lblRepresentanteSeleccionadoEdit);
+      
         // Panel para EntidadNoEstatal
         panelEntidadNoEstatalEdit = new JPanel();
-        panelEntidadNoEstatalEdit.setBounds(0, 330, 350, 50);
+        panelEntidadNoEstatalEdit.setBounds(0, 330, 350, 131);
         panelEntidadNoEstatalEdit.setLayout(null);
         panelEntidadNoEstatalEdit.setVisible(false);
         panelEdicion.add(panelEntidadNoEstatalEdit);
+        
+        // Botón para seleccionar representante
+        JButton btnSeleccionarRepresentanteEdit1 = new JButton("Seleccionar Representante");
+        btnSeleccionarRepresentanteEdit1.setForeground(Color.WHITE);
+        btnSeleccionarRepresentanteEdit1.setBackground(new Color(0, 0, 153));
+        btnSeleccionarRepresentanteEdit1.setFont(new Font("Serif", Font.PLAIN, 16));
+        btnSeleccionarRepresentanteEdit1.setBounds(35, 60, 280, 30);
+        btnSeleccionarRepresentanteEdit1.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                seleccionarRepresentanteEdicion();
+            }
+        });
+        panelEntidadNoEstatalEdit.add(btnSeleccionarRepresentanteEdit1);
+        
+        lblRepresentanteSeleccionadoEdit1 = new JLabel("Representante: Ninguno");
+        lblRepresentanteSeleccionadoEdit1.setFont(new Font("Serif", Font.PLAIN, 16));
+        lblRepresentanteSeleccionadoEdit1.setBounds(35, 90, 280, 30); 
+        panelEntidadNoEstatalEdit.add(lblRepresentanteSeleccionadoEdit1);
+        
         
         // Botones
         btnAceptarEdit = new JButton("Aceptar");
         btnAceptarEdit.setForeground(new Color(255, 255, 255));
         btnAceptarEdit.setBackground(new Color(0, 0, 153));
         btnAceptarEdit.setFont(new Font("Serif", Font.PLAIN, 19));
-        btnAceptarEdit.setBounds(35, 430, 120, 30);
+        btnAceptarEdit.setBounds(35, 580, 120, 30);
         btnAceptarEdit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 actualizarCliente();
@@ -673,13 +849,29 @@ public class ListadoClientes extends JDialog {
         btnCancelarEdit.setBackground(new Color(255, 255, 255));
         btnCancelarEdit.setForeground(new Color(0, 0, 153));
         btnCancelarEdit.setFont(new Font("Serif", Font.PLAIN, 19));
-        btnCancelarEdit.setBounds(195, 430, 120, 30);
+        btnCancelarEdit.setBounds(195, 580, 120, 30);
         btnCancelarEdit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 cerrarPanelEdicion();
             }
         });
         panelEdicion.add(btnCancelarEdit);
+    }
+
+    private void seleccionarRepresentanteEdicion() {
+        if(EmpresaTelecomunicaciones.getInstancia().buscarRepresentantesLibres().size() > 0){
+            Representante rep = ListadoSeleccionRepresentante.abrirYSeleccionar();
+            if (rep != null) {
+                representanteSeleccionado = rep;
+                // Actualizar ambas etiquetas
+                lblRepresentanteSeleccionadoEdit.setText("Representante: " + rep.getNombreCompleto());
+                lblRepresentanteSeleccionadoEdit1.setText("Representante: " + rep.getNombreCompleto());
+            }
+        }
+        else {
+            UIManager.put("OptionPane.messageFont", new Font("Serif", Font.PLAIN, 18));
+            JOptionPane.showMessageDialog(this, "No hay representantes disponibles ", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void cargarMunicipiosEdicion(String provincia) {
@@ -691,6 +883,7 @@ public class ListadoClientes extends JDialog {
             }
         }
     }
+    
 
     private void mostrarCamposSegunTipoEdicion(Cliente cliente) {
         resetearValidacionesEdicion();
@@ -725,14 +918,31 @@ public class ListadoClientes extends JDialog {
             cbProvinciaEdit.setVisible(true);
             lblMunicipioEdit.setVisible(true);
             lblProvinciaEdit.setVisible(true);
+            
+            if (pj.getRepresentante() != null) {
+                lblRepresentanteSeleccionadoEdit.setText("Representante: " + pj.getRepresentante().getNombreCompleto());
+                representanteSeleccionado = pj.getRepresentante();
+            } else {
+                lblRepresentanteSeleccionadoEdit.setText("Representante: Ninguno");
+                representanteSeleccionado = null;
+            }
         } 
         else if (cliente instanceof EntidadNoEstatal) {
+            EntidadNoEstatal ene = (EntidadNoEstatal) cliente;
             panelEntidadNoEstatalEdit.setVisible(true);
             
             cbMunicipioEdit.setVisible(false);
             cbProvinciaEdit.setVisible(false);
             lblMunicipioEdit.setVisible(false);
             lblProvinciaEdit.setVisible(false);
+            
+            if (ene.getRepresentanteEntidad() != null) {
+                lblRepresentanteSeleccionadoEdit1.setText("Representante: " + ene.getRepresentanteEntidad().getNombreCompleto());
+                representanteSeleccionado = ene.getRepresentanteEntidad();
+            } else {
+                lblRepresentanteSeleccionadoEdit1.setText("Representante: Ninguno");
+                representanteSeleccionado = null;
+            }
         }
     }
 
@@ -744,16 +954,14 @@ public class ListadoClientes extends JDialog {
     }
 
     private void actualizarCliente() {
-        if (clienteSeleccionado == null) return;
-        
         try {
+            // Obtener el cliente actual desde la base de datos
             Cliente clienteActual = EmpresaTelecomunicaciones.getInstancia()
-                              .buscarCliente(nombreClienteSeleccionado);
+                                  .buscarCliente(nombreClienteSeleccionado);
+            
+            // Verificar si el cliente aún existe
             if (clienteActual == null) {
-                // Configurar fuente para los mensajes de error
                 UIManager.put("OptionPane.messageFont", new Font("Serif", Font.PLAIN, 18));
-                UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.PLAIN, 16));
-                
                 JOptionPane.showMessageDialog(this, 
                     "El cliente ha sido eliminado", 
                     "Error", JOptionPane.ERROR_MESSAGE);
@@ -761,10 +969,12 @@ public class ListadoClientes extends JDialog {
                 return;
             }
             
+            // Validar campos comunes
             boolean nombreValido = validarNombreEdicion(txtNombreEdit.getText());
             boolean direccionValida = validarDireccionEdicion(txtDireccionEdit.getText());
             boolean valido = nombreValido && direccionValida;
             
+            // Validar campos específicos según el tipo de cliente
             if (clienteSeleccionado instanceof PersonaNatural) {
                 boolean numIdValido = validarNumIdEdicion(txtNumIdEdit.getText());
                 valido = valido && numIdValido;
@@ -775,61 +985,106 @@ public class ListadoClientes extends JDialog {
             }
             
             if (!valido) {
-                // Configurar fuente para los mensajes de error
                 UIManager.put("OptionPane.messageFont", new Font("Serif", Font.PLAIN, 18));
                 UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.PLAIN, 16));
-                
                 throw new Exception("Complete todos los campos obligatorios marcados en rojo");
             }
             
+            // Guardar el representante anterior para limpieza posterior si es necesario
+            Representante representanteAnterior = null;
+            if (clienteSeleccionado instanceof PersonaJuridica) {
+                representanteAnterior = ((PersonaJuridica)clienteSeleccionado).getRepresentantePersonaJuridica();
+            } 
+            else if (clienteSeleccionado instanceof EntidadNoEstatal) {
+                representanteAnterior = ((EntidadNoEstatal)clienteSeleccionado).getRepresentanteEntidad();
+            }
+            
+            // Actualizar datos básicos del cliente
             String nombre = txtNombreEdit.getText();
             String direccion = txtDireccionEdit.getText();
             
+            clienteSeleccionado.setNombre(nombre);
+            clienteSeleccionado.setDireccion(direccion);
+            
+            // Actualizar campos específicos según el tipo de cliente
             if (clienteSeleccionado instanceof PersonaNatural) {
                 PersonaNatural pn = (PersonaNatural) clienteSeleccionado;
-                pn.setNombre(nombre);
-                pn.setDireccion(direccion);
                 pn.setMunicipio((String) cbMunicipioEdit.getSelectedItem());
                 pn.setProvincia((String) cbProvinciaEdit.getSelectedItem());
                 pn.setNumId(txtNumIdEdit.getText());
             } 
             else if (clienteSeleccionado instanceof PersonaJuridica) {
                 PersonaJuridica pj = (PersonaJuridica) clienteSeleccionado;
-                pj.setNombre(nombre);
-                pj.setDireccion(direccion);
                 pj.setMunicipio((String) cbMunicipioEdit.getSelectedItem());
                 pj.setProvincia((String) cbProvinciaEdit.getSelectedItem());
                 pj.setOrganismo(txtOrganismoEdit.getText());
+                
+                // Manejo del representante
+                if (representanteSeleccionado != null) {
+                    // Desasignar primero el representante anterior si es diferente al nuevo
+                    if (representanteAnterior != null && !representanteAnterior.equals(representanteSeleccionado)) {
+                        EmpresaTelecomunicaciones.getInstancia()
+                            .desasignarRepresentanteDeCliente(clienteSeleccionado);
+                    }
+                    // Asignar el nuevo representante
+                    EmpresaTelecomunicaciones.getInstancia()
+                        .asignarRepresentanteACliente(clienteSeleccionado, representanteSeleccionado);
+                } else {
+                    // Si no hay representante seleccionado, desasignar el existente
+                    EmpresaTelecomunicaciones.getInstancia()
+                        .desasignarRepresentanteDeCliente(clienteSeleccionado);
+                }
             } 
             else if (clienteSeleccionado instanceof EntidadNoEstatal) {
                 EntidadNoEstatal ene = (EntidadNoEstatal) clienteSeleccionado;
-                ene.setNombre(nombre);
-                ene.setDireccion(direccion);
+                
+                // Manejo del representante
+                if (representanteSeleccionado != null) {
+                    // Desasignar primero el representante anterior si es diferente al nuevo
+                    if (representanteAnterior != null && !representanteAnterior.equals(representanteSeleccionado)) {
+                        EmpresaTelecomunicaciones.getInstancia()
+                            .desasignarRepresentanteDeCliente(clienteSeleccionado);
+                    }
+                    // Asignar el nuevo representante
+                    EmpresaTelecomunicaciones.getInstancia()
+                        .asignarRepresentanteACliente(clienteSeleccionado, representanteSeleccionado);
+                } else {
+                    // Si no hay representante seleccionado, desasignar el existente
+                    EmpresaTelecomunicaciones.getInstancia()
+                        .desasignarRepresentanteDeCliente(clienteSeleccionado);
+                }
             }
             
+            // Actualizar la tabla de clientes
             tableModel.cargarClientes();
+            
+            // Cerrar el panel de edición y limpiar
             cerrarPanelEdicion();
             
-            // Configurar fuente para el mensaje de �xito
+
+            // Mostrar mensaje de éxito
+
             UIManager.put("OptionPane.messageFont", new Font("Serif", Font.PLAIN, 18));
             UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.PLAIN, 16));
+            JOptionPane.showMessageDialog(this, "Cliente actualizado correctamente", 
+                "Éxito", JOptionPane.INFORMATION_MESSAGE);
             
+
             JOptionPane.showMessageDialog(this, "Cliente actualizado", 
                 "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
         } catch (Exception e) {
-            // Configurar fuente para los mensajes de error
+            // Manejo de errores
             UIManager.put("OptionPane.messageFont", new Font("Serif", Font.PLAIN, 18));
             UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.PLAIN, 16));
-            
-            JOptionPane.showMessageDialog(this, e.getMessage(), 
+            JOptionPane.showMessageDialog(this, "Error al actualizar cliente: " + e.getMessage(), 
                 "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
     
-    
-    
-    
-    // M�todos de validaci�n para creaci�n
+
+    // Métodos de validación para creación
+
     private boolean validarNombreCreacion(String nombre) {
         boolean valido = !nombre.trim().isEmpty();
         lblNombreCreate.setForeground(valido ? Color.BLACK : Color.RED);
@@ -854,7 +1109,9 @@ public class ListadoClientes extends JDialog {
         return valido;
     }
 
-    // M�todos de validaci�n para edici�n
+
+    // Métodos de validación para edición
+
     private boolean validarNombreEdicion(String nombre) {
         boolean valido = !nombre.trim().isEmpty();
         lblNombreEdit.setForeground(valido ? Color.BLACK : Color.RED);
@@ -878,7 +1135,10 @@ public class ListadoClientes extends JDialog {
         lblOrganismoEdit.setForeground(valido ? Color.BLACK : Color.RED);
         return valido;
     }
-    // Configuraci�n del men� contextual
+
+
+    // Configuración del menú contextual
+
     private void configurarMenuContextual() {
         final JPopupMenu popupMenu = new JPopupMenu();
         
@@ -900,7 +1160,7 @@ public class ListadoClientes extends JDialog {
                         modoEdicion = true;
                         panelCreacion.setVisible(false);
                         panelEdicion.setVisible(true);
-                        setSize(1478, 683);
+                        setSize(1478, 790);
                         mostrarCamposSegunTipoEdicion(clienteSeleccionado);
                     }
                 } else {
@@ -979,21 +1239,26 @@ public class ListadoClientes extends JDialog {
         });
     }
 
-    // M�todo para mostrar la ventana
+
+    // Método para mostrar la ventana
+
     public void mostrarVentana() {
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setVisible(true);
         tableModel.cargarClientes();
     }
 
-    // M�todo para cerrar el panel de edici�n/creaci�n
+
+    // Método para cerrar el panel de edición/creación
+
     private void cerrarPanelEdicion() {
         panelEdicion.setVisible(false);
         panelCreacion.setVisible(false);
-        setSize(1090, 683);
+        setSize(1090, 790);
         resetearValidacionesCreacion();
         resetearValidacionesEdicion();
         clienteSeleccionado = null;
         nombreClienteSeleccionado = null;
+        representanteSeleccionado = null;
     }
 }
