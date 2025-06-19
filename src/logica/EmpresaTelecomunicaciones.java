@@ -209,7 +209,7 @@ public class EmpresaTelecomunicaciones {
 
 	// Agregar Cuenta Nauta
 	public void crearCuentaNauta(Cliente titular, String nick) {
-		System.out.println(titular.getNombre());
+		
 		boolean tieneTelefono = false;
 		
 		for(int i = 0; i < titular.getServicios().size() && !tieneTelefono ; i++){
