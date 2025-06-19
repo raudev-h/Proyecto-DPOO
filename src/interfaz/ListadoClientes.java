@@ -585,9 +585,10 @@ public class ListadoClientes extends JDialog {
             } 
             else if (tipoCliente.equals("Entidad No Estatal")) {
                 if (valido) {
+                	
                     nuevoCliente = new EntidadNoEstatal(
+                    	txtNombreCreate.getText(),
                         txtDireccionCreate.getText(), 
-                        txtNombreCreate.getText(), 
                         representanteSeleccionado
                     );
                     
