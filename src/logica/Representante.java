@@ -79,7 +79,7 @@ public class Representante {
     }
     
     // Cliente representadoS
-    public void setClienteRepresentado(Cliente clienteRepresentado){
+    public synchronized void setClienteRepresentado(Cliente clienteRepresentado){
     	this.clienteRepresentado = clienteRepresentado;
     	
     }
