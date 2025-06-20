@@ -78,6 +78,14 @@ public class EmpresaTelecomunicaciones {
 		return eliminado;
 
 	}
+	
+	// Elminiar el cliente si sus servicios son 0
+	public void eliminarClienteServicio(Cliente titular){
+		
+		if(titular.getServicios().size() == 0)
+			clientes.remove(titular);
+	}
+	
 	// Servicios
 	public ArrayList<Servicio> getServicios() {
 		return servicios;
@@ -272,6 +280,7 @@ public class EmpresaTelecomunicaciones {
 					servicios.remove(fijo);
 					fijo.getTitular().getServicios().remove(fijo);
 					encontrado = true;
+					this.eliminarClienteServicio(fijo.getTitular());
 				}
 			}
 		}
@@ -326,7 +335,7 @@ public class EmpresaTelecomunicaciones {
 					servicios.remove(movil);
 					movil.getTitular().getServicios().remove(movil);
 					encontrado = true;
-
+					this.eliminarClienteServicio(movil.getTitular());
 				}
 			}
 		}	
