@@ -696,6 +696,30 @@ public class Inicializadora {
         empresa.agregarRepresentante("Yerutí Pandora", "80030313013");
         empresa.agregarRepresentante("Zacarias Neptuno", "91040414014");
         empresa.agregarRepresentante("Ulpiano Cerezo", "85050515015");
+        
+        
+        empresa.agregarTelefonoFijo(null,"78780001");
+        empresa.agregarTelefonoFijo(null,"78780002");
+        empresa.agregarTelefonoFijo(null,"78780003");
+        empresa.agregarTelefonoFijo(null,"78780004");
+        empresa.agregarTelefonoFijo(null,"78780005");
+        empresa.agregarTelefonoFijo(null,"78780006");
+        empresa.agregarTelefonoFijo(null,"78780007");
+        empresa.agregarTelefonoFijo(null,"78780008");
+        empresa.agregarTelefonoFijo(null,"78780009");
+        empresa.agregarTelefonoFijo(null,"78780010");
+
+        // Agregar teléfonos móviles disponibles (sin cliente)
+        empresa.agregarTelefonoMovil(null,"52123456", 350.50);
+        empresa.agregarTelefonoMovil(null,"52234567", 350.50);
+        empresa.agregarTelefonoMovil(null,"52345678", 350.50);
+        empresa.agregarTelefonoMovil(null,"52456789", 350.50);
+        empresa.agregarTelefonoMovil(null,"52567890", 350.50);
+        empresa.agregarTelefonoMovil(null,"52678901", 350.50);
+        empresa.agregarTelefonoMovil(null,"52789012", 350.50);
+        empresa.agregarTelefonoMovil(null,"52890123", 350.50);
+        empresa.agregarTelefonoMovil(null,"52901234", 350.50);
+        empresa.agregarTelefonoMovil(null,"52012345", 350.50);
 	}
 	
 }

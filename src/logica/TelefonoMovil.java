@@ -17,6 +17,8 @@ public class TelefonoMovil extends Telefono {
 
 
     }
+    
+    
     //GETTER Y SETTER 
     //Monto a pagar
     public void setMontoApagar(double montoApagar){

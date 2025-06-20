@@ -9,16 +9,19 @@ public class EmpresaTelecomunicaciones {
 	private static EmpresaTelecomunicaciones empresa;
 	private ArrayList<Cliente> clientes;
 	private ArrayList<Servicio> servicios;
+	private ArrayList<Servicio> serviciosDisponibles;
 	private ArrayList<Representante> representantes;
+	
 
 	// Constructor
 	private EmpresaTelecomunicaciones() {
 		clientes = new ArrayList<Cliente>();
 		servicios = new ArrayList<Servicio>();
+		serviciosDisponibles = new ArrayList<Servicio>();
 		representantes = new ArrayList<Representante>();
 	}
 
-	// Getters y setters
+	// GETTERS Y SETTERS
 	// Obtener la unica instancia de la clase Empresa Telecomunicaciones
 	public static EmpresaTelecomunicaciones getInstancia() {
 		if (empresa == null) {
@@ -111,6 +114,14 @@ public class EmpresaTelecomunicaciones {
 		return eliminado;
 	}
 
+	// Servicios Disponibles
+	public ArrayList<Servicio> getServiciosDisponibles() {
+	    if (this.serviciosDisponibles == null) {
+	        this.serviciosDisponibles = new ArrayList<Servicio>();
+	    }
+	    return this.serviciosDisponibles;
+	}
+		
 	// METODOS
 	
 	
@@ -203,17 +214,34 @@ public class EmpresaTelecomunicaciones {
 		servicios.add(s1);
 	}
 
+		
 	// Agregar Telefono Fijo
 	public void agregarTelefonoFijo(Cliente titular, String numero) {
-		Servicio s1 = new TelefonoFijo(titular, numero);
-		servicios.add(s1);
-	}
 
-	// Agregar Telefono Movil
+			if(titular == null){
+				Servicio s1 = new TelefonoFijo(null, numero);
+				serviciosDisponibles.add(s1);
+			}
+			else{
+				Servicio s1 = new TelefonoFijo(titular, numero);
+				servicios.add(s1);
+			}
+		}
+		// Agregar Telefono Movil
 	public void agregarTelefonoMovil(Cliente titular, String numero, double montoPagar) {
-		Servicio s1 = new TelefonoMovil(titular, numero, montoPagar);
-		servicios.add(s1);
-	}
+
+			if(titular == null){
+				Servicio s1 = new TelefonoMovil(null, numero, montoPagar);
+				serviciosDisponibles.add(s1);
+			}
+			else{
+				Servicio s1 = new TelefonoMovil(titular, numero, montoPagar);
+				servicios.add(s1);
+			}
+		}
+
+	
+	
 	//Obtener los TelefonosFijos
 	public ArrayList<TelefonoFijo> getTelefonosFijos(){
 
@@ -227,6 +255,25 @@ public class EmpresaTelecomunicaciones {
 
 		return telefonosFijos;
 	}
+	
+	// Asignar un telefono Movil ya existente a un cliente
+		public void asignarTelefonoMovil(Cliente titular){
+			TelefonoMovil disponible = null;
+
+			for (int i = 0; i < serviciosDisponibles.size() && disponible == null; i++) {
+				if (serviciosDisponibles.get(i) instanceof TelefonoMovil) {
+					disponible = (TelefonoMovil) serviciosDisponibles.get(i);
+				}
+			}
+			// más adelante le cambio la excepcion	
+			if (disponible == null) 
+				throw new IllegalArgumentException("No hay teléfono móvil disponible");
+
+			disponible.setTitular(titular);
+			servicios.add(disponible);
+			serviciosDisponibles.remove(disponible);
+
+		}
 
 	//Obtener los Telefonos Moviles
 	public ArrayList<TelefonoMovil> getTelefonosMoviles(){
@@ -531,26 +578,44 @@ public class EmpresaTelecomunicaciones {
 	            PersonaJuridica pj = (PersonaJuridica) cliente;
 	            if (pj.getRepresentantePersonaJuridica() != null) {
 	                pj.getRepresentantePersonaJuridica().setClienteRepresentado(null);
-	                System.out.print("Se ha deshasignado un representante");
 	                pj.setRepresentantePersonaJuridica(null);
 	            }
 	        } 
 	        else if (cliente instanceof EntidadNoEstatal) {
 	            EntidadNoEstatal ene = (EntidadNoEstatal) cliente;
 	            if (ene.getRepresentanteEntidad() != null) {
-	            	System.out.print("Se ha deshasignado un representante");
 	                ene.getRepresentanteEntidad().setClienteRepresentado(null);
 	                ene.setRepresentanteEntidad(null);
 	            }
 	        }
         }
     }
-    
-    
-    
-    
-    
-    
-    
+    //Buscar Telefono (movil o fijo) a partir de su numero de telefono
+    public Telefono buscarTelefono(String numero){
+    	
+    	Telefono tlf = null;
+    	if(serviciosDisponibles != null){
+    		
+    		for(int i=0;i<serviciosDisponibles.size();i++){
+    		
+    		    if(serviciosDisponibles.get(i) instanceof Telefono){
+		        	
+
+
+    				if(((Telefono)serviciosDisponibles.get(i)).getNumero().equals(numero)){
+
+    					tlf = (Telefono)serviciosDisponibles.get(i);
+    				}
+    			}
+    		}
+    	}
+    	
+
+    	
+  	
+    	
+    	return tlf;
+    }
+       
     
 }

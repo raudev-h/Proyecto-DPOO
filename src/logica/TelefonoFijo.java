@@ -17,6 +17,8 @@ public class TelefonoFijo extends Telefono {
         llamadasLargas = new ArrayList<LlamadaLargaDistancia>();
 
     }
+    
+    
 
     // GETTER Y SETTER
     // Facturas
