@@ -256,6 +256,27 @@ public class EmpresaTelecomunicaciones {
 
 	}
 
+	// Eliminar telefono fijo
+	public void eliminarTelefonoFIjo(String numero){
+
+		boolean encontrado = false;
+		TelefonoFijo fijo = null;
+
+		for(int i = 0; i < servicios.size() && !encontrado; i++){
+			if(servicios.get(i) instanceof TelefonoFijo){
+				fijo = (TelefonoFijo)servicios.get(i);
+
+				if(fijo.getNumero() == numero){
+
+					serviciosDisponibles.add(fijo);
+					servicios.remove(fijo);
+					fijo.getTitular().getServicios().remove(fijo);
+					encontrado = true;
+				}
+			}
+		}
+	}
+
 	// Agregar Telefono Movil
 	public void agregarTelefonoMovil(Cliente titular, String numero, double montoPagar) {
 
@@ -268,6 +289,7 @@ public class EmpresaTelecomunicaciones {
 			servicios.add(s1);
 		}
 	}
+
 
 	// Asignar un telefono Movil ya existente a un cliente
 	public void asignarTelefonoMovil(Cliente titular){
