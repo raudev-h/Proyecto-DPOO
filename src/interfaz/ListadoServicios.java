@@ -64,20 +64,7 @@ public class ListadoServicios extends JDialog {
         lblListadoDeServicios.setBounds(15, 0, 195, 20);
         panel.add(lblListadoDeServicios);
         
-        // Botón Cargar Datos 
-        JButton btnCargar = new JButton("Cargar Datos");
-        btnCargar.setForeground(Color.WHITE);
-        btnCargar.setBackground(new Color(0, 0, 153));
-        btnCargar.setFont(new Font("Serif", Font.BOLD, 21));
-        btnCargar.setBounds(434, 528, 189, 29);
-        getContentPane().add(btnCargar);
-        
-        btnCargar.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                cargarDatos();
-            }
-        });
-        
+        cargarDatos();
         
 
     }
