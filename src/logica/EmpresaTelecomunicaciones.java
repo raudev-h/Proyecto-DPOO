@@ -68,7 +68,10 @@ public class EmpresaTelecomunicaciones {
 		if(clientes.contains(cliente)){
 
 			for(Servicio s: cliente.getServicios()){
-				servicios.remove(s);				
+				s.setTitular(null);
+				serviciosDisponibles.add(s);
+				servicios.remove(s);
+	
 			}
 			clientes.remove(cliente);
 			eliminado = true;
