@@ -231,6 +231,24 @@ public class EmpresaTelecomunicaciones {
 		Servicio s1 = new CuentaNauta(titular, nick);
 		servicios.add(s1);
 	}
+	
+	// Eliminar cuenta nauta
+	public void eliminarCuentaNauta(String nick){
+		
+		boolean eliminado = false;
+		CuentaNauta cuenta = null;
+		
+		for(int i = 0; i < servicios.size() && !eliminado; i++){
+			if(servicios.get(i) instanceof CuentaNauta){
+				
+				cuenta = (CuentaNauta)servicios.get(i);
+				servicios.get(i).getTitular().getServicios().remove(cuenta);
+				this.eliminarClienteServicio(cuenta.getTitular());
+				eliminado = true;
+			}
+		}
+		
+	}
 
 
 	// Agregar Telefono Fijo
