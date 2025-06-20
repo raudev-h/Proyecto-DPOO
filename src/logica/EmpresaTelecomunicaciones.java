@@ -209,9 +209,9 @@ public class EmpresaTelecomunicaciones {
 
 	// Agregar Cuenta Nauta
 	public void crearCuentaNauta(Cliente titular, String nick) {
-		
+
 		boolean tieneTelefono = false;
-		
+
 		for(int i = 0; i < titular.getServicios().size() && !tieneTelefono ; i++){
 			if(titular.getServicios().get(i) instanceof TelefonoFijo){
 				tieneTelefono = true;
@@ -219,7 +219,7 @@ public class EmpresaTelecomunicaciones {
 		}
 		if(!tieneTelefono)
 			throw new IllegalArgumentException("Para contratar el nauta debe tener teléfono fijo");	
-		
+
 		Servicio s1 = new CuentaNauta(titular, nick);
 		servicios.add(s1);
 	}
@@ -241,7 +241,7 @@ public class EmpresaTelecomunicaciones {
 	// Asignar un telefono Fijo ya existente
 	public void asignarTelefonoFijo(Cliente titular){
 		Servicio disponible = null;
-		
+
 		for(int i = 0; i < serviciosDisponibles.size() && disponible == null; i++){
 			if(serviciosDisponibles.get(i) instanceof TelefonoFijo){
 				disponible = serviciosDisponibles.get(i);
@@ -249,11 +249,11 @@ public class EmpresaTelecomunicaciones {
 		}
 		if(disponible == null)
 			throw new IllegalArgumentException("No hay telefono Fijo disponible");
-		
+
 		disponible.setTitular(titular);
 		servicios.add(disponible);
 		serviciosDisponibles.remove(disponible);
-		
+
 	}
 
 	// Agregar Telefono Movil
@@ -286,6 +286,28 @@ public class EmpresaTelecomunicaciones {
 		servicios.add(disponible);
 		serviciosDisponibles.remove(disponible);
 
+	}
+
+	// Eliminar Telefono Movil
+	public void eliminarTelefonoMovil(String numero){
+
+		boolean encontrado = false;
+		TelefonoMovil movil = null;
+
+		for(int i = 0; i < servicios.size() && !encontrado; i++){
+			if(servicios.get(i) instanceof TelefonoMovil){
+				movil = (TelefonoMovil)servicios.get(i);
+
+				if(movil.getNumero() == numero){
+
+					serviciosDisponibles.add(movil);
+					servicios.remove(movil);
+					movil.getTitular().getServicios().remove(movil);
+					encontrado = true;
+
+				}
+			}
+		}	
 	}
 
 
