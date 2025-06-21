@@ -97,93 +97,121 @@ public class ListadoServicios extends JDialog {
         modelNauta.cargarDatos(empresa.getCuentasNautas());
     }
 
-    private void mostrarFormulario() {
-        panelFormulario.removeAll();
-        panelFormulario.setLayout(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 5, 5, 5);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.weightx = 1.0;
+   
+    	private void mostrarFormulario() {
+    	    panelFormulario.removeAll();
+    	    panelFormulario.setLayout(new GridBagLayout());
+    	    GridBagConstraints gbc = new GridBagConstraints();
+    	    gbc.insets = new Insets(5, 5, 5, 5);
+    	    gbc.fill = GridBagConstraints.HORIZONTAL;
+    	    int row = 0;
 
-        final int index = tabbedPane.getSelectedIndex();
-        int row = 0;
+    	    // 1) === Buscador ===
+    	    JLabel lblBuscar = new JLabel("Buscar Titular:");
+    	    final JTextField txtBuscar = new JTextField(15);
+    	    final DefaultListModel<Cliente> modeloLista = new DefaultListModel<Cliente>();
+    	    final JList<Cliente> listaClientes = new JList<Cliente>(modeloLista);
+    	    listaClientes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        final JTextField txtNumero = new JTextField(15);
-        final JTextField txtMonto = new JTextField(10);
-        final JTextField txtNick = new JTextField(15);
+    	    for (Cliente c : empresa.getClientes()) {
+    	        modeloLista.addElement(c);
+    	    }
 
-        if (index == 0) {
-            // Teléfono Fijo: solo número
-            gbc.gridx = 0;
-            gbc.gridy = row;
-            panelFormulario.add(new JLabel("Número:"), gbc);
-            gbc.gridx = 1;
-            panelFormulario.add(txtNumero, gbc);
+    	    txtBuscar.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+    	        public void changedUpdate(javax.swing.event.DocumentEvent e) { filtrar(); }
+    	        public void removeUpdate(javax.swing.event.DocumentEvent e) { filtrar(); }
+    	        public void insertUpdate(javax.swing.event.DocumentEvent e) { filtrar(); }
 
-        } else if (index == 1) {
-            // Teléfono Móvil: número + monto
-            gbc.gridx = 0;
-            gbc.gridy = row;
-            panelFormulario.add(new JLabel("Número:"), gbc);
-            gbc.gridx = 1;
-            panelFormulario.add(txtNumero, gbc);
+    	        public void filtrar() {
+    	            String texto = txtBuscar.getText().toLowerCase();
+    	            modeloLista.clear();
+    	            for (Cliente c : empresa.getClientes()) {
+    	                if (c.toString().toLowerCase().contains(texto)) {
+    	                    modeloLista.addElement(c);
+    	                }
+    	            }
+    	        }
+    	    });
 
-            row++;
-            gbc.gridx = 0;
-            gbc.gridy = row;
-            panelFormulario.add(new JLabel("Monto a Pagar:"), gbc);
-            gbc.gridx = 1;
-            panelFormulario.add(txtMonto, gbc);
+    	    gbc.gridx = 0; gbc.gridy = row; gbc.gridwidth = 2;
+    	    panelFormulario.add(lblBuscar, gbc);
+    	    row++;
+    	    gbc.gridy = row;
+    	    panelFormulario.add(txtBuscar, gbc);
+    	    row++;
+    	    gbc.gridy = row;
+    	    gbc.fill = GridBagConstraints.BOTH;
+    	    gbc.weightx = 1;
+    	    gbc.weighty = 1;
+    	    panelFormulario.add(new JScrollPane(listaClientes), gbc);
+    	    row++;
+    	    gbc.fill = GridBagConstraints.HORIZONTAL;
+    	    gbc.weightx = 0; gbc.weighty = 0;
+    	    gbc.gridwidth = 1;
 
-        } else if (index == 2) {
-            // Cuenta Nauta: solo nick
-            gbc.gridx = 0;
-            gbc.gridy = row;
-            panelFormulario.add(new JLabel("Nick:"), gbc);
-            gbc.gridx = 1;
-            panelFormulario.add(txtNick, gbc);
-        }
+    	    // 2) === Campos específicos según pestaña ===
+    	    final int index = tabbedPane.getSelectedIndex();
+    	    final JTextField campoNumero = new JTextField(15);
+    	    final JTextField campoMonto = new JTextField(15);
+    	    final JTextField campoNick = new JTextField(15);
 
-        // Botón Guardar dentro del panel lateral
-        row++;
-        gbc.gridx = 0;
-        gbc.gridy = row;
-        gbc.gridwidth = 2;
-        JButton btnGuardar = new JButton("Guardar");
-        panelFormulario.add(btnGuardar, gbc);
+    	    if (index == 0) {
+    	        panelFormulario.add(new JLabel("Número:"), gbc); row++;
+    	        gbc.gridy = row; panelFormulario.add(campoNumero, gbc); row++;
+    	    } else if (index == 1) {
+    	        panelFormulario.add(new JLabel("Número:"), gbc); row++;
+    	        gbc.gridy = row; panelFormulario.add(campoNumero, gbc); row++;
+    	        panelFormulario.add(new JLabel("Monto a Pagar:"), gbc); row++;
+    	        gbc.gridy = row; panelFormulario.add(campoMonto, gbc); row++;
+    	    } else if (index == 2) {
+    	        panelFormulario.add(new JLabel("Nick:"), gbc); row++;
+    	        gbc.gridy = row; panelFormulario.add(campoNick, gbc); row++;
+    	    }
 
-        // Acción Guardar
-        btnGuardar.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    if (index == 0) {
-                        String numero = txtNumero.getText();
-                        // TODO: Aquí crea el Telefono Fijo
-                        // empresa.agregarTelefonoFijo(...);
-                    } else if (index == 1) {
-                        String numero = txtNumero.getText();
-                        double monto = Double.parseDouble(txtMonto.getText());
-                        // TODO: Aquí crea el Telefono Movil
-                        // empresa.agregarTelefonoMovil(...);
-                    } else if (index == 2) {
-                        String nick = txtNick.getText();
-                        // TODO: Aquí crea la Cuenta Nauta
-                        // empresa.crearCuentaNauta(...);
-                    }
-                    cargarDatos();
-                    JOptionPane.showMessageDialog(ListadoServicios.this, "Servicio creado correctamente.");
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(ListadoServicios.this, "Error: " + ex.getMessage());
-                }
-            }
-        });
+    	    // 3) === Botón Guardar ===
+    	    JButton btnGuardar = new JButton("Guardar");
+    	    gbc.gridy = row;
+    	    panelFormulario.add(btnGuardar, gbc);
 
-        // Mostrar
-        panelFormulario.setVisible(true);
-        panelFormulario.revalidate();
-        panelFormulario.repaint();
-    }
+    	    btnGuardar.addActionListener(new ActionListener() {
+    	        public void actionPerformed(ActionEvent e) {
+    	            Cliente titular = listaClientes.getSelectedValue();
+    	            if (titular == null) {
+    	                JOptionPane.showMessageDialog(ListadoServicios.this,
+    	                    "Debe seleccionar un titular.",
+    	                    "Error",
+    	                    JOptionPane.ERROR_MESSAGE);
+    	                return;
+    	            }
+    	            try {
+    	                if (index == 0) {
+    	                    String numero = campoNumero.getText();
+    	                    empresa.agregarTelefonoFijo(titular, numero);
+    	                } else if (index == 1) {
+    	                    String numero = campoNumero.getText();
+    	                    double monto = Double.parseDouble(campoMonto.getText());
+    	                    empresa.agregarTelefonoMovil(titular, numero, monto);
+    	                } else if (index == 2) {
+    	                    String nick = campoNick.getText();
+    	                    empresa.crearCuentaNauta(titular, nick);
+    	                }
+    	                cargarDatos();
+    	                panelFormulario.setVisible(false);
+    	            } catch (Exception ex) {
+    	                ex.printStackTrace();
+    	                JOptionPane.showMessageDialog(ListadoServicios.this,
+    	                    "Error al crear servicio: " + ex.getMessage(),
+    	                    "Error",
+    	                    JOptionPane.ERROR_MESSAGE);
+    	            }
+    	        }
+    	    });
+
+    	    panelFormulario.setVisible(true);
+    	    panelFormulario.revalidate();
+    	    panelFormulario.repaint();
+    	}
+
 
     public static void abrirListadoServicio() {
         if (instance == null) {
