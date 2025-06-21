@@ -1,4 +1,5 @@
 package interfaz;
+
 import auxiliares.*;
 import logica.*;
 
@@ -16,114 +17,132 @@ public class ListadoServicios extends JDialog {
     private TelefonoFijoTableModel modelFijos;
     private TelefonoMovilTableModel modelMoviles;
     private CuentaNautaTableModel modelNauta;
+    private JPanel panelFormulario; // Panel lateral para formulario
     private static ListadoServicios instance;
 
-    public static void main(String[] args) {
-        try {
-            ListadoServicios dialog = new ListadoServicios();
-            dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-            dialog.setVisible(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     private ListadoServicios() {
+        setTitle("Listado de Servicios");
         setBounds(100, 100, 1126, 662);
         setLocationRelativeTo(null);
-        getContentPane().setLayout(null);
-        
-        JPanel panel = new JPanel();
-        panel.setBounds(15, 16, 1074, 496);
-        getContentPane().add(panel);
-        panel.setLayout(null);
-        
-        // Configuración del JTabbedPane
+        setLayout(new BorderLayout(10, 10));
+
+        // ===========================
+        // PESTAÑAS CON TABLAS
+        // ===========================
         tabbedPane = new JTabbedPane();
-        tabbedPane.setBounds(15, 36, 1044, 452);
-        panel.add(tabbedPane);
-        
-        // Configurar fuente general para todas las pestañas
         tabbedPane.setFont(new Font("Serif", Font.PLAIN, 18));
-        
-        panel.add(tabbedPane);
-        
+
         // Crear modelos
         modelFijos = new TelefonoFijoTableModel();
         modelMoviles = new TelefonoMovilTableModel();
         modelNauta = new CuentaNautaTableModel();
-        
-        // Añadir pestañas con estilo
+
+        // Añadir cada pestaña con su tabla (dentro de JScrollPane)
         tabbedPane.addTab("Teléfonos Fijos", crearTabla(modelFijos));
         tabbedPane.addTab("Teléfonos Móviles", crearTabla(modelMoviles));
         tabbedPane.addTab("Cuentas Nauta", crearTabla(modelNauta));
-        
-        // Título
-        JLabel lblListadoDeServicios = new JLabel("Listado de Servicios");
-        lblListadoDeServicios.setFont(new Font("Serif", Font.BOLD, 21));
-        lblListadoDeServicios.setBounds(15, 0, 195, 20);
-        panel.add(lblListadoDeServicios);
-        
-        cargarDatos();
-        
 
+        // ===========================
+        // PANEL LATERAL PARA FORMULARIO
+        // ===========================
+        panelFormulario = new JPanel();
+        panelFormulario.setPreferredSize(new Dimension(300, getHeight()));
+        panelFormulario.setBorder(BorderFactory.createTitledBorder("Formulario"));
+        panelFormulario.setLayout(new BoxLayout(panelFormulario, BoxLayout.Y_AXIS));
+        panelFormulario.setVisible(false); // Oculto al inicio
+
+        // ===========================
+        // BOTÓN CREAR SERVICIO
+        // ===========================
+        JButton btnCrearServicio = new JButton("Crear Servicio");
+        btnCrearServicio.setFont(new Font("Serif", Font.BOLD, 18));
+        btnCrearServicio.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mostrarFormulario();
+            }
+        });
+        // Ajustar fuente (más pequeña)
+        btnCrearServicio.setFont(new Font("Serif", Font.PLAIN, 20));
+
+        // Ajustar tamaño preferido (ancho x alto)
+        btnCrearServicio.setPreferredSize(new Dimension(1, 40));
+
+        // Reducir margen interno (padding)
+        btnCrearServicio.setMargin(new Insets(5, 10, 5, 10));
+
+        // ===========================
+        // AGREGAR TODO AL DIALOG
+        // ===========================
+        add(tabbedPane, BorderLayout.CENTER);
+        add(panelFormulario, BorderLayout.EAST);
+        add(btnCrearServicio, BorderLayout.SOUTH);
+
+        // Cargar datos iniciales
+        cargarDatos();
     }
 
     private JScrollPane crearTabla(DefaultTableModel model) {
         JTable table = new JTable(model);
-        
-        // Estilo idéntico al ListadoClientes
         table.getTableHeader().setReorderingAllowed(false);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.setFont(new Font("Serif", Font.PLAIN, 18));
         table.setRowHeight(25);
-        
-        // Estilo del header
+
         JTableHeader header = table.getTableHeader();
-        Font headerFont = new Font("Serif", Font.PLAIN, 20);
-        header.setFont(headerFont);
-        
+        header.setFont(new Font("Serif", Font.PLAIN, 20));
+
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setViewportBorder(new LineBorder(new Color(0, 0, 0)));
         return scrollPane;
     }
 
     private void cargarDatos() {
-        modelFijos.cargarDatos(EmpresaTelecomunicaciones.getInstancia().getTelefonosFijos());
-        modelMoviles.cargarDatos(EmpresaTelecomunicaciones.getInstancia().getTelefonosMoviles());
-        modelNauta.cargarDatos(EmpresaTelecomunicaciones.getInstancia().getCuentasNautas());
-        
+        EmpresaTelecomunicaciones empresa = EmpresaTelecomunicaciones.getInstancia();
+        modelFijos.cargarDatos(empresa.getTelefonosFijos());
+        modelMoviles.cargarDatos(empresa.getTelefonosMoviles());
+        modelNauta.cargarDatos(empresa.getCuentasNautas());
     }
-    
-    // Método estático para abrir la ventana, y asegurar que sea solo 1
+
+    private void mostrarFormulario() {
+        // Aquí limpias y muestras el panel lateral
+        panelFormulario.removeAll();
+        panelFormulario.add(new JLabel("Aquí irá el formulario para crear servicio."));
+        panelFormulario.revalidate();
+        panelFormulario.repaint();
+        panelFormulario.setVisible(true);
+    }
+
+    // ==============
+    // SINGLETON: asegurar que solo haya 1 ventana abierta
+    // ==============
     public static void abrirListadoServicio() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new ListadoServicios();
             instance.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-            instance.setVisible(true);        
+            instance.setVisible(true);
         } else {
-            if(!instance.isVisible()) {
+            if (!instance.isVisible()) {
                 instance.setVisible(true);
             } else {
                 UIManager.put("OptionPane.messageFont", new Font("Serif", Font.BOLD, 20));
                 UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.BOLD, 18));
-                UIManager.put("OptionPane.background", new Color(240, 240, 240));
-                UIManager.put("Panel.background", new Color(240, 240, 240));
-                
-                JOptionPane.showMessageDialog(null, 
-                    "La ventana del listado de servicios ya se encuentra abierta",
-                    null,
-                    JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null,
+                        "La ventana del listado de servicios ya está abierta",
+                        "Información",
+                        JOptionPane.INFORMATION_MESSAGE);
                 instance.toFront();
             }
         }
     }
-    
+
     @Override
     public void dispose() {
         instance = null;
         super.dispose();
     }
+
+    public static void main(String[] args) {
+        abrirListadoServicio();
+    }
 }
-
-
