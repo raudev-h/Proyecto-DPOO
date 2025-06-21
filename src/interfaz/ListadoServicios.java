@@ -12,70 +12,67 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ListadoServicios extends JDialog {
-
     private EmpresaTelecomunicaciones empresa;
     private JTabbedPane tabbedPane;
     private TelefonoFijoTableModel modelFijos;
     private TelefonoMovilTableModel modelMoviles;
     private CuentaNautaTableModel modelNauta;
-    private JPanel panelFormulario; // Panel lateral real
-    private JTextField campoNumero;
-    private JTextField campoMonto;
-    private JTextField campoNick;
-    private JButton btnGuardar;
-
+    private JPanel panelFormulario; // Panel lateral para formulario
     private static ListadoServicios instance;
 
     private ListadoServicios() {
         empresa = EmpresaTelecomunicaciones.getInstancia();
+
         setTitle("Listado de Servicios");
         setBounds(100, 100, 1126, 662);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(10, 10));
 
-        // ================================
+        // ===========================
         // PESTAÑAS CON TABLAS
-        // ================================
+        // ===========================
         tabbedPane = new JTabbedPane();
         tabbedPane.setFont(new Font("Serif", Font.PLAIN, 18));
 
+        // Crear modelos
         modelFijos = new TelefonoFijoTableModel();
         modelMoviles = new TelefonoMovilTableModel();
         modelNauta = new CuentaNautaTableModel();
 
+        // Añadir cada pestaña con su tabla (dentro de JScrollPane)
         tabbedPane.addTab("Teléfonos Fijos", crearTabla(modelFijos));
         tabbedPane.addTab("Teléfonos Móviles", crearTabla(modelMoviles));
         tabbedPane.addTab("Cuentas Nauta", crearTabla(modelNauta));
 
-        // ================================
-        // PANEL LATERAL FORMULARIO
-        // ================================
+        // ===========================
+        // PANEL LATERAL PARA FORMULARIO
+        // ===========================
         panelFormulario = new JPanel();
         panelFormulario.setPreferredSize(new Dimension(300, getHeight()));
         panelFormulario.setBorder(BorderFactory.createTitledBorder("Formulario"));
-        panelFormulario.setLayout(new BoxLayout(panelFormulario, BoxLayout.Y_AXIS));
         panelFormulario.setVisible(false); // Oculto al inicio
 
-        // ================================
+        // ===========================
         // BOTÓN CREAR SERVICIO
-        // ================================
+        // ===========================
         JButton btnCrearServicio = new JButton("Crear Servicio");
-        btnCrearServicio.setFont(new Font("Serif", Font.PLAIN, 20));
-        btnCrearServicio.setPreferredSize(new Dimension(200, 40));
+        btnCrearServicio.setFont(new Font("Serif", Font.PLAIN, 18));
+        btnCrearServicio.setPreferredSize(new Dimension(1, 40));
+        btnCrearServicio.setMargin(new Insets(5, 10, 5, 10));
         btnCrearServicio.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
-                mostrarFormularioLateral();
+                mostrarFormulario();
             }
         });
 
-        // ================================
-        // AGREGAR COMPONENTES
-        // ================================
+        // ===========================
+        // AGREGAR TODO AL DIALOG
+        // ===========================
         add(tabbedPane, BorderLayout.CENTER);
         add(panelFormulario, BorderLayout.EAST);
         add(btnCrearServicio, BorderLayout.SOUTH);
 
+        // Cargar datos iniciales
         cargarDatos();
     }
 
@@ -100,70 +97,92 @@ public class ListadoServicios extends JDialog {
         modelNauta.cargarDatos(empresa.getCuentasNautas());
     }
 
-    private void mostrarFormularioLateral() {
-        // Limpiar formulario
+    private void mostrarFormulario() {
         panelFormulario.removeAll();
+        panelFormulario.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.weightx = 1.0;
 
-        int index = tabbedPane.getSelectedIndex();
+        final int index = tabbedPane.getSelectedIndex();
+        int row = 0;
 
-        campoNumero = new JTextField();
-        campoMonto = new JTextField();
-        campoNick = new JTextField();
-        btnGuardar = new JButton("Guardar");
+        final JTextField txtNumero = new JTextField(15);
+        final JTextField txtMonto = new JTextField(10);
+        final JTextField txtNick = new JTextField(15);
 
-        if (index == 0) { // Teléfono Fijo
-            panelFormulario.add(new JLabel("Número:"));
-            panelFormulario.add(campoNumero);
-        } else if (index == 1) { // Teléfono Móvil
-            panelFormulario.add(new JLabel("Número:"));
-            panelFormulario.add(campoNumero);
-            panelFormulario.add(new JLabel("Monto a pagar:"));
-            panelFormulario.add(campoMonto);
-        } else if (index == 2) { // Cuenta Nauta
-            panelFormulario.add(new JLabel("Nick:"));
-            panelFormulario.add(campoNick);
+        if (index == 0) {
+            // Teléfono Fijo: solo número
+            gbc.gridx = 0;
+            gbc.gridy = row;
+            panelFormulario.add(new JLabel("Número:"), gbc);
+            gbc.gridx = 1;
+            panelFormulario.add(txtNumero, gbc);
+
+        } else if (index == 1) {
+            // Teléfono Móvil: número + monto
+            gbc.gridx = 0;
+            gbc.gridy = row;
+            panelFormulario.add(new JLabel("Número:"), gbc);
+            gbc.gridx = 1;
+            panelFormulario.add(txtNumero, gbc);
+
+            row++;
+            gbc.gridx = 0;
+            gbc.gridy = row;
+            panelFormulario.add(new JLabel("Monto a Pagar:"), gbc);
+            gbc.gridx = 1;
+            panelFormulario.add(txtMonto, gbc);
+
+        } else if (index == 2) {
+            // Cuenta Nauta: solo nick
+            gbc.gridx = 0;
+            gbc.gridy = row;
+            panelFormulario.add(new JLabel("Nick:"), gbc);
+            gbc.gridx = 1;
+            panelFormulario.add(txtNick, gbc);
         }
 
-        panelFormulario.add(Box.createVerticalStrut(10));
-        panelFormulario.add(btnGuardar);
+        // Botón Guardar dentro del panel lateral
+        row++;
+        gbc.gridx = 0;
+        gbc.gridy = row;
+        gbc.gridwidth = 2;
+        JButton btnGuardar = new JButton("Guardar");
+        panelFormulario.add(btnGuardar, gbc);
 
-        // Listener del botón GUARDAR
+        // Acción Guardar
         btnGuardar.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
-                guardarServicio();
+                try {
+                    if (index == 0) {
+                        String numero = txtNumero.getText();
+                        // TODO: Aquí crea el Telefono Fijo
+                        // empresa.agregarTelefonoFijo(...);
+                    } else if (index == 1) {
+                        String numero = txtNumero.getText();
+                        double monto = Double.parseDouble(txtMonto.getText());
+                        // TODO: Aquí crea el Telefono Movil
+                        // empresa.agregarTelefonoMovil(...);
+                    } else if (index == 2) {
+                        String nick = txtNick.getText();
+                        // TODO: Aquí crea la Cuenta Nauta
+                        // empresa.crearCuentaNauta(...);
+                    }
+                    cargarDatos();
+                    JOptionPane.showMessageDialog(ListadoServicios.this, "Servicio creado correctamente.");
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(ListadoServicios.this, "Error: " + ex.getMessage());
+                }
             }
         });
 
+        // Mostrar
+        panelFormulario.setVisible(true);
         panelFormulario.revalidate();
         panelFormulario.repaint();
-        panelFormulario.setVisible(true);
-    }
-
-    private void guardarServicio() {
-        int index = tabbedPane.getSelectedIndex();
-
-        try {
-            if (index == 0) {
-                String numero = campoNumero.getText();
-                // empresa.agregarTelefonoFijo(titular, numero);
-            } else if (index == 1) {
-                String numero = campoNumero.getText();
-                double monto = Double.parseDouble(campoMonto.getText());
-                // empresa.agregarTelefonoMovil(titular, numero, monto);
-            } else if (index == 2) {
-                String nick = campoNick.getText();
-                // empresa.agregarCuentaNauta(titular, nick);
-            }
-
-            cargarDatos();
-            panelFormulario.setVisible(false); // Ocultar después de guardar
-
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this, "Monto inválido: " + ex.getMessage());
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Error al crear servicio: " + ex.getMessage());
-        }
     }
 
     public static void abrirListadoServicio() {
@@ -175,8 +194,6 @@ public class ListadoServicios extends JDialog {
             if (!instance.isVisible()) {
                 instance.setVisible(true);
             } else {
-                UIManager.put("OptionPane.messageFont", new Font("Serif", Font.BOLD, 20));
-                UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.BOLD, 18));
                 JOptionPane.showMessageDialog(null,
                         "La ventana del listado de servicios ya está abierta",
                         "Información",
@@ -192,7 +209,5 @@ public class ListadoServicios extends JDialog {
         super.dispose();
     }
 
-    public static void main(String[] args) {
-        abrirListadoServicio();
-    }
+    
 }
