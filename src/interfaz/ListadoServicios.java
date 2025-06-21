@@ -10,6 +10,7 @@ import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.text.AbstractDocument;
 
 public class ListadoServicios extends JDialog {
     private EmpresaTelecomunicaciones empresa;
@@ -110,12 +111,12 @@ public class ListadoServicios extends JDialog {
         // === Buscador ===
         JLabel lblBuscar = new JLabel("Buscar Titular:");
         final JTextField txtBuscar = new JTextField(15);
-        final DefaultListModel<String> modeloLista = new DefaultListModel<String>();
-        final JList<String> listaClientes = new JList<String>(modeloLista);
+        final DefaultListModel<Cliente> modeloLista = new DefaultListModel<Cliente>();
+        final JList<Cliente> listaClientes = new JList<Cliente>(modeloLista);
         listaClientes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         for (Cliente c : empresa.getClientes()) {
-            modeloLista.addElement(c.getNombre());
+            modeloLista.addElement(c);
         }
 
         txtBuscar.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
@@ -127,22 +128,25 @@ public class ListadoServicios extends JDialog {
                 String texto = txtBuscar.getText().toLowerCase();
                 modeloLista.clear();
                 for (Cliente c : empresa.getClientes()) {
-                    if (c.getNombre().toLowerCase().contains(texto)) {
-                        modeloLista.addElement(c.getNombre());
+                    if (c.toString().toLowerCase().contains(texto)) {
+                        modeloLista.addElement(c);
                     }
                 }
             }
         });
 
         gbc.gridx = 0; gbc.gridy = row; gbc.gridwidth = 2;
-        panelFormulario.add(lblBuscar, gbc); row++;
+        panelFormulario.add(lblBuscar, gbc);
+        row++;
         gbc.gridy = row;
-        panelFormulario.add(txtBuscar, gbc); row++;
+        panelFormulario.add(txtBuscar, gbc);
+        row++;
         gbc.gridy = row;
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1;
         gbc.weighty = 1;
-        panelFormulario.add(new JScrollPane(listaClientes), gbc); row++;
+        panelFormulario.add(new JScrollPane(listaClientes), gbc);
+        row++;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 0; gbc.weighty = 0;
         gbc.gridwidth = 1;
@@ -153,36 +157,38 @@ public class ListadoServicios extends JDialog {
         final JTextField campoMonto = new JTextField(15);
         final JTextField campoNick = new JTextField(15);
 
+        // Labels para feedback visual
+        final JLabel lblNumero = new JLabel("Número:");
+        final JLabel lblMonto = new JLabel("Monto a Pagar:");
+        final JLabel lblNick = new JLabel("Nick:");
+
+        // Solo números y límite
+        ((javax.swing.text.AbstractDocument) campoNumero.getDocument())
+            .setDocumentFilter(new NumericDocumentFilter(8));
+        ((javax.swing.text.AbstractDocument) campoMonto.getDocument())
+            .setDocumentFilter(new NumericDocumentFilter(10));
+
         if (index == 0) {
-            panelFormulario.add(new JLabel("Número:"), gbc); row++;
+            panelFormulario.add(lblNumero, gbc); row++;
             gbc.gridy = row; panelFormulario.add(campoNumero, gbc); row++;
         } else if (index == 1) {
-            panelFormulario.add(new JLabel("Número:"), gbc); row++;
+            panelFormulario.add(lblNumero, gbc); row++;
             gbc.gridy = row; panelFormulario.add(campoNumero, gbc); row++;
-            panelFormulario.add(new JLabel("Monto a Pagar:"), gbc); row++;
+            panelFormulario.add(lblMonto, gbc); row++;
             gbc.gridy = row; panelFormulario.add(campoMonto, gbc); row++;
         } else if (index == 2) {
-            panelFormulario.add(new JLabel("Nick:"), gbc); row++;
+            panelFormulario.add(lblNick, gbc); row++;
             gbc.gridy = row; panelFormulario.add(campoNick, gbc); row++;
         }
 
-        // === Botones ===
+        // === Botón Guardar ===
         JButton btnGuardar = new JButton("Guardar");
-        JButton btnCancelar = new JButton("Cancelar");
-        gbc.gridy = row; panelFormulario.add(btnGuardar, gbc);
-        gbc.gridx = 1; panelFormulario.add(btnCancelar, gbc);
+        gbc.gridy = row;
+        panelFormulario.add(btnGuardar, gbc);
 
-        // === Acción Botón Guardar ===
         btnGuardar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String nombreSeleccionado = listaClientes.getSelectedValue();
-                Cliente titular = null;
-                for (Cliente c : empresa.getClientes()) {
-                    if (c.getNombre().equals(nombreSeleccionado)) {
-                        titular = c;
-                        break;
-                    }
-                }
+                Cliente titular = listaClientes.getSelectedValue();
                 if (titular == null) {
                     JOptionPane.showMessageDialog(ListadoServicios.this,
                         "Debe seleccionar un titular.",
@@ -190,21 +196,61 @@ public class ListadoServicios extends JDialog {
                         JOptionPane.ERROR_MESSAGE);
                     return;
                 }
+
+                // Reiniciar colores
+                lblNumero.setForeground(Color.BLACK);
+                lblMonto.setForeground(Color.BLACK);
+                lblNick.setForeground(Color.BLACK);
+
+                boolean valido = true;
+
                 try {
-                    if (index == 0) {
-                        String numero = campoNumero.getText();
-                        empresa.agregarTelefonoFijo(titular, numero);
-                    } else if (index == 1) {
-                        String numero = campoNumero.getText();
-                        double monto = Double.parseDouble(campoMonto.getText());
-                        empresa.agregarTelefonoMovil(titular, numero, monto);
+                    if (index == 0 || index == 1) {
+                        String numero = campoNumero.getText().trim();
+                        if (numero.length() != 8) {
+                            lblNumero.setForeground(Color.RED);
+                            valido = false;
+                        }
+
+                        if (index == 1) {
+                            String montoTxt = campoMonto.getText().trim();
+                            if (montoTxt.isEmpty()) {
+                                lblMonto.setForeground(Color.RED);
+                                valido = false;
+                            }
+                        }
+
+                        if (!valido) {
+                            JOptionPane.showMessageDialog(ListadoServicios.this,
+                                "Verifique los campos marcados en rojo.",
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+
+                        if (index == 0) {
+                            empresa.agregarTelefonoFijo(titular, numero);
+                        } else {
+                            double monto = Double.parseDouble(campoMonto.getText().trim());
+                            empresa.agregarTelefonoMovil(titular, numero, monto);
+                        }
+
                     } else if (index == 2) {
-                        String nick = campoNick.getText();
+                        String nick = campoNick.getText().trim();
+                        if (nick.isEmpty()) {
+                            lblNick.setForeground(Color.RED);
+                            JOptionPane.showMessageDialog(ListadoServicios.this,
+                                "Verifique el campo marcado en rojo.",
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
                         empresa.crearCuentaNauta(titular, nick);
                     }
+
                     cargarDatos();
                     panelFormulario.setVisible(false);
-                    setTablaSeleccionHabilitada(true);
+
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     JOptionPane.showMessageDialog(ListadoServicios.this,
@@ -215,21 +261,14 @@ public class ListadoServicios extends JDialog {
             }
         });
 
-        // === Acción Botón Cancelar ===
-        btnCancelar.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                panelFormulario.setVisible(false);
-                setTablaSeleccionHabilitada(true);
-            }
-        });
-
         panelFormulario.setVisible(true);
         panelFormulario.revalidate();
         panelFormulario.repaint();
-
-        // === Deshabilitar tabla activa ===
+    
+     // === Deshabilitar tabla activa ===
         setTablaSeleccionHabilitada(false);
     }
+
 
 
     	
