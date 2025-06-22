@@ -1,5 +1,5 @@
 package interfaz;
-
+import imagenes.*;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -13,10 +13,17 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+
+import auxiliares.CuentaNautaTableModel;
+import runner.Inicializadora;
 
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 
 public class Principal extends JFrame {
 
@@ -30,6 +37,7 @@ public class Principal extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					Inicializadora.Inicializar();
 					Principal frame = new Principal();
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -45,15 +53,26 @@ public class Principal extends JFrame {
 	public Principal() {
 		
 		
-		//Ventana a lo maximo de la pantalla 
-		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		
-		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 896, 483);
+		setBounds(0, 0, 1800, 900);
+			contentPane = new JPanel(){
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
+
+				public void paintComponent(Graphics g){
+					Image img = Toolkit.getDefaultToolkit().getImage(Principal.class.getResource("/imagenes/d.png"));
+					g.drawImage(img, 0, 0, this.getWidth(), this.getHeight(),this);
+				}
+			};
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
 		
 		JMenuBar menuBar = new JMenuBar();
-		setJMenuBar(menuBar);
+		menuBar.setBounds(0, 0, 1830, 39);
+		contentPane.add(menuBar);
 		
 		JMenu menu = new JMenu("");
 		menuBar.add(menu);
@@ -89,52 +108,32 @@ public class Principal extends JFrame {
 		JMenuItem mntmClientes = new JMenuItem("Clientes");
 		mntmClientes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				ListadoClientes listadoC = new ListadoClientes();
-				listadoC.setVisible(true);
+				ListadoClientes.abrirListadoClientes();
 			}
 		});
 		mntmClientes.setFont(new Font("Serif", Font.PLAIN, 21));
 		mnGestion.add(mntmClientes);
 		
-		JMenu mnServicios = new JMenu("Servicios");
-		mnServicios.setFont(new Font("Serif", Font.PLAIN, 21));
-		mnGestion.add(mnServicios);
+		JMenuItem mntmServicios = new JMenuItem("Servicios");
+		mntmServicios.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				 ListadoServicios.abrirListadoServicio();
+			}
+		});
+		mntmServicios.setFont(new Font("Serif", Font.PLAIN, 20));
+		mnGestion.add(mntmServicios);
 		
-		JMenuItem menuItem = new JMenuItem("Lista");
-		menuItem.setFont(new Font("Serif", Font.PLAIN, 21));
-		mnServicios.add(menuItem);
-		
-		JMenuItem menuItem_1 = new JMenuItem("Crear");
-		menuItem_1.setFont(new Font("Serif", Font.PLAIN, 21));
-		mnServicios.add(menuItem_1);
-		
-		JMenuItem menuItem_2 = new JMenuItem("Modificar");
-		menuItem_2.setFont(new Font("Serif", Font.PLAIN, 21));
-		mnServicios.add(menuItem_2);
-		
-		JMenuItem menuItem_3 = new JMenuItem("Eliminar");
-		menuItem_3.setFont(new Font("Serif", Font.PLAIN, 21));
-		mnServicios.add(menuItem_3);
-		
-		JMenu mnRepresentantes = new JMenu("Representantes");
-		mnRepresentantes.setFont(new Font("Serif", Font.PLAIN, 21));
-		mnGestion.add(mnRepresentantes);
-		
-		JMenuItem mntmListar = new JMenuItem("Lista");
-		mntmListar.setFont(new Font("Serif", Font.PLAIN, 21));
-		mnRepresentantes.add(mntmListar);
-		
-		JMenuItem mntmCrear = new JMenuItem("Crear");
-		mntmCrear.setFont(new Font("Serif", Font.PLAIN, 21));
-		mnRepresentantes.add(mntmCrear);
-		
-		JMenuItem mntmModificar = new JMenuItem("Modificar");
-		mntmModificar.setFont(new Font("Serif", Font.PLAIN, 21));
-		mnRepresentantes.add(mntmModificar);
-		
-		JMenuItem mntmEliminar = new JMenuItem("Eliminar");
-		mntmEliminar.setFont(new Font("Serif", Font.PLAIN, 21));
-		mnRepresentantes.add(mntmEliminar);
+		JMenuItem mntmRepresentantes = new JMenuItem("Representantes");
+		mntmRepresentantes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				 ListadoRepresentante.abrirListadoRepresentante();;
+				
+				
+			}
+		});
+		mntmRepresentantes.setFont(new Font("Serif", Font.PLAIN, 20));
+		mnGestion.add(mntmRepresentantes);
 		
 		JMenu mnReportes = new JMenu("Reportes        ");
 		mnReportes.setFont(new Font("Serif", Font.BOLD, 22));
@@ -145,10 +144,26 @@ public class Principal extends JFrame {
 		mnReportes.add(mnServicios_1);
 		
 		JMenuItem mntmMesesConMayor = new JMenuItem("1. Meses con mayor gasto en kb de Cuentas Nautas");
+		mntmMesesConMayor.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+			MesesMayorConsumoMBnauta frame = new MesesMayorConsumoMBnauta();
+		     frame.setVisible(true);
+		  }
+	    });
+			
+		
+	
 		mntmMesesConMayor.setFont(new Font("Serif", Font.PLAIN, 21));
 		mnServicios_1.add(mntmMesesConMayor);
 		
 		JMenuItem mntmNewMenuItem = new JMenuItem("2. Provincias con la menor cantidad de Cuentas Nautas de Personas Naturales\r\n");
+		mntmNewMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				CuentasNautasPorProvincia cuentasNautas = new CuentasNautasPorProvincia();
+				cuentasNautas.setVisible(true);
+			}
+		});
 		mntmNewMenuItem.setFont(new Font("Serif", Font.PLAIN, 21));
 		mnServicios_1.add(mntmNewMenuItem);
 		
@@ -165,6 +180,13 @@ public class Principal extends JFrame {
 		mnClientes_1.add(mntmNewMenuItem_1);
 		
 		JMenuItem mntmClientesCon = new JMenuItem("2. Clientes con mayor consumo en Llamadas de Larga Distancia");
+		mntmClientesCon.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				ClientesMayorConsumoLlamadasLargaDistancia llamadasLargaDistancia = new ClientesMayorConsumoLlamadasLargaDistancia();
+				llamadasLargaDistancia.setVisible(true);
+				
+			}
+		});
 		mntmClientesCon.setFont(new Font("Serif", Font.PLAIN, 21));
 		mnClientes_1.add(mntmClientesCon);
 		
@@ -173,17 +195,21 @@ public class Principal extends JFrame {
 		menuBar.add(mnAyuda);
 		
 		JMenuItem mntmAcercaDe = new JMenuItem("Acerca de");
+		mntmAcercaDe.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				JOptionPane.showMessageDialog(null,
+					    "*Servicios Telefonicos de ETECSA\n*Versi�n: 1.0\n*Lanzada en junio de 2025\n*Desarrolladores:\n-Raul Hechavarria\n-Aniel Varela\n-Ruben Anazco ",
+					    "Acerca de",
+					    JOptionPane.INFORMATION_MESSAGE);
+				
+				
+				
+			}
+		});
 		mntmAcercaDe.setFont(new Font("Serif", Font.PLAIN, 21));
 		mnAyuda.add(mntmAcercaDe);
-			contentPane = new JPanel(){
-				public void paintComponent(Graphics g){
-					Image img = Toolkit.getDefaultToolkit().getImage(Principal.class.getResource("/images/d.png"));
-					g.drawImage(img, 0, 0, this.getWidth(), this.getHeight(),this);
-				}
-			};
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
+	
 		
 		
 		

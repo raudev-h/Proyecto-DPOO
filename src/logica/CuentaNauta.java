@@ -6,7 +6,7 @@ public class CuentaNauta extends Servicio{
     // TODO
     // Es de tipo Mapa para que despues podamos cambiarlo en caso de que necesitemos algo especifico de un mapa 
     // con caracteristicas propias, ver en la documentacion que Map es un tipo de Interfaz y HashMap una implementacion
-    private Map<String, MesDatos> mesDatos; 
+    private static Map<String, MesDatos> mesDatos; 
     private String nick;
 
 
@@ -66,7 +66,7 @@ public class CuentaNauta extends Servicio{
     }
 
     //Buscar los KB gastados tanto internacionales como nacionales en todos los meses
-    public HashMap<String, Double > calcularKbGastadosMeses(){
+    public static  HashMap<String, Double > calcularKbGastadosMeses(){
 
         HashMap <String, Double> mesesKb = new HashMap<String, Double>();
 
@@ -76,6 +76,18 @@ public class CuentaNauta extends Servicio{
         }
 
         return mesesKb;
+    }
+    
+    public double calcularMbTotalesGastados(){
+    	
+    	double total = 0;
+    	
+    	for(MesDatos ms: mesDatos.values()){   		
+    		total += ms.calcularTotalGastadoKb();    		
+    	}
+    	    	
+    	return total/1024;
+    	
     }
 
     //Calcular el gasto en kb Internacionales y nacionales de un mes en especifico en el mesDatos
