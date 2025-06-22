@@ -2,11 +2,19 @@ package interfaz;
 
 import auxiliares.*;
 import logica.*;
+
 import javax.swing.*;
 import javax.swing.border.*;
+
 import java.awt.*;
 import java.awt.event.*;
+
 import javax.swing.table.*;
+
+import excepciones.DuplicadosException;
+import excepciones.NombreInvalidoException;
+import excepciones.UbicacionInvalidaException;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -268,7 +276,7 @@ public class ListadoClientes extends JDialog {
 
 
 
-    // ============ PANEL DE CREACIÓN ============
+    // ============ PANEL DE CREACIÓN ============ 
 
     private void initPanelCreacion() {
     	panelCreacion = new JPanel();
@@ -599,9 +607,10 @@ public class ListadoClientes extends JDialog {
         lblOrganismoCreate.setForeground(Color.BLACK);
     }
 
-    //Metodo para crear un nuevo cliente en dependencia del cliente que se este intentnando crear
+    //Metodo para crear un nuevo cliente en dependencia del cliente que se este intentnando crear TODO
     private void crearCliente() {
         Cliente nuevoCliente = null;
+        boolean creado = false;
         
         try {
         	
@@ -633,22 +642,21 @@ public class ListadoClientes extends JDialog {
                 
             }
             
-            // Validar campos específicos según el tipo de cliente
+            // CREAR PERSONA NATURAL
             if (tipoCliente.equals("Persona Natural")) {
-                boolean numIdValido = validarNumIdCreacion(txtNumIdCreate.getText());
-                valido = valido && numIdValido;
                 
-                if (valido) {
-                    nuevoCliente = new PersonaNatural(
-                    	txtNombreCreate.getText(),
-                        txtDireccionCreate.getText(),
-                        (String) cbMunicipioCreate.getSelectedItem(),
-                        (String) cbProvinciaCreate.getSelectedItem(),
-                         
-                        txtNumIdCreate.getText()
-                    );
+                creado = crearPersonaNatural(servicioSeleccionado);
+                if(creado){
+                	int longitudListado = EmpresaTelecomunicaciones.getInstancia().getClientes().size();
+                	nuevoCliente = EmpresaTelecomunicaciones.getInstancia().getClientes().get(longitudListado-1);
+    		    	System.out.println("Nombre: "+ nuevoCliente.getNombre()+ "  NumID:"+((PersonaNatural)nuevoCliente).getNumId());
+
                 }
-            } 
+                
+                
+                
+                }
+            
             else if (tipoCliente.equals("Persona Jurídica")) {
                 boolean organismoValido = validarOrganismoCreacion(txtOrganismoCreate.getText());
                 valido = valido && organismoValido;
@@ -704,14 +712,7 @@ public class ListadoClientes extends JDialog {
                  EmpresaTelecomunicaciones.getInstancia().getServicios().add(servicioSeleccionado);
                  EmpresaTelecomunicaciones.getInstancia().getServiciosDisponibles().remove(servicioSeleccionado);
   
-                
-                // Actualizar las listas de servicios
-                EmpresaTelecomunicaciones.getInstancia().getServicios().add(servicioSeleccionado);
-                EmpresaTelecomunicaciones.getInstancia().getServiciosDisponibles().remove(servicioSeleccionado);
-                
-                // Agregar el cliente a la empresa
-                EmpresaTelecomunicaciones.getInstancia().getClientes().add(nuevoCliente);
-                
+  
                 // Actualizar la tabla
                 tableModel.cargarClientes();
                 
@@ -732,7 +733,7 @@ public class ListadoClientes extends JDialog {
                 throw new Exception("No se pudo crear el cliente");
             }
         } catch (Exception e) {
-            // En caso de error, liberar cualquier recurso asignado
+            // En caso de error, liberar cualquier recurso asignado en la BD de la empresa o en el servicio seleccionado
             if (nuevoCliente != null) {
                 EmpresaTelecomunicaciones.getInstancia().getClientes().remove(nuevoCliente);
             }
@@ -1338,4 +1339,141 @@ public class ListadoClientes extends JDialog {
         nombreClienteSeleccionado = null;
         representanteSeleccionado = null;
     }
+    
+    //Metodos Adicionales 
+  //Crear una persona juridica validando todos sus datos y lanzando excepciones en cada caso
+    public boolean crearPersonaNatural(Servicio servicioSeleccionado){
+    	   	
+    	boolean creado = false;
+    	
+    	StringBuilder errores = new StringBuilder();
+ 
+   	
+    	//Atributos necesarios para crear a una Persona Natural
+    	String nombre = null;
+    	String direccion = null;
+    	String numId = null;
+    	String provincia = null;
+    	String municipio = null;
+
+	    	//Validar Nombre
+	    	try {
+	    	    Cliente.validarNombre(txtNombreCreate.getText());
+	    	    
+	    	    nombre = txtNombreCreate.getText();
+	    	    lblNombreCreate.setForeground(Color.black); 
+	    	   
+	    	} catch (NombreInvalidoException e) {
+	    	    errores.append("- ").append(e.getMessage()).append("\n");
+	    	    lblNombreCreate.setForeground(Color.RED); 
+	    	}
+	    	
+	    	//Validar Direccion
+	    	try{   		
+	    		Cliente.validarDireccion(txtDireccionCreate.getText());
+	    		
+	    		direccion = txtDireccionCreate.getText();
+	    		lblDireccionCreate.setForeground(Color.black);
+
+	    	}catch(UbicacionInvalidaException e) {
+	        	    errores.append("- ").append(e.getMessage()).append("\n");
+	        	    lblDireccionCreate.setForeground(Color.RED); 
+	    		}
+	
+	    	//Validar numero de Identidad
+	    	try { 
+	    		
+	    		// PRIMERO VERIFICAR SI EL NÚMERO YA EXISTE
+	            for (Cliente c : EmpresaTelecomunicaciones.getInstancia().getClientes()) {
+	                if (c instanceof PersonaNatural) {
+	                    PersonaNatural pn = (PersonaNatural)c;
+	                    if (pn.getNumId().equals(txtNumIdCreate.getText())) {
+	        		    	System.out.println("Se encontro el cliente con el mismo carnet," );
+
+	                        throw new DuplicadosException("Ya existe una persona con este número de identidad");
+	                    }
+	                }
+	            }
+	            	    	    
+	    	    numId = txtNumIdCreate.getText();
+	    	    PersonaNatural.validarNumId(numId);
+	    	    lblNumIdCreate.setForeground(Color.BLACK);
+	    	    
+	    	}catch(DuplicadosException e){
+		    	System.out.println("Entra al duplicados");
+
+	    		errores.append("- ").append(e.getMessage()).append("\n");
+	    	    lblNumIdCreate.setForeground(Color.RED);
+	    		
+	    	}catch (Exception e) {
+		    	System.out.println("Entra al error de dato");
+
+	    	    errores.append("- ").append(e.getMessage()).append("\n");
+	    	    lblNumIdCreate.setForeground(Color.RED);	    	    
+	    	}
+
+	    	
+	    	provincia = (String) cbProvinciaCreate.getSelectedItem();
+	    	municipio = (String) cbMunicipioCreate.getSelectedItem(); 
+	    	
+	    	//Asignar provincia y los municipios
+	    	if (provincia == null || municipio == null) {
+	    	    errores.append("- Seleccione provincia y municipio válidos\n");
+	    	}
+	 
+	    	
+	    	
+	    	//Mensaje de error de Validacion
+	    	System.out.println("Cantidad de Errores: "+errores.length());
+	    	if (errores.length() > 0) {
+	    		
+	    		JOptionPane.showMessageDialog(
+	    			    null, 
+	    			    "ERRORES EN LOS DATOS:\n" + 
+	    			    "----------------------------\n" + 
+	    			    errores.toString() + 
+	    			    "\n----------------------------\n" + 
+	    			    "Por favor, corrija los campos resaltados en rojo.", 
+	    			    "Error ", 
+	    			    JOptionPane.ERROR_MESSAGE
+	    			);	    	} 
+	    	else {
+
+	    		if(servicioSeleccionado != null){
+		    		try{
+		    			
+		    		//Usar los valores ya valido
+		    		EmpresaTelecomunicaciones.getInstancia().agregarPersonaNatural(nombre,direccion, municipio, provincia, numId);		    	    
+		    		creado = true;
+		    	    // Limpiar campos después de creación exitosa
+		            limpiarCampos();
+		    		}catch(Exception e){
+		    			// Manejo de errores
+		                manejarError(e,"Error:"+e.getMessage());
+
+		    			
+		    			}
+		    		}
+	    		}
+    		
+    	return creado;
+    }
+    private void manejarError(Exception e, String mensaje) {
+        UIManager.put("OptionPane.messageFont", new Font("Serif", Font.PLAIN, 18));
+        UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.PLAIN, 16));
+        JOptionPane.showMessageDialog(this, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+    
+    private void limpiarCampos() {
+        txtNombreCreate.setText("");
+        txtDireccionCreate.setText("");
+        txtNumIdCreate.setText("");
+        cbProvinciaCreate.setSelectedIndex(-1);
+        cbMunicipioCreate.setSelectedIndex(-1);
+    }
+    
+    
+    
+    
+    
 }

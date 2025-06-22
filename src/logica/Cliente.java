@@ -55,6 +55,27 @@ public abstract class Cliente {
         else 
             this.nombre = nombre.trim();
     }
+    
+    //======================= Aniel  metodos estaticos para validar 
+    public static void validarNombre(String nombre) throws NombreInvalidoException {
+    
+    	if(nombre == null || nombre.trim().isEmpty()){
+            throw new NombreInvalidoException("El nombre no puede estar vacío");
+        }
+        else if(!(nombre.trim().matches(("[a-zA-ZáéíóúÁÉÍÓÚñÑ]+( [a-zA-ZáéíóúÁÉÍÓÚñÑ]+)*")))){
+            throw new NombreInvalidoException("El nombre solo puede contener letras");
+        }
+
+    }
+    public static void validarDireccion(String direccion) throws UbicacionInvalidaException {
+        if(direccion == null || direccion.trim().isEmpty()){
+            throw new UbicacionInvalidaException("La direccion no puede estar vacía");
+         }
+
+     }
+    
+    
+    //========================
 
     // MÃ‰TODOS
     // Agregar Servicio
