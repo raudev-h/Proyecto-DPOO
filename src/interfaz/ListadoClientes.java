@@ -11,6 +11,7 @@ import java.awt.event.*;
 
 import javax.swing.table.*;
 
+import excepciones.CarnetIdentidadInvalidoException;
 import excepciones.DuplicadosException;
 import excepciones.NombreInvalidoException;
 import excepciones.UbicacionInvalidaException;
@@ -607,85 +608,89 @@ public class ListadoClientes extends JDialog {
         lblOrganismoCreate.setForeground(Color.BLACK);
     }
 
-    //Metodo para crear un nuevo cliente en dependencia del cliente que se este intentnando crear TODO
+    //Metodo para crear un nuevo cliente en dependencia del cliente que se este intentnando crear 
     private void crearCliente() {
         Cliente nuevoCliente = null;
         boolean creado = false;
-        
+        StringBuilder errores = new StringBuilder();
+        String tipoCliente = (String) cbTipoCliente.getSelectedItem();
+
         try {
         	
         	// Validar que se haya seleccionado un servicio
         	if (servicioSeleccionado == null) {
-        	    UIManager.put("OptionPane.messageFont", new Font("Serif", Font.PLAIN, 18));
-        	    JOptionPane.showMessageDialog(this, 
-        	        "Debe seleccionar al menos un servicio telefónico para el cliente", 
-        	        "Error", JOptionPane.ERROR_MESSAGE);
-        	    
+        	    errores.append("un Servicio Telefónico");       	    
         	}
-
-            // Validar campos comunes
-            boolean nombreValido = validarNombreCreacion(txtNombreCreate.getText());
-            boolean direccionValida = validarDireccionCreacion(txtDireccionCreate.getText());
-            boolean valido = nombreValido && direccionValida;
-            
-            String tipoCliente = (String) cbTipoCliente.getSelectedItem();
-            
-
+           
             // Validar representante para tipos que lo requieren
             if ((tipoCliente.equals("Persona Jurídica") || tipoCliente.equals("Entidad No Estatal")) && 
-                representanteSeleccionado == null) {
-                UIManager.put("OptionPane.messageFont", new Font("Serif", Font.PLAIN, 18));
-                JOptionPane.showMessageDialog(this, 
-                    "Debe seleccionar un representante para este tipo de cliente", 
-                    "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-                
+                representanteSeleccionado == null) {           	
+            	errores.append("un Representante");
             }
             
+            if(errores.length() > 0){
+            	if(representanteSeleccionado == null && servicioSeleccionado == null && !(tipoCliente.equals("Persona Natural"))){
+            		errores.insert(22, " y ");
+            	}
+            
+                UIManager.put("OptionPane.messageFont", new Font("Serif", Font.PLAIN, 18));
+                JOptionPane.showMessageDialog(this, 
+                    "Error: Debe seleccionar "+ errores.toString(), 
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            }
+                
+                
+                
+            
+            System.out.println("Hasta aqui todo bien");
             // CREAR PERSONA NATURAL
             if (tipoCliente.equals("Persona Natural")) {
                 
                 creado = crearPersonaNatural(servicioSeleccionado);
                 if(creado){
+                	//Obtener nuevo cliente
                 	int longitudListado = EmpresaTelecomunicaciones.getInstancia().getClientes().size();
                 	nuevoCliente = EmpresaTelecomunicaciones.getInstancia().getClientes().get(longitudListado-1);
     		    	System.out.println("Nombre: "+ nuevoCliente.getNombre()+ "  NumID:"+((PersonaNatural)nuevoCliente).getNumId());
 
                 }
                 
-                
-                
-                }
+             }
             
+            
+            //CREAR UNA PERSONA JURIDICA
             else if (tipoCliente.equals("Persona Jurídica")) {
-                boolean organismoValido = validarOrganismoCreacion(txtOrganismoCreate.getText());
-                valido = valido && organismoValido;
-                
-                if (valido) {
-                    nuevoCliente = new PersonaJuridica(
-                        txtNombreCreate.getText(),
-                        txtDireccionCreate.getText(), 
-                        (String) cbMunicipioCreate.getSelectedItem(), 
-                        (String) cbProvinciaCreate.getSelectedItem(),  
-                        txtOrganismoCreate.getText(), 
-                        representanteSeleccionado
-                    );
-                    
-                    
-                    // Asignación bidireccional del representante
+            	System.out.println("Entra a persona Juridica");
+            	System.out.println("Antes de crear al cliente :" + EmpresaTelecomunicaciones.getInstancia().getClientes().size());
+            	creado = crearPersonaJuridica(servicioSeleccionado, representanteSeleccionado);
+            	
+                  if(creado){  
+                  	System.out.println("El cliente ha sido creado");
+                  	
+                	//Obtener nuevo cliente
+                	System.out.println("Despues de crear al cliente :" + EmpresaTelecomunicaciones.getInstancia().getClientes().size());
+
+                	int longitudListado = EmpresaTelecomunicaciones.getInstancia().getClientes().size();
+                	System.out.println(longitudListado);
+
+                  	nuevoCliente = EmpresaTelecomunicaciones.getInstancia().getClientes().get(longitudListado-1);
+      		    	System.out.println("Nombre: "+ nuevoCliente.getNombre()+ "  Organismo"+ ((PersonaJuridica)nuevoCliente).getOrganismo());
+
+                	  
+                    // Asignación bidireccional del representante y cliente
                     if (representanteSeleccionado != null) {
                         EmpresaTelecomunicaciones.getInstancia()
                             .asignarRepresentanteACliente(nuevoCliente, representanteSeleccionado);
                     }
-                }
-            } 
+                  }
+             }
             else if (tipoCliente.equals("Entidad No Estatal")) {
-                if (valido) {
-                    nuevoCliente = new EntidadNoEstatal(
-                        txtNombreCreate.getText(),
-                        txtDireccionCreate.getText(), 
-                        representanteSeleccionado
-                    );
+                	
+            		creado = crearEntidadNoEstatal(servicioSeleccionado, representanteSeleccionado);
+            		
+            		if(creado){
+            			int longitudListado = EmpresaTelecomunicaciones.getInstancia().getClientes().size();
+                      	nuevoCliente = EmpresaTelecomunicaciones.getInstancia().getClientes().get(longitudListado-1);
                     
                     // Asignación bidireccional del representante
                     if (representanteSeleccionado != null) {
@@ -695,12 +700,6 @@ public class ListadoClientes extends JDialog {
                 }
             }
          
-            
-            if (!valido) {
-                UIManager.put("OptionPane.messageFont", new Font("Serif", Font.PLAIN, 18));
-                UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.PLAIN, 16));
-                throw new Exception("Complete todos los campos obligatorios marcados en rojo");
-            }
             
             if (nuevoCliente != null) {
                 // Asignar el servicio seleccionado al cliente
@@ -1031,8 +1030,8 @@ public class ListadoClientes extends JDialog {
         lblOrganismoEdit.setForeground(Color.BLACK);
     }
 
-    private void actualizarCliente() {
-        try {
+	    private void actualizarCliente() {
+	        try {
             // Obtener el cliente actual desde la base de datos
             Cliente clienteActual = EmpresaTelecomunicaciones.getInstancia()
                                   .buscarCliente(nombreClienteSeleccionado);
@@ -1047,27 +1046,77 @@ public class ListadoClientes extends JDialog {
                 return;
             }
             
-            // Validar campos comunes
-            boolean nombreValido = validarNombreEdicion(txtNombreEdit.getText());
-            boolean direccionValida = validarDireccionEdicion(txtDireccionEdit.getText());
-            boolean valido = nombreValido && direccionValida;
+            StringBuilder errores = new StringBuilder();
             
-            // Validar campos específicos según el tipo de cliente
+            // Validar campos comunes
+            //Validar Nombre
+            try{
+            	if(clienteActual instanceof PersonaNatural){
+            		validarNombreEdicion(txtNombreEdit.getText());
+            	}
+            	if(clienteActual instanceof PersonaJuridica){
+            		this.validarNombreEdicionRobustaJ(txtNombreEdit.getText(), clienteActual);
+            	}
+            	if(clienteActual instanceof EntidadNoEstatal){
+            		this.validarNombreEdicionRobustaE(txtNombreEdit.getText(), clienteActual);
+            		
+            	}
+        	    lblNombreEdit.setForeground(Color.BLACK); 
+
+            }catch(Exception e){
+            	errores.append("- ").append(e.getMessage()).append("\n");
+        	    lblNombreEdit.setForeground(Color.RED); 
+            }
+            
+            // Validar Direccion
+            try{
+            	this.validarDireccionEdicion(txtDireccionEdit.getText());
+        	    lblDireccionEdit.setForeground(Color.BLACK); 
+
+            }catch(Exception e){
+            	errores.append("- ").append(e.getMessage()).append("\n");
+        	    lblDireccionEdit.setForeground(Color.RED); 
+            }
+           
             if (clienteSeleccionado instanceof PersonaNatural) {
-                boolean numIdValido = validarNumIdEdicion(txtNumIdEdit.getText());
-                valido = valido && numIdValido;
+                
+            	try{
+                	this.validarNumIdEdicion(txtNumIdEdit.getText(), clienteActual); 
+            	    lblNumIdEdit.setForeground(Color.BLACK); 
+
+                }catch(Exception e){
+                	errores.append("- ").append(e.getMessage()).append("\n");
+                	lblNumIdEdit.setForeground(Color.RED); 
+                }
+               
             } 
             else if (clienteSeleccionado instanceof PersonaJuridica) {
-                boolean organismoValido = validarOrganismoEdicion(txtOrganismoEdit.getText());
-                valido = valido && organismoValido;
+            	
+            	try{
+                	this.validarOrganismoEdicion(txtOrganismoEdit.getText());
+            	    lblNumIdEdit.setForeground(Color.BLACK); 
+
+                }catch(Exception e){
+                	errores.append("- ").append(e.getMessage()).append("\n");
+                	lblNumIdEdit.setForeground(Color.RED); 
+                }         	
             }
             
-            if (!valido) {
-                UIManager.put("OptionPane.messageFont", new Font("Serif", Font.PLAIN, 18));
+            if (errores.length() > 0) {
+            	UIManager.put("OptionPane.messageFont", new Font("Serif", Font.PLAIN, 18));
                 UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.PLAIN, 16));
-                throw new Exception("Complete todos los campos obligatorios marcados en rojo");
+            	JOptionPane.showMessageDialog(
+	    			    null, 
+	    			    "ERRORES EN LOS DATOS:\n" + 
+	    			    "----------------------------\n" + 
+	    			    errores.toString() + 
+	    			    "\n----------------------------\n" + 
+	    			    "Por favor, corrija los campos resaltados en rojo.", 
+	    			    "Error ", 
+	    			    JOptionPane.ERROR_MESSAGE
+	    			);	  
             }
-            
+            else{
             // Guardar el representante anterior para limpieza posterior si es necesario
             Representante representanteAnterior = null;
             if (clienteSeleccionado instanceof PersonaJuridica) {
@@ -1146,72 +1195,72 @@ public class ListadoClientes extends JDialog {
             UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.PLAIN, 16));
             JOptionPane.showMessageDialog(this, "Cliente actualizado correctamente", 
                 "Éxito", JOptionPane.INFORMATION_MESSAGE);
-            
-
-            JOptionPane.showMessageDialog(this, "Cliente actualizado", 
-                "Éxito", JOptionPane.INFORMATION_MESSAGE);
+  
+            }
 
         } catch (Exception e) {
-            // Manejo de errores
-            UIManager.put("OptionPane.messageFont", new Font("Serif", Font.PLAIN, 18));
-            UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.PLAIN, 16));
-            JOptionPane.showMessageDialog(this, "Error al actualizar cliente: " + e.getMessage(), 
-                "Error", JOptionPane.ERROR_MESSAGE);
+            
         }
+	        
     }
     
-
-    // Métodos de validación para creación
-
-    private boolean validarNombreCreacion(String nombre) {
-        boolean valido = !nombre.trim().isEmpty();
-        lblNombreCreate.setForeground(valido ? Color.BLACK : Color.RED);
-        return valido;
-    }
-    
-    private boolean validarDireccionCreacion(String direccion) {
-        boolean valido = !direccion.trim().isEmpty();
-        lblDireccionCreate.setForeground(valido ? Color.BLACK : Color.RED);
-        return valido;
-    }
-    
-    private boolean validarNumIdCreacion(String numId) {
-        boolean valido = !numId.trim().isEmpty();
-        lblNumIdCreate.setForeground(valido ? Color.BLACK : Color.RED);
-        return valido;
-    }
-    
-    private boolean validarOrganismoCreacion(String organismo) {
-        boolean valido = !organismo.trim().isEmpty();
-        lblOrganismoCreate.setForeground(valido ? Color.BLACK : Color.RED);
-        return valido;
-    }
-
 
     // Métodos de validación para edición
 
-    private boolean validarNombreEdicion(String nombre) {
-        boolean valido = !nombre.trim().isEmpty();
-        lblNombreEdit.setForeground(valido ? Color.BLACK : Color.RED);
-        return valido;
+    private void  validarNombreEdicion(String nombre) throws NombreInvalidoException {
+        
+        Cliente.validarNombre(nombre);
+        
+        }
+
+    private void validarNombreEdicionRobustaE(String nombre,Cliente clienteActual)throws NombreInvalidoException {
+            
+            Cliente.validarNombre(nombre);
+            
+            for(Cliente c: EmpresaTelecomunicaciones.getInstancia().getClientes()){
+            	if(c instanceof EntidadNoEstatal){
+	            	if(c.getNombre().equalsIgnoreCase(nombre) && c!= clienteActual){
+	            		throw new NombreInvalidoException("Esa Entidad Estatal ya existe en nuestro sistema");
+	            	}
+            	}
+            }
+            }
+    private void validarNombreEdicionRobustaJ(String nombre,Cliente clienteActual)throws NombreInvalidoException {
+        
+        Cliente.validarNombre(nombre);
+        for(Cliente c: EmpresaTelecomunicaciones.getInstancia().getClientes()){
+        	if(c instanceof PersonaJuridica){
+            	if(c.getNombre().equalsIgnoreCase(nombre) && c!= clienteActual){
+            		throw new NombreInvalidoException("Esa Persona Juridica ya existe en nuestro sistema");
+            	}
+        	}
+        }
+      }
+       
+    
+    private void validarDireccionEdicion(String direccion) throws UbicacionInvalidaException {
+
+    	Cliente.validarDireccion(direccion);
     }
     
-    private boolean validarDireccionEdicion(String direccion) {
-        boolean valido = !direccion.trim().isEmpty();
-        lblDireccionEdit.setForeground(valido ? Color.BLACK : Color.RED);
-        return valido;
+    private void validarNumIdEdicion(String numId, Cliente cliente) throws CarnetIdentidadInvalidoException {
+        		
+        PersonaNatural.validarNumId(numId);
+        
+        for(Cliente c: EmpresaTelecomunicaciones.getInstancia().getClientes()){
+        	if(c instanceof PersonaNatural){
+        		if(((PersonaNatural)c).getNumId().equals(numId) && c != cliente){
+        			throw new CarnetIdentidadInvalidoException("Ya existe una persona con este número de identidad");
+        			
+        		}
+        	}
+        }
+
     }
     
-    private boolean validarNumIdEdicion(String numId) {
-        boolean valido = !numId.trim().isEmpty();
-        lblNumIdEdit.setForeground(valido ? Color.BLACK : Color.RED);
-        return valido;
-    }
-    
-    private boolean validarOrganismoEdicion(String organismo) {
-        boolean valido = !organismo.trim().isEmpty();
-        lblOrganismoEdit.setForeground(valido ? Color.BLACK : Color.RED);
-        return valido;
+    private void validarOrganismoEdicion(String organismo) throws NombreInvalidoException {
+       
+    	PersonaJuridica.validarOrganismo(organismo);
     }
 
 
@@ -1340,8 +1389,8 @@ public class ListadoClientes extends JDialog {
         representanteSeleccionado = null;
     }
     
-    //Metodos Adicionales 
-  //Crear una persona juridica validando todos sus datos y lanzando excepciones en cada caso
+    //Metodos puros para crear cada tipo de Cliente 
+  //Crear una PERSONA NATURAL validando todos sus datos y lanzando excepciones en cada caso
     public boolean crearPersonaNatural(Servicio servicioSeleccionado){
     	   	
     	boolean creado = false;
@@ -1388,7 +1437,6 @@ public class ListadoClientes extends JDialog {
 	                if (c instanceof PersonaNatural) {
 	                    PersonaNatural pn = (PersonaNatural)c;
 	                    if (pn.getNumId().equals(txtNumIdCreate.getText())) {
-	        		    	System.out.println("Se encontro el cliente con el mismo carnet," );
 
 	                        throw new DuplicadosException("Ya existe una persona con este número de identidad");
 	                    }
@@ -1400,13 +1448,11 @@ public class ListadoClientes extends JDialog {
 	    	    lblNumIdCreate.setForeground(Color.BLACK);
 	    	    
 	    	}catch(DuplicadosException e){
-		    	System.out.println("Entra al duplicados");
 
 	    		errores.append("- ").append(e.getMessage()).append("\n");
 	    	    lblNumIdCreate.setForeground(Color.RED);
 	    		
 	    	}catch (Exception e) {
-		    	System.out.println("Entra al error de dato");
 
 	    	    errores.append("- ").append(e.getMessage()).append("\n");
 	    	    lblNumIdCreate.setForeground(Color.RED);	    	    
@@ -1424,7 +1470,6 @@ public class ListadoClientes extends JDialog {
 	    	
 	    	
 	    	//Mensaje de error de Validacion
-	    	System.out.println("Cantidad de Errores: "+errores.length());
 	    	if (errores.length() > 0) {
 	    		
 	    		JOptionPane.showMessageDialog(
@@ -1458,6 +1503,200 @@ public class ListadoClientes extends JDialog {
     		
     	return creado;
     }
+    
+    //Metodo para crear una PERSONA JURIDICA validando todos sus datos 
+    public boolean crearPersonaJuridica(Servicio servicioSeleccionado, Representante representanteSeleccionado){
+	   	
+    	boolean creado = false;
+    	
+    	StringBuilder errores = new StringBuilder();
+    	System.out.println("Entra");
+   	
+    	//Atributos necesarios para crear a una Persona Natural
+    	String nombre = null;
+    	String direccion = null;
+    	String organismo = null;
+    	String provincia = null;
+    	String municipio = null;
+
+	    	//Validar Nombre
+	    	try {
+	    		
+	    	    Cliente.validarNombre(txtNombreCreate.getText());
+	    	    //Buscar nombres duplicados
+	    	    for(Cliente c: EmpresaTelecomunicaciones.getInstancia().getClientes()){
+	    	    	if(c instanceof PersonaJuridica){
+	    	    		if(c.getNombre().equals(txtNombreCreate.getText())){
+	    	    			throw new Exception("Esa Persona Jurídica ya existe en nuestro sistema");
+	    	    		}
+	    	    	}
+	    	    	
+	    	    }
+	    	    
+	    	    	//
+	    	    nombre = txtNombreCreate.getText();
+	    	    lblNombreCreate.setForeground(Color.black); 
+	    	   
+	    	} catch (Exception e) {
+	    	    errores.append("- ").append(e.getMessage()).append("\n");
+	    	    lblNombreCreate.setForeground(Color.RED); 
+	    	}
+	    	
+	    	//Validar Direccion
+	    	try{   		
+	    		Cliente.validarDireccion(txtDireccionCreate.getText());
+	    		
+	    		direccion = txtDireccionCreate.getText();
+	    		lblDireccionCreate.setForeground(Color.black);
+
+	    	}catch(UbicacionInvalidaException e) {
+	        	    errores.append("- ").append(e.getMessage()).append("\n");
+	        	    lblDireccionCreate.setForeground(Color.RED); 
+	    		}
+	    	
+	    	//Validar organismo
+	    	try {
+	    		PersonaJuridica.validarOrganismo(txtOrganismoCreate.getText());
+	    	    organismo = txtOrganismoCreate.getText();
+	    	    lblOrganismoCreate.setForeground(Color.black); 
+	    	   
+	    	} catch (Exception e) {
+	    		System.out.println("Campo:"+ txtOrganismoCreate.getText());
+
+	    	    errores.append("- ").append(e.getMessage()).append("\n");
+	    	    lblOrganismoCreate.setForeground(Color.red);
+	    	}
+	
+	    	provincia = (String) cbProvinciaCreate.getSelectedItem();
+	    	municipio = (String) cbMunicipioCreate.getSelectedItem(); 
+	    	
+	    	//Asignar provincia y los municipios
+	    	if (provincia == null || municipio == null) {
+	    	    errores.append("- Seleccione provincia y municipio válidos\n");
+	    	}
+	    	
+	    	
+	    	//Mensaje de error de Validacion
+	    	System.out.println("Longitud de errores: " + errores.length());
+	    	if (errores.length() > 0) {
+	    		
+	    		JOptionPane.showMessageDialog(
+	    			    null, 
+	    			    "ERRORES EN LOS DATOS:\n" + 
+	    			    "----------------------------\n" + 
+	    			    errores.toString() + 
+	    			    "\n----------------------------\n" + 
+	    			    "Por favor, corrija los campos resaltados en rojo.", 
+	    			    "Error ", 
+	    			    JOptionPane.ERROR_MESSAGE
+	    			);	    	} 
+	    	else {
+
+	    		if(servicioSeleccionado != null && representanteSeleccionado != null){
+		    		try{
+		    			
+		    		//Usar los valores ya valido
+		    		EmpresaTelecomunicaciones.getInstancia().agregarPersonaJuridica(nombre,direccion, municipio, provincia, organismo,representanteSeleccionado);		    	    
+		    		creado = true;
+		    	    // Limpiar campos después de creación exitosa
+		            limpiarCampos();
+		    		}catch(Exception e){
+		    			// Manejo de errores
+		                manejarError(e,"Error:"+e.getMessage());
+
+		    			
+		    			}
+		    		}
+	    		}
+    		
+    	return creado;
+    }
+    
+    //Metodo para crear una PERSONA JURIDICA validando todos sus datos 
+    public boolean crearEntidadNoEstatal(Servicio servicioSeleccionado, Representante representanteSeleccionado){
+	   	
+    	boolean creado = false;
+    	
+    	StringBuilder errores = new StringBuilder();
+   	
+    	//Atributos necesarios para crear a una Persona Natural
+    	String nombre = null;
+    	String direccion = null;
+
+	    	//Validar Nombre
+	    	try {
+	    		
+	    	    Cliente.validarNombre(txtNombreCreate.getText());
+	    	    //Buscar nombres duplicados
+	    	    for(Cliente c: EmpresaTelecomunicaciones.getInstancia().getClientes()){
+	    	    	if(c instanceof EntidadNoEstatal){
+	    	    		if(c.getNombre().equals(txtNombreCreate.getText())){
+	    	    			throw new Exception("Esa Entidad Estatal ya existe en nuestro sistema");
+	    	    		}
+	    	    	}
+	    	    	
+	    	    }
+	    	    
+	    	    	//
+	    	    nombre = txtNombreCreate.getText();
+	    	    lblNombreCreate.setForeground(Color.black); 
+	    	   
+	    	} catch (Exception e) {
+	    	    errores.append("- ").append(e.getMessage()).append("\n");
+	    	    lblNombreCreate.setForeground(Color.RED); 
+	    	}
+	    	
+	    	//Validar Direccion
+	    	try{   		
+	    		Cliente.validarDireccion(txtDireccionCreate.getText());
+	    		
+	    		direccion = txtDireccionCreate.getText();
+	    		lblDireccionCreate.setForeground(Color.black);
+
+	    	}catch(UbicacionInvalidaException e) {
+	        	    errores.append("- ").append(e.getMessage()).append("\n");
+	        	    lblDireccionCreate.setForeground(Color.RED); 
+	    		}
+	    	    	
+	    	
+	    	
+	    	//Mensaje de error de Validacion
+	    	System.out.println("Longitud de errores: " + errores.length());
+	    	if (errores.length() > 0) {
+	    		
+	    		JOptionPane.showMessageDialog(
+	    			    null, 
+	    			    "ERRORES EN LOS DATOS:\n" + 
+	    			    "----------------------------\n" + 
+	    			    errores.toString() + 
+	    			    "\n----------------------------\n" + 
+	    			    "Por favor, corrija los campos resaltados en rojo.", 
+	    			    "Error ", 
+	    			    JOptionPane.ERROR_MESSAGE
+	    			);	    	} 
+	    	else {
+
+	    		if(servicioSeleccionado != null && representanteSeleccionado != null){
+		    		try{
+		    			
+		    		//Usar los valores ya valido
+		    		EmpresaTelecomunicaciones.getInstancia().agregarEntidadNoEstatal(nombre,direccion,representanteSeleccionado);		    	    
+		    		creado = true;
+		    	    // Limpiar campos después de creación exitosa
+		            limpiarCampos();
+		    		}catch(Exception e){
+		    			// Manejo de errores
+		                manejarError(e,"Error:"+e.getMessage());
+
+		    			
+		    			}
+		    		}
+	    		}
+    		
+    	return creado;
+    }
+    
+    
     private void manejarError(Exception e, String mensaje) {
         UIManager.put("OptionPane.messageFont", new Font("Serif", Font.PLAIN, 18));
         UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.PLAIN, 16));

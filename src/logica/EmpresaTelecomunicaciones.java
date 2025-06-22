@@ -161,23 +161,16 @@ public class EmpresaTelecomunicaciones {
 	}
 
 	// Agregar Entidad no estatal
-	public void agregarEntidadNoEstatal(String direccion, String nombreEntidad, Representante representante) 
+	public void agregarEntidadNoEstatal(String nombreEntidad, String direccion,  Representante representante) 
 			throws NombreInvalidoException, UbicacionInvalidaException, DuplicadosException {
 		
-		for(Cliente c : clientes){
-			if(c instanceof EntidadNoEstatal){
-				EntidadNoEstatal ene = (EntidadNoEstatal)c;
-				if(ene.getDireccion().equalsIgnoreCase(direccion))
-					throw new DuplicadosException("Esa persona ya existe en nuestro sistema");
-			}
-		}
 		
-		Cliente c1 = new EntidadNoEstatal(direccion, nombreEntidad, representante);
+		Cliente c1 = new EntidadNoEstatal(nombreEntidad, direccion, representante);
 		clientes.add(c1);
 	}
 
 	// Agregar Persona Natural
-	public void agregarPersonaNatural(String direccion, String municipio, String provincia, String nombre,
+	public void agregarPersonaNatural(String nombre, String direccion, String municipio, String provincia, 
 			String numId) throws NombreInvalidoException, UbicacionInvalidaException, ProvinciaInvalidaException,
 			CarnetIdentidadInvalidoException, DuplicadosException {
 		
@@ -189,12 +182,12 @@ public class EmpresaTelecomunicaciones {
 			}
 		}
 			
-		Cliente c1 = new PersonaNatural(direccion, municipio, provincia, nombre, numId);
+		Cliente c1 = new PersonaNatural(nombre, direccion, municipio, provincia,  numId);
 		clientes.add(c1);
 	}
 
 	// Agregar Persona Juridica
-	public void agregarPersonaJuridica(String direccion, String municipio, String provincia, String nombreEmpresaString,
+	public void agregarPersonaJuridica(String nombreEmpresaString, String direccion, String municipio, String provincia, 
 			String organismo, Representante representante) throws NombreInvalidoException, UbicacionInvalidaException,
 			ProvinciaInvalidaException, DuplicadosException{
 		
@@ -206,7 +199,7 @@ public class EmpresaTelecomunicaciones {
 			}
 		}
 		
-		Cliente c1 = new PersonaJuridica(direccion, municipio, provincia, nombreEmpresaString, organismo,
+		Cliente c1 = new PersonaJuridica(nombreEmpresaString, direccion, municipio, provincia, organismo,
 				representante);
 		clientes.add(c1);
 	}
