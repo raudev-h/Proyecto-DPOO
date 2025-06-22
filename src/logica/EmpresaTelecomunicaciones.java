@@ -95,7 +95,7 @@ public class EmpresaTelecomunicaciones {
 		this.servicios = servicios;
 	}
 	// Servicios Disponibles
-	public ArrayList<Servicio> getServicioDisponible(){
+	public ArrayList<Servicio> getServiciosDisponibles(){
 		return serviciosDisponibles;
 	}
 	public void setServiciosDisponibles(ArrayList<Servicio> serviciosDisponibles){
@@ -301,7 +301,7 @@ public class EmpresaTelecomunicaciones {
 			throw new IllegalArgumentException("Persona Natural no puede tener mas de 1 telefono fijo");
 
 		disponible.setTitular(titular);
-		titular.getServicios().add(disponible);
+		
 		servicios.add(disponible);
 		serviciosDisponibles.remove(disponible);
 
@@ -351,16 +351,10 @@ public class EmpresaTelecomunicaciones {
 
 	// CRUD DE TELEFONO MOVIL TODO
 	// Agregar Telefono Movil
-	public void agregarTelefonoMovil(Cliente titular, String numero, double montoPagar) {
+	public void agregarTelefonoMovil(String numero, double montoPagar) {
 
-		if(titular == null){
-			Servicio s1 = new TelefonoMovil(null, numero, montoPagar);
+			Servicio s1 = new TelefonoMovil(numero, montoPagar);
 			serviciosDisponibles.add(s1);
-		}
-		else{
-			Servicio s1 = new TelefonoMovil(titular, numero, montoPagar);
-			servicios.add(s1);
-		}
 	}
 
 
@@ -381,6 +375,7 @@ public class EmpresaTelecomunicaciones {
 			throw new IllegalArgumentException("Persona Natural no puede tener más de 2 Teléfonos Móviles");
 		
 		disponible.setTitular(titular);
+		
 		servicios.add(disponible);
 		serviciosDisponibles.remove(disponible);
 

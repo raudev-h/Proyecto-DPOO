@@ -84,4 +84,11 @@ public class TelefonoMovil extends Telefono {
     	return (int) Math.ceil(duracionMax / 60.0);
     }
     
+ // Obtener el nombre en la interfaz
+    @Override
+    public String toString() {
+        return numero; 
+    }
+
+    
 }

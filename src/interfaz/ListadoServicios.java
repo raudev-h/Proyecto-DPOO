@@ -24,7 +24,7 @@ public class ListadoServicios extends JDialog {
 
     private ListadoServicios() {
         empresa = EmpresaTelecomunicaciones.getInstancia();
-        setModal(false); // Bloquea toda la ventana mientras está abierta
+        setModal(true); // Bloquea toda la ventana mientras está abierta
         setTitle("Listado de Servicios");
         setBounds(100, 100, 1126, 662);
         setLocationRelativeTo(null);
@@ -87,7 +87,7 @@ public class ListadoServicios extends JDialog {
         modelMoviles.cargarDatos(empresa.getTelefonosMoviles());
         modelNauta.cargarDatos(empresa.getCuentasNautas());
     }
-
+    
     private void mostrarFormulario() {
         panelFormulario.removeAll();
         panelFormulario.setLayout(new GridBagLayout());
@@ -96,152 +96,218 @@ public class ListadoServicios extends JDialog {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         int row = 0;
 
-        // === Buscador ===
+        // ========================
+        // 1) Buscador de titular
+        // ========================
         JLabel lblBuscar = new JLabel("Buscar Titular:");
         final JTextField txtBuscar = new JTextField(15);
-        final DefaultListModel<Cliente> modeloLista = new DefaultListModel<Cliente>();
-        final JList<Cliente> listaClientes = new JList<Cliente>(modeloLista);
+        final DefaultListModel<Cliente> modeloLista = new DefaultListModel<>();
+        final JList<Cliente> listaClientes = new JList<>(modeloLista);
         listaClientes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        for (Cliente c : empresa.getClientes()) modeloLista.addElement(c);
+        for (Cliente c : empresa.getClientes()) {
+            modeloLista.addElement(c);
+        }
 
         txtBuscar.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
             public void changedUpdate(javax.swing.event.DocumentEvent e) { filtrar(); }
             public void removeUpdate(javax.swing.event.DocumentEvent e) { filtrar(); }
             public void insertUpdate(javax.swing.event.DocumentEvent e) { filtrar(); }
 
-            public void filtrar() {
+            private void filtrar() {
                 String texto = txtBuscar.getText().toLowerCase();
                 modeloLista.clear();
                 for (Cliente c : empresa.getClientes()) {
-                    if (c.toString().toLowerCase().contains(texto)) modeloLista.addElement(c);
+                    if (c.getNombre().toLowerCase().contains(texto)) {
+                        modeloLista.addElement(c);
+                    }
                 }
             }
         });
 
         gbc.gridx = 0; gbc.gridy = row; gbc.gridwidth = 2;
-        panelFormulario.add(lblBuscar, gbc); row++;
-        gbc.gridy = row; panelFormulario.add(txtBuscar, gbc); row++;
-        gbc.gridy = row; gbc.fill = GridBagConstraints.BOTH; gbc.weightx = 1; gbc.weighty = 1;
-        panelFormulario.add(new JScrollPane(listaClientes), gbc); row++;
-        gbc.fill = GridBagConstraints.HORIZONTAL; gbc.weightx = 0; gbc.weighty = 0; gbc.gridwidth = 1;
+        panelFormulario.add(lblBuscar, gbc);
+        row++;
+        gbc.gridy = row;
+        panelFormulario.add(txtBuscar, gbc);
+        row++;
+        gbc.gridy = row;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.weightx = 1; gbc.weighty = 1;
+        panelFormulario.add(new JScrollPane(listaClientes), gbc);
+        row++;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 0; gbc.weighty = 0;
+        gbc.gridwidth = 1;
+        
+        // Declarar los campos de texto como final para que puedan ser accedidos en el ActionListener
+        final JTextField txtNumeroFijo = new JTextField(15);
+        final JTextField txtNumeroMovil = new JTextField(15);
+        final JTextField txtMonto = new JTextField(15);
+        final JTextField txtNick = new JTextField(15);
 
-        // === Campos ===
-        final int index = tabbedPane.getSelectedIndex();
-        final JLabel lblNumero = new JLabel("Número:");
-        final JTextField campoNumero = new JTextField(15);
-        final JLabel lblMonto = new JLabel("Monto a Pagar:");
-        final JTextField campoMonto = new JTextField(15);
-        final JLabel lblNick = new JLabel("Nick:");
-        final JTextField campoNick = new JTextField(15);
+        // Determinar qué pestaña está seleccionada
+        final int pestañaSeleccionada = tabbedPane.getSelectedIndex();
+        
+        // Campos específicos según la pestaña
+        final JComboBox<String> comboFijos = new JComboBox<>();
+        final JComboBox<TelefonoMovil> comboMoviles = new JComboBox<>();
+        final JLabel lblMonto = new JLabel("Monto: -");
 
-        // Filtros de entrada
-        ((javax.swing.text.AbstractDocument) campoNumero.getDocument()).setDocumentFilter(new NumericDocumentFilter(8));
-        ((javax.swing.text.AbstractDocument) campoMonto.getDocument()).setDocumentFilter(new NumericDocumentFilter(10));
+        if (pestañaSeleccionada == 0) { // Teléfonos Fijos
+            JLabel lblFijo = new JLabel("Seleccionar Teléfono Fijo:");
+            
+            // Llenar comboBox con teléfonos fijos disponibles
+            for (Servicio s : empresa.getServiciosDisponibles()) {
+                if (s instanceof TelefonoFijo) {
+                    comboFijos.addItem(((TelefonoFijo) s).getNumero());
+                }
+            }
 
-        if (index == 0) {
-            gbc.gridx = 0; gbc.gridy = row; gbc.gridwidth = 1;
-            panelFormulario.add(lblNumero, gbc);
-            gbc.gridx = 1; panelFormulario.add(campoNumero, gbc);
+            gbc.gridx = 0; gbc.gridy = row; panelFormulario.add(lblFijo, gbc);
             row++;
-        } else if (index == 1) {
-            gbc.gridx = 0; gbc.gridy = row; gbc.gridwidth = 1;
-            panelFormulario.add(lblNumero, gbc);
-            gbc.gridx = 1; panelFormulario.add(campoNumero, gbc);
+            gbc.gridy = row; gbc.gridwidth = 2;
+            panelFormulario.add(comboFijos, gbc);
             row++;
+            gbc.gridwidth = 1;
+        } 
+        else if (pestañaSeleccionada == 1) { // Teléfonos Móviles
+            JLabel lblMovil = new JLabel("Seleccionar Teléfono Móvil:");
+            
+            // Llenar comboBox con teléfonos móviles disponibles
+            for (Servicio s : empresa.getServiciosDisponibles()) {
+                if (s instanceof TelefonoMovil) {
+                    TelefonoMovil tm = (TelefonoMovil) s;
+                    if (tm.getTitular() == null) { // solo disponibles
+                        comboMoviles.addItem(tm);
+                    }
+                }
+            }
 
-            gbc.gridx = 0; gbc.gridy = row;
-            panelFormulario.add(lblMonto, gbc);
-            gbc.gridx = 1; panelFormulario.add(campoMonto, gbc);
+            // Actualizar monto al seleccionar un teléfono móvil
+            comboMoviles.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    TelefonoMovil seleccionado = (TelefonoMovil) comboMoviles.getSelectedItem();
+                    if (seleccionado != null) {
+                        lblMonto.setText("Monto: $" + seleccionado.getMontoApagar());
+                    } else {
+                        lblMonto.setText("Monto: -");
+                    }
+                }
+            });
+
+
+            
+            // Mostrar monto del primer teléfono si existe
+            if (comboMoviles.getItemCount() > 0) {
+                TelefonoMovil primero = (TelefonoMovil) comboMoviles.getItemAt(0);
+                lblMonto.setText("Monto: $" + primero.getMontoApagar());
+            }
+
+            gbc.gridx = 0; gbc.gridy = row; panelFormulario.add(lblMovil, gbc);
+            gbc.gridx = 1; panelFormulario.add(lblMonto, gbc);
             row++;
-        } else if (index == 2) {
-            gbc.gridx = 0; gbc.gridy = row; gbc.gridwidth = 1;
-            panelFormulario.add(lblNick, gbc);
-            gbc.gridx = 1; panelFormulario.add(campoNick, gbc);
+            gbc.gridx = 0; gbc.gridy = row; gbc.gridwidth = 2;
+            panelFormulario.add(comboMoviles, gbc);
             row++;
+            gbc.gridwidth = 1;
+        }
+        else if (pestañaSeleccionada == 2) { // Cuentas Nauta
+            JLabel lblNick = new JLabel("Nick de la cuenta:");
+            
+            gbc.gridx = 0; gbc.gridy = row; panelFormulario.add(lblNick, gbc);
+            row++;
+            gbc.gridy = row; gbc.gridwidth = 2;
+            panelFormulario.add(txtNick, gbc);
+            row++;
+            gbc.gridwidth = 1;
         }
 
-        // === Botones ===
+        // ========================
+        // Botones Guardar y Cancelar
+        // ========================
         JButton btnGuardar = new JButton("Guardar");
+        gbc.gridx = 0; gbc.gridy = row;
+        panelFormulario.add(btnGuardar, gbc);
+
         JButton btnCancelar = new JButton("Cancelar");
+        gbc.gridx = 1; gbc.gridy = row;
+        panelFormulario.add(btnCancelar, gbc);
 
-        gbc.gridx = 0; gbc.gridy = row; panelFormulario.add(btnGuardar, gbc);
-        gbc.gridx = 1; panelFormulario.add(btnCancelar, gbc);
+        // ========================
+        // BLOQUEAR TABLA Y PESTAÑAS
+        // ========================
+        tablaBloqueada.setEnabled(false);
+        tabbedPane.setEnabled(false);
 
+        // ========================
+        // Acción Guardar
+        // ========================
         btnGuardar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Cliente titular = listaClientes.getSelectedValue();
-                boolean valido = true;
-
                 if (titular == null) {
-                    JOptionPane.showMessageDialog(ListadoServicios.this, "Debe seleccionar un titular.", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(ListadoServicios.this,
+                            "Debe seleccionar un titular.",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
-                if (index == 0 || index == 1) {
-                    String num = campoNumero.getText().trim();
-                    if (num.length() != 8) {
-                        lblNumero.setForeground(Color.RED);
-                        valido = false;
-                    } else {
-                        lblNumero.setForeground(Color.BLACK);
-                    }
-                }
-
-                if (index == 1) {
-                    String montoTxt = campoMonto.getText().trim();
-                    try {
-                        double m = Double.parseDouble(montoTxt);
-                        if (m <= 0) {
-                            lblMonto.setForeground(Color.RED);
-                            valido = false;
-                        } else {
-                            lblMonto.setForeground(Color.BLACK);
-                        }
-                    } catch (NumberFormatException ex) {
-                        lblMonto.setForeground(Color.RED);
-                        valido = false;
-                    }
-                }
-
-                if (index == 2) {
-                    if (campoNick.getText().trim().isEmpty()) {
-                        lblNick.setForeground(Color.RED);
-                        valido = false;
-                    } else {
-                        lblNick.setForeground(Color.BLACK);
-                    }
-                }
-
-                if (!valido) return;
-
                 try {
-                    if (index == 0) empresa.asignarTelefonoFijo(titular);
-                    else if (index == 1) empresa.agregarTelefonoMovil(titular, campoNumero.getText(), Double.parseDouble(campoMonto.getText()));
-                    else if (index == 2) empresa.crearCuentaNauta(titular, campoNick.getText());
+                    if (pestañaSeleccionada == 0) { // Teléfono Fijo
+                        if (comboFijos.getSelectedIndex() == -1) {
+                            throw new IllegalArgumentException("Debe seleccionar un teléfono fijo disponible");
+                        }
+                        empresa.asignarTelefonoFijo(titular);
+                    } 
+                    else if (pestañaSeleccionada == 1) { // Teléfono Móvil
+                        if (comboMoviles.getSelectedIndex() == -1) {
+                            throw new IllegalArgumentException("Debe seleccionar un teléfono móvil disponible");
+                        }
+                        empresa.asignarTelefonoMovil(titular);
+                    } 
+                    else if (pestañaSeleccionada == 2) { // Cuenta Nauta
+                        String nick = txtNick.getText();
+                        if(nick.isEmpty()) {
+                            throw new IllegalArgumentException("Debe ingresar un nick para la cuenta");
+                        }
+                        empresa.crearCuentaNauta(titular, nick);
+                    }
 
                     cargarDatos();
-                    tablaBloqueada.setEnabled(true);
                     panelFormulario.setVisible(false);
+                    tablaBloqueada.setEnabled(true);
+                    tabbedPane.setEnabled(true);
                 } catch (Exception ex) {
-                    ex.printStackTrace();
-                    JOptionPane.showMessageDialog(ListadoServicios.this, "Error: " + ex.getMessage());
+                    JOptionPane.showMessageDialog(ListadoServicios.this,
+                            "Error al asignar servicio: " + ex.getMessage(),
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
 
+        // ========================
+        // Acción Cancelar
+        // ========================
         btnCancelar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                tablaBloqueada.setEnabled(true);
                 panelFormulario.setVisible(false);
+                tablaBloqueada.setEnabled(true);
+                tabbedPane.setEnabled(true);
             }
         });
 
-        tablaBloqueada.setEnabled(false); // Bloquear tabla mientras se llena
+        // ========================
+        // FINAL: Mostrar
+        // ========================
         panelFormulario.setVisible(true);
         panelFormulario.revalidate();
         panelFormulario.repaint();
     }
+    // TODO
+
 
     @Override
     public void dispose() {
