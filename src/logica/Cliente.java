@@ -77,7 +77,7 @@ public abstract class Cliente {
     
     //========================
 
-    // MÃ‰TODOS
+    // MÉTODOS
     // Agregar Servicio
     public void addServicio(Servicio s) {
         servicios.add(s);
@@ -142,4 +142,11 @@ public abstract class Cliente {
         }
         return monto;
     }
+    
+    // Obtener el nombre en la interfaz
+    @Override
+    public String toString() {
+        return nombre; 
+    }
+
 }

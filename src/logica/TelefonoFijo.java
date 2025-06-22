@@ -18,7 +18,13 @@ public class TelefonoFijo extends Telefono {
 
     }
     
-    
+    // TELEFONO SIN TITULAR
+    public TelefonoFijo(String numero) {
+        super(null, numero);
+        
+        facturas = new ArrayList<Factura>();
+        llamadasLargas = new ArrayList<LlamadaLargaDistancia>();
+    }
 
     // GETTER Y SETTER
     // Facturas
