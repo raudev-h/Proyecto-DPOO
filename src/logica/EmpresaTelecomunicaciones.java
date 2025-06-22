@@ -18,7 +18,7 @@ public class EmpresaTelecomunicaciones {
 		clientes = new ArrayList<Cliente>();
 		servicios = new ArrayList<Servicio>();
 		representantes = new ArrayList<Representante>();
-		serviciosDisponibles = new ArrayList<Servicio> ();
+		serviciosDisponibles = new ArrayList<Servicio>();
 	}
 
 	// Getters y setters
@@ -214,11 +214,12 @@ public class EmpresaTelecomunicaciones {
 				representante);
 		clientes.add(c1);
 	}
-
+	// CRUD DE CUENTA NAUTA TODO
 	// Agregar Cuenta Nauta
 	public void crearCuentaNauta(Cliente titular, String nick) {
 
 		boolean tieneTelefono = false;
+		boolean tieneNauta = false;
 
 		for(int i = 0; i < titular.getServicios().size() && !tieneTelefono ; i++){
 			if(titular.getServicios().get(i) instanceof TelefonoFijo){
@@ -228,10 +229,31 @@ public class EmpresaTelecomunicaciones {
 		if(!tieneTelefono)
 			throw new IllegalArgumentException("Para contratar el nauta debe tener teléfono fijo");	
 
+		if(titular instanceof PersonaJuridica)
+			throw new IllegalArgumentException("Este tipo de cliente no puede tener CuentaNauta");
+
+		if (comprobarNauta(titular))
+			throw new IllegalArgumentException("El cliente ya tiene una CuentaNauta");
+
 		Servicio s1 = new CuentaNauta(titular, nick);
 		servicios.add(s1);
+
 	}
 
+	// Metodo para validar si persona natural ya tiene cuenta nauta o si es persona juridica
+	public boolean comprobarNauta(Cliente titular){
+
+		boolean encontrado = false;
+
+		if(titular instanceof PersonaNatural){
+			PersonaNatural pn = (PersonaNatural) titular;
+			for(int i = 0; i < pn.getServicios().size() && !encontrado; i++){
+				if(pn.getServicios().get(i) instanceof CuentaNauta)
+					encontrado = true;
+			}
+		}
+		return encontrado;
+	}
 	// Eliminar cuenta nauta
 	public void eliminarCuentaNauta(String nick){
 
@@ -247,7 +269,7 @@ public class EmpresaTelecomunicaciones {
 					eliminado = true;
 			}
 		}
-		
+
 		if(cuenta != null && eliminado){
 			cuenta.getTitular().getServicios().remove(cuenta);
 			eliminarClienteServicio(cuenta.getTitular());
@@ -255,7 +277,7 @@ public class EmpresaTelecomunicaciones {
 
 	}
 
-
+	// CRUD DE TELEFONO FIJO TODO
 	// Agregar Telefono Fijo
 	public void agregarTelefonoFijo(Cliente titular, String numero) {
 
@@ -280,11 +302,32 @@ public class EmpresaTelecomunicaciones {
 		}
 		if(disponible == null)
 			throw new IllegalArgumentException("No hay telefono Fijo disponible");
+		
+		if(comprobarFijoPersonaNatural(titular))
+			throw new IllegalArgumentException("Persona Natural no puede tener mas de 1 telefono fijo");
 
 		disponible.setTitular(titular);
 		servicios.add(disponible);
 		serviciosDisponibles.remove(disponible);
 
+	}
+
+	
+	// Comprobar si PERSONA NATURAL tiene mas de 1 telefono
+	public boolean comprobarFijoPersonaNatural(Cliente titular){
+
+		boolean encontrado = false;
+		
+		if(titular instanceof PersonaNatural){
+			PersonaNatural pn = (PersonaNatural) titular;
+
+			for(int i = 0; i < pn.getServicios().size() && !encontrado; i++){
+				if(pn.getServicios().get(i) instanceof TelefonoFijo)
+					encontrado = true;
+			}
+		}
+
+		return encontrado;
 	}
 
 	// Eliminar telefono fijo
@@ -311,7 +354,7 @@ public class EmpresaTelecomunicaciones {
 		}
 	}
 
-
+	// CRUD DE TELEFONO MOVIL TODO
 	// Agregar Telefono Movil
 	public void agregarTelefonoMovil(Cliente titular, String numero, double montoPagar) {
 
@@ -335,15 +378,34 @@ public class EmpresaTelecomunicaciones {
 				disponible = (TelefonoMovil) serviciosDisponibles.get(i);
 			}
 		}
-		// mï¿½s adelante le cambio la excepcion	
+		
 		if (disponible == null) 
 			throw new IllegalArgumentException("No hay teléfono móvil disponible");
 
+		if(comprobarMovil(titular))
+			throw new IllegalArgumentException("Persona Natural no puede tener más de 2 Teléfonos Móviles");
+		
 		disponible.setTitular(titular);
 		servicios.add(disponible);
 		serviciosDisponibles.remove(disponible);
 
 	}
+	
+	// Comprobar si PERSONA NATURAL tiene mas de 2 telefonos moviles
+		public boolean comprobarMovil(Cliente titular){
+
+			int cantidad = 0;
+			
+			if(titular instanceof PersonaNatural){
+				PersonaNatural pn = (PersonaNatural) titular;
+				 for (Servicio s : pn.getServicios()) {
+			            if (s instanceof TelefonoMovil)
+			                cantidad++;
+				}
+			}
+
+			return cantidad >= 2;
+		}
 
 	// Eliminar Telefono Movil
 	public void eliminarTelefonoMovil(String numero){

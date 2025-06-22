@@ -7,10 +7,10 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.text.AbstractDocument;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.text.AbstractDocument;
 
 public class ListadoServicios extends JDialog {
     private EmpresaTelecomunicaciones empresa;
@@ -18,47 +18,39 @@ public class ListadoServicios extends JDialog {
     private TelefonoFijoTableModel modelFijos;
     private TelefonoMovilTableModel modelMoviles;
     private CuentaNautaTableModel modelNauta;
-    private JPanel panelFormulario; // Panel lateral para formulario
+    private JPanel panelFormulario;
+    private JTable tablaBloqueada; // Para bloquear selección
     private static ListadoServicios instance;
 
     private ListadoServicios() {
         empresa = EmpresaTelecomunicaciones.getInstancia();
-
+        setModal(false); // Bloquea toda la ventana mientras está abierta
         setTitle("Listado de Servicios");
         setBounds(100, 100, 1126, 662);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(10, 10));
-        setModal(true);
 
-        // ===========================
         // PESTAÑAS CON TABLAS
-        // ===========================
         tabbedPane = new JTabbedPane();
         tabbedPane.setFont(new Font("Serif", Font.PLAIN, 18));
-
-        // Crear modelos
         modelFijos = new TelefonoFijoTableModel();
         modelMoviles = new TelefonoMovilTableModel();
         modelNauta = new CuentaNautaTableModel();
 
-        // Añadir cada pestaña con su tabla (dentro de JScrollPane)
         tabbedPane.addTab("Teléfonos Fijos", crearTabla(modelFijos));
         tabbedPane.addTab("Teléfonos Móviles", crearTabla(modelMoviles));
         tabbedPane.addTab("Cuentas Nauta", crearTabla(modelNauta));
 
-        // ===========================
-        // PANEL LATERAL PARA FORMULARIO
-        // ===========================
+        // PANEL FORMULARIO
         panelFormulario = new JPanel();
         panelFormulario.setPreferredSize(new Dimension(300, getHeight()));
         panelFormulario.setBorder(BorderFactory.createTitledBorder("Formulario"));
-        panelFormulario.setVisible(false); // Oculto al inicio
+        panelFormulario.setLayout(new GridBagLayout());
+        panelFormulario.setVisible(false);
 
-        // ===========================
         // BOTÓN CREAR SERVICIO
-        // ===========================
         JButton btnCrearServicio = new JButton("Crear Servicio");
-        btnCrearServicio.setFont(new Font("Serif", Font.PLAIN, 18));
+        btnCrearServicio.setFont(new Font("Serif", Font.BOLD, 18));
         btnCrearServicio.setPreferredSize(new Dimension(1, 40));
         btnCrearServicio.setMargin(new Insets(5, 10, 5, 10));
         btnCrearServicio.addActionListener(new ActionListener() {
@@ -67,19 +59,16 @@ public class ListadoServicios extends JDialog {
             }
         });
 
-        // ===========================
-        // AGREGAR TODO AL DIALOG
-        // ===========================
         add(tabbedPane, BorderLayout.CENTER);
         add(panelFormulario, BorderLayout.EAST);
         add(btnCrearServicio, BorderLayout.SOUTH);
 
-        // Cargar datos iniciales
         cargarDatos();
     }
 
     private JScrollPane crearTabla(DefaultTableModel model) {
         JTable table = new JTable(model);
+        tablaBloqueada = table; // Referencia para bloquear
         table.getTableHeader().setReorderingAllowed(false);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.setFont(new Font("Serif", Font.PLAIN, 18));
@@ -99,7 +88,6 @@ public class ListadoServicios extends JDialog {
         modelNauta.cargarDatos(empresa.getCuentasNautas());
     }
 
-   
     private void mostrarFormulario() {
         panelFormulario.removeAll();
         panelFormulario.setLayout(new GridBagLayout());
@@ -115,9 +103,7 @@ public class ListadoServicios extends JDialog {
         final JList<Cliente> listaClientes = new JList<Cliente>(modeloLista);
         listaClientes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        for (Cliente c : empresa.getClientes()) {
-            modeloLista.addElement(c);
-        }
+        for (Cliente c : empresa.getClientes()) modeloLista.addElement(c);
 
         txtBuscar.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
             public void changedUpdate(javax.swing.event.DocumentEvent e) { filtrar(); }
@@ -128,174 +114,133 @@ public class ListadoServicios extends JDialog {
                 String texto = txtBuscar.getText().toLowerCase();
                 modeloLista.clear();
                 for (Cliente c : empresa.getClientes()) {
-                    if (c.toString().toLowerCase().contains(texto)) {
-                        modeloLista.addElement(c);
-                    }
+                    if (c.toString().toLowerCase().contains(texto)) modeloLista.addElement(c);
                 }
             }
         });
 
         gbc.gridx = 0; gbc.gridy = row; gbc.gridwidth = 2;
-        panelFormulario.add(lblBuscar, gbc);
-        row++;
-        gbc.gridy = row;
-        panelFormulario.add(txtBuscar, gbc);
-        row++;
-        gbc.gridy = row;
-        gbc.fill = GridBagConstraints.BOTH;
-        gbc.weightx = 1;
-        gbc.weighty = 1;
-        panelFormulario.add(new JScrollPane(listaClientes), gbc);
-        row++;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.weightx = 0; gbc.weighty = 0;
-        gbc.gridwidth = 1;
+        panelFormulario.add(lblBuscar, gbc); row++;
+        gbc.gridy = row; panelFormulario.add(txtBuscar, gbc); row++;
+        gbc.gridy = row; gbc.fill = GridBagConstraints.BOTH; gbc.weightx = 1; gbc.weighty = 1;
+        panelFormulario.add(new JScrollPane(listaClientes), gbc); row++;
+        gbc.fill = GridBagConstraints.HORIZONTAL; gbc.weightx = 0; gbc.weighty = 0; gbc.gridwidth = 1;
 
-        // === Campos específicos ===
+        // === Campos ===
         final int index = tabbedPane.getSelectedIndex();
+        final JLabel lblNumero = new JLabel("Número:");
         final JTextField campoNumero = new JTextField(15);
+        final JLabel lblMonto = new JLabel("Monto a Pagar:");
         final JTextField campoMonto = new JTextField(15);
+        final JLabel lblNick = new JLabel("Nick:");
         final JTextField campoNick = new JTextField(15);
 
-        // Labels para feedback visual
-        final JLabel lblNumero = new JLabel("Número:");
-        final JLabel lblMonto = new JLabel("Monto a Pagar:");
-        final JLabel lblNick = new JLabel("Nick:");
-
-        // Solo números y límite
-        ((javax.swing.text.AbstractDocument) campoNumero.getDocument())
-            .setDocumentFilter(new NumericDocumentFilter(8));
-        ((javax.swing.text.AbstractDocument) campoMonto.getDocument())
-            .setDocumentFilter(new NumericDocumentFilter(10));
+        // Filtros de entrada
+        ((javax.swing.text.AbstractDocument) campoNumero.getDocument()).setDocumentFilter(new NumericDocumentFilter(8));
+        ((javax.swing.text.AbstractDocument) campoMonto.getDocument()).setDocumentFilter(new NumericDocumentFilter(10));
 
         if (index == 0) {
-            panelFormulario.add(lblNumero, gbc); row++;
-            gbc.gridy = row; panelFormulario.add(campoNumero, gbc); row++;
+            gbc.gridx = 0; gbc.gridy = row; gbc.gridwidth = 1;
+            panelFormulario.add(lblNumero, gbc);
+            gbc.gridx = 1; panelFormulario.add(campoNumero, gbc);
+            row++;
         } else if (index == 1) {
-            panelFormulario.add(lblNumero, gbc); row++;
-            gbc.gridy = row; panelFormulario.add(campoNumero, gbc); row++;
-            panelFormulario.add(lblMonto, gbc); row++;
-            gbc.gridy = row; panelFormulario.add(campoMonto, gbc); row++;
+            gbc.gridx = 0; gbc.gridy = row; gbc.gridwidth = 1;
+            panelFormulario.add(lblNumero, gbc);
+            gbc.gridx = 1; panelFormulario.add(campoNumero, gbc);
+            row++;
+
+            gbc.gridx = 0; gbc.gridy = row;
+            panelFormulario.add(lblMonto, gbc);
+            gbc.gridx = 1; panelFormulario.add(campoMonto, gbc);
+            row++;
         } else if (index == 2) {
-            panelFormulario.add(lblNick, gbc); row++;
-            gbc.gridy = row; panelFormulario.add(campoNick, gbc); row++;
+            gbc.gridx = 0; gbc.gridy = row; gbc.gridwidth = 1;
+            panelFormulario.add(lblNick, gbc);
+            gbc.gridx = 1; panelFormulario.add(campoNick, gbc);
+            row++;
         }
 
-        // === Botón Guardar ===
+        // === Botones ===
         JButton btnGuardar = new JButton("Guardar");
-        gbc.gridy = row;
-        panelFormulario.add(btnGuardar, gbc);
+        JButton btnCancelar = new JButton("Cancelar");
+
+        gbc.gridx = 0; gbc.gridy = row; panelFormulario.add(btnGuardar, gbc);
+        gbc.gridx = 1; panelFormulario.add(btnCancelar, gbc);
 
         btnGuardar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Cliente titular = listaClientes.getSelectedValue();
+                boolean valido = true;
+
                 if (titular == null) {
-                    JOptionPane.showMessageDialog(ListadoServicios.this,
-                        "Debe seleccionar un titular.",
-                        "Error",
-                        JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(ListadoServicios.this, "Debe seleccionar un titular.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
-                // Reiniciar colores
-                lblNumero.setForeground(Color.BLACK);
-                lblMonto.setForeground(Color.BLACK);
-                lblNick.setForeground(Color.BLACK);
+                if (index == 0 || index == 1) {
+                    String num = campoNumero.getText().trim();
+                    if (num.length() != 8) {
+                        lblNumero.setForeground(Color.RED);
+                        valido = false;
+                    } else {
+                        lblNumero.setForeground(Color.BLACK);
+                    }
+                }
 
-                boolean valido = true;
+                if (index == 1) {
+                    String montoTxt = campoMonto.getText().trim();
+                    try {
+                        double m = Double.parseDouble(montoTxt);
+                        if (m <= 0) {
+                            lblMonto.setForeground(Color.RED);
+                            valido = false;
+                        } else {
+                            lblMonto.setForeground(Color.BLACK);
+                        }
+                    } catch (NumberFormatException ex) {
+                        lblMonto.setForeground(Color.RED);
+                        valido = false;
+                    }
+                }
+
+                if (index == 2) {
+                    if (campoNick.getText().trim().isEmpty()) {
+                        lblNick.setForeground(Color.RED);
+                        valido = false;
+                    } else {
+                        lblNick.setForeground(Color.BLACK);
+                    }
+                }
+
+                if (!valido) return;
 
                 try {
-                    if (index == 0 || index == 1) {
-                        String numero = campoNumero.getText().trim();
-                        if (numero.length() != 8) {
-                            lblNumero.setForeground(Color.RED);
-                            valido = false;
-                        }
-
-                        if (index == 1) {
-                            String montoTxt = campoMonto.getText().trim();
-                            if (montoTxt.isEmpty()) {
-                                lblMonto.setForeground(Color.RED);
-                                valido = false;
-                            }
-                        }
-
-                        if (!valido) {
-                            JOptionPane.showMessageDialog(ListadoServicios.this,
-                                "Verifique los campos marcados en rojo.",
-                                "Error",
-                                JOptionPane.ERROR_MESSAGE);
-                            return;
-                        }
-
-                        if (index == 0) {
-                            empresa.agregarTelefonoFijo(titular, numero);
-                        } else {
-                            double monto = Double.parseDouble(campoMonto.getText().trim());
-                            empresa.agregarTelefonoMovil(titular, numero, monto);
-                        }
-
-                    } else if (index == 2) {
-                        String nick = campoNick.getText().trim();
-                        if (nick.isEmpty()) {
-                            lblNick.setForeground(Color.RED);
-                            JOptionPane.showMessageDialog(ListadoServicios.this,
-                                "Verifique el campo marcado en rojo.",
-                                "Error",
-                                JOptionPane.ERROR_MESSAGE);
-                            return;
-                        }
-                        empresa.crearCuentaNauta(titular, nick);
-                    }
+                    if (index == 0) empresa.agregarTelefonoFijo(titular, campoNumero.getText());
+                    else if (index == 1) empresa.agregarTelefonoMovil(titular, campoNumero.getText(), Double.parseDouble(campoMonto.getText()));
+                    else if (index == 2) empresa.crearCuentaNauta(titular, campoNick.getText());
 
                     cargarDatos();
+                    tablaBloqueada.setEnabled(true);
                     panelFormulario.setVisible(false);
-
                 } catch (Exception ex) {
                     ex.printStackTrace();
-                    JOptionPane.showMessageDialog(ListadoServicios.this,
-                        "Error al crear servicio: " + ex.getMessage(),
-                        "Error",
-                        JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(ListadoServicios.this, "Error: " + ex.getMessage());
                 }
             }
         });
 
+        btnCancelar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                tablaBloqueada.setEnabled(true);
+                panelFormulario.setVisible(false);
+            }
+        });
+
+        tablaBloqueada.setEnabled(false); // Bloquear tabla mientras se llena
         panelFormulario.setVisible(true);
         panelFormulario.revalidate();
         panelFormulario.repaint();
-    
-     // === Deshabilitar tabla activa ===
-        setTablaSeleccionHabilitada(false);
-    }
-
-
-
-    	
-    	// Método para que no puedas selecionar nada dentro del formulario
-    	private void setTablaSeleccionHabilitada(boolean habilitada) {
-    	    int index = tabbedPane.getSelectedIndex();
-    	    JScrollPane scroll = (JScrollPane) tabbedPane.getComponentAt(index);
-    	    JTable table = (JTable) scroll.getViewport().getView();
-    	    table.setEnabled(habilitada);
-    	}
-
-    public static void abrirListadoServicio() {
-        if (instance == null) {
-            instance = new ListadoServicios();
-            instance.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-            instance.setVisible(true);
-        } else {
-            if (!instance.isVisible()) {
-                instance.setVisible(true);
-            } else {
-                JOptionPane.showMessageDialog(null,
-                        "La ventana del listado de servicios ya está abierta",
-                        "Información",
-                        JOptionPane.INFORMATION_MESSAGE);
-                instance.toFront();
-            }
-        }
     }
 
     @Override
@@ -304,5 +249,19 @@ public class ListadoServicios extends JDialog {
         super.dispose();
     }
 
-    
+    public static void abrirListadoServicio() {
+        if (instance == null) {
+            instance = new ListadoServicios();
+            instance.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+            instance.setVisible(true);
+        } else {
+            if (!instance.isVisible()) instance.setVisible(true);
+            else JOptionPane.showMessageDialog(null, "La ventana ya está abierta");
+            instance.toFront();
+        }
+    }
+
+    public static void main(String[] args) {
+        abrirListadoServicio();
+    }
 }

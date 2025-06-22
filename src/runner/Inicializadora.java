@@ -385,6 +385,7 @@ public class Inicializadora {
 		empresa.agregarRepresentante("Yerutí Pandora", "80030313013");
 		empresa.agregarRepresentante("Zacarias Neptuno", "91040414014");
 		empresa.agregarRepresentante("Ulpiano Cerezo", "85050515015");
+		
 	}
 
 }
