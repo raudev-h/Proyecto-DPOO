@@ -254,28 +254,32 @@ public class EmpresaTelecomunicaciones {
 		}
 		return encontrado;
 	}
-	// Eliminar cuenta nauta
-	public boolean eliminarCuentaNauta(String nick){
+	
+	// Eliminar Cuenta Nauta 
+	public boolean eliminarCuentaNauta(String nick) {
+	    boolean eliminado = false;
+	    CuentaNauta cuenta = null;
 
-		boolean eliminado = false;
-		CuentaNauta cuenta = null;
+	    // Buscar la cuenta a eliminar
+	    for(int i = 0; i < servicios.size() && !eliminado; i++) {
+	        if(servicios.get(i) instanceof CuentaNauta) {
+	            cuenta = (CuentaNauta)servicios.get(i);
+	            
+	            if(cuenta.getNick().equals(nick)) {
+	                // Eliminar de la lista principal de servicios
+	                servicios.remove(i);
+	                eliminado = true;
+	                
+	                // Eliminar del titular si existe
+	                if(cuenta.getTitular() != null) {
+	                    cuenta.getTitular().getServicios().remove(cuenta);
+	                    eliminarClienteServicio(cuenta.getTitular());
+	                }
+	            }
+	        }
+	    }
 
-		for(int i = 0; i < servicios.size() && !eliminado; i++){
-			if(servicios.get(i) instanceof CuentaNauta){
-
-				cuenta = (CuentaNauta)servicios.get(i);
-
-				if(cuenta.getNick().equals(nick))
-					eliminado = true;
-			}
-		}
-
-		if(cuenta != null && eliminado){
-			cuenta.getTitular().getServicios().remove(cuenta);
-			eliminarClienteServicio(cuenta.getTitular());
-		}
-
-		return eliminado;
+	    return eliminado;
 	}
 
 	// CRUD DE TELEFONO FIJO TODO

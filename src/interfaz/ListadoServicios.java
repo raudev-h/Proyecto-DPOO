@@ -113,13 +113,68 @@ public class ListadoServicios extends JDialog {
             
             menuEliminar.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    int selectedRow = tabla.getSelectedRow();
+                    // Obtener la tabla actual según la pestaña seleccionada
+                    JScrollPane scrollPane = (JScrollPane) tabbedPane.getSelectedComponent();
+                    JTable tablaActual = (JTable) scrollPane.getViewport().getView();
+                    int selectedRow = tablaActual.getSelectedRow();
+                    
                     if (selectedRow >= 0) {
-                        eliminarServicio(tabla, selectedRow);
+                        // Obtener el servicio seleccionado
+                        Servicio servicio = obtenerServicioSeleccionado(tablaActual, selectedRow);
+                        
+                        if (servicio != null) {
+                            // Configurar el mensaje de confirmación
+                            UIManager.put("OptionPane.messageFont", new Font("Serif", Font.BOLD, 20));
+                            UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.BOLD, 18));
+                            
+                            int confirm = JOptionPane.showConfirmDialog(
+                                ListadoServicios.this,
+                                "¿Está seguro que desea eliminar este servicio?",
+                                "Confirmar eliminación",
+                                JOptionPane.YES_NO_OPTION,
+                                JOptionPane.WARNING_MESSAGE);
+                            
+                            if (confirm == JOptionPane.YES_OPTION) {
+                                boolean eliminado = false;
+                                String mensajeExito = "";
+                                
+                                // Eliminar según el tipo de servicio
+                                if (servicio instanceof TelefonoFijo) {
+                                    eliminado = empresa.eliminarTelefonoFIjo(((TelefonoFijo)servicio).getNumero());
+                                    mensajeExito = "Teléfono fijo eliminado correctamente";
+                                } 
+                                else if (servicio instanceof TelefonoMovil) {
+                                    eliminado = empresa.eliminarTelefonoMovil(((TelefonoMovil)servicio).getNumero());
+                                    mensajeExito = "Teléfono móvil eliminado correctamente";
+                                } 
+                                else if (servicio instanceof CuentaNauta) {
+                                    eliminado = empresa.eliminarCuentaNauta(((CuentaNauta)servicio).getNick());
+                                    mensajeExito = "Cuenta Nauta eliminada correctamente";
+                                }
+                                
+                                // Actualizar la vista si se eliminó correctamente
+                                if (eliminado) {
+                                    cargarDatos(); // Actualizar todos los modelos
+                                    JOptionPane.showMessageDialog(
+                                        ListadoServicios.this,
+                                        mensajeExito,
+                                        "Éxito",
+                                        JOptionPane.INFORMATION_MESSAGE);
+                                } else {
+                                    JOptionPane.showMessageDialog(
+                                        ListadoServicios.this,
+                                        "No se pudo eliminar el servicio",
+                                        "Error",
+                                        JOptionPane.ERROR_MESSAGE);
+                                }
+                            }
+                        }
                     } else {
-                        JOptionPane.showMessageDialog(ListadoServicios.this,
+                        JOptionPane.showMessageDialog(
+                            ListadoServicios.this,
                             "Por favor seleccione un servicio para eliminar",
-                            "Advertencia", JOptionPane.WARNING_MESSAGE);
+                            "Advertencia",
+                            JOptionPane.WARNING_MESSAGE);
                     }
                 }
             });
