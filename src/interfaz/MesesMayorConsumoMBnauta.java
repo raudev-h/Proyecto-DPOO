@@ -1,77 +1,112 @@
 package interfaz;
 
-import logica.*;
-import auxiliares.MayorGastoKbTableModel;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+
+import auxiliares.MayorGastoKbTableModel;
+import logica.CuentaNauta;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.category.DefaultCategoryDataset;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class MesesMayorConsumoMBnauta extends JFrame {
 
-    private JPanel contentPane;
-    private MayorGastoKbTableModel modeloMeses;
-    private JTable tablaMeses;
+	private JPanel contentPane;
+	private JPanel panel;
+	private JTable tablaMeses;
+	private MayorGastoKbTableModel modeloMeses;
+	private ChartPanel chartPanel;
 
-    public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    MesesMayorConsumoMBnauta frame = new MesesMayorConsumoMBnauta();
-                    frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
+	public MesesMayorConsumoMBnauta() {
+		setTitle("Consumo mensual de Cuentas Nauta");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 650, 500);
 
-    public MesesMayorConsumoMBnauta() {
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 450, 350);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
 
-        contentPane = new JPanel();
-        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-        contentPane.setLayout(new BorderLayout(0, 0));
-        setContentPane(contentPane);
+		// Botones
+		JButton btnCargarDatos = new JButton("Cargar Datos");
+		btnCargarDatos.setBounds(45, 384, 145, 47);
+		contentPane.add(btnCargarDatos);
 
-        // Crear el modelo
-        modeloMeses = new MayorGastoKbTableModel();
+		JButton btnCargarGrafico = new JButton("Cargar Gráfico");
+		btnCargarGrafico.setBounds(427, 384, 145, 47);
+		contentPane.add(btnCargarGrafico);
 
-        // Crear la tabla con el modelo
-        tablaMeses = new JTable(modeloMeses);
+		// Panel principal
+		panel = new JPanel();
+		panel.setBounds(10, 11, 614, 370);
+		panel.setLayout(null);
+		contentPane.add(panel);
 
-        // Agregar la tabla con scroll al panel
-        JScrollPane scrollPane = new JScrollPane(tablaMeses);
-        contentPane.add(scrollPane, BorderLayout.CENTER);
+		// Tabla
+		modeloMeses = new MayorGastoKbTableModel();
+		tablaMeses = new JTable(modeloMeses);
+		JScrollPane scrollPane = new JScrollPane(tablaMeses);
+		scrollPane.setBounds(10, 10, 580, 349);
+		panel.add(scrollPane);
 
-        // Botón para cargar datos
-        JButton btnCargarDatos = new JButton("Cargar Datos");
-        btnCargarDatos.setFont(new Font("Serif", Font.BOLD, 16));
-        contentPane.add(btnCargarDatos, BorderLayout.SOUTH);
+		// Listeners
+		btnCargarDatos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cargarDatosTabla();
+			}
+		});
 
-        // Listener para el botón
-        btnCargarDatos.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cargarDatos();
-            }
-        });
-    }
+		btnCargarGrafico.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cargarGrafico();
+			}
+		});
+	}
 
-    private void cargarDatos() {
-        // Obtener los consumos desde EmpresaTelecomunicaciones
-        // Aquí asumo que devuelve un ArrayList<String> (ajusta según tu implementación)
-        HashMap<String, Double> consumosPorMes = CuentaNauta.calcularKbGastadosMeses();
+	private void cargarDatosTabla() {
+		HashMap<String, Double> consumos = CuentaNauta.calcularKbGastadosMeses();
+		modeloMeses.cargarConsumos(consumos);
+	}
 
-        // Cargar los datos en el modelo
-        modeloMeses.cargarConsumos(consumosPorMes);
-    }
+	private void cargarGrafico() {
+		HashMap<String, Double> consumos = CuentaNauta.calcularKbGastadosMeses();
+		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
+		for (Map.Entry<String, Double> entry : consumos.entrySet()) {
+			dataset.addValue(entry.getValue(), "Consumo", entry.getKey());
+		}
+
+		JFreeChart chart = ChartFactory.createBarChart(
+				"Consumo por Mes", "Mes", "KB", dataset);
+
+		if (chartPanel != null) {
+			panel.remove(chartPanel);
+		}
+
+		chartPanel = new ChartPanel(chart);
+		chartPanel.setBounds(10, 170, 580, 180);
+		panel.add(chartPanel);
+		panel.repaint();
+		panel.revalidate();
+	}
+
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					MesesMayorConsumoMBnauta frame = new MesesMayorConsumoMBnauta();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 }
-    
