@@ -255,7 +255,7 @@ public class EmpresaTelecomunicaciones {
 		return encontrado;
 	}
 	// Eliminar cuenta nauta
-	public void eliminarCuentaNauta(String nick){
+	public boolean eliminarCuentaNauta(String nick){
 
 		boolean eliminado = false;
 		CuentaNauta cuenta = null;
@@ -275,6 +275,7 @@ public class EmpresaTelecomunicaciones {
 			eliminarClienteServicio(cuenta.getTitular());
 		}
 
+		return eliminado;
 	}
 
 	// CRUD DE TELEFONO FIJO TODO
@@ -326,7 +327,7 @@ public class EmpresaTelecomunicaciones {
 	}
 
 	// Eliminar telefono fijo
-	public void eliminarTelefonoFIjo(String numero){
+	public boolean eliminarTelefonoFIjo(String numero){
 
 		boolean encontrado = false;
 		TelefonoFijo fijo = null;
@@ -347,6 +348,7 @@ public class EmpresaTelecomunicaciones {
 			serviciosDisponibles.add(fijo);
 			eliminarClienteServicio(fijo.getTitular());
 		}
+		return encontrado;
 	}
 
 	// CRUD DE TELEFONO MOVIL TODO
@@ -398,7 +400,7 @@ public class EmpresaTelecomunicaciones {
 		}
 
 	// Eliminar Telefono Movil
-	public void eliminarTelefonoMovil(String numero){
+	public boolean eliminarTelefonoMovil(String numero){
 
 		boolean encontrado = false;
 		TelefonoMovil movil = null;
@@ -419,6 +421,7 @@ public class EmpresaTelecomunicaciones {
 			serviciosDisponibles.add(movil);
 			eliminarClienteServicio(movil.getTitular());
 		}
+		return encontrado;
 	}
 
 

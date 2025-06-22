@@ -7,10 +7,9 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-import javax.swing.text.AbstractDocument;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
+import java.util.ArrayList;
 
 public class ListadoServicios extends JDialog {
     private EmpresaTelecomunicaciones empresa;
@@ -19,36 +18,41 @@ public class ListadoServicios extends JDialog {
     private TelefonoMovilTableModel modelMoviles;
     private CuentaNautaTableModel modelNauta;
     private JPanel panelFormulario;
-    private JTable tablaBloqueada; // Para bloquear selección
+    private JTable tablaBloqueada;
     private static ListadoServicios instance;
 
     private ListadoServicios() {
         empresa = EmpresaTelecomunicaciones.getInstancia();
-        setModal(true); // Bloquea toda la ventana mientras está abierta
+        setModal(true);
         setTitle("Listado de Servicios");
         setBounds(100, 100, 1126, 662);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(10, 10));
 
-        // PESTAÑAS CON TABLAS
+        // Pestañas con tablas
         tabbedPane = new JTabbedPane();
         tabbedPane.setFont(new Font("Serif", Font.PLAIN, 18));
         modelFijos = new TelefonoFijoTableModel();
         modelMoviles = new TelefonoMovilTableModel();
         modelNauta = new CuentaNautaTableModel();
 
-        tabbedPane.addTab("Teléfonos Fijos", crearTabla(modelFijos));
-        tabbedPane.addTab("Teléfonos Móviles", crearTabla(modelMoviles));
-        tabbedPane.addTab("Cuentas Nauta", crearTabla(modelNauta));
+        JScrollPane scrollFijos = crearTabla(modelFijos);
+        tabbedPane.addTab("Teléfonos Fijos", scrollFijos);
+        
+        JScrollPane scrollMoviles = crearTabla(modelMoviles);
+        tabbedPane.addTab("Teléfonos Móviles", scrollMoviles);
+        
+        JScrollPane scrollNauta = crearTabla(modelNauta);
+        tabbedPane.addTab("Cuentas Nauta", scrollNauta);
 
-        // PANEL FORMULARIO
+        // Panel formulario
         panelFormulario = new JPanel();
         panelFormulario.setPreferredSize(new Dimension(300, getHeight()));
         panelFormulario.setBorder(BorderFactory.createTitledBorder("Formulario"));
         panelFormulario.setLayout(new GridBagLayout());
         panelFormulario.setVisible(false);
 
-        // BOTÓN CREAR SERVICIO
+        // Botón Crear Servicio
         JButton btnCrearServicio = new JButton("Crear Servicio");
         btnCrearServicio.setFont(new Font("Serif", Font.BOLD, 18));
         btnCrearServicio.setPreferredSize(new Dimension(1, 40));
@@ -64,22 +68,143 @@ public class ListadoServicios extends JDialog {
         add(btnCrearServicio, BorderLayout.SOUTH);
 
         cargarDatos();
+        configurarMenuContextual();
     }
 
     private JScrollPane crearTabla(DefaultTableModel model) {
-        JTable table = new JTable(model);
-        tablaBloqueada = table; // Referencia para bloquear
-        table.getTableHeader().setReorderingAllowed(false);
-        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        table.setFont(new Font("Serif", Font.PLAIN, 18));
-        table.setRowHeight(25);
+        tablaBloqueada = new JTable(model); // Asigna a la variable de instancia
+        tablaBloqueada.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tablaBloqueada.setFont(new Font("Serif", Font.PLAIN, 18));
+        tablaBloqueada.setRowHeight(25);
 
-        JTableHeader header = table.getTableHeader();
+        JTableHeader header = tablaBloqueada.getTableHeader();
         header.setFont(new Font("Serif", Font.PLAIN, 20));
 
-        JScrollPane scrollPane = new JScrollPane(table);
+        JScrollPane scrollPane = new JScrollPane(tablaBloqueada);
         scrollPane.setViewportBorder(new LineBorder(new Color(0, 0, 0)));
         return scrollPane;
+    }
+
+    private void configurarMenuContextual() {
+    	for(int i = 0; i < tabbedPane.getTabCount(); i++) {
+            JScrollPane scrollPane = (JScrollPane) tabbedPane.getComponentAt(i);
+            final JTable tabla = (JTable) scrollPane.getViewport().getView();
+            
+            final JPopupMenu popupMenu = new JPopupMenu();
+            
+            JMenuItem menuEditar = new JMenuItem("Editar");
+            JMenuItem menuEliminar = new JMenuItem("Eliminar");
+            
+            menuEditar.setFont(new Font("Serif", Font.PLAIN, 20));
+            menuEliminar.setFont(new Font("Serif", Font.PLAIN, 20));
+            
+            menuEditar.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    int selectedRow = tabla.getSelectedRow();
+                    if (selectedRow >= 0) {
+                        editarServicio(tabla, selectedRow);
+                    } else {
+                        JOptionPane.showMessageDialog(ListadoServicios.this,
+                            "Por favor seleccione un servicio para editar",
+                            "Advertencia", JOptionPane.WARNING_MESSAGE);
+                    }
+                }
+            });
+            
+            menuEliminar.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    int selectedRow = tabla.getSelectedRow();
+                    if (selectedRow >= 0) {
+                        eliminarServicio(tabla, selectedRow);
+                    } else {
+                        JOptionPane.showMessageDialog(ListadoServicios.this,
+                            "Por favor seleccione un servicio para eliminar",
+                            "Advertencia", JOptionPane.WARNING_MESSAGE);
+                    }
+                }
+            });
+            
+            popupMenu.add(menuEditar);
+            popupMenu.add(menuEliminar);
+            
+            tabla.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    mostrarMenuSiEsClickDerecho(e);
+                }
+                
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    mostrarMenuSiEsClickDerecho(e);
+                }
+                
+                private void mostrarMenuSiEsClickDerecho(MouseEvent e) {
+                    if (e.isPopupTrigger()) {
+                        int row = tabla.rowAtPoint(e.getPoint());
+                        if (row >= 0) {
+                            tabla.setRowSelectionInterval(row, row);
+                            popupMenu.show(tabla, e.getX(), e.getY());
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    private Servicio obtenerServicioSeleccionado(JTable tabla, int row) {
+        int tabIndex = tabbedPane.indexOfComponent(tabla.getParent().getParent());
+        
+        switch(tabIndex) {
+            case 0: return modelFijos.getServicioAt(row);
+            case 1: return modelMoviles.getServicioAt(row);
+            case 2: return modelNauta.getServicioAt(row);
+            default: return null;
+        }
+    }
+
+    private void editarServicio(final JTable tabla, final int row) {
+        Servicio servicio = obtenerServicioSeleccionado(tabla, row);
+        if (servicio != null) {
+            // Implementar lógica específica de edición
+            JOptionPane.showMessageDialog(this,
+                "Editar servicio: " + servicio.getClass().getSimpleName(),
+                "Edición", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
+    private void eliminarServicio(final JTable tabla, final int row) {
+        final Servicio servicio = obtenerServicioSeleccionado(tabla, row);
+        if (servicio != null) {
+            UIManager.put("OptionPane.messageFont", new Font("Serif", Font.BOLD, 20));
+            UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.BOLD, 18));
+            
+            int confirm = JOptionPane.showConfirmDialog(ListadoServicios.this,
+                "¿Está seguro que desea eliminar este servicio?",
+                "Confirmar eliminación", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+            
+            if (confirm == JOptionPane.YES_OPTION) {
+                boolean eliminado = false;
+                
+                if (servicio instanceof TelefonoFijo) {
+                    eliminado = empresa.eliminarTelefonoFIjo(((TelefonoFijo)servicio).getNumero());
+                } else if (servicio instanceof TelefonoMovil) {
+                    eliminado = empresa.eliminarTelefonoMovil(((TelefonoMovil)servicio).getNumero());
+                } else if (servicio instanceof CuentaNauta) {
+                    eliminado = empresa.eliminarCuentaNauta(((CuentaNauta)servicio).getNick());
+                }
+                
+                if (eliminado) {
+                    cargarDatos();
+                    JOptionPane.showMessageDialog(ListadoServicios.this,
+                        "Servicio eliminado correctamente",
+                        "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(ListadoServicios.this,
+                        "No se pudo eliminar el servicio",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }
     }
 
     private void cargarDatos() {
@@ -87,6 +212,8 @@ public class ListadoServicios extends JDialog {
         modelMoviles.cargarDatos(empresa.getTelefonosMoviles());
         modelNauta.cargarDatos(empresa.getCuentasNautas());
     }
+
+// TODO
     
     private void mostrarFormulario() {
         panelFormulario.removeAll();
@@ -96,13 +223,17 @@ public class ListadoServicios extends JDialog {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         int row = 0;
 
+        // Obtener la tabla actual según la pestaña seleccionada
+        final JScrollPane scrollPane = (JScrollPane) tabbedPane.getSelectedComponent();
+        final JTable tablaActual = (JTable) scrollPane.getViewport().getView();
+
         // ========================
         // 1) Buscador de titular
         // ========================
         JLabel lblBuscar = new JLabel("Buscar Titular:");
         final JTextField txtBuscar = new JTextField(15);
-        final DefaultListModel<Cliente> modeloLista = new DefaultListModel<>();
-        final JList<Cliente> listaClientes = new JList<>(modeloLista);
+        final DefaultListModel<Cliente> modeloLista = new DefaultListModel<Cliente>();
+        final JList<Cliente> listaClientes = new JList<Cliente>(modeloLista);
         listaClientes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         for (Cliente c : empresa.getClientes()) {
@@ -110,9 +241,20 @@ public class ListadoServicios extends JDialog {
         }
 
         txtBuscar.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
-            public void changedUpdate(javax.swing.event.DocumentEvent e) { filtrar(); }
-            public void removeUpdate(javax.swing.event.DocumentEvent e) { filtrar(); }
-            public void insertUpdate(javax.swing.event.DocumentEvent e) { filtrar(); }
+            @Override
+            public void insertUpdate(javax.swing.event.DocumentEvent e) {
+                filtrar();
+            }
+
+            @Override
+            public void removeUpdate(javax.swing.event.DocumentEvent e) {
+                filtrar();
+            }
+
+            @Override
+            public void changedUpdate(javax.swing.event.DocumentEvent e) {
+                filtrar();
+            }
 
             private void filtrar() {
                 String texto = txtBuscar.getText().toLowerCase();
@@ -139,25 +281,22 @@ public class ListadoServicios extends JDialog {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 0; gbc.weighty = 0;
         gbc.gridwidth = 1;
-        
-        // Declarar los campos de texto como final para que puedan ser accedidos en el ActionListener
-        final JTextField txtNumeroFijo = new JTextField(15);
-        final JTextField txtNumeroMovil = new JTextField(15);
-        final JTextField txtMonto = new JTextField(15);
+
+        // Declarar los componentes que se usarán según la pestaña
+        final JComboBox<String> comboFijos = new JComboBox<String>();
+        final JComboBox<TelefonoMovil> comboMoviles = new JComboBox<TelefonoMovil>();
+        final JLabel lblMonto = new JLabel("Monto: -");
         final JTextField txtNick = new JTextField(15);
 
         // Determinar qué pestaña está seleccionada
         final int pestañaSeleccionada = tabbedPane.getSelectedIndex();
-        
-        // Campos específicos según la pestaña
-        final JComboBox<String> comboFijos = new JComboBox<>();
-        final JComboBox<TelefonoMovil> comboMoviles = new JComboBox<>();
-        final JLabel lblMonto = new JLabel("Monto: -");
 
+        // ========================
+        // Campos específicos según la pestaña
+        // ========================
         if (pestañaSeleccionada == 0) { // Teléfonos Fijos
             JLabel lblFijo = new JLabel("Seleccionar Teléfono Fijo:");
             
-            // Llenar comboBox con teléfonos fijos disponibles
             for (Servicio s : empresa.getServiciosDisponibles()) {
                 if (s instanceof TelefonoFijo) {
                     comboFijos.addItem(((TelefonoFijo) s).getNumero());
@@ -174,34 +313,27 @@ public class ListadoServicios extends JDialog {
         else if (pestañaSeleccionada == 1) { // Teléfonos Móviles
             JLabel lblMovil = new JLabel("Seleccionar Teléfono Móvil:");
             
-            // Llenar comboBox con teléfonos móviles disponibles
             for (Servicio s : empresa.getServiciosDisponibles()) {
                 if (s instanceof TelefonoMovil) {
                     TelefonoMovil tm = (TelefonoMovil) s;
-                    if (tm.getTitular() == null) { // solo disponibles
+                    if (tm.getTitular() == null) {
                         comboMoviles.addItem(tm);
                     }
                 }
             }
 
-            // Actualizar monto al seleccionar un teléfono móvil
             comboMoviles.addActionListener(new ActionListener() {
+                @Override
                 public void actionPerformed(ActionEvent e) {
                     TelefonoMovil seleccionado = (TelefonoMovil) comboMoviles.getSelectedItem();
-                    if (seleccionado != null) {
-                        lblMonto.setText("Monto: $" + seleccionado.getMontoApagar());
-                    } else {
-                        lblMonto.setText("Monto: -");
-                    }
+                    lblMonto.setText(seleccionado != null ? 
+                        "Monto: $" + seleccionado.getMontoApagar() : "Monto: -");
                 }
             });
 
-
-            
-            // Mostrar monto del primer teléfono si existe
             if (comboMoviles.getItemCount() > 0) {
-                TelefonoMovil primero = (TelefonoMovil) comboMoviles.getItemAt(0);
-                lblMonto.setText("Monto: $" + primero.getMontoApagar());
+                lblMonto.setText("Monto: $" + 
+                    ((TelefonoMovil)comboMoviles.getItemAt(0)).getMontoApagar());
             }
 
             gbc.gridx = 0; gbc.gridy = row; panelFormulario.add(lblMovil, gbc);
@@ -237,20 +369,22 @@ public class ListadoServicios extends JDialog {
         // ========================
         // BLOQUEAR TABLA Y PESTAÑAS
         // ========================
-        tablaBloqueada.setEnabled(false);
+        tablaActual.setEnabled(false);
+        tablaActual.setFocusable(false);
         tabbedPane.setEnabled(false);
+        tabbedPane.setFocusable(false);
 
         // ========================
         // Acción Guardar
         // ========================
         btnGuardar.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 Cliente titular = listaClientes.getSelectedValue();
                 if (titular == null) {
                     JOptionPane.showMessageDialog(ListadoServicios.this,
-                            "Debe seleccionar un titular.",
-                            "Error",
-                            JOptionPane.ERROR_MESSAGE);
+                        "Debe seleccionar un titular.",
+                        "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
@@ -269,7 +403,7 @@ public class ListadoServicios extends JDialog {
                     } 
                     else if (pestañaSeleccionada == 2) { // Cuenta Nauta
                         String nick = txtNick.getText();
-                        if(nick.isEmpty()) {
+                        if (nick.isEmpty()) {
                             throw new IllegalArgumentException("Debe ingresar un nick para la cuenta");
                         }
                         empresa.crearCuentaNauta(titular, nick);
@@ -277,13 +411,14 @@ public class ListadoServicios extends JDialog {
 
                     cargarDatos();
                     panelFormulario.setVisible(false);
-                    tablaBloqueada.setEnabled(true);
+                    tablaActual.setEnabled(true);
+                    tablaActual.setFocusable(true);
                     tabbedPane.setEnabled(true);
+                    tabbedPane.setFocusable(true);
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(ListadoServicios.this,
-                            "Error al asignar servicio: " + ex.getMessage(),
-                            "Error",
-                            JOptionPane.ERROR_MESSAGE);
+                        "Error al asignar servicio: " + ex.getMessage(),
+                        "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -292,10 +427,13 @@ public class ListadoServicios extends JDialog {
         // Acción Cancelar
         // ========================
         btnCancelar.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 panelFormulario.setVisible(false);
-                tablaBloqueada.setEnabled(true);
+                tablaActual.setEnabled(true);
+                tablaActual.setFocusable(true);
                 tabbedPane.setEnabled(true);
+                tabbedPane.setFocusable(true);
             }
         });
 
@@ -306,8 +444,7 @@ public class ListadoServicios extends JDialog {
         panelFormulario.revalidate();
         panelFormulario.repaint();
     }
-    // TODO
-
+	// TODO
 
     @Override
     public void dispose() {
@@ -327,7 +464,4 @@ public class ListadoServicios extends JDialog {
         }
     }
 
-    public static void main(String[] args) {
-        abrirListadoServicio();
-    }
 }
