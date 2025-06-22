@@ -216,7 +216,7 @@ public class ListadoServicios extends JDialog {
                 if (!valido) return;
 
                 try {
-                    if (index == 0) empresa.agregarTelefonoFijo(titular, campoNumero.getText());
+                    if (index == 0) empresa.asignarTelefonoFijo(titular);
                     else if (index == 1) empresa.agregarTelefonoMovil(titular, campoNumero.getText(), Double.parseDouble(campoMonto.getText()));
                     else if (index == 2) empresa.crearCuentaNauta(titular, campoNick.getText());
 

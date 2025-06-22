@@ -279,16 +279,10 @@ public class EmpresaTelecomunicaciones {
 
 	// CRUD DE TELEFONO FIJO TODO
 	// Agregar Telefono Fijo
-	public void agregarTelefonoFijo(Cliente titular, String numero) {
+	public void agregarTelefonoFijo(String numero) {
 
-		if(titular == null){
-			Servicio s1 = new TelefonoFijo(null, numero);
-			serviciosDisponibles.add(s1);
-		}
-		else{
-			Servicio s1 = new TelefonoFijo(titular, numero);
-			servicios.add(s1);
-		}
+		    Servicio s1 = new TelefonoFijo(numero);
+		    serviciosDisponibles.add(s1);
 	}
 
 	// Asignar un telefono Fijo ya existente
@@ -307,6 +301,7 @@ public class EmpresaTelecomunicaciones {
 			throw new IllegalArgumentException("Persona Natural no puede tener mas de 1 telefono fijo");
 
 		disponible.setTitular(titular);
+		titular.getServicios().add(disponible);
 		servicios.add(disponible);
 		serviciosDisponibles.remove(disponible);
 

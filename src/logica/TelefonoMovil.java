@@ -9,14 +9,23 @@ public class TelefonoMovil extends Telefono {
 
      //ATRIBUTOS
      protected double montoApagar;
+     
     //CONSTRUCTOR
     public TelefonoMovil(Cliente titular,String numero, double montoApagar){
 
         super(titular,numero);
         setMontoApagar(montoApagar);
 
+    }
+    
+    // CONSTRUCTOR DE TELEFONO SIN TITULAR
+    public TelefonoMovil(String numero, double montoApagar){
+
+        super(null,numero);
+        setMontoApagar(montoApagar);
 
     }
+    
     //GETTER Y SETTER 
     //Monto a pagar
     public void setMontoApagar(double montoApagar){
