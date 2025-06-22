@@ -199,7 +199,7 @@ public class Principal extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				
 				JOptionPane.showMessageDialog(null,
-					    "*Servicios Telefonicos de ETECSA\n*Versión: 1.0\n*Lanzada en junio de 2025\n*Desarrolladores:\n-Raul Hechavarria\n-Aniel Varela\n-Ruben Anazco ",
+					    "*Servicios Telefonicos de ETECSA\n*Versiï¿½n: 1.0\n*Lanzada en junio de 2025\n*Desarrolladores:\n-Raul Hechavarria\n-Aniel Varela\n-Ruben Anazco ",
 					    "Acerca de",
 					    JOptionPane.INFORMATION_MESSAGE);
 				

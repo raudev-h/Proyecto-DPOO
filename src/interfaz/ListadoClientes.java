@@ -80,7 +80,7 @@ public class ListadoClientes extends JDialog {
         table.setFont(new Font("Serif", Font.PLAIN, 18));
         scrollPane.setViewportView(table);
         
-        //Ajustar el diseño de la tabla(Header)
+        //Ajustar el diseï¿½o de la tabla(Header)
         JTableHeader header = table.getTableHeader();
         Font headerFont = new Font("Serif",Font.PLAIN, 20);
         header.setFont(headerFont);
@@ -163,12 +163,12 @@ public class ListadoClientes extends JDialog {
     	        
     	        if (selectedRow >= 0) { //Comprobar que la fila seleccionada es correcta
     	        	
-    	            // Confirmar la eliminación
+    	            // Confirmar la eliminaciï¿½n
     	            UIManager.put("OptionPane.messageFont", new Font("Serif", Font.BOLD, 20));
     	            UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.BOLD, 18));
     	            
-    	            int confirm = JOptionPane.showConfirmDialog(null,"¿Está seguro que desea eliminar este cliente?", 
-    	                "Confirmar eliminación",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
+    	            int confirm = JOptionPane.showConfirmDialog(null,"ï¿½Estï¿½ seguro que desea eliminar este cliente?", 
+    	                "Confirmar eliminaciï¿½n",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
     	            
     	            if (confirm == JOptionPane.YES_OPTION) {
     	                // Obtener el cliente de la fila correspondiente
@@ -183,7 +183,7 @@ public class ListadoClientes extends JDialog {
     	                    JOptionPane.showMessageDialog(
     	                        null, 
     	                        "Cliente eliminado correctamente", 
-    	                        "Éxito", 
+    	                        "ï¿½xito", 
     	                        JOptionPane.INFORMATION_MESSAGE);
     	                } else {
     	                    JOptionPane.showMessageDialog(
@@ -203,7 +203,7 @@ public class ListadoClientes extends JDialog {
     	    }
     	});
     	
-    	//Añadir los menuItem al popMenu
+    	//Aï¿½adir los menuItem al popMenu
     	popupMenu.add(menuEditar);
     	popupMenu.add(menuEliminar);
     	
