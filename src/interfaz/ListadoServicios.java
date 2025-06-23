@@ -550,48 +550,136 @@ public class ListadoServicios extends JDialog {
         }
     }
 
+    // EDITAR TELEFONO FIJO
     private void editarTelefonoFijo(TelefonoFijo telefono) {
-        // Implementación para editar teléfono fijo
-        String nuevoNumero = JOptionPane.showInputDialog(
-            this, 
-            "Ingrese el nuevo número:", 
-            telefono.getNumero());
+        JPanel panel = new JPanel(new GridLayout(1, 2, 10, 10));
+        panel.setPreferredSize(new Dimension(400, 40)); // Tamaño aumentado
         
-        if (nuevoNumero != null && !nuevoNumero.isEmpty()) {
-            telefono.setNumero(nuevoNumero);
-            cargarDatos();
+        JComboBox<String> comboFijos = new JComboBox<String>();
+        comboFijos.setFont(new Font("Serif", Font.PLAIN, 18));
+        
+        // Llenar combo con teléfonos fijos disponibles (excluyendo el actual)
+        for (Servicio s : empresa.getServiciosDisponibles()) {
+            if (s instanceof TelefonoFijo) {
+                String numero = ((TelefonoFijo) s).getNumero();
+                if (!numero.equals(telefono.getNumero())) {
+                    comboFijos.addItem(numero);
+                }
+            }
+        }
+        
+        // Mantener el actual como primera opción
+        comboFijos.insertItemAt(telefono.getNumero(), 0);
+        comboFijos.setSelectedIndex(0);
+        
+        JLabel lblNumero = new JLabel("Nuevo número:", JLabel.RIGHT);
+        lblNumero.setFont(new Font("Serif", Font.PLAIN, 20));
+        lblNumero.setForeground(Color.BLACK);
+        
+        panel.add(lblNumero);
+        panel.add(comboFijos);
+        
+        int result = JOptionPane.showConfirmDialog(
+            this, 
+            panel, 
+            "Editar Teléfono Fijo", 
+            JOptionPane.OK_CANCEL_OPTION,
+            JOptionPane.PLAIN_MESSAGE);
+        
+        if (result == JOptionPane.OK_OPTION) {
+            String nuevoNumero = (String) comboFijos.getSelectedItem();
+            if (nuevoNumero != null && !nuevoNumero.equals(telefono.getNumero())) {
+                // 1. Quitar el teléfono anterior del cliente y marcarlo como disponible
+                String numeroAnterior = telefono.getNumero();
+                
+                // 2. Si seleccionó un número diferente al actual
+                if (!nuevoNumero.equals(numeroAnterior)) {
+                    // 3. Buscar el servicio disponible correspondiente al nuevo número
+                    TelefonoFijo nuevoFijo = null;
+                    for (Servicio s : empresa.getServiciosDisponibles()) {
+                        if (s instanceof TelefonoFijo && ((TelefonoFijo) s).getNumero().equals(nuevoNumero)) {
+                            nuevoFijo = (TelefonoFijo) s;
+                            break;
+                        }
+                    }
+                    
+                    if (nuevoFijo != null) {
+                        // 4. Realizar el cambio
+                        empresa.getServiciosDisponibles().remove(nuevoFijo);
+                        
+                        // 5. Crear un nuevo teléfono disponible con el número anterior
+                        empresa.agregarTelefonoFijo(numeroAnterior);
+                        
+                        // 6. Actualizar el teléfono del cliente
+                        telefono.setNumero(nuevoNumero);
+                        
+                        cargarDatos();
+                        JOptionPane.showMessageDialog(this, 
+                            "Teléfono cambiado exitosamente\n" +
+                            "Anterior: " + numeroAnterior + "\n" +
+                            "Nuevo: " + nuevoNumero, 
+                            "Éxito", 
+                            JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }
+            }
         }
     }
-
+    // EDITAR TELEFONO MOVIL
     private void editarTelefonoMovil(TelefonoMovil telefono) {
-        // Implementación para editar teléfono móvil
-        JPanel panel = new JPanel(new GridLayout(2, 2));
-        JTextField txtNumero = new JTextField(telefono.getNumero());
-        JTextField txtMonto = new JTextField(String.valueOf(telefono.getMontoApagar()));
+        JPanel panel = new JPanel(new GridLayout(2, 2, 10, 15));
+        panel.setPreferredSize(new Dimension(500, 150)); // Tamaño aumentado
         
-        panel.add(new JLabel("Número:"));
-        panel.add(txtNumero);
-        panel.add(new JLabel("Monto:"));
-        panel.add(txtMonto);
+        final JComboBox<TelefonoMovil> comboMoviles = new JComboBox<TelefonoMovil>();
+        comboMoviles.setFont(new Font("Serif", Font.PLAIN, 16));
+        
+        final JLabel lblMonto = new JLabel("Monto: $" + telefono.getMontoApagar());
+        lblMonto.setFont(new Font("Serif", Font.BOLD, 16));
+        
+        // Llenar combo con móviles disponibles + el actual
+        for (Servicio s : empresa.getServiciosDisponibles()) {
+            if (s instanceof TelefonoMovil) {
+                comboMoviles.addItem((TelefonoMovil) s);
+            }
+        }
+        comboMoviles.addItem(telefono); // Añadir el actual
+        comboMoviles.setSelectedItem(telefono);
+        
+        comboMoviles.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                TelefonoMovil seleccionado = (TelefonoMovil) comboMoviles.getSelectedItem();
+                lblMonto.setText("Monto: $" + seleccionado.getMontoApagar());
+            }
+        });
+        
+        panel.add(new JLabel("Nuevo número:", JLabel.RIGHT));
+        panel.add(comboMoviles);
+        panel.add(new JLabel("Monto actual:", JLabel.RIGHT));
+        panel.add(lblMonto);
         
         int result = JOptionPane.showConfirmDialog(
             this, 
             panel, 
             "Editar Teléfono Móvil", 
-            JOptionPane.OK_CANCEL_OPTION);
+            JOptionPane.OK_CANCEL_OPTION,
+            JOptionPane.PLAIN_MESSAGE,
+            new ImageIcon());
         
         if (result == JOptionPane.OK_OPTION) {
-            telefono.setNumero(txtNumero.getText());
-            try {
-                double monto = Double.parseDouble(txtMonto.getText());
-                telefono.setMontoApagar(monto);
+            TelefonoMovil nuevoMovil = (TelefonoMovil) comboMoviles.getSelectedItem();
+            if (nuevoMovil != null && !nuevoMovil.getNumero().equals(telefono.getNumero())) {
+                // Guardar el móvil anterior como disponible
+                TelefonoMovil viejo = new TelefonoMovil(telefono.getNumero(), telefono.getMontoApagar());
+                empresa.agregarTelefonoMovil(viejo.getNumero(), viejo.getMontoApagar());
+                
+                // Asignar el nuevo
+                telefono.setNumero(nuevoMovil.getNumero());
+                telefono.setMontoApagar(nuevoMovil.getMontoApagar());
+                empresa.eliminarTelefonoMovil(nuevoMovil.getNumero()); // Quitar de disponibles
+                
                 cargarDatos();
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(
-                    this, 
-                    "El monto debe ser un número válido", 
-                    "Error", 
-                    JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Cambio realizado con éxito");
             }
         }
     }
