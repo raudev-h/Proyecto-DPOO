@@ -90,10 +90,6 @@ public class TelefonoMovil extends Telefono {
     public String toString() {
         return numero; 
     }
-<<<<<<< HEAD
-=======
-    
-   
 
  
     public static void validarTelefonoMovil(String telefono) throws IllegalArgumentException {
@@ -136,7 +132,6 @@ public class TelefonoMovil extends Telefono {
         }
         System.out.print(montoStr + ": Paso por todas las validaciones");
     }
->>>>>>> baaa6b4615031bb8237e81a53791d1cf621e45c1
 
     
 }

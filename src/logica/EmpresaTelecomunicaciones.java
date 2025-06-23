@@ -223,7 +223,7 @@ public class EmpresaTelecomunicaciones {
 			if(c instanceof PersonaJuridica){
 				PersonaJuridica pj = (PersonaJuridica)c;
 				if(pj.getDireccion().equalsIgnoreCase(direccion))
-					throw new DuplicadosException("Esa persona jurï¿½dica ya existe en nuestro sistema");
+					throw new DuplicadosException("Esa persona jurídica ya existe en nuestro sistema");
 			}
 		}
 		
@@ -244,7 +244,7 @@ public class EmpresaTelecomunicaciones {
 			}
 		}
 		if(!tieneTelefono)
-			throw new IllegalArgumentException("Para contratar el nauta debe tener telï¿½fono fijo");	
+			throw new IllegalArgumentException("Para contratar el nauta debe tener teléfono fijo");	
 
 		if(titular instanceof PersonaJuridica)
 			throw new IllegalArgumentException("Este tipo de cliente no puede tener CuentaNauta");
@@ -392,10 +392,10 @@ public class EmpresaTelecomunicaciones {
 		}
 		
 		if (disponible == null) 
-			throw new IllegalArgumentException("No hay telï¿½fono mï¿½vil disponible");
+			throw new IllegalArgumentException("No hay teléfono móvil disponible");
 
 		if(comprobarMovil(titular))
-			throw new IllegalArgumentException("Persona Natural no puede tener mï¿½s de 2 Telï¿½fonos Mï¿½viles");
+			throw new IllegalArgumentException("Persona Natural no puede tener más de 2 Teléfonos Móviles");
 		
 		disponible.setTitular(titular);
 		
