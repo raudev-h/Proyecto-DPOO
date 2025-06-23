@@ -90,6 +90,7 @@ public class ListadoServicios extends JDialog {
                 
         btnAsignarServicio.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+           	
                 setSize(1315, 800);
                 setLocationRelativeTo(null);
                 panelCreacion.setVisible(false);
@@ -106,6 +107,17 @@ public class ListadoServicios extends JDialog {
         btnCrearServicio = new JButton("Crear Servicio");
         btnCrearServicio.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+            	// Cerrar formulario de asignación si está abierto
+                if (panelFormulario.isVisible()) {
+                    panelFormulario.setVisible(false);
+                    // Desbloquear tabla (por si acaso)
+                    final JScrollPane scrollPane = (JScrollPane) tabbedPane.getSelectedComponent();
+                    final JTable tablaActual = (JTable) scrollPane.getViewport().getView();
+                    tablaActual.setEnabled(true);
+                    tablaActual.setFocusable(true);
+                    tabbedPane.setEnabled(true);
+                    tabbedPane.setFocusable(true);
+                }
                 abrirPanelCreacion();
             }
         });
@@ -124,6 +136,14 @@ public class ListadoServicios extends JDialog {
     }
 
     private void abrirPanelCreacion() {
+        // Bloquear tabla y pestañas
+        final JScrollPane scrollPane = (JScrollPane) tabbedPane.getSelectedComponent();
+        final JTable tablaActual = (JTable) scrollPane.getViewport().getView();
+        tablaActual.setEnabled(false);
+        tablaActual.setFocusable(false);
+        tabbedPane.setEnabled(false);
+        tabbedPane.setFocusable(false);
+        
         resetearCamposCreacion();
         panelFormulario.setVisible(false);
         panelCreacion.setVisible(true);
@@ -374,6 +394,14 @@ public class ListadoServicios extends JDialog {
     }
     
     private void cerrarPanelCreacion() {
+        // Desbloquear tabla y pestañas
+        final JScrollPane scrollPane = (JScrollPane) tabbedPane.getSelectedComponent();
+        final JTable tablaActual = (JTable) scrollPane.getViewport().getView();
+        tablaActual.setEnabled(true);
+        tablaActual.setFocusable(true);
+        tabbedPane.setEnabled(true);
+        tabbedPane.setFocusable(true);
+        
         panelCreacion.setVisible(false);
         setSize(1015, 800);
     }
@@ -603,6 +631,12 @@ public class ListadoServicios extends JDialog {
     }
 
     private void mostrarFormulario() {
+    	
+    	
+    	// Cerrar panel de creación si está abierto
+        if (panelCreacion.isVisible()) {
+            cerrarPanelCreacion();
+        }
         // Implementación existente del formulario para asignar servicios
         panelFormulario.removeAll();
         panelFormulario.setLayout(new GridBagLayout());
@@ -758,12 +792,15 @@ public class ListadoServicios extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Cliente titular = listaClientes.getSelectedValue();
+               
                 if (titular == null) {
                     JOptionPane.showMessageDialog(ListadoServicios.this,
                         "Debe seleccionar un titular.",
                         "Error", JOptionPane.ERROR_MESSAGE);
                     return;
+                    
                 }
+                
                 
 
                 try {
@@ -794,6 +831,8 @@ public class ListadoServicios extends JDialog {
                     tablaActual.setFocusable(true);
                     tabbedPane.setEnabled(true);
                     tabbedPane.setFocusable(true);
+                    setSize(1015, 800);
+
                     
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(ListadoServicios.this,
@@ -812,6 +851,9 @@ public class ListadoServicios extends JDialog {
                 tablaActual.setFocusable(true);
                 tabbedPane.setEnabled(true);
                 tabbedPane.setFocusable(true);
+                setSize(1015, 800);
+                
+
             }
         });
 
