@@ -13,7 +13,6 @@ public class EmpresaTelecomunicaciones {
 	private ArrayList<Servicio> serviciosDisponibles;
 	private ArrayList<Representante> representantes;
 	
-	private ArrayList<Servicio> serviciosDisponibles;
 
 	// Constructor
 	private EmpresaTelecomunicaciones() {
@@ -71,9 +70,15 @@ public class EmpresaTelecomunicaciones {
 		if(clientes.contains(cliente)){
 
 			for(Servicio s: cliente.getServicios()){
-				s.setTitular(null);
-				serviciosDisponibles.add(s);
-				servicios.remove(s);
+				if(s instanceof Telefono){
+					s.setTitular(null);
+					serviciosDisponibles.add(s);
+					servicios.remove(s);
+				}
+				else if(s instanceof CuentaNauta){
+					servicios.remove(s);
+				}
+				
 	
 			}
 			clientes.remove(cliente);
@@ -100,10 +105,7 @@ public class EmpresaTelecomunicaciones {
 	public void setServicios(ArrayList<Servicio> servicios) {
 		this.servicios = servicios;
 	}
-	// Servicios Disponibles
-	public ArrayList<Servicio> getServiciosDisponibles(){
-		return serviciosDisponibles;
-	}
+
 	public void setServiciosDisponibles(ArrayList<Servicio> serviciosDisponibles){
 		this.serviciosDisponibles = serviciosDisponibles;
 	}
@@ -190,7 +192,7 @@ public class EmpresaTelecomunicaciones {
 			}
 		}
 
-		Cliente c1 = new EntidadNoEstatal(direccion, nombreEntidad, representante);
+		Cliente c1 = new EntidadNoEstatal(nombreEntidad, direccion, representante);
 		clientes.add(c1);
 	}
 
@@ -209,7 +211,6 @@ public class EmpresaTelecomunicaciones {
 			
 		Cliente c1 = new PersonaNatural(nombre, direccion, municipio, provincia,  numId);
 
-		Cliente c1 = new PersonaNatural(direccion, municipio, provincia, nombre, numId);
 		clientes.add(c1);
 	}
 
@@ -226,10 +227,8 @@ public class EmpresaTelecomunicaciones {
 			}
 		}
 		
-		Cliente c1 = new PersonaJuridica(nombreEmpresaString, direccion, municipio, provincia, organismo,
+		Cliente c1 = new PersonaJuridica(nombreEmpresaString, direccion, municipio, provincia, organismo,representante);
 
-		Cliente c1 = new PersonaJuridica(direccion, municipio, provincia, nombreEmpresaString, organismo,
-				representante);
 		clientes.add(c1);
 	}
 	// CRUD DE CUENTA NAUTA TODO
@@ -462,24 +461,7 @@ public class EmpresaTelecomunicaciones {
 		return telefonosFijos;
 	}
 	
-	// Asignar un telefono Movil ya existente a un cliente
-		public void asignarTelefonoMovil(Cliente titular){
-			TelefonoMovil disponible = null;
 
-			for (int i = 0; i < serviciosDisponibles.size() && disponible == null; i++) {
-				if (serviciosDisponibles.get(i) instanceof TelefonoMovil) {
-					disponible = (TelefonoMovil) serviciosDisponibles.get(i);
-				}
-			}
-			// m�s adelante le cambio la excepcion	
-			if (disponible == null) 
-				throw new IllegalArgumentException("No hay tel�fono m�vil disponible");
-
-			disponible.setTitular(titular);
-			servicios.add(disponible);
-			serviciosDisponibles.remove(disponible);
-
-		}
 
 	//Obtener los Telefonos Moviles
 	public ArrayList<TelefonoMovil> getTelefonosMoviles(){
@@ -798,12 +780,26 @@ public class EmpresaTelecomunicaciones {
 			}
 		}
 	}
+	//Buscar Telefono (movil o fijo) a partir de su numero de telefono
+    public Telefono buscarTelefono(String numero){
+    	
+    	Telefono tlf = null;
+    	if(serviciosDisponibles != null){
+    		
+    		for(int i=0;i<serviciosDisponibles.size();i++){
+    		
+    		    if(serviciosDisponibles.get(i) instanceof Telefono){
+		        	
 
 
+    				if(((Telefono)serviciosDisponibles.get(i)).getNumero().equals(numero)){
 
-
-
-
-
-
+    					tlf = (Telefono)serviciosDisponibles.get(i);
+    				}
+    			}
+    		}
+    	}
+		return tlf;
+    }
 }
+

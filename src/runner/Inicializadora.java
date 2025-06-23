@@ -453,21 +453,21 @@ public class Inicializadora {
 
 		//Creacion de al menos 20 representantes
 		// Representantes adicionales libres (sin cliente asignado)
-		empresa.agregarRepresentante("Zurdokar Plasencia", "84121501001");
-		empresa.agregarRepresentante("Yaxiry Solunare", "90070102002");
-		empresa.agregarRepresentante("Quiruvio Noreste", "78030603003");
-		empresa.agregarRepresentante("Xilena Marabï¿½", "85082204004");
-		empresa.agregarRepresentante("Ozmart Yerbabuena", "91103005005");
-		empresa.agregarRepresentante("Ufrano Calipso", "79041406006");
-		empresa.agregarRepresentante("Ixchel Toronja", "88052507007");
-		empresa.agregarRepresentante("Yovankor del Monte", "83070808008");
-		empresa.agregarRepresentante("Zuleyka Ombï¿½", "92090909009");
-		empresa.agregarRepresentante("Quirino Almï¿½bar", "87121210010");
-		empresa.agregarRepresentante("Xarandï¿½ Cï¿½smico", "89111111011");
-		empresa.agregarRepresentante("Odalisca Mercurio", "94020212012");
-		empresa.agregarRepresentante("Yerutï¿½ Pandora", "80030313013");
-		empresa.agregarRepresentante("Zacarias Neptuno", "91040414014");
-		empresa.agregarRepresentante("Ulpiano Cerezo", "85050515015");
+				empresa.agregarRepresentante("Zurdokar Plasencia", "84121501001");
+				empresa.agregarRepresentante("Yaxiry Solunare", "90070102002");
+				empresa.agregarRepresentante("Quiruvio Noreste", "78030603003");
+				empresa.agregarRepresentante("Xilena Marabú", "85082204004");
+				empresa.agregarRepresentante("Ozmart Yerbabuena", "91103005005");
+				empresa.agregarRepresentante("Ufrano Calipso", "79041406006");
+				empresa.agregarRepresentante("Ixchel Toronja", "88052507007");
+				empresa.agregarRepresentante("Yovankor del Monte", "83070808008");
+				empresa.agregarRepresentante("Zuleyka Ombú", "92090909009");
+				empresa.agregarRepresentante("Quirino Almíbar", "87121210010");
+				empresa.agregarRepresentante("Xarandí Cósmico", "89111111011");
+				empresa.agregarRepresentante("Odalisca Mercurio", "94020212012");
+				empresa.agregarRepresentante("Yerutí Pandora", "80030313013");
+				empresa.agregarRepresentante("Zacarias Neptuno", "91040414014");
+				empresa.agregarRepresentante("Ulpiano Cerezo", "85050515015");
 		
 	}
 

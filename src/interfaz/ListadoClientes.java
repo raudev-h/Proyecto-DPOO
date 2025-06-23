@@ -857,9 +857,9 @@ public class ListadoClientes extends JDialog {
         txtOrganismoEdit.setColumns(10);
         
         btnSeleccionarRepresentanteEdit = new JButton("Seleccionar Representante");
-        btnSeleccionarRepresentanteEdit.setForeground(Color.WHITE);
-        btnSeleccionarRepresentanteEdit.setBackground(new Color(0, 0, 153));
-        btnSeleccionarRepresentanteEdit.setFont(new Font("Serif", Font.PLAIN, 16));
+        btnSeleccionarRepresentanteEdit.setForeground(new Color(0, 0, 153));
+        btnSeleccionarRepresentanteEdit.setBackground(Color.WHITE);
+        btnSeleccionarRepresentanteEdit.setFont(new Font("Serif", Font.PLAIN, 18));
         btnSeleccionarRepresentanteEdit.setBounds(35, 60, 280, 30);
         btnSeleccionarRepresentanteEdit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -884,9 +884,9 @@ public class ListadoClientes extends JDialog {
         
         // Botón para seleccionar representante
         JButton btnSeleccionarRepresentanteEdit1 = new JButton("Seleccionar Representante");
-        btnSeleccionarRepresentanteEdit1.setForeground(Color.WHITE);
-        btnSeleccionarRepresentanteEdit1.setBackground(new Color(0, 0, 153));
-        btnSeleccionarRepresentanteEdit1.setFont(new Font("Serif", Font.PLAIN, 16));
+        btnSeleccionarRepresentanteEdit1.setForeground(new Color(0, 0, 153));
+        btnSeleccionarRepresentanteEdit1.setBackground(new Color(255, 255, 255));
+        btnSeleccionarRepresentanteEdit1.setFont(new Font("Serif", Font.PLAIN, 18));
         btnSeleccionarRepresentanteEdit1.setBounds(35, 60, 280, 30);
         btnSeleccionarRepresentanteEdit1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {

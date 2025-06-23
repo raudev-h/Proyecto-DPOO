@@ -7,6 +7,7 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -20,59 +21,365 @@ public class ListadoServicios extends JDialog {
     private JPanel panelFormulario;
     private JTable tablaBloqueada;
     private static ListadoServicios instance;
+    
+    // Campos para creaci√≥n de servicios
+    private JPanel panelCreacion;
+    private JLabel lblTipoServicio;
+    private JComboBox<String> cbTipoServicio;
+    private JButton btnAceptarCreate;
+    private JButton btnCancelarCreate;
+    private JButton btnCrearServicio;
+    
+    // Campos para Tel√©fono Fijo
+    private JPanel panelTelefonoFijo;
+    private JTextField txtNumeroFijo;
+    private JLabel lblNumeroFijo;
+    
+    // Campos para Tel√©fono M√≥vil
+    private JPanel panelTelefonoMovil;
+    private JTextField txtNumeroMovil;
+    private JTextField txtMontoMovil;
+    private JLabel lblNumeroMovil;
+    private JLabel lblMontoMovil;
 
     private ListadoServicios() {
         empresa = EmpresaTelecomunicaciones.getInstancia();
         setModal(true);
         setTitle("Listado de Servicios");
-        setBounds(100, 100, 1126, 662);
+        setBounds(100, 100, 1015, 800);
         setLocationRelativeTo(null);
-        setLayout(new BorderLayout(10, 10));
 
-        // PestaÒas con tablas
+        initComponents();
+        configurarMenuContextual();
+    }
+
+    private void initComponents() {
+        // Pesta√±as con tablas
         tabbedPane = new JTabbedPane();
+        tabbedPane.setBounds(27, 0, 931, 662);
         tabbedPane.setFont(new Font("Serif", Font.PLAIN, 18));
         modelFijos = new TelefonoFijoTableModel();
         modelMoviles = new TelefonoMovilTableModel();
         modelNauta = new CuentaNautaTableModel();
 
         JScrollPane scrollFijos = crearTabla(modelFijos);
-        tabbedPane.addTab("TelÈfonos Fijos", scrollFijos);
+        tabbedPane.addTab("Tel√©fonos Fijos", scrollFijos);
         
         JScrollPane scrollMoviles = crearTabla(modelMoviles);
-        tabbedPane.addTab("TelÈfonos MÛviles", scrollMoviles);
+        tabbedPane.addTab("Tel√©fonos M√≥viles", scrollMoviles);
         
         JScrollPane scrollNauta = crearTabla(modelNauta);
         tabbedPane.addTab("Cuentas Nauta", scrollNauta);
 
         // Panel formulario
         panelFormulario = new JPanel();
+        panelFormulario.setBounds(973, 33, 300, 629);
         panelFormulario.setPreferredSize(new Dimension(300, getHeight()));
         panelFormulario.setBorder(BorderFactory.createTitledBorder("Formulario"));
         panelFormulario.setLayout(new GridBagLayout());
         panelFormulario.setVisible(false);
 
-        // BotÛn Crear Servicio
-        JButton btnCrearServicio = new JButton("Crear Servicio");
-        btnCrearServicio.setFont(new Font("Serif", Font.BOLD, 18));
-        btnCrearServicio.setPreferredSize(new Dimension(1, 40));
-        btnCrearServicio.setMargin(new Insets(5, 10, 5, 10));
-        btnCrearServicio.addActionListener(new ActionListener() {
+        // Bot√≥n Asignar Servicio
+        JButton btnAsignarServicio = new JButton("Asignar Servicio");
+        btnAsignarServicio.setBounds(500, 678, 214, 40);
+        btnAsignarServicio.setFont(new Font("Serif", Font.BOLD, 18));
+        btnAsignarServicio.setForeground(new Color(0, 0, 153));
+        btnAsignarServicio.setBackground(Color.WHITE);
+        btnAsignarServicio.setPreferredSize(new Dimension(1, 40));
+        btnAsignarServicio.setMargin(new Insets(5, 10, 5, 10));
+                
+        btnAsignarServicio.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                setSize(1315, 800);
+                setLocationRelativeTo(null);
+                panelCreacion.setVisible(false);
                 mostrarFormulario();
             }
         });
+        getContentPane().setLayout(null);
 
-        add(tabbedPane, BorderLayout.CENTER);
-        add(panelFormulario, BorderLayout.EAST);
-        add(btnCrearServicio, BorderLayout.SOUTH);
+        getContentPane().add(tabbedPane);
+        getContentPane().add(panelFormulario);
+        getContentPane().add(btnAsignarServicio);
+        
+        // Bot√≥n Crear Servicio
+        btnCrearServicio = new JButton("Crear Servicio");
+        btnCrearServicio.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                abrirPanelCreacion();
+            }
+        });
+        btnCrearServicio.setPreferredSize(new Dimension(1, 40));
+        btnCrearServicio.setMargin(new Insets(5, 10, 5, 10));
+        btnCrearServicio.setForeground(new Color(0, 0, 153));
+        btnCrearServicio.setBackground(Color.WHITE);
+        btnCrearServicio.setFont(new Font("Serif", Font.BOLD, 18));
+        btnCrearServicio.setBounds(237, 678, 208, 40);
+        getContentPane().add(btnCrearServicio);
 
+        // Inicializar panel de creaci√≥n
+        initPanelCreacion();
+        
         cargarDatos();
-        configurarMenuContextual();
+    }
+
+    private void abrirPanelCreacion() {
+        resetearCamposCreacion();
+        panelFormulario.setVisible(false);
+        panelCreacion.setVisible(true);
+        setSize(1380, 800);
+    }
+    
+    private void resetearCamposCreacion() {
+        txtNumeroFijo.setText("");
+        txtNumeroMovil.setText("");
+        txtMontoMovil.setText("");
+        cbTipoServicio.setSelectedItem("Tel√©fono Fijo");
+        mostrarCamposSegunTipo("Tel√©fono Fijo");
+    }
+
+    private void initPanelCreacion() {
+        panelCreacion = new JPanel();
+        panelCreacion.setBorder(new LineBorder(new Color(0, 0, 0)));
+        panelCreacion.setBounds(973, 33, 350, 629);
+        panelCreacion.setVisible(false);
+        panelCreacion.setLayout(null);
+        getContentPane().add(panelCreacion);
+        
+        JLabel lblCreacionServicio = new JLabel("Creaci√≥n de Servicio");
+        lblCreacionServicio.setFont(new Font("Serif", Font.BOLD, 21));
+        lblCreacionServicio.setBounds(32, 12, 280, 28);
+        panelCreacion.add(lblCreacionServicio);
+        
+        // Combo box para selecci√≥n de tipo de servicio
+        lblTipoServicio = new JLabel("Tipo de Servicio");
+        lblTipoServicio.setFont(new Font("Serif", Font.PLAIN, 19));
+        lblTipoServicio.setBounds(35, 50, 280, 20);
+        panelCreacion.add(lblTipoServicio);
+        
+        cbTipoServicio = new JComboBox<String>();
+        cbTipoServicio.setFont(new Font("Serif", Font.PLAIN, 18));
+        cbTipoServicio.setBounds(35, 80, 280, 30);
+        cbTipoServicio.addItem("Tel√©fono Fijo");
+        cbTipoServicio.addItem("Tel√©fono M√≥vil");
+        cbTipoServicio.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String tipoSeleccionado = (String) cbTipoServicio.getSelectedItem();
+                mostrarCamposSegunTipo(tipoSeleccionado);
+            }
+        });
+        panelCreacion.add(cbTipoServicio);
+        
+        // Panel para Tel√©fono Fijo
+        panelTelefonoFijo = new JPanel();
+        panelTelefonoFijo.setBounds(0, 120, 300, 100);
+        panelTelefonoFijo.setLayout(null);
+        panelTelefonoFijo.setVisible(false);
+        panelCreacion.add(panelTelefonoFijo);
+        
+        lblNumeroFijo = new JLabel("N√∫mero de Tel√©fono");
+        lblNumeroFijo.setFont(new Font("Serif", Font.PLAIN, 19));
+        lblNumeroFijo.setBounds(35, 0, 280, 20);
+        panelTelefonoFijo.add(lblNumeroFijo);
+        
+        txtNumeroFijo = new JTextField();
+        txtNumeroFijo.setBounds(35, 30, 280, 26);
+        panelTelefonoFijo.add(txtNumeroFijo);
+        txtNumeroFijo.setColumns(10);
+        
+        // Panel para Tel√©fono M√≥vil
+        panelTelefonoMovil = new JPanel();
+        panelTelefonoMovil.setBounds(0, 120, 300, 150);
+        panelTelefonoMovil.setLayout(null);
+        panelTelefonoMovil.setVisible(false);
+        panelCreacion.add(panelTelefonoMovil);
+        
+        lblNumeroMovil = new JLabel("N√∫mero de Tel√©fono");
+        lblNumeroMovil.setFont(new Font("Serif", Font.PLAIN, 19));
+        lblNumeroMovil.setBounds(35, 0, 280, 20);
+        panelTelefonoMovil.add(lblNumeroMovil);
+        
+        txtNumeroMovil = new JTextField();
+        txtNumeroMovil.setBounds(35, 30, 280, 26);
+        panelTelefonoMovil.add(txtNumeroMovil);
+        txtNumeroMovil.setColumns(10);
+        
+        lblMontoMovil = new JLabel("Monto a Pagar");
+        lblMontoMovil.setFont(new Font("Serif", Font.PLAIN, 19));
+        lblMontoMovil.setBounds(35, 60, 280, 20);
+        panelTelefonoMovil.add(lblMontoMovil);
+        
+        txtMontoMovil = new JTextField();
+        txtMontoMovil.setBounds(35, 90, 280, 26);
+        panelTelefonoMovil.add(txtMontoMovil);
+        txtMontoMovil.setColumns(10);
+        
+        // Botones
+        btnAceptarCreate = new JButton("Aceptar");
+        btnAceptarCreate.setForeground(new Color(255, 255, 255));
+        btnAceptarCreate.setBackground(new Color(0, 0, 153));
+        btnAceptarCreate.setFont(new Font("Serif", Font.PLAIN, 19));
+        btnAceptarCreate.setBounds(35, 580, 120, 30);
+        btnAceptarCreate.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                crearServicio();
+            }
+        });
+        panelCreacion.add(btnAceptarCreate);
+        
+        btnCancelarCreate = new JButton("Cancelar");
+        btnCancelarCreate.setBackground(new Color(255, 255, 255));
+        btnCancelarCreate.setForeground(new Color(0, 0, 153));
+        btnCancelarCreate.setFont(new Font("Serif", Font.PLAIN, 19));
+        btnCancelarCreate.setBounds(165, 580, 120, 30);
+        btnCancelarCreate.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                cerrarPanelCreacion();
+            }
+        });
+        panelCreacion.add(btnCancelarCreate);
+    }
+    
+    private void mostrarCamposSegunTipo(String tipoServicio) {
+        panelTelefonoFijo.setVisible(false);
+        panelTelefonoMovil.setVisible(false);
+        
+        if (tipoServicio.equals("Tel√©fono Fijo")) {
+            panelTelefonoFijo.setVisible(true);
+        } 
+        else if (tipoServicio.equals("Tel√©fono M√≥vil")) {
+            panelTelefonoMovil.setVisible(true);
+        }
+    }
+    
+    //Crear Servicio (Movil o Fijo)
+    private void crearServicio() {
+        String tipoServicio = (String) cbTipoServicio.getSelectedItem();
+        StringBuilder errores = new StringBuilder();
+        
+        try {
+            if (tipoServicio.equals("Tel√©fono Fijo")) {
+            	try{
+	                String numero = txtNumeroFijo.getText();
+	                TelefonoFijo.validarTelefonoFijo(numero);
+	                //Comprobar repetidos
+	                for(Servicio s: EmpresaTelecomunicaciones.getInstancia().getServicios()){
+	                	if(s instanceof TelefonoFijo){
+	                		if(((TelefonoFijo)s).getNumero().equals(numero)){
+	                			throw new IllegalArgumentException("Ese n√∫mero de telefono ya se encuentra registrado en el sistema");
+	                		}
+	                		
+	                		
+	                	}
+	                }
+	              //Comprobar repetidos
+	                for(Servicio s: EmpresaTelecomunicaciones.getInstancia().getServiciosDisponibles()){
+	                	if(s instanceof TelefonoFijo){
+	                		if(((TelefonoFijo)s).getNumero().equals(numero)){
+	                			throw new IllegalArgumentException("Ese n√∫mero de telefono ya se encuentra registrado en el sistema");
+	                		}
+	                		
+	                		
+	                	}
+	                }
+	                
+	                empresa.agregarTelefonoFijo(numero);
+            	    lblNumeroFijo.setForeground(Color.BLACK);
+                }catch(Exception e){
+                	errores.append("- ").append(e.getMessage()).append("\n");
+            	    lblNumeroFijo.setForeground(Color.RED); 
+                	
+                }
+            } 
+            else if (tipoServicio.equals("Tel√©fono M√≥vil")) {
+                boolean movilValido = true;
+            	
+                try{
+	                String numero2 = txtNumeroMovil.getText();
+	                TelefonoMovil.validarTelefonoMovil(numero2);
+	                
+	              //Comprobar repetidos
+	                for(Servicio s: EmpresaTelecomunicaciones.getInstancia().getServicios()){
+	                	if(s instanceof TelefonoMovil){
+	                		if(((TelefonoMovil)s).getNumero().equals(numero2)){
+	                			throw new IllegalArgumentException("Ese n√∫mero de telefono ya se encuentra registrado en el sistema");
+	                		}
+	                		
+	                		
+	                	}
+	                }
+	              //Comprobar repetidos
+	                for(Servicio s: EmpresaTelecomunicaciones.getInstancia().getServiciosDisponibles()){
+	                	if(s instanceof TelefonoMovil){
+	                		if(((TelefonoMovil)s).getNumero().equals(numero2)){
+	                			throw new IllegalArgumentException("Ese n√∫mero de telefono ya se encuentra registrado en el sistema");
+	                		}
+	                		
+	                		
+	                	}
+	                }
+	                
+            	    lblNumeroMovil.setForeground(Color.BLACK);
+                }catch(Exception e){
+                	movilValido = false;
+                	errores.append("- ").append(e.getMessage()).append("\n");
+            	    lblNumeroMovil.setForeground(Color.RED);                	
+                }
+                
+                try{
+                    String montoStr = txtMontoMovil.getText();
+                    TelefonoMovil.validarMonto(montoStr);
+                    lblMontoMovil.setForeground(Color.BLACK);
+              	
+                }catch(Exception e){
+                	movilValido = false;
+                	errores.append("- ").append(e.getMessage()).append("\n");
+                	lblMontoMovil.setForeground(Color.RED); 
+                }
+                if(movilValido){
+                	empresa.agregarTelefonoMovil(txtNumeroMovil.getText(), Double.parseDouble(txtMontoMovil.getText().replace(",", ".")));
+                }
+                
+            }
+            if(errores.length() > 0){
+            	UIManager.put("OptionPane.messageFont", new Font("Serif", Font.PLAIN, 18));
+                UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.PLAIN, 16));
+            	JOptionPane.showMessageDialog(
+	    			    null, 
+	    			    "ERRORES EN LOS DATOS:\n" + 
+	    			    "----------------------------\n" + 
+	    			    errores.toString() + 
+	    			    "\n----------------------------\n" + 
+	    			    "Por favor, corrija los campos resaltados en rojo.", 
+	    			    "Error ", 
+	    			    JOptionPane.ERROR_MESSAGE
+	    			);
+            }else{
+                cargarDatos();
+                resetearCamposCreacion();
+                cerrarPanelCreacion();
+                
+                UIManager.put("OptionPane.messageFont", new Font("Serif", Font.PLAIN, 18));
+                UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.PLAIN, 16));
+                JOptionPane.showMessageDialog(this, "Servicio creado exitosamente", 
+                    "√âxito", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (Exception e) {
+            UIManager.put("OptionPane.messageFont", new Font("Serif", Font.PLAIN, 18));
+            JOptionPane.showMessageDialog(this, 
+                "Error al crear servicio: " + e.getMessage(), 
+                "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    private void cerrarPanelCreacion() {
+        panelCreacion.setVisible(false);
+        setSize(1015, 800);
     }
 
     private JScrollPane crearTabla(DefaultTableModel model) {
-        tablaBloqueada = new JTable(model); // Asigna a la variable de instancia
+        tablaBloqueada = new JTable(model);
         tablaBloqueada.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tablaBloqueada.setFont(new Font("Serif", Font.PLAIN, 18));
         tablaBloqueada.setRowHeight(25);
@@ -86,7 +393,7 @@ public class ListadoServicios extends JDialog {
     }
 
     private void configurarMenuContextual() {
-    	for(int i = 0; i < tabbedPane.getTabCount(); i++) {
+        for(int i = 0; i < tabbedPane.getTabCount(); i++) {
             JScrollPane scrollPane = (JScrollPane) tabbedPane.getComponentAt(i);
             final JTable tabla = (JTable) scrollPane.getViewport().getView();
             
@@ -113,67 +420,45 @@ public class ListadoServicios extends JDialog {
             
             menuEliminar.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    // Obtener la tabla actual seg˙n la pestaÒa seleccionada
-                    JScrollPane scrollPane = (JScrollPane) tabbedPane.getSelectedComponent();
-                    JTable tablaActual = (JTable) scrollPane.getViewport().getView();
-                    int selectedRow = tablaActual.getSelectedRow();
+                    int selectedRow = tabla.getSelectedRow();
                     
                     if (selectedRow >= 0) {
-                        // Obtener el servicio seleccionado
-                        Servicio servicio = obtenerServicioSeleccionado(tablaActual, selectedRow);
+                        UIManager.put("OptionPane.messageFont", new Font("Serif", Font.BOLD, 20));
+                        UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.BOLD, 18));
                         
-                        if (servicio != null) {
-                            // Configurar el mensaje de confirmaciÛn
-                            UIManager.put("OptionPane.messageFont", new Font("Serif", Font.BOLD, 20));
-                            UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.BOLD, 18));
+                        Servicio servicio = obtenerServicioSeleccionado(tabla, selectedRow);
+                        String mensaje = "¬øEst√° seguro que desea eliminar este servicio?";
+                        
+                        int confirm = JOptionPane.showConfirmDialog(
+                            ListadoServicios.this,
+                            mensaje, 
+                            "Confirmar eliminaci√≥n", 
+                            JOptionPane.YES_NO_OPTION, 
+                            JOptionPane.WARNING_MESSAGE);
+                        
+                        if (confirm == JOptionPane.YES_OPTION) {
+                            boolean eliminado = eliminarServicio(servicio);
                             
-                            int confirm = JOptionPane.showConfirmDialog(
-                                ListadoServicios.this,
-                                "øEst· seguro que desea eliminar este servicio?",
-                                "Confirmar eliminaciÛn",
-                                JOptionPane.YES_NO_OPTION,
-                                JOptionPane.WARNING_MESSAGE);
-                            
-                            if (confirm == JOptionPane.YES_OPTION) {
-                                boolean eliminado = false;
-                                String mensajeExito = "";
-                                
-                                // Eliminar seg˙n el tipo de servicio
-                                if (servicio instanceof TelefonoFijo) {
-                                    eliminado = empresa.eliminarTelefonoFIjo(((TelefonoFijo)servicio).getNumero());
-                                    mensajeExito = "TelÈfono fijo eliminado correctamente";
-                                } 
-                                else if (servicio instanceof TelefonoMovil) {
-                                    eliminado = empresa.eliminarTelefonoMovil(((TelefonoMovil)servicio).getNumero());
-                                    mensajeExito = "TelÈfono mÛvil eliminado correctamente";
-                                } 
-                                else if (servicio instanceof CuentaNauta) {
-                                    eliminado = empresa.eliminarCuentaNauta(((CuentaNauta)servicio).getNick());
-                                    mensajeExito = "Cuenta Nauta eliminada correctamente";
-                                }
-                                
-                                // Actualizar la vista si se eliminÛ correctamente
-                                if (eliminado) {
-                                    cargarDatos(); // Actualizar todos los modelos
-                                    JOptionPane.showMessageDialog(
-                                        ListadoServicios.this,
-                                        mensajeExito,
-                                        "…xito",
-                                        JOptionPane.INFORMATION_MESSAGE);
-                                } else {
-                                    JOptionPane.showMessageDialog(
-                                        ListadoServicios.this,
-                                        "No se pudo eliminar el servicio",
-                                        "Error",
-                                        JOptionPane.ERROR_MESSAGE);
-                                }
+                            if (eliminado) {
+                                cargarDatos();
+                                JOptionPane.showMessageDialog(
+                                    ListadoServicios.this,
+                                    "Servicio eliminado correctamente",
+                                    "√âxito", 
+                                    JOptionPane.INFORMATION_MESSAGE);
+                            } else {
+                                JOptionPane.showMessageDialog(
+                                    ListadoServicios.this,
+                                    "No se pudo eliminar el servicio",
+                                    "Error", 
+                                    JOptionPane.ERROR_MESSAGE);
                             }
                         }
                     } else {
                         JOptionPane.showMessageDialog(
                             ListadoServicios.this,
                             "Por favor seleccione un servicio para eliminar",
-                            "Advertencia",
+                            "Advertencia", 
                             JOptionPane.WARNING_MESSAGE);
                     }
                 }
@@ -185,15 +470,17 @@ public class ListadoServicios extends JDialog {
             tabla.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
-                    mostrarMenuSiEsClickDerecho(e);
+                    if (e.isPopupTrigger()) {
+                        int row = tabla.rowAtPoint(e.getPoint());
+                        if (row >= 0) {
+                            tabla.setRowSelectionInterval(row, row);
+                            popupMenu.show(tabla, e.getX(), e.getY());
+                        }
+                    }
                 }
                 
                 @Override
                 public void mouseReleased(MouseEvent e) {
-                    mostrarMenuSiEsClickDerecho(e);
-                }
-                
-                private void mostrarMenuSiEsClickDerecho(MouseEvent e) {
                     if (e.isPopupTrigger()) {
                         int row = tabla.rowAtPoint(e.getPoint());
                         if (row >= 0) {
@@ -209,57 +496,104 @@ public class ListadoServicios extends JDialog {
     private Servicio obtenerServicioSeleccionado(JTable tabla, int row) {
         int tabIndex = tabbedPane.indexOfComponent(tabla.getParent().getParent());
         
-        switch(tabIndex) {
-            case 0: return modelFijos.getServicioAt(row);
-            case 1: return modelMoviles.getServicioAt(row);
-            case 2: return modelNauta.getServicioAt(row);
-            default: return null;
+        Servicio servicio = null;
+        
+        if (tabIndex == 0) {
+            servicio = modelFijos.getServicioAt(row);
+        } else if (tabIndex == 1) {
+            servicio = modelMoviles.getServicioAt(row);
+        } else if (tabIndex == 2) {
+            servicio = modelNauta.getServicioAt(row);
         }
+        
+        return servicio;
     }
 
     private void editarServicio(final JTable tabla, final int row) {
         Servicio servicio = obtenerServicioSeleccionado(tabla, row);
+        
         if (servicio != null) {
-            // Implementar lÛgica especÌfica de ediciÛn
-            JOptionPane.showMessageDialog(this,
-                "Editar servicio: " + servicio.getClass().getSimpleName(),
-                "EdiciÛn", JOptionPane.INFORMATION_MESSAGE);
+            if (servicio instanceof TelefonoFijo) {
+                editarTelefonoFijo((TelefonoFijo) servicio);
+            } else if (servicio instanceof TelefonoMovil) {
+                editarTelefonoMovil((TelefonoMovil) servicio);
+            } else if (servicio instanceof CuentaNauta) {
+                editarCuentaNauta((CuentaNauta) servicio);
+            }
         }
     }
 
-    private void eliminarServicio(final JTable tabla, final int row) {
-        final Servicio servicio = obtenerServicioSeleccionado(tabla, row);
-        if (servicio != null) {
-            UIManager.put("OptionPane.messageFont", new Font("Serif", Font.BOLD, 20));
-            UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.BOLD, 18));
-            
-            int confirm = JOptionPane.showConfirmDialog(ListadoServicios.this,
-                "øEst· seguro que desea eliminar este servicio?",
-                "Confirmar eliminaciÛn", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-            
-            if (confirm == JOptionPane.YES_OPTION) {
-                boolean eliminado = false;
-                
-                if (servicio instanceof TelefonoFijo) {
-                    eliminado = empresa.eliminarTelefonoFIjo(((TelefonoFijo)servicio).getNumero());
-                } else if (servicio instanceof TelefonoMovil) {
-                    eliminado = empresa.eliminarTelefonoMovil(((TelefonoMovil)servicio).getNumero());
-                } else if (servicio instanceof CuentaNauta) {
-                    eliminado = empresa.eliminarCuentaNauta(((CuentaNauta)servicio).getNick());
-                }
-                
-                if (eliminado) {
-                    cargarDatos();
-                    JOptionPane.showMessageDialog(ListadoServicios.this,
-                        "Servicio eliminado correctamente",
-                        "…xito", JOptionPane.INFORMATION_MESSAGE);
-                } else {
-                    JOptionPane.showMessageDialog(ListadoServicios.this,
-                        "No se pudo eliminar el servicio",
-                        "Error", JOptionPane.ERROR_MESSAGE);
-                }
+    private void editarTelefonoFijo(TelefonoFijo telefono) {
+        // Implementaci√≥n para editar tel√©fono fijo
+        String nuevoNumero = JOptionPane.showInputDialog(
+            this, 
+            "Ingrese el nuevo n√∫mero:", 
+            telefono.getNumero());
+        
+        if (nuevoNumero != null && !nuevoNumero.isEmpty()) {
+            telefono.setNumero(nuevoNumero);
+            cargarDatos();
+        }
+    }
+
+    private void editarTelefonoMovil(TelefonoMovil telefono) {
+        // Implementaci√≥n para editar tel√©fono m√≥vil
+        JPanel panel = new JPanel(new GridLayout(2, 2));
+        JTextField txtNumero = new JTextField(telefono.getNumero());
+        JTextField txtMonto = new JTextField(String.valueOf(telefono.getMontoApagar()));
+        
+        panel.add(new JLabel("N√∫mero:"));
+        panel.add(txtNumero);
+        panel.add(new JLabel("Monto:"));
+        panel.add(txtMonto);
+        
+        int result = JOptionPane.showConfirmDialog(
+            this, 
+            panel, 
+            "Editar Tel√©fono M√≥vil", 
+            JOptionPane.OK_CANCEL_OPTION);
+        
+        if (result == JOptionPane.OK_OPTION) {
+            telefono.setNumero(txtNumero.getText());
+            try {
+                double monto = Double.parseDouble(txtMonto.getText());
+                telefono.setMontoApagar(monto);
+                cargarDatos();
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(
+                    this, 
+                    "El monto debe ser un n√∫mero v√°lido", 
+                    "Error", 
+                    JOptionPane.ERROR_MESSAGE);
             }
         }
+    }
+
+    private void editarCuentaNauta(CuentaNauta cuenta) {
+        // Implementaci√≥n para editar cuenta nauta
+        String nuevoNick = JOptionPane.showInputDialog(
+            this, 
+            "Ingrese el nuevo nick:", 
+            cuenta.getNick());
+        
+        if (nuevoNick != null && !nuevoNick.isEmpty()) {
+            cuenta.setNick(nuevoNick);
+            cargarDatos();
+        }
+    }
+
+    private boolean eliminarServicio(Servicio servicio) {
+        boolean eliminado = false;
+        
+        if (servicio instanceof TelefonoFijo) {
+            eliminado = empresa.eliminarTelefonoFIjo(((TelefonoFijo)servicio).getNumero());
+        } else if (servicio instanceof TelefonoMovil) {
+            eliminado = empresa.eliminarTelefonoMovil(((TelefonoMovil)servicio).getNumero());
+        } else if (servicio instanceof CuentaNauta) {
+            eliminado = empresa.eliminarCuentaNauta(((CuentaNauta)servicio).getNick());
+        }
+        
+        return eliminado;
     }
 
     private void cargarDatos() {
@@ -268,9 +602,8 @@ public class ListadoServicios extends JDialog {
         modelNauta.cargarDatos(empresa.getCuentasNautas());
     }
 
-// TODO
-    
     private void mostrarFormulario() {
+        // Implementaci√≥n existente del formulario para asignar servicios
         panelFormulario.removeAll();
         panelFormulario.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -278,13 +611,10 @@ public class ListadoServicios extends JDialog {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         int row = 0;
 
-        // Obtener la tabla actual seg˙n la pestaÒa seleccionada
         final JScrollPane scrollPane = (JScrollPane) tabbedPane.getSelectedComponent();
         final JTable tablaActual = (JTable) scrollPane.getViewport().getView();
 
-        // ========================
         // 1) Buscador de titular
-        // ========================
         JLabel lblBuscar = new JLabel("Buscar Titular:");
         final JTextField txtBuscar = new JTextField(15);
         final DefaultListModel<Cliente> modeloLista = new DefaultListModel<Cliente>();
@@ -337,20 +667,18 @@ public class ListadoServicios extends JDialog {
         gbc.weightx = 0; gbc.weighty = 0;
         gbc.gridwidth = 1;
 
-        // Declarar los componentes que se usar·n seg˙n la pestaÒa
+        // Declarar los componentes que se usar√°n seg√∫n la pesta√±a
         final JComboBox<String> comboFijos = new JComboBox<String>();
         final JComboBox<TelefonoMovil> comboMoviles = new JComboBox<TelefonoMovil>();
         final JLabel lblMonto = new JLabel("Monto: -");
         final JTextField txtNick = new JTextField(15);
 
-        // Determinar quÈ pestaÒa est· seleccionada
-        final int pestaÒaSeleccionada = tabbedPane.getSelectedIndex();
+        // Determinar qu√© pesta√±a est√° seleccionada
+        final int pesta√±aSeleccionada = tabbedPane.getSelectedIndex();
 
-        // ========================
-        // Campos especÌficos seg˙n la pestaÒa
-        // ========================
-        if (pestaÒaSeleccionada == 0) { // TelÈfonos Fijos
-            JLabel lblFijo = new JLabel("Seleccionar TelÈfono Fijo:");
+        // Campos espec√≠ficos seg√∫n la pesta√±a
+        if (pesta√±aSeleccionada == 0) { // Tel√©fonos Fijos
+            JLabel lblFijo = new JLabel("Seleccionar Tel√©fono Fijo:");
             
             for (Servicio s : empresa.getServiciosDisponibles()) {
                 if (s instanceof TelefonoFijo) {
@@ -365,8 +693,8 @@ public class ListadoServicios extends JDialog {
             row++;
             gbc.gridwidth = 1;
         } 
-        else if (pestaÒaSeleccionada == 1) { // TelÈfonos MÛviles
-            JLabel lblMovil = new JLabel("Seleccionar TelÈfono MÛvil:");
+        else if (pesta√±aSeleccionada == 1) { // Tel√©fonos M√≥viles
+            JLabel lblMovil = new JLabel("Seleccionar Tel√©fono M√≥vil:");
             
             for (Servicio s : empresa.getServiciosDisponibles()) {
                 if (s instanceof TelefonoMovil) {
@@ -399,7 +727,7 @@ public class ListadoServicios extends JDialog {
             row++;
             gbc.gridwidth = 1;
         }
-        else if (pestaÒaSeleccionada == 2) { // Cuentas Nauta
+        else if (pesta√±aSeleccionada == 2) { // Cuentas Nauta
             JLabel lblNick = new JLabel("Nick de la cuenta:");
             
             gbc.gridx = 0; gbc.gridy = row; panelFormulario.add(lblNick, gbc);
@@ -410,9 +738,7 @@ public class ListadoServicios extends JDialog {
             gbc.gridwidth = 1;
         }
 
-        // ========================
         // Botones Guardar y Cancelar
-        // ========================
         JButton btnGuardar = new JButton("Guardar");
         gbc.gridx = 0; gbc.gridy = row;
         panelFormulario.add(btnGuardar, gbc);
@@ -421,17 +747,13 @@ public class ListadoServicios extends JDialog {
         gbc.gridx = 1; gbc.gridy = row;
         panelFormulario.add(btnCancelar, gbc);
 
-        // ========================
-        // BLOQUEAR TABLA Y PESTA—AS
-        // ========================
+        // BLOQUEAR TABLA Y PESTA√ëAS
         tablaActual.setEnabled(false);
         tablaActual.setFocusable(false);
         tabbedPane.setEnabled(false);
         tabbedPane.setFocusable(false);
 
-        // ========================
-        // AcciÛn Guardar
-        // ========================
+        // Acci√≥n Guardar
         btnGuardar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -442,27 +764,29 @@ public class ListadoServicios extends JDialog {
                         "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
+                
 
                 try {
-                    if (pestaÒaSeleccionada == 0) { // TelÈfono Fijo
+                    if (pesta√±aSeleccionada == 0) { // Tel√©fono Fijo
                         if (comboFijos.getSelectedIndex() == -1) {
-                            throw new IllegalArgumentException("Debe seleccionar un telÈfono fijo disponible");
+                            throw new IllegalArgumentException("Debe seleccionar un tel√©fono fijo disponible");
                         }
                         empresa.asignarTelefonoFijo(titular);
                     } 
-                    else if (pestaÒaSeleccionada == 1) { // TelÈfono MÛvil
+                    else if (pesta√±aSeleccionada == 1) { // Tel√©fono M√≥vil
                         if (comboMoviles.getSelectedIndex() == -1) {
-                            throw new IllegalArgumentException("Debe seleccionar un telÈfono mÛvil disponible");
+                            throw new IllegalArgumentException("Debe seleccionar un tel√©fono m√≥vil disponible");
                         }
                         empresa.asignarTelefonoMovil(titular);
                     } 
-                    else if (pestaÒaSeleccionada == 2) { // Cuenta Nauta
+                    else if (pesta√±aSeleccionada == 2) { // Cuenta Nauta
                         String nick = txtNick.getText();
                         if (nick.isEmpty()) {
                             throw new IllegalArgumentException("Debe ingresar un nick para la cuenta");
                         }
                         empresa.crearCuentaNauta(titular, nick);
                     }
+                    
 
                     cargarDatos();
                     panelFormulario.setVisible(false);
@@ -470,6 +794,7 @@ public class ListadoServicios extends JDialog {
                     tablaActual.setFocusable(true);
                     tabbedPane.setEnabled(true);
                     tabbedPane.setFocusable(true);
+                    
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(ListadoServicios.this,
                         "Error al asignar servicio: " + ex.getMessage(),
@@ -478,9 +803,7 @@ public class ListadoServicios extends JDialog {
             }
         });
 
-        // ========================
-        // AcciÛn Cancelar
-        // ========================
+        // Acci√≥n Cancelar
         btnCancelar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -492,15 +815,11 @@ public class ListadoServicios extends JDialog {
             }
         });
 
-        // ========================
         // FINAL: Mostrar
-        // ========================
         panelFormulario.setVisible(true);
         panelFormulario.revalidate();
         panelFormulario.repaint();
     }
-	// TODO
-
     @Override
     public void dispose() {
         instance = null;
@@ -514,9 +833,8 @@ public class ListadoServicios extends JDialog {
             instance.setVisible(true);
         } else {
             if (!instance.isVisible()) instance.setVisible(true);
-            else JOptionPane.showMessageDialog(null, "La ventana ya est· abierta");
+            else JOptionPane.showMessageDialog(null, "La ventana ya est√° abierta");
             instance.toFront();
         }
     }
-
 }
