@@ -18,6 +18,7 @@ public abstract class Telefono extends Servicio implements Llamador {
     //GETTER Y SETTER 
     //numero
     public void setNumero(String numero){
+    	
         this.numero = numero;
     }
 

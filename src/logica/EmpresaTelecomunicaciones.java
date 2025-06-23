@@ -10,18 +10,20 @@ public class EmpresaTelecomunicaciones {
 	private static EmpresaTelecomunicaciones empresa;
 	private ArrayList<Cliente> clientes;
 	private ArrayList<Servicio> servicios;
-	private ArrayList<Representante> representantes;
 	private ArrayList<Servicio> serviciosDisponibles;
+	private ArrayList<Representante> representantes;
+	
 
 	// Constructor
 	private EmpresaTelecomunicaciones() {
 		clientes = new ArrayList<Cliente>();
 		servicios = new ArrayList<Servicio>();
+		serviciosDisponibles = new ArrayList<Servicio>();
 		representantes = new ArrayList<Representante>();
 		serviciosDisponibles = new ArrayList<Servicio>();
 	}
 
-	// Getters y setters
+	// GETTERS Y SETTERS
 	// Obtener la unica instancia de la clase Empresa Telecomunicaciones
 	public static EmpresaTelecomunicaciones getInstancia() {
 		if (empresa == null) {
@@ -68,7 +70,16 @@ public class EmpresaTelecomunicaciones {
 		if(clientes.contains(cliente)){
 
 			for(Servicio s: cliente.getServicios()){
-				servicios.remove(s);				
+				if(s instanceof Telefono){
+					s.setTitular(null);
+					serviciosDisponibles.add(s);
+					servicios.remove(s);
+				}
+				else if(s instanceof CuentaNauta){
+					servicios.remove(s);
+				}
+				
+	
 			}
 			clientes.remove(cliente);
 			eliminado = true;
@@ -94,10 +105,7 @@ public class EmpresaTelecomunicaciones {
 	public void setServicios(ArrayList<Servicio> servicios) {
 		this.servicios = servicios;
 	}
-	// Servicios Disponibles
-	public ArrayList<Servicio> getServiciosDisponibles(){
-		return serviciosDisponibles;
-	}
+
 	public void setServiciosDisponibles(ArrayList<Servicio> serviciosDisponibles){
 		this.serviciosDisponibles = serviciosDisponibles;
 	}
@@ -129,6 +137,14 @@ public class EmpresaTelecomunicaciones {
 		return eliminado;
 	}
 
+	// Servicios Disponibles
+	public ArrayList<Servicio> getServiciosDisponibles() {
+	    if (this.serviciosDisponibles == null) {
+	        this.serviciosDisponibles = new ArrayList<Servicio>();
+	    }
+	    return this.serviciosDisponibles;
+	}
+		
 	// METODOS
 
 
@@ -165,7 +181,7 @@ public class EmpresaTelecomunicaciones {
 	}
 
 	// Agregar Entidad no estatal
-	public void agregarEntidadNoEstatal(String direccion, String nombreEntidad, Representante representante) 
+	public void agregarEntidadNoEstatal(String nombreEntidad, String direccion,  Representante representante) 
 			throws NombreInvalidoException, UbicacionInvalidaException, DuplicadosException {
 
 		for(Cliente c : clientes){
@@ -176,12 +192,12 @@ public class EmpresaTelecomunicaciones {
 			}
 		}
 
-		Cliente c1 = new EntidadNoEstatal(direccion, nombreEntidad, representante);
+		Cliente c1 = new EntidadNoEstatal(nombreEntidad, direccion, representante);
 		clientes.add(c1);
 	}
 
 	// Agregar Persona Natural
-	public void agregarPersonaNatural(String direccion, String municipio, String provincia, String nombre,
+	public void agregarPersonaNatural(String nombre, String direccion, String municipio, String provincia, 
 			String numId) throws NombreInvalidoException, UbicacionInvalidaException, ProvinciaInvalidaException,
 			CarnetIdentidadInvalidoException, DuplicadosException {
 
@@ -192,13 +208,14 @@ public class EmpresaTelecomunicaciones {
 					throw new DuplicadosException("Esa persona ya existe en nuestro sistema");
 			}
 		}
+			
+		Cliente c1 = new PersonaNatural(nombre, direccion, municipio, provincia,  numId);
 
-		Cliente c1 = new PersonaNatural(direccion, municipio, provincia, nombre, numId);
 		clientes.add(c1);
 	}
 
 	// Agregar Persona Juridica
-	public void agregarPersonaJuridica(String direccion, String municipio, String provincia, String nombreEmpresaString,
+	public void agregarPersonaJuridica(String nombreEmpresaString, String direccion, String municipio, String provincia, 
 			String organismo, Representante representante) throws NombreInvalidoException, UbicacionInvalidaException,
 			ProvinciaInvalidaException, DuplicadosException{
 
@@ -206,12 +223,12 @@ public class EmpresaTelecomunicaciones {
 			if(c instanceof PersonaJuridica){
 				PersonaJuridica pj = (PersonaJuridica)c;
 				if(pj.getDireccion().equalsIgnoreCase(direccion))
-					throw new DuplicadosException("Esa persona jurídica ya existe en nuestro sistema");
+					throw new DuplicadosException("Esa persona jurï¿½dica ya existe en nuestro sistema");
 			}
 		}
+		
+		Cliente c1 = new PersonaJuridica(nombreEmpresaString, direccion, municipio, provincia, organismo,representante);
 
-		Cliente c1 = new PersonaJuridica(direccion, municipio, provincia, nombreEmpresaString, organismo,
-				representante);
 		clientes.add(c1);
 	}
 	// CRUD DE CUENTA NAUTA TODO
@@ -227,7 +244,7 @@ public class EmpresaTelecomunicaciones {
 			}
 		}
 		if(!tieneTelefono)
-			throw new IllegalArgumentException("Para contratar el nauta debe tener teléfono fijo");	
+			throw new IllegalArgumentException("Para contratar el nauta debe tener telï¿½fono fijo");	
 
 		if(titular instanceof PersonaJuridica)
 			throw new IllegalArgumentException("Este tipo de cliente no puede tener CuentaNauta");
@@ -375,10 +392,10 @@ public class EmpresaTelecomunicaciones {
 		}
 		
 		if (disponible == null) 
-			throw new IllegalArgumentException("No hay teléfono móvil disponible");
+			throw new IllegalArgumentException("No hay telï¿½fono mï¿½vil disponible");
 
 		if(comprobarMovil(titular))
-			throw new IllegalArgumentException("Persona Natural no puede tener más de 2 Teléfonos Móviles");
+			throw new IllegalArgumentException("Persona Natural no puede tener mï¿½s de 2 Telï¿½fonos Mï¿½viles");
 		
 		disponible.setTitular(titular);
 		
@@ -443,6 +460,8 @@ public class EmpresaTelecomunicaciones {
 
 		return telefonosFijos;
 	}
+	
+
 
 	//Obtener los Telefonos Moviles
 	public ArrayList<TelefonoMovil> getTelefonosMoviles(){
@@ -761,12 +780,26 @@ public class EmpresaTelecomunicaciones {
 			}
 		}
 	}
+	//Buscar Telefono (movil o fijo) a partir de su numero de telefono
+    public Telefono buscarTelefono(String numero){
+    	
+    	Telefono tlf = null;
+    	if(serviciosDisponibles != null){
+    		
+    		for(int i=0;i<serviciosDisponibles.size();i++){
+    		
+    		    if(serviciosDisponibles.get(i) instanceof Telefono){
+		        	
 
 
+    				if(((Telefono)serviciosDisponibles.get(i)).getNumero().equals(numero)){
 
-
-
-
-
-
+    					tlf = (Telefono)serviciosDisponibles.get(i);
+    				}
+    			}
+    		}
+    	}
+		return tlf;
+    }
 }
+

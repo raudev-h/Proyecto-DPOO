@@ -200,7 +200,7 @@ public class Inicializadora {
 		// Agregar un Representante a una entidad no estatal( esto lo hice debajo de cada ENE)
 
 		// ==============================
-		// 1) CREAR TELÉFONOS FIJOS DISPONIBLES (sin titular)
+		// 1) CREAR TELï¿½FONOS FIJOS DISPONIBLES (sin titular)
 		// ==============================
 		empresa.agregarTelefonoFijo("78781234");
 		empresa.agregarTelefonoFijo("78451233");
@@ -243,7 +243,7 @@ public class Inicializadora {
 		empresa.agregarTelefonoFijo("78123456");
 
 		// ==============================
-		// 2) CREAR TELÉFONOS MÓVILES DISPONIBLES (sin titular)
+		// 2) CREAR TELï¿½FONOS Mï¿½VILES DISPONIBLES (sin titular)
 		// ==============================
 		empresa.agregarTelefonoMovil("52345678", 350.50);
 		empresa.agregarTelefonoMovil("58901234", 420.75);
@@ -292,7 +292,7 @@ public class Inicializadora {
 		empresa.agregarTelefonoMovil("56987652", 265.80);
 
 		// ==============================
-		// 3) ASIGNAR TELÉFONOS FIJOS A CLIENTES
+		// 3) ASIGNAR TELï¿½FONOS FIJOS A CLIENTES
 		// ==============================
 		// Personas Naturales
 		empresa.asignarTelefonoFijo(pn1);
@@ -306,7 +306,7 @@ public class Inicializadora {
 		empresa.asignarTelefonoFijo(pn9);
 		// pn10: no tiene fijo si no quieres
 
-		// Personas Jurídicas
+		// Personas Jurï¿½dicas
 		empresa.asignarTelefonoFijo(pj1);
 		empresa.asignarTelefonoFijo(pj2);
 		empresa.asignarTelefonoFijo(pj3);
@@ -328,10 +328,10 @@ public class Inicializadora {
 		empresa.asignarTelefonoFijo(ene7);
 		empresa.asignarTelefonoFijo(ene8);
 		empresa.asignarTelefonoFijo(ene9);
-		// ene10: sin fijo si así lo decides
+		// ene10: sin fijo si asï¿½ lo decides
 
 		// ==============================
-		// 4) ASIGNAR TELÉFONOS MÓVILES A CLIENTES
+		// 4) ASIGNAR TELï¿½FONOS Mï¿½VILES A CLIENTES
 		// ==============================
 		// Personas Naturales
 		empresa.asignarTelefonoMovil(pn1);
@@ -362,7 +362,7 @@ public class Inicializadora {
 
 		empresa.asignarTelefonoMovil(pn10);
 
-		// Personas Jurídicas
+		// Personas Jurï¿½dicas
 		empresa.asignarTelefonoMovil(pj2);
 		empresa.asignarTelefonoMovil(pj3);
 		empresa.asignarTelefonoMovil(pj4);
@@ -411,7 +411,7 @@ public class Inicializadora {
 		// Llamadas para el telefono movil 1 (52345678)
 
 		// ==============================================
-		// AGREGAR LLAMADAS MANUALMENTE A CADA TELéFONO
+		// AGREGAR LLAMADAS MANUALMENTE A CADA TELï¿½FONO
 		// ==============================================
 		//TODO Arreglar los numeros de los telefonos de los destinatarios 
 
@@ -453,21 +453,21 @@ public class Inicializadora {
 
 		//Creacion de al menos 20 representantes
 		// Representantes adicionales libres (sin cliente asignado)
-		empresa.agregarRepresentante("Zurdokar Plasencia", "84121501001");
-		empresa.agregarRepresentante("Yaxiry Solunare", "90070102002");
-		empresa.agregarRepresentante("Quiruvio Noreste", "78030603003");
-		empresa.agregarRepresentante("Xilena Marabú", "85082204004");
-		empresa.agregarRepresentante("Ozmart Yerbabuena", "91103005005");
-		empresa.agregarRepresentante("Ufrano Calipso", "79041406006");
-		empresa.agregarRepresentante("Ixchel Toronja", "88052507007");
-		empresa.agregarRepresentante("Yovankor del Monte", "83070808008");
-		empresa.agregarRepresentante("Zuleyka Ombú", "92090909009");
-		empresa.agregarRepresentante("Quirino Almíbar", "87121210010");
-		empresa.agregarRepresentante("Xarandí Cósmico", "89111111011");
-		empresa.agregarRepresentante("Odalisca Mercurio", "94020212012");
-		empresa.agregarRepresentante("Yerutí Pandora", "80030313013");
-		empresa.agregarRepresentante("Zacarias Neptuno", "91040414014");
-		empresa.agregarRepresentante("Ulpiano Cerezo", "85050515015");
+				empresa.agregarRepresentante("Zurdokar Plasencia", "84121501001");
+				empresa.agregarRepresentante("Yaxiry Solunare", "90070102002");
+				empresa.agregarRepresentante("Quiruvio Noreste", "78030603003");
+				empresa.agregarRepresentante("Xilena Marabï¿½", "85082204004");
+				empresa.agregarRepresentante("Ozmart Yerbabuena", "91103005005");
+				empresa.agregarRepresentante("Ufrano Calipso", "79041406006");
+				empresa.agregarRepresentante("Ixchel Toronja", "88052507007");
+				empresa.agregarRepresentante("Yovankor del Monte", "83070808008");
+				empresa.agregarRepresentante("Zuleyka Ombï¿½", "92090909009");
+				empresa.agregarRepresentante("Quirino Almï¿½bar", "87121210010");
+				empresa.agregarRepresentante("Xarandï¿½ Cï¿½smico", "89111111011");
+				empresa.agregarRepresentante("Odalisca Mercurio", "94020212012");
+				empresa.agregarRepresentante("Yerutï¿½ Pandora", "80030313013");
+				empresa.agregarRepresentante("Zacarias Neptuno", "91040414014");
+				empresa.agregarRepresentante("Ulpiano Cerezo", "85050515015");
 		
 	}
 

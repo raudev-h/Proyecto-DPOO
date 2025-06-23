@@ -49,14 +49,35 @@ public abstract class Cliente {
     	if(nombre == null || nombre.trim().isEmpty()){
             throw new NombreInvalidoException("El nombre no puede estar vacÃ­o");
         }
-        else if(!(nombre.trim().matches(("[a-zA-ZáéíóúÁÉÍÓÚñÑ]+( [a-zA-ZáéíóúÁÉÍÓÚñÑ]+)*")))){
+        else if(!(nombre.trim().matches(("[a-zA-Zï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½]+( [a-zA-Zï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½]+)*")))){
             throw new NombreInvalidoException("El nombre solo puede contener letras");
         }
         else 
             this.nombre = nombre.trim();
     }
+    
+    //======================= Aniel  metodos estaticos para validar 
+    public static void validarNombre(String nombre) throws NombreInvalidoException {
+    
+    	if(nombre == null || nombre.trim().isEmpty()){
+            throw new NombreInvalidoException("El nombre no puede estar vacï¿½o");
+        }
+        else if(!(nombre.trim().matches(("[a-zA-Zï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½]+( [a-zA-Zï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½]+)*")))){
+            throw new NombreInvalidoException("El nombre solo puede contener letras");
+        }
 
-    // MÉTODOS
+    }
+    public static void validarDireccion(String direccion) throws UbicacionInvalidaException {
+        if(direccion == null || direccion.trim().isEmpty()){
+            throw new UbicacionInvalidaException("La direccion no puede estar vacï¿½a");
+         }
+
+     }
+    
+    
+    //========================
+
+    // Mï¿½TODOS
     // Agregar Servicio
     public void addServicio(Servicio s) {
         servicios.add(s);

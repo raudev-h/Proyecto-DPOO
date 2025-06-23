@@ -1,6 +1,7 @@
 package logica;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 
 
@@ -89,6 +90,53 @@ public class TelefonoMovil extends Telefono {
     public String toString() {
         return numero; 
     }
+<<<<<<< HEAD
+=======
+    
+   
+
+ 
+    public static void validarTelefonoMovil(String telefono) throws IllegalArgumentException {
+    	
+    	  String regex_movil = "^(\\+53)?[56]\\d{7}$";
+    	  String regex_espacios = ".*\\s+.*";
+    	
+        if (telefono == null || telefono.trim().isEmpty()) {
+            throw new IllegalArgumentException("El número de teléfono no puede estar vacío.");
+        }
+
+        // Verifica si contiene espacios (incluyendo intermedios)
+        if (Pattern.matches(regex_espacios, telefono)) {
+            throw new IllegalArgumentException("El número no puede contener espacios.");
+        }
+
+        // Verifica el formato general
+        if (!Pattern.matches(regex_movil, telefono)) {
+            throw new IllegalArgumentException(
+                "Número móvil inválido."
+            );
+        }
+    }
+    
+    public static void validarMonto(String montoStr) throws IllegalArgumentException {
+        if (montoStr == null || montoStr.trim().isEmpty()) {
+            throw new IllegalArgumentException("El monto no puede estar vacío.");
+        }
+
+        try {
+            double monto = Double.parseDouble(montoStr.replace(",", ".")); // Acepta tanto "." como "," como separador decimal
+            
+            if (monto < 0) {
+                throw new IllegalArgumentException("El monto no puede ser negativo.");
+            }
+            
+            
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("El monto debe ser un número válido ");
+        }
+        System.out.print(montoStr + ": Paso por todas las validaciones");
+    }
+>>>>>>> baaa6b4615031bb8237e81a53791d1cf621e45c1
 
     
 }
