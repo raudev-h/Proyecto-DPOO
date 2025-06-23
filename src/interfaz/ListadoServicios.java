@@ -277,6 +277,7 @@ public class ListadoServicios extends JDialog {
     private void crearServicio() {
         String tipoServicio = (String) cbTipoServicio.getSelectedItem();
         StringBuilder errores = new StringBuilder();
+        String numero2 = "";
         
         try {
             if (tipoServicio.equals("Teléfono Fijo")) {
@@ -316,10 +317,11 @@ public class ListadoServicios extends JDialog {
                 boolean movilValido = true;
             	
                 try{
-	                String numero2 = txtNumeroMovil.getText();
-	                TelefonoMovil.validarTelefonoMovil(numero2);
 	                
-	              //Comprobar repetidos
+                	numero2 = TelefonoMovil.validarTelefonoMovil(txtNumeroMovil.getText());
+                	System.out.println(numero2);
+	                
+	              //Comprobar repetidos en los telefonos Activos
 	                for(Servicio s: EmpresaTelecomunicaciones.getInstancia().getServicios()){
 	                	if(s instanceof TelefonoMovil){
 	                		if(((TelefonoMovil)s).getNumero().equals(numero2)){
@@ -329,7 +331,7 @@ public class ListadoServicios extends JDialog {
 	                		
 	                	}
 	                }
-	              //Comprobar repetidos
+	              //Comprobar repetidos en los telefonos Diponibles
 	                for(Servicio s: EmpresaTelecomunicaciones.getInstancia().getServiciosDisponibles()){
 	                	if(s instanceof TelefonoMovil){
 	                		if(((TelefonoMovil)s).getNumero().equals(numero2)){
@@ -358,7 +360,8 @@ public class ListadoServicios extends JDialog {
                 	lblMontoMovil.setForeground(Color.RED); 
                 }
                 if(movilValido){
-                	empresa.agregarTelefonoMovil(txtNumeroMovil.getText(), Double.parseDouble(txtMontoMovil.getText().replace(",", ".")));
+                     	
+                	empresa.agregarTelefonoMovil(numero2, Double.parseDouble(txtMontoMovil.getText().replace(",", ".")));
                 }
                 
             }
