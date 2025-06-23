@@ -26,6 +26,7 @@ public class ClientesMayorConsumoLlamadasLargaDistancia extends JDialog {
     }
 
     public ClientesMayorConsumoLlamadasLargaDistancia() {
+    	setModal(true);
         setBounds(100, 100, 1126, 662);
         setLocationRelativeTo(null);
         getContentPane().setLayout(null);

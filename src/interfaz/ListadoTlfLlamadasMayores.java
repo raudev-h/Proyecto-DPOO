@@ -33,6 +33,7 @@ public class ListadoTlfLlamadasMayores extends JDialog {
     }
 
     private ListadoTlfLlamadasMayores() {
+    	setModal(true);
         setBounds(100, 100, 1126, 700); 
         setLocationRelativeTo(null);
         getContentPane().setLayout(null);

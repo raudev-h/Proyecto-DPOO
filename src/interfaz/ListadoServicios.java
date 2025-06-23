@@ -4,7 +4,9 @@ import auxiliares.*;
 import logica.*;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
@@ -73,11 +75,19 @@ public class ListadoServicios extends JDialog {
 
         // Panel formulario
         panelFormulario = new JPanel();
-        panelFormulario.setBounds(973, 33, 300, 629);
+        panelFormulario.setBounds(973, 33, 370, 629);
         panelFormulario.setPreferredSize(new Dimension(300, getHeight()));
-        panelFormulario.setBorder(BorderFactory.createTitledBorder("Formulario"));
+        Border titledBorder = BorderFactory.createTitledBorder(
+        	    BorderFactory.createLineBorder(Color.BLACK),
+        	    "Formulario de Asignación",  
+        	    TitledBorder.LEFT,  
+        	    TitledBorder.TOP,
+        	    new Font("Serif", Font.BOLD, 21),
+        	    Color.black
+        	);
         panelFormulario.setLayout(new GridBagLayout());
         panelFormulario.setVisible(false);
+        panelFormulario.setBorder(titledBorder);
 
         // Botón Asignar Servicio
         JButton btnAsignarServicio = new JButton("Asignar Servicio");
@@ -91,7 +101,7 @@ public class ListadoServicios extends JDialog {
         btnAsignarServicio.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
            	
-                setSize(1315, 800);
+                setSize(1380, 800);
                 setLocationRelativeTo(null);
                 panelCreacion.setVisible(false);
                 mostrarFormulario();
@@ -634,12 +644,15 @@ public class ListadoServicios extends JDialog {
     }
 
     private void mostrarFormulario() {
-    	
-    	
-    	// Cerrar panel de creación si está abierto
+        // Cerrar panel de creación si está abierto
         if (panelCreacion.isVisible()) {
             cerrarPanelCreacion();
         }
+        
+        // Configurar fuente general para el formulario
+        final Font fontLabels = new Font("Serif", Font.PLAIN, 19);
+        Font fontTextFields = new Font("Serif", Font.PLAIN, 18);
+        
         // Implementación existente del formulario para asignar servicios
         panelFormulario.removeAll();
         panelFormulario.setLayout(new GridBagLayout());
@@ -653,9 +666,14 @@ public class ListadoServicios extends JDialog {
 
         // 1) Buscador de titular
         JLabel lblBuscar = new JLabel("Buscar Titular:");
+        lblBuscar.setFont(fontLabels);
+        
         final JTextField txtBuscar = new JTextField(15);
+        txtBuscar.setFont(fontTextFields);
+        
         final DefaultListModel<Cliente> modeloLista = new DefaultListModel<Cliente>();
         final JList<Cliente> listaClientes = new JList<Cliente>(modeloLista);
+        listaClientes.setFont(fontTextFields);
         listaClientes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         for (Cliente c : empresa.getClientes()) {
@@ -706,9 +724,16 @@ public class ListadoServicios extends JDialog {
 
         // Declarar los componentes que se usarán según la pestaña
         final JComboBox<String> comboFijos = new JComboBox<String>();
+        comboFijos.setFont(fontTextFields);
+        
         final JComboBox<TelefonoMovil> comboMoviles = new JComboBox<TelefonoMovil>();
+        comboMoviles.setFont(fontTextFields);
+        
         final JLabel lblMonto = new JLabel("Monto: -");
+        lblMonto.setFont(fontLabels);
+        
         final JTextField txtNick = new JTextField(15);
+        txtNick.setFont(fontTextFields);
 
         // Determinar qué pestaña está seleccionada
         final int pestañaSeleccionada = tabbedPane.getSelectedIndex();
@@ -716,6 +741,7 @@ public class ListadoServicios extends JDialog {
         // Campos específicos según la pestaña
         if (pestañaSeleccionada == 0) { // Teléfonos Fijos
             JLabel lblFijo = new JLabel("Seleccionar Teléfono Fijo:");
+            lblFijo.setFont(fontLabels);
             
             for (Servicio s : empresa.getServiciosDisponibles()) {
                 if (s instanceof TelefonoFijo) {
@@ -732,6 +758,7 @@ public class ListadoServicios extends JDialog {
         } 
         else if (pestañaSeleccionada == 1) { // Teléfonos Móviles
             JLabel lblMovil = new JLabel("Seleccionar Teléfono Móvil:");
+            lblMovil.setFont(fontLabels);
             
             for (Servicio s : empresa.getServiciosDisponibles()) {
                 if (s instanceof TelefonoMovil) {
@@ -766,6 +793,7 @@ public class ListadoServicios extends JDialog {
         }
         else if (pestañaSeleccionada == 2) { // Cuentas Nauta
             JLabel lblNick = new JLabel("Nick de la cuenta:");
+            lblNick.setFont(fontLabels);
             
             gbc.gridx = 0; gbc.gridy = row; panelFormulario.add(lblNick, gbc);
             row++;
@@ -775,14 +803,42 @@ public class ListadoServicios extends JDialog {
             gbc.gridwidth = 1;
         }
 
-        // Botones Guardar y Cancelar
+     // Botones Guardar y Cancelar
         JButton btnGuardar = new JButton("Guardar");
-        gbc.gridx = 0; gbc.gridy = row;
-        panelFormulario.add(btnGuardar, gbc);
-
         JButton btnCancelar = new JButton("Cancelar");
-        gbc.gridx = 1; gbc.gridy = row;
-        panelFormulario.add(btnCancelar, gbc);
+
+        // Configurar fuente y colores
+        Font fontButtons1 = new Font("Serif", Font.PLAIN, 20); 
+        btnGuardar.setFont(fontButtons1);
+        btnCancelar.setFont(fontButtons1);
+
+        btnGuardar.setForeground(Color.WHITE);
+        btnGuardar.setBackground(new Color(0, 0, 153));
+        btnCancelar.setForeground(new Color(0, 0, 153));
+        btnCancelar.setBackground(Color.WHITE);
+
+        // Establecer tamaño fijo más pequeño
+        Dimension buttonSize = new Dimension(110, 30);
+        btnGuardar.setPreferredSize(buttonSize);
+        btnGuardar.setMinimumSize(buttonSize);
+        btnGuardar.setMaximumSize(buttonSize);
+        btnCancelar.setPreferredSize(buttonSize);
+        btnCancelar.setMinimumSize(buttonSize);
+        btnCancelar.setMaximumSize(buttonSize);
+
+        // Crear un panel contenedor para los botones
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
+        buttonPanel.setOpaque(false);
+        buttonPanel.add(btnGuardar);
+        buttonPanel.add(btnCancelar);
+
+        // Configurar GridBagConstraints para el panel de botones
+        gbc.gridx = 0;
+        gbc.gridy = row;
+        gbc.gridwidth = 2;
+        gbc.fill = GridBagConstraints.CENTER;
+        gbc.anchor = GridBagConstraints.CENTER;
+        panelFormulario.add(buttonPanel, gbc);
 
         // BLOQUEAR TABLA Y PESTAÑAS
         tablaActual.setEnabled(false);
@@ -797,15 +853,13 @@ public class ListadoServicios extends JDialog {
                 Cliente titular = listaClientes.getSelectedValue();
                
                 if (titular == null) {
+                    UIManager.put("OptionPane.messageFont", fontLabels);
                     JOptionPane.showMessageDialog(ListadoServicios.this,
                         "Debe seleccionar un titular.",
                         "Error", JOptionPane.ERROR_MESSAGE);
                     return;
-                    
                 }
                 
-                
-
                 try {
                     if (pestañaSeleccionada == 0) { // Teléfono Fijo
                         if (comboFijos.getSelectedIndex() == -1) {
@@ -827,7 +881,6 @@ public class ListadoServicios extends JDialog {
                         empresa.crearCuentaNauta(titular, nick);
                     }
                     
-
                     cargarDatos();
                     panelFormulario.setVisible(false);
                     tablaActual.setEnabled(true);
@@ -835,9 +888,9 @@ public class ListadoServicios extends JDialog {
                     tabbedPane.setEnabled(true);
                     tabbedPane.setFocusable(true);
                     setSize(1015, 800);
-
                     
                 } catch (Exception ex) {
+                    UIManager.put("OptionPane.messageFont", fontLabels);
                     JOptionPane.showMessageDialog(ListadoServicios.this,
                         "Error al asignar servicio: " + ex.getMessage(),
                         "Error", JOptionPane.ERROR_MESSAGE);
@@ -855,8 +908,6 @@ public class ListadoServicios extends JDialog {
                 tabbedPane.setEnabled(true);
                 tabbedPane.setFocusable(true);
                 setSize(1015, 800);
-                
-
             }
         });
 
