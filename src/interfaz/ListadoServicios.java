@@ -595,13 +595,19 @@ public class ListadoServicios extends JDialog {
                 // 2. Si seleccionó un número diferente al actual
                 if (!nuevoNumero.equals(numeroAnterior)) {
                     // 3. Buscar el servicio disponible correspondiente al nuevo número
-                    TelefonoFijo nuevoFijo = null;
-                    for (Servicio s : empresa.getServiciosDisponibles()) {
-                        if (s instanceof TelefonoFijo && ((TelefonoFijo) s).getNumero().equals(nuevoNumero)) {
-                            nuevoFijo = (TelefonoFijo) s;
-                            break;
-                        }
-                    }
+                	TelefonoFijo nuevoFijo = null;
+                	boolean encontrado = false;
+
+                	for (int i = 0; i < empresa.getServiciosDisponibles().size() && !encontrado; i++) {
+                	    Servicio s = empresa.getServiciosDisponibles().get(i);
+                	    if (s instanceof TelefonoFijo) {
+                	        TelefonoFijo fijo = (TelefonoFijo) s;
+                	        if (fijo.getNumero().equals(nuevoNumero)) {
+                	            nuevoFijo = fijo;
+                	            encontrado = true; // MARCA COMO ENCONTRADO PARA CORTAR EL BUCLE
+                	        }
+                	    }
+                	}
                     
                     if (nuevoFijo != null) {
                         // 4. Realizar el cambio
@@ -701,6 +707,9 @@ public class ListadoServicios extends JDialog {
         boolean eliminado = false;
         
         if (servicio instanceof TelefonoFijo) {
+            // Primero marcamos el teléfono como disponible
+            empresa.agregarTelefonoFijo(((TelefonoFijo)servicio).getNumero());
+            // Luego lo eliminamos del cliente
             eliminado = empresa.eliminarTelefonoFIjo(((TelefonoFijo)servicio).getNumero());
         } else if (servicio instanceof TelefonoMovil) {
             eliminado = empresa.eliminarTelefonoMovil(((TelefonoMovil)servicio).getNumero());
@@ -896,7 +905,8 @@ public class ListadoServicios extends JDialog {
                         if (comboFijos.getSelectedIndex() == -1) {
                             throw new IllegalArgumentException("Debe seleccionar un teléfono fijo disponible");
                         }
-                        empresa.asignarTelefonoFijo(titular);
+                        String numeroFijo = (String) comboFijos.getSelectedItem();
+                        empresa.asignarTelefonoFijo(titular, numeroFijo);
                     } 
                     else if (pestañaSeleccionada == 1) { // Teléfono Móvil
                         if (comboMoviles.getSelectedIndex() == -1) {

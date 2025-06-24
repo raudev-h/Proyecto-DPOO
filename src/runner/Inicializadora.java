@@ -275,7 +275,7 @@ public class Inicializadora {
 		empresa.agregarTelefonoMovil("56789012", 330.00);
 		empresa.agregarTelefonoMovil("56431234", 335.75);
 		empresa.agregarTelefonoMovil("56783456", 340.25);
-		
+
 		empresa.agregarTelefonoMovil("51234567", 245.50);
 		empresa.agregarTelefonoMovil("58901234", 189.75);
 		empresa.agregarTelefonoMovil("54567890", 320.00);
@@ -292,43 +292,42 @@ public class Inicializadora {
 		empresa.agregarTelefonoMovil("56987652", 265.80);
 
 		// ==============================
-		// 3) ASIGNAR TELÉFONOS FIJOS A CLIENTES
+		// 3) ASIGNAR TELÉFONOS FIJOS A CLIENTES — usando número explícito
 		// ==============================
+
 		// Personas Naturales
-		empresa.asignarTelefonoFijo(pn1);
-		empresa.asignarTelefonoFijo(pn2);
-		empresa.asignarTelefonoFijo(pn3);
-		empresa.asignarTelefonoFijo(pn4);
-		empresa.asignarTelefonoFijo(pn5);
-		empresa.asignarTelefonoFijo(pn6);
-		empresa.asignarTelefonoFijo(pn7);
-		empresa.asignarTelefonoFijo(pn8);
-		empresa.asignarTelefonoFijo(pn9);
-	
+		empresa.asignarTelefonoFijo(pn1, "78781234");
+		empresa.asignarTelefonoFijo(pn2, "78451233");
+		empresa.asignarTelefonoFijo(pn3, "76378134");
+		empresa.asignarTelefonoFijo(pn4, "76410037");
+		empresa.asignarTelefonoFijo(pn5, "78123456");
+		empresa.asignarTelefonoFijo(pn6, "78234567");
+		empresa.asignarTelefonoFijo(pn7, "76413700");
+		empresa.asignarTelefonoFijo(pn8, "78567890");
+		empresa.asignarTelefonoFijo(pn9, "78889999");
 
 		// Personas Jurídicas
-		empresa.asignarTelefonoFijo(pj1);
-		empresa.asignarTelefonoFijo(pj2);
-		empresa.asignarTelefonoFijo(pj3);
-		empresa.asignarTelefonoFijo(pj4);
-		empresa.asignarTelefonoFijo(pj5);
-		empresa.asignarTelefonoFijo(pj6);
-		empresa.asignarTelefonoFijo(pj7);
-		empresa.asignarTelefonoFijo(pj8);
-		empresa.asignarTelefonoFijo(pj9);
-		empresa.asignarTelefonoFijo(pj10);
+		empresa.asignarTelefonoFijo(pj1, "45789012");
+		empresa.asignarTelefonoFijo(pj2, "78345678");
+		empresa.asignarTelefonoFijo(pj3, "45234567");
+		empresa.asignarTelefonoFijo(pj4, "78890012");
+		empresa.asignarTelefonoFijo(pj5, "45781234");
+		empresa.asignarTelefonoFijo(pj6, "78901234");
+		empresa.asignarTelefonoFijo(pj7, "45783456");
+		empresa.asignarTelefonoFijo(pj8, "78892345");
+		empresa.asignarTelefonoFijo(pj9, "45789999");
+		empresa.asignarTelefonoFijo(pj10, "78810023");
 
 		// Entidades No Estatales
-		empresa.asignarTelefonoFijo(ene1);
-		empresa.asignarTelefonoFijo(ene2);
-		empresa.asignarTelefonoFijo(ene3);
-		empresa.asignarTelefonoFijo(ene4);
-		empresa.asignarTelefonoFijo(ene5);
-		empresa.asignarTelefonoFijo(ene6);
-		empresa.asignarTelefonoFijo(ene7);
-		empresa.asignarTelefonoFijo(ene8);
-		empresa.asignarTelefonoFijo(ene9);
-		
+		empresa.asignarTelefonoFijo(ene1, "78832040");
+		empresa.asignarTelefonoFijo(ene2, "56341234");
+		empresa.asignarTelefonoFijo(ene3, "56234567");
+		empresa.asignarTelefonoFijo(ene4, "56123456");
+		empresa.asignarTelefonoFijo(ene5, "78817052");
+		empresa.asignarTelefonoFijo(ene6, "56239876");
+		empresa.asignarTelefonoFijo(ene7, "78654321");
+		empresa.asignarTelefonoFijo(ene8, "78765432");
+		empresa.asignarTelefonoFijo(ene9, "78876543");
 
 		// ==============================
 		// 4) ASIGNAR TELÉFONOS MÓVILES A CLIENTES
