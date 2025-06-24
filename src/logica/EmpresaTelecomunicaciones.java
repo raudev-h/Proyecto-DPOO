@@ -758,7 +758,6 @@ public class EmpresaTelecomunicaciones {
 						}
 					}
 					if(cantLlamadas >= 3)
-						System.out.println(titular.getNombre());
 						clientes.add(titular);
 				}
 			}

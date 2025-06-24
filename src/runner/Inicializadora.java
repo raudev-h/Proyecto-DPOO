@@ -496,17 +496,16 @@ public class Inicializadora {
 					);
 
 			// Asignar de forma rotativa y segura
-			telefonos[(i - 1) % telefonos.length].agregarLlamada(llamada);
-		}
-
-		// Print de verificación
-		for (int t = 0; t < telefonos.length; t++) {
-			System.out.println("Teléfono Fijo " + (t+1) + " (" + telefonos[t].getNumero() + ") tiene " + 
-					telefonos[t].getLlamadas().size() + " llamadas asignadas:");
-			for (Llamada llamada : telefonos[t].getLlamadas()) {
-				System.out.println("  - Destino: " + llamada.getNumeroDestino() + ", Duración: " + llamada.getDuracion());
-			}
+			TelefonoFijo telFijo = telefonos[(i - 1) % telefonos.length];
+			telFijo.agregarLlamadaLargaDistancia(
+					llamada.getDuracion(),
+					llamada.getNumeroDestino(),
+					llamada.getProvincia(),
+					llamada.getMunicipio(),
+					llamada.getTotalFacturar()
+					);
 		}
 	}
 }
+
 
