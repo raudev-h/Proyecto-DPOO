@@ -632,63 +632,91 @@ public class ListadoServicios extends JDialog {
         }
     }
     // EDITAR TELEFONO MOVIL
-    private void editarTelefonoMovil(TelefonoMovil telefono) {
-        JPanel panel = new JPanel(new GridLayout(2, 2, 10, 15));
-        panel.setPreferredSize(new Dimension(500, 150)); // Tamaño aumentado
-        
+    private void editarTelefonoMovil(final TelefonoMovil telefonoActual) {
+        // 1. Configurar panel del diálogo
+        JPanel panel = new JPanel(new BorderLayout(10, 10));
         final JComboBox<TelefonoMovil> comboMoviles = new JComboBox<TelefonoMovil>();
         comboMoviles.setFont(new Font("Serif", Font.PLAIN, 16));
-        
-        final JLabel lblMonto = new JLabel("Monto: $" + telefono.getMontoApagar());
-        lblMonto.setFont(new Font("Serif", Font.BOLD, 16));
-        
-        // Llenar combo con móviles disponibles + el actual
+
+        // 2. Llenar combo con móviles disponibles (excepto el actual)
         for (Servicio s : empresa.getServiciosDisponibles()) {
             if (s instanceof TelefonoMovil) {
                 comboMoviles.addItem((TelefonoMovil) s);
             }
         }
-        comboMoviles.addItem(telefono); // Añadir el actual
-        comboMoviles.setSelectedItem(telefono);
-        
+
+        // 3. Insertar el actual como primera opción
+        comboMoviles.insertItemAt(telefonoActual, 0);
+        comboMoviles.setSelectedItem(telefonoActual);
+
+        // 4. Panel de detalles
+        JPanel panelDetalles = new JPanel(new GridLayout(2, 1, 5, 5));
+        final JLabel lblNumero = new JLabel("Número: " + telefonoActual.getNumero());
+        final JLabel lblMonto = new JLabel("Monto: $" + telefonoActual.getMontoApagar());
+
+        panelDetalles.add(lblNumero);
+        panelDetalles.add(lblMonto);
+
+        // 5. Listener para actualizar info
         comboMoviles.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 TelefonoMovil seleccionado = (TelefonoMovil) comboMoviles.getSelectedItem();
+                lblNumero.setText("Número: " + seleccionado.getNumero());
                 lblMonto.setText("Monto: $" + seleccionado.getMontoApagar());
             }
         });
-        
-        panel.add(new JLabel("Nuevo número:", JLabel.RIGHT));
-        panel.add(comboMoviles);
-        panel.add(new JLabel("Monto actual:", JLabel.RIGHT));
-        panel.add(lblMonto);
-        
+
+        panel.add(new JLabel("Seleccione un teléfono móvil:"), BorderLayout.NORTH);
+        panel.add(comboMoviles, BorderLayout.CENTER);
+        panel.add(panelDetalles, BorderLayout.SOUTH);
+
+        // 6. Mostrar diálogo
         int result = JOptionPane.showConfirmDialog(
-            this, 
-            panel, 
-            "Editar Teléfono Móvil", 
+            this,
+            panel,
+            "Editar Teléfono Móvil",
             JOptionPane.OK_CANCEL_OPTION,
-            JOptionPane.PLAIN_MESSAGE,
-            new ImageIcon());
-        
+            JOptionPane.PLAIN_MESSAGE);
+
         if (result == JOptionPane.OK_OPTION) {
-            TelefonoMovil nuevoMovil = (TelefonoMovil) comboMoviles.getSelectedItem();
-            if (nuevoMovil != null && !nuevoMovil.getNumero().equals(telefono.getNumero())) {
-                // Guardar el móvil anterior como disponible
-                TelefonoMovil viejo = new TelefonoMovil(telefono.getNumero(), telefono.getMontoApagar());
-                empresa.agregarTelefonoMovil(viejo.getNumero(), viejo.getMontoApagar());
+            TelefonoMovil seleccionado = (TelefonoMovil) comboMoviles.getSelectedItem();
+
+            if (seleccionado != telefonoActual) {
+                Cliente titular = telefonoActual.getTitular();
+
+                // === PASO CLAVE ===
+                // 1) Quitar el móvil actual de TODAS las listas
+                titular.getServicios().remove(telefonoActual);
+                empresa.getServicios().remove(telefonoActual);
                 
-                // Asignar el nuevo
-                telefono.setNumero(nuevoMovil.getNumero());
-                telefono.setMontoApagar(nuevoMovil.getMontoApagar());
-                empresa.eliminarTelefonoMovil(nuevoMovil.getNumero()); // Quitar de disponibles
-                
+                // 2) Agregarlo a disponibles
+                empresa.getServiciosDisponibles().add(telefonoActual);
+
+                // 3) Quitar el nuevo de disponibles
+                empresa.getServiciosDisponibles().remove(seleccionado);
+
+                // 4) Vincular nuevo móvil
+                seleccionado.setTitular(titular);
+               
+                empresa.getServicios().add(seleccionado);
+
+                // 5) Actualizar
                 cargarDatos();
-                JOptionPane.showMessageDialog(this, "Cambio realizado con éxito");
+
+                JOptionPane.showMessageDialog(this,
+                    "Teléfono móvil cambiado correctamente.\nNuevo número: " + seleccionado.getNumero(),
+                    "Éxito",
+                    JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this,
+                    "No se realizaron cambios.",
+                    "Información",
+                    JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }
+
 
     private void editarCuentaNauta(CuentaNauta cuenta) {
         // Implementación para editar cuenta nauta
