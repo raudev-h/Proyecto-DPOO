@@ -43,7 +43,7 @@ public class Ayuda extends JDialog {
 		panel.setLayout(null);
 		
 		JOptionPane.showMessageDialog(null,
-			    "MotoApp\nVersión: 1.0\nDesarrollado por: TuNombre\nJunio 2025",
+			    "MotoApp\nVersion: 1.0\nDesarrollado por: TuNombre\nJunio 2025",
 			    "Acerca de",
 			    JOptionPane.INFORMATION_MESSAGE);
 	}
