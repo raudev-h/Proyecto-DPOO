@@ -1,12 +1,17 @@
 package interfaz;
 
 import auxiliares.RepresentanteTableModel;
+import logica.Cliente;
 import logica.EmpresaTelecomunicaciones;
+import logica.PersonaNatural;
 import logica.Representante;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.table.JTableHeader;
+
+import excepciones.CarnetIdentidadInvalidoException;
+import excepciones.NombreInvalidoException;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -19,6 +24,21 @@ public class ListadoRepresentante extends JDialog {
     private JTable table;
     private RepresentanteTableModel tableModel;
     private static ListadoRepresentante instance;
+    
+    // Campos para edición/creación
+    private JPanel panelEdicion;
+    private JTextField txtNombre;
+    private JTextField txtNumId;
+    private JButton btnAceptar;
+    private JButton btnCancelar;
+    private JLabel lblNombre;
+    private JLabel lblNumId;
+    private JLabel lblTituloEdicion;
+    private boolean modoEdicion;
+    private Representante representanteSeleccionado;
+    private String numIdRepresentanteSeleccionado;
+    
+
 
     public static void main(String[] args) {
         try {
@@ -31,18 +51,19 @@ public class ListadoRepresentante extends JDialog {
     }
 
     private ListadoRepresentante() {
-        setBounds(100, 100, 1126, 662);
+    	setModal(true);
+        setBounds(100, 100, 1087, 790);
         setLocationRelativeTo(null);
         getContentPane().setLayout(null);
         
         JPanel panel = new JPanel();
-        panel.setBounds(15, 16, 1074, 496);
+        panel.setBounds(15, 16, 1035, 702);
         getContentPane().add(panel);
         panel.setLayout(null);
         
         JScrollPane scrollPane = new JScrollPane();
+        scrollPane.setBounds(15, 55, 1005, 631);
         scrollPane.setViewportBorder(new LineBorder(new Color(0, 0, 0)));
-        scrollPane.setBounds(15, 36, 1044, 452);
         panel.add(scrollPane);
         
         // Inicializa el modelo y la tabla
@@ -63,48 +84,355 @@ public class ListadoRepresentante extends JDialog {
         
         // Título
         JLabel lblListadoDeRepresentante = new JLabel("Listado de Representantes");
-        lblListadoDeRepresentante.setFont(new Font("Serif", Font.BOLD, 21));
         lblListadoDeRepresentante.setBounds(15, 0, 250, 20);
+        lblListadoDeRepresentante.setFont(new Font("Serif", Font.BOLD, 21));
         panel.add(lblListadoDeRepresentante);
         
-        // Botón Cargar Datos (mismo estilo)
-        JButton btnCargar = new JButton("Cargar Datos");
-        btnCargar.setForeground(Color.WHITE);
-        btnCargar.setBackground(new Color(0, 0, 153));
-        btnCargar.setFont(new Font("Serif", Font.BOLD, 21));
-        btnCargar.setBounds(434, 528, 189, 29);
-        getContentPane().add(btnCargar);
-        
-        
-        
-        btnCargar.addActionListener(new ActionListener() {
+        JButton btnCrearRepresentante = new JButton("Crear Representante");
+        btnCrearRepresentante.setFont(new Font("Serif", Font.PLAIN, 20));
+        btnCrearRepresentante.setBackground(new Color(255, 255, 255));
+        btnCrearRepresentante.setForeground(new Color(0, 0, 153));
+        btnCrearRepresentante.setBounds(799, 16, 203, 30);
+        btnCrearRepresentante.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                cargarDatos();
+                abrirPanelCreacion();
             }
         });
+        panel.add(btnCrearRepresentante);
         
         configurarMenuContextual();
+        cargarDatos();
+        initPanelEdicion();
+    }
+
+    
+     //Inicializa el panel de edición/creación con los componentes necesarios
+     
+    private void initPanelEdicion() {
+        panelEdicion = new JPanel();
+        panelEdicion.setBorder(new LineBorder(new Color(0, 0, 0)));
+        panelEdicion.setBounds(1074, 55, 350, 650);
+        panelEdicion.setVisible(false);
+        panelEdicion.setLayout(null);
+        getContentPane().add(panelEdicion);
+        
+        lblTituloEdicion = new JLabel("Creación de Representante");
+        lblTituloEdicion.setFont(new Font("Serif", Font.BOLD, 21));
+        lblTituloEdicion.setBounds(32, 12, 280, 28);
+        panelEdicion.add(lblTituloEdicion);
+        
+        // Campo nombre
+        lblNombre = new JLabel("Nombre Completo");
+        lblNombre.setFont(new Font("Serif", Font.PLAIN, 19));
+        lblNombre.setBounds(35, 50, 280, 20);
+        panelEdicion.add(lblNombre);
+        
+        txtNombre = new JTextField();
+        txtNombre.setBounds(35, 80, 280, 26);
+        panelEdicion.add(txtNombre);
+        txtNombre.setColumns(10);
+        
+        // Campo número de identidad
+        lblNumId = new JLabel("Número de Identidad");
+        lblNumId.setFont(new Font("Serif", Font.PLAIN, 19));
+        lblNumId.setBounds(35, 120, 280, 20);
+        panelEdicion.add(lblNumId);
+        
+        txtNumId = new JTextField();
+        txtNumId.setBounds(35, 150, 280, 26);
+        panelEdicion.add(txtNumId);
+        txtNumId.setColumns(10);
+        
+        // Botón Aceptar
+        btnAceptar = new JButton("Aceptar");
+        btnAceptar.setForeground(new Color(255, 255, 255));
+        btnAceptar.setBackground(new Color(0, 0, 153));
+        btnAceptar.setFont(new Font("Serif", Font.PLAIN, 19));
+        btnAceptar.setBounds(35, 580, 120, 30);
+        btnAceptar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (modoEdicion) {
+                    actualizarRepresentante();
+                } else {
+                    crearRepresentante();
+                }
+            }
+        });
+        panelEdicion.add(btnAceptar);
+        
+        // Botón Cancelar
+        btnCancelar = new JButton("Cancelar");
+        btnCancelar.setBackground(new Color(255, 255, 255));
+        btnCancelar.setForeground(new Color(0, 0, 153));
+        btnCancelar.setFont(new Font("Serif", Font.PLAIN, 19));
+        btnCancelar.setBounds(195, 580, 120, 30);
+        btnCancelar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                cerrarPanelEdicion();
+            }
+        });
+        panelEdicion.add(btnCancelar);
+    }
+
+    
+     //Abre el panel de creación de representante
+     
+    private void abrirPanelCreacion() {
+        modoEdicion = false;
+        resetearCampos();
+        lblTituloEdicion.setText("Creación de Representante");
+        panelEdicion.setVisible(true);
+        setSize(1478, 790);
+    }
+
+    
+     //Abre el panel de edición con los datos del representante seleccionado
+     
+    private void abrirPanelEdicion(Representante representante) {
+        modoEdicion = true;
+        representanteSeleccionado = representante;
+        lblTituloEdicion.setText("Edición de Representante");
+        
+        // Llenar campos con datos del representante
+        txtNombre.setText(representante.getNombreCompleto());
+        txtNumId.setText(representante.getNumId());
+        
+        panelEdicion.setVisible(true);
+        setSize(1478, 790);
+    }
+
+    
+     // CREAR REPRESENTANTE
+     
+    private void crearRepresentante() {
+        String nombre = "";
+        String numId = "";
+        StringBuilder errores =  new StringBuilder();
+        
+        try {
+        	try{
+        		Cliente.validarNombre(txtNombre.getText());
+        		nombre = txtNombre.getText();
+        		lblNombre.setForeground(Color.black);
+        		
+        	}catch(Exception e){
+        		errores.append("- ").append(e.getMessage()).append("\n");
+	    	    lblNombre.setForeground(Color.RED); 
+      		
+        	}
+        	try{
+        		PersonaNatural.validarNumId(txtNumId.getText());
+        		numId = txtNumId.getText();
+        		//Comprobar que no este repetido
+        		for(Representante r: EmpresaTelecomunicaciones.getInstancia().getRepresentantes()){
+        			if(r.getNumId().equals(numId)){
+        				throw new IllegalArgumentException("Ya existe una representante con este número de identidad");
+        			}
+        		}
+        		        		
+        		numId = txtNumId.getText();
+        		lblNumId.setForeground(Color.black);
+        		
+        	}catch(Exception e){
+        		errores.append("- ").append(e.getMessage()).append("\n");
+        		lblNumId.setForeground(Color.RED); 
+        	}
+        	
+        	if(errores.length() > 0){
+
+                UIManager.put("OptionPane.messageFont", new Font("Serif", Font.PLAIN, 18));
+                UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.PLAIN, 16));
+        		JOptionPane.showMessageDialog(
+	    			    null, 
+	    			    "ERRORES EN LOS DATOS:\n" + 
+	    			    "----------------------------\n" + 
+	    			    errores.toString() + 
+	    			    "\n----------------------------\n" + 
+	    			    "Por favor, corrija los campos resaltados en rojo.", 
+	    			    "Error ", 
+	    			    JOptionPane.ERROR_MESSAGE
+	    			);	    	
+        		
+        	}else{
+        		EmpresaTelecomunicaciones.getInstancia().agregarRepresentante(nombre, numId);
+                cargarDatos();
+                cerrarPanelEdicion();
+             // Mostrar mensaje de éxito
+                UIManager.put("OptionPane.messageFont", new Font("Serif", Font.PLAIN, 18));
+                UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.PLAIN, 16));
+                JOptionPane.showMessageDialog(this, "Representante creado exitosamente", 
+                    "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        		
+        		
+        	}
+           
+        } catch (Exception e) {
+            manejarError(e, "Error al crear representante: " + e.getMessage());
+        }
+    }
+
+    
+     //EDITAR REPRESENTANTE
+     
+    private void actualizarRepresentante() {
+    	
+    	if (representanteSeleccionado == null) {
+            manejarError(new Exception("No se ha seleccionado ningún representante"), "Error al actualizar");
+            return;
+        }
+       
+  
+    	StringBuilder errores = new StringBuilder();
+
+        // Resetear colores de validación
+        lblNombre.setForeground(Color.BLACK);
+        lblNumId.setForeground(Color.BLACK);
+        
+        try {
+            // Validar nombre
+            try {
+
+                Representante.validarNombre(txtNombre.getText());
+                lblNombre.setForeground(Color.BLACK);
+            } catch (NombreInvalidoException e) {
+                errores.append("- ").append(e.getMessage()).append("\n");
+                lblNombre.setForeground(Color.RED);
+            }
+            
+            // Validar número de identidad
+            
+            try {
+
+                Representante.validarNumId(txtNumId.getText());
+                
+                // Validar duplicados (excepto el actual)
+                for (Representante r : EmpresaTelecomunicaciones.getInstancia().getRepresentantes()) {
+                    if (r != representanteSeleccionado && r.getNumId().equals(txtNumId.getText())) {
+
+                        throw new CarnetIdentidadInvalidoException("Ya existe un representante con este número de identidad");
+                    }
+                }
+                
+                lblNumId.setForeground(Color.BLACK);
+            } catch (CarnetIdentidadInvalidoException e) {
+                errores.append("- ").append(e.getMessage()).append("\n");
+                lblNumId.setForeground(Color.RED);
+            }
+
+            // Mostrar errores si hay alguno
+            if (errores.length() > 0) {
+                UIManager.put("OptionPane.messageFont", new Font("Serif", Font.PLAIN, 18));
+                UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.PLAIN, 16));
+                JOptionPane.showMessageDialog(
+                    null, 
+                    "ERRORES EN LOS DATOS:\n" + 
+                    "----------------------------\n" + 
+                    errores.toString() + 
+                    "\n----------------------------\n" + 
+                    "Por favor, corrija los campos resaltados en rojo.", 
+                    "Error", 
+                    JOptionPane.ERROR_MESSAGE
+                );
+            } else {
+
+                // Actualizar datos del representante (usando los métodos con validación)
+            	try{
+	                representanteSeleccionado.setNombreCompleto(txtNombre.getText());
+	                representanteSeleccionado.setNumId(txtNumId.getText());
+            	}catch(Exception e){
+            		 manejarError(e, "Error al actualizar representante, revise los datos " );
+            	}
+                
+                cargarDatos();
+                cerrarPanelEdicion();
+                
+                // Mostrar mensaje de éxito
+                UIManager.put("OptionPane.messageFont", new Font("Serif", Font.PLAIN, 18));
+                UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.PLAIN, 16));
+                JOptionPane.showMessageDialog(
+                    this, 
+                    "Representante actualizado correctamente", 
+                    "Éxito", 
+                    JOptionPane.INFORMATION_MESSAGE
+                );
+            }
+        } catch (Exception e) {
+            manejarError(e, "Error al actualizar representante: " + e.getMessage());
+        }
+    }
+
+    
+    // Cierra el panel de edición/creación y restaura el tamaño original
+     
+    private void cerrarPanelEdicion() {
+        panelEdicion.setVisible(false);
+        setSize(1087, 790);
+        resetearCampos();
+        representanteSeleccionado = null;
+    }
+
+    
+     // Resetea los campos del formulario
+     
+    private void resetearCampos() {
+        txtNombre.setText("");
+        txtNumId.setText("");
+        lblNombre.setForeground(Color.BLACK);
+        lblNumId.setForeground(Color.BLACK);
+    }
+
+
+     //Maneja los errores mostrando un mensaje al usuario
+    private void manejarError(Exception e, String mensaje) {
+        UIManager.put("OptionPane.messageFont", new Font("Serif", Font.PLAIN, 18));
+        UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.PLAIN, 16));
+        JOptionPane.showMessageDialog(this, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
     private void cargarDatos() {
         ArrayList<Representante> representantes = EmpresaTelecomunicaciones.getInstancia().getRepresentantes();
         if(representantes == null) {
-            representantes = new ArrayList<>(); // Lista vacía si es nulo
+            representantes = new ArrayList<Representante>(); // Lista vacía si es nulo
         }
         tableModel.cargarDatos(representantes);
     }
 
+    
+     // Configura el menú contextual para la tabla
+    
     private void configurarMenuContextual() {
         final JPopupMenu popupMenu = new JPopupMenu();
         
         JMenuItem menuEditar = new JMenuItem("Editar");
-        JMenuItem menuReasignar = new JMenuItem("Reasignar Cliente");
         JMenuItem menuEliminar = new JMenuItem("Eliminar");
         
         // Personalización de los menús
         menuEditar.setFont(new Font("Serif", Font.PLAIN, 20));
-        menuReasignar.setFont(new Font("Serif", Font.PLAIN, 20));
         menuEliminar.setFont(new Font("Serif", Font.PLAIN, 20));
+        
+        // Acción para editar representante
+        menuEditar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                int selectedRow = table.getSelectedRow();
+                
+                if (selectedRow >= 0) {
+                    String idRepresentante = (String) tableModel.getValueAt(selectedRow, 1);
+
+                    Representante rep = EmpresaTelecomunicaciones.getInstancia().buscarRepresentante(idRepresentante);
+
+                    
+                    if (rep != null) {
+                        abrirPanelEdicion(rep);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(
+                        null, 
+                        "Por favor seleccione un representante para editar", 
+                        "Advertencia", 
+                        JOptionPane.WARNING_MESSAGE);
+                }
+            }
+        });
         
         // Acción para eliminar representante
         menuEliminar.addActionListener(new ActionListener() {
@@ -116,6 +444,8 @@ public class ListadoRepresentante extends JDialog {
                     UIManager.put("OptionPane.messageFont", new Font("Serif", Font.BOLD, 20));
                     UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.BOLD, 18));
                     
+                    String idRepresentante = (String) tableModel.getValueAt(selectedRow, 1);
+                    
                     int confirm = JOptionPane.showConfirmDialog(null,
                         "¿Está seguro que desea eliminar este representante?", 
                         "Confirmar eliminación",
@@ -123,8 +453,6 @@ public class ListadoRepresentante extends JDialog {
                         JOptionPane.WARNING_MESSAGE);
                     
                     if (confirm == JOptionPane.YES_OPTION) {
-                        String idRepresentante = (String) tableModel.getValueAt(selectedRow, 1);
-                        System.out.println(idRepresentante);
                         boolean eliminado = EmpresaTelecomunicaciones.getInstancia().eliminarRepresentante(idRepresentante);
                         
                         if (eliminado) {
@@ -153,7 +481,6 @@ public class ListadoRepresentante extends JDialog {
         });
         
         popupMenu.add(menuEditar);
-        popupMenu.add(menuReasignar);
         popupMenu.add(menuEliminar);
         
         table.addMouseListener(new MouseAdapter() {
@@ -186,22 +513,7 @@ public class ListadoRepresentante extends JDialog {
             instance.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
             instance.setVisible(true);
         } else {
-            if (!instance.isVisible()) {
-                instance.setVisible(true);
-            } else {
-                // Configurar estilo del mensaje
-                UIManager.put("OptionPane.messageFont", new Font("Serif", Font.BOLD, 20));
-                UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.BOLD, 18));
-                UIManager.put("OptionPane.background", new Color(240, 240, 240));
-                UIManager.put("Panel.background", new Color(240, 240, 240));
-                UIManager.put("OptionPane.title", new Font("Serif", Font.PLAIN, 20));
-                
-                JOptionPane.showMessageDialog(null, 
-                    "La ventana del listado de representantes ya se encuentra abierta",
-                    null,
-                    JOptionPane.INFORMATION_MESSAGE);
-                instance.toFront();
-            }
+            instance.toFront(); // Solo lleva la ventana al frente si ya existe
         }
     }
 
@@ -212,9 +524,6 @@ public class ListadoRepresentante extends JDialog {
     }
     
     public static Representante getRepresentanteSeleccionado(){
-    	
-    	return EmpresaTelecomunicaciones.getInstancia().getRepresentantes().get(0);
+        return EmpresaTelecomunicaciones.getInstancia().getRepresentantes().get(0);
     }
-    
-    
 }

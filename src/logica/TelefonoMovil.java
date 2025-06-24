@@ -92,11 +92,10 @@ public class TelefonoMovil extends Telefono {
     }
 
  
-    public static void validarTelefonoMovil(String telefono) throws IllegalArgumentException {
-    	
-    	  String regex_movil = "^(\\+53)?[56]\\d{7}$";
-    	  String regex_espacios = ".*\\s+.*";
-    	
+    public static String validarTelefonoMovil(String telefono) throws IllegalArgumentException {
+        String regex_movil = "^(\\+53)?[56]\\d{7}$";
+        String regex_espacios = ".*\\s+.*";
+        
         if (telefono == null || telefono.trim().isEmpty()) {
             throw new IllegalArgumentException("El número de teléfono no puede estar vacío.");
         }
@@ -108,10 +107,11 @@ public class TelefonoMovil extends Telefono {
 
         // Verifica el formato general
         if (!Pattern.matches(regex_movil, telefono)) {
-            throw new IllegalArgumentException(
-                "Número móvil inválido."
-            );
+            throw new IllegalArgumentException("Número móvil inválido.");
         }
+
+        // Eliminar el +53 si existe y devolver el número limpio
+        return telefono.replaceAll("^\\+53", "");
     }
     
     public static void validarMonto(String montoStr) throws IllegalArgumentException {

@@ -33,6 +33,7 @@ public class ListadoTlfLlamadasMayores extends JDialog {
     }
 
     private ListadoTlfLlamadasMayores() {
+    	setModal(true);
         setBounds(100, 100, 1126, 700); 
         setLocationRelativeTo(null);
         getContentPane().setLayout(null);
@@ -50,7 +51,7 @@ public class ListadoTlfLlamadasMayores extends JDialog {
         
         // Panel de controles
         JPanel panelControles = new JPanel();
-        panelControles.setBounds(10, 32, 1049, 100);
+        panelControles.setBounds(10, 32, 1049, 89);
         panelControles.setBorder(BorderFactory.createTitledBorder(
             BorderFactory.createLineBorder(Color.BLACK),
             "Seleccione el limite de minutos",

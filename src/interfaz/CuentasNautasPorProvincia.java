@@ -27,6 +27,7 @@ public class CuentasNautasPorProvincia extends JDialog {
     }
 
     public CuentasNautasPorProvincia() {
+    	setModal(true);
         setBounds(100, 100, 1126, 662);
         setLocationRelativeTo(null);
         getContentPane().setLayout(null);

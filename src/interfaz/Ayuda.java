@@ -29,6 +29,7 @@ public class Ayuda extends JDialog {
 	 * Create the dialog.
 	 */
 	public Ayuda() {
+		setModal(true);
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setLayout(new FlowLayout());

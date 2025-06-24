@@ -139,10 +139,14 @@ public class ListadoClientes extends JDialog {
         getContentPane().setLayout(null);
         setTitle("Listado de Clientes");
         setModal(true);
+        setResizable(false); // ← Esto evita que la ventana se pueda redimensionar
+
         
         initComponents();
         configurarMenuContextual();
+        
     }
+    
 
 
     // Método Singleton para obtener la instancia
@@ -157,6 +161,7 @@ public class ListadoClientes extends JDialog {
     // Método estático para abrir la ventana
 
     public static void abrirListadoClientes() {
+    	
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -231,7 +236,7 @@ public class ListadoClientes extends JDialog {
         btnCrearCliente = new JButton("Crear Cliente");
         btnCrearCliente.setForeground(new Color(0, 0, 153));
         btnCrearCliente.setBackground(Color.WHITE);
-        btnCrearCliente.setFont(new Font("Serif", Font.PLAIN, 18));
+        btnCrearCliente.setFont(new Font("Serif", Font.PLAIN, 20));
         btnCrearCliente.setBounds(850, 0, 180, 30);
         btnCrearCliente.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -642,7 +647,6 @@ public class ListadoClientes extends JDialog {
                 
                 
             
-            System.out.println("Hasta aqui todo bien");
             // CREAR PERSONA NATURAL
             if (tipoCliente.equals("Persona Natural")) {
                 
@@ -651,7 +655,6 @@ public class ListadoClientes extends JDialog {
                 	//Obtener nuevo cliente
                 	int longitudListado = EmpresaTelecomunicaciones.getInstancia().getClientes().size();
                 	nuevoCliente = EmpresaTelecomunicaciones.getInstancia().getClientes().get(longitudListado-1);
-    		    	System.out.println("Nombre: "+ nuevoCliente.getNombre()+ "  NumID:"+((PersonaNatural)nuevoCliente).getNumId());
 
                 }
                 
@@ -660,21 +663,15 @@ public class ListadoClientes extends JDialog {
             
             //CREAR UNA PERSONA JURIDICA
             else if (tipoCliente.equals("Persona Jurídica")) {
-            	System.out.println("Entra a persona Juridica");
-            	System.out.println("Antes de crear al cliente :" + EmpresaTelecomunicaciones.getInstancia().getClientes().size());
             	creado = crearPersonaJuridica(servicioSeleccionado, representanteSeleccionado);
             	
                   if(creado){  
-                  	System.out.println("El cliente ha sido creado");
                   	
                 	//Obtener nuevo cliente
-                	System.out.println("Despues de crear al cliente :" + EmpresaTelecomunicaciones.getInstancia().getClientes().size());
 
                 	int longitudListado = EmpresaTelecomunicaciones.getInstancia().getClientes().size();
-                	System.out.println(longitudListado);
 
                   	nuevoCliente = EmpresaTelecomunicaciones.getInstancia().getClientes().get(longitudListado-1);
-      		    	System.out.println("Nombre: "+ nuevoCliente.getNombre()+ "  Organismo"+ ((PersonaJuridica)nuevoCliente).getOrganismo());
 
                 	  
                     // Asignación bidireccional del representante y cliente
@@ -1510,7 +1507,6 @@ public class ListadoClientes extends JDialog {
     	boolean creado = false;
     	
     	StringBuilder errores = new StringBuilder();
-    	System.out.println("Entra");
    	
     	//Atributos necesarios para crear a una Persona Natural
     	String nombre = null;
@@ -1561,7 +1557,6 @@ public class ListadoClientes extends JDialog {
 	    	    lblOrganismoCreate.setForeground(Color.black); 
 	    	   
 	    	} catch (Exception e) {
-	    		System.out.println("Campo:"+ txtOrganismoCreate.getText());
 
 	    	    errores.append("- ").append(e.getMessage()).append("\n");
 	    	    lblOrganismoCreate.setForeground(Color.red);
@@ -1577,7 +1572,6 @@ public class ListadoClientes extends JDialog {
 	    	
 	    	
 	    	//Mensaje de error de Validacion
-	    	System.out.println("Longitud de errores: " + errores.length());
 	    	if (errores.length() > 0) {
 	    		
 	    		JOptionPane.showMessageDialog(
@@ -1661,7 +1655,6 @@ public class ListadoClientes extends JDialog {
 	    	
 	    	
 	    	//Mensaje de error de Validacion
-	    	System.out.println("Longitud de errores: " + errores.length());
 	    	if (errores.length() > 0) {
 	    		
 	    		JOptionPane.showMessageDialog(
@@ -1710,6 +1703,8 @@ public class ListadoClientes extends JDialog {
         cbProvinciaCreate.setSelectedIndex(-1);
         cbMunicipioCreate.setSelectedIndex(-1);
     }
+    
+    
     
     
     

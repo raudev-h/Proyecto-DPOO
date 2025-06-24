@@ -24,6 +24,7 @@ public class ListadoClientesPremiumNauta extends JDialog {
     }
 
     private ListadoClientesPremiumNauta() {
+    	setModal(true);
         setBounds(100, 100, 1126, 662);
         setLocationRelativeTo(null);
         getContentPane().setLayout(null);
