@@ -205,16 +205,13 @@ public class Inicializadora {
 		// 1) CREAR TELÉFONOS FIJOS DISPONIBLES (sin titular)
 		// ==============================
 		empresa.agregarTelefonoFijo("78781234");
-		TelefonoFijo tf1 = empresa.getTelefonosFijos().get(0);
+		
 
 		empresa.agregarTelefonoFijo("78451233");
-		TelefonoFijo tf2 = empresa.getTelefonosFijos().get(1);
 
 		empresa.agregarTelefonoFijo("76378134");
-		TelefonoFijo tf3 = empresa.getTelefonosFijos().get(2);
 
 		empresa.agregarTelefonoFijo("76410037");
-		TelefonoFijo tf4 = empresa.getTelefonosFijos().get(3);
 
 		empresa.agregarTelefonoFijo("78123456");
 		empresa.agregarTelefonoFijo("78234567");
@@ -477,6 +474,11 @@ public class Inicializadora {
 		empresa.agregarRepresentante("Yerut Pandora", "80030313013");
 		empresa.agregarRepresentante("Zacarias Neptuno", "91040414014");
 		empresa.agregarRepresentante("Ulpiano Cerezo", "85050515015");
+
+		TelefonoFijo tf1 = empresa.getTelefonosFijos().get(0);
+		TelefonoFijo tf2 = empresa.getTelefonosFijos().get(1);
+		TelefonoFijo tf3 = empresa.getTelefonosFijos().get(2);
+		TelefonoFijo tf4 = empresa.getTelefonosFijos().get(3);
 
 		TelefonoFijo[] telefonos = {tf1, tf2, tf3, tf4};
 
