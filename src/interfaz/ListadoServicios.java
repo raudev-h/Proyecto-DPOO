@@ -1065,14 +1065,38 @@ public class ListadoServicios extends JDialog {
                         empresa.asignarTelefonoMovil(titular);
                         mensajeExito = "Teléfono móvil asignado correctamente a " + titular.getNombre();
                         
+                      //TODO
                     } else if (pestañaSeleccionada == 2) { // Cuenta Nauta
-                        String nick = txtNick.getText();
-                        if (nick.isEmpty()) {
-                            throw new IllegalArgumentException("Debe ingresar un nick para la cuenta");
+                        String nick = txtNick.getText().trim();
+                        
+                        try {
+                            // Validación básica del nick
+                            if (nick.isEmpty()) {
+                                throw new IllegalArgumentException("Debe ingresar un nick para la cuenta");
+                            }
+                            
+                            // Verificar nick repetido
+                            for (Servicio s : empresa.getServicios()) {
+                                if (s instanceof CuentaNauta) {
+                                    CuentaNauta cuentaExistente = (CuentaNauta) s;
+                                    if (cuentaExistente.getNick().equalsIgnoreCase(nick)) {
+                                        throw new IllegalArgumentException("El nick '" + nick + "' ya está en uso");
+                                    }
+                                }
+                            }
+                            
+                            // Usar el método de validación de la empresa que ya tiene las reglas implementadas
+                            empresa.crearCuentaNauta(titular, nick);
+                            
+                            mensajeExito = "Cuenta Nauta '" + nick + "' asignada correctamente a " + titular.getNombre();
+                            
+                        } catch (IllegalArgumentException ex) {
+                            throw ex; // Re-lanzamos la excepción para que la maneje el bloque principal
+                        } catch (Exception ex) {
+                            throw new IllegalArgumentException("Error al asignar cuenta Nauta: " + ex.getMessage());
                         }
-                        empresa.crearCuentaNauta(titular, nick);
-                        mensajeExito = "Cuenta Nauta creada y asignada correctamente a " + titular.getNombre();
                     }
+                 // TODO
 
                     cargarDatos();
                     panelFormulario.setVisible(false);
