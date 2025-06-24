@@ -12,7 +12,7 @@ public class EmpresaTelecomunicaciones {
 	private ArrayList<Servicio> servicios;
 	private ArrayList<Servicio> serviciosDisponibles;
 	private ArrayList<Representante> representantes;
-	
+
 
 	// Constructor
 	private EmpresaTelecomunicaciones() {
@@ -78,8 +78,8 @@ public class EmpresaTelecomunicaciones {
 				else if(s instanceof CuentaNauta){
 					servicios.remove(s);
 				}
-				
-	
+
+
 			}
 			clientes.remove(cliente);
 			eliminado = true;
@@ -139,12 +139,12 @@ public class EmpresaTelecomunicaciones {
 
 	// Servicios Disponibles
 	public ArrayList<Servicio> getServiciosDisponibles() {
-	    if (this.serviciosDisponibles == null) {
-	        this.serviciosDisponibles = new ArrayList<Servicio>();
-	    }
-	    return this.serviciosDisponibles;
+		if (this.serviciosDisponibles == null) {
+			this.serviciosDisponibles = new ArrayList<Servicio>();
+		}
+		return this.serviciosDisponibles;
 	}
-		
+
 	// METODOS
 
 
@@ -208,7 +208,7 @@ public class EmpresaTelecomunicaciones {
 					throw new DuplicadosException("Esa persona ya existe en nuestro sistema");
 			}
 		}
-			
+
 		Cliente c1 = new PersonaNatural(nombre, direccion, municipio, provincia,  numId);
 
 		clientes.add(c1);
@@ -223,10 +223,10 @@ public class EmpresaTelecomunicaciones {
 			if(c instanceof PersonaJuridica){
 				PersonaJuridica pj = (PersonaJuridica)c;
 				if(pj.getDireccion().equalsIgnoreCase(direccion))
-					throw new DuplicadosException("Esa persona jurï¿½dica ya existe en nuestro sistema");
+					throw new DuplicadosException("Esa persona jurídica ya existe en nuestro sistema");
 			}
 		}
-		
+
 		Cliente c1 = new PersonaJuridica(nombreEmpresaString, direccion, municipio, provincia, organismo,representante);
 
 		clientes.add(c1);
@@ -244,7 +244,7 @@ public class EmpresaTelecomunicaciones {
 			}
 		}
 		if(!tieneTelefono)
-			throw new IllegalArgumentException("Para contratar el nauta debe tener telï¿½fono fijo");	
+			throw new IllegalArgumentException("Para contratar el nauta debe tener teléfono fijo");	
 
 		if(titular instanceof PersonaJuridica)
 			throw new IllegalArgumentException("Este tipo de cliente no puede tener CuentaNauta");
@@ -271,70 +271,75 @@ public class EmpresaTelecomunicaciones {
 		}
 		return encontrado;
 	}
-	
+
 	// Eliminar Cuenta Nauta 
 	public boolean eliminarCuentaNauta(String nick) {
-	    boolean eliminado = false;
-	    CuentaNauta cuenta = null;
+		boolean eliminado = false;
+		CuentaNauta cuenta = null;
 
-	    // Buscar la cuenta a eliminar
-	    for(int i = 0; i < servicios.size() && !eliminado; i++) {
-	        if(servicios.get(i) instanceof CuentaNauta) {
-	            cuenta = (CuentaNauta)servicios.get(i);
-	            
-	            if(cuenta.getNick().equals(nick)) {
-	                // Eliminar de la lista principal de servicios
-	                servicios.remove(i);
-	                eliminado = true;
-	                
-	                // Eliminar del titular si existe
-	                if(cuenta.getTitular() != null) {
-	                    cuenta.getTitular().getServicios().remove(cuenta);
-	                    eliminarClienteServicio(cuenta.getTitular());
-	                }
-	            }
-	        }
-	    }
+		// Buscar la cuenta a eliminar
+		for(int i = 0; i < servicios.size() && !eliminado; i++) {
+			if(servicios.get(i) instanceof CuentaNauta) {
+				cuenta = (CuentaNauta)servicios.get(i);
 
-	    return eliminado;
+				if(cuenta.getNick().equals(nick)) {
+					// Eliminar de la lista principal de servicios
+					servicios.remove(i);
+					eliminado = true;
+
+					// Eliminar del titular si existe
+					if(cuenta.getTitular() != null) {
+						cuenta.getTitular().getServicios().remove(cuenta);
+						eliminarClienteServicio(cuenta.getTitular());
+					}
+				}
+			}
+		}
+
+		return eliminado;
 	}
 
 	// CRUD DE TELEFONO FIJO TODO
 	// Agregar Telefono Fijo
 	public void agregarTelefonoFijo(String numero) {
 
-		    Servicio s1 = new TelefonoFijo(numero);
-		    serviciosDisponibles.add(s1);
+		Servicio s1 = new TelefonoFijo(numero);
+		serviciosDisponibles.add(s1);
 	}
 
 	// Asignar un telefono Fijo ya existente
-	public void asignarTelefonoFijo(Cliente titular){
-		Servicio disponible = null;
+	public void asignarTelefonoFijo(Cliente titular, String numero) {
+		TelefonoFijo disponible = null;
 
-		for(int i = 0; i < serviciosDisponibles.size() && disponible == null; i++){
-			if(serviciosDisponibles.get(i) instanceof TelefonoFijo){
-				disponible = serviciosDisponibles.get(i);
+		for (int i = 0; i < serviciosDisponibles.size() && disponible == null; i++) {
+			Servicio s = serviciosDisponibles.get(i);
+			if (s instanceof TelefonoFijo) {
+				TelefonoFijo fijo = (TelefonoFijo) s;
+				if (fijo.getNumero().equals(numero)) {
+					disponible = fijo;
+				}
 			}
 		}
-		if(disponible == null)
-			throw new IllegalArgumentException("No hay telefono Fijo disponible");
-		
-		if(comprobarFijoPersonaNatural(titular))
-			throw new IllegalArgumentException("Persona Natural no puede tener mas de 1 telefono fijo");
+
+		if (disponible == null)
+			throw new IllegalArgumentException("No hay teléfono fijo disponible con el número especificado.");
+
+		if (comprobarFijoPersonaNatural(titular))
+			throw new IllegalArgumentException("Persona Natural no puede tener más de 1 teléfono fijo.");
 
 		disponible.setTitular(titular);
 		
 		servicios.add(disponible);
 		serviciosDisponibles.remove(disponible);
-
 	}
 
-	
+
+
 	// Comprobar si PERSONA NATURAL tiene mas de 1 telefono
 	public boolean comprobarFijoPersonaNatural(Cliente titular){
 
 		boolean encontrado = false;
-		
+
 		if(titular instanceof PersonaNatural){
 			PersonaNatural pn = (PersonaNatural) titular;
 
@@ -348,36 +353,81 @@ public class EmpresaTelecomunicaciones {
 	}
 
 	// Eliminar telefono fijo
-	public boolean eliminarTelefonoFIjo(String numero){
+	public boolean eliminarTelefonoFIjo(String numero) {
+		boolean eliminado = false;
+		TelefonoFijo fijoAEliminar = null;
+		int indice = -1;
 
-		boolean encontrado = false;
-		TelefonoFijo fijo = null;
+		// Buscar el teléfono fijo en servicios activos
+				for (int i = 0; i < servicios.size() && !eliminado; i++) {
+					if (servicios.get(i) instanceof TelefonoFijo) {
+						TelefonoFijo fijo = (TelefonoFijo) servicios.get(i);
+						if (fijo.getNumero().equals(numero)) {
+							fijoAEliminar = fijo;
+							indice = i;
+							eliminado = true;
+						}
+					}
+				}
 
-		for(int i = 0; i < servicios.size() && !encontrado; i++){
-			if(servicios.get(i) instanceof TelefonoFijo){
-				fijo = (TelefonoFijo)servicios.get(i);
+		if (fijoAEliminar != null) {
+			// Obtener el titular antes de modificar
+			Cliente titular = fijoAEliminar.getTitular();
 
-				if(fijo.getNumero().equals(numero))
-					encontrado = true;
+			// Eliminar de la lista principal
+			servicios.remove(fijoAEliminar);
 
+			//Eliminar el servicio del cliente
+			ArrayList<Servicio> serviciosCliente = new ArrayList<>(titular.getServicios());
+			for(Servicio c: serviciosCliente){
+				if(c instanceof TelefonoFijo){
+					if(((TelefonoFijo)c).getNumero().equals(fijoAEliminar.getNumero())){
+						titular.getServicios().remove(c);
+					}
+
+				}
 			}
+;
+			// Limpiar completamente el servicio
+
+			fijoAEliminar.setTitular(null);
+
+			// for de prueba
+			for(Servicio s : titular.getServicios()){
+				if(s instanceof TelefonoFijo){
+					System.out.println(((TelefonoFijo)s).getNumero().equals(fijoAEliminar.getNumero()));
+					System.out.println(((TelefonoFijo)s).getNumero());
+
+				}
+			}
+			// Verificar que no exista ya en disponibles
+			boolean existeEnDisponibles = false;
+			for (Servicio s : serviciosDisponibles) {
+				if (s instanceof TelefonoFijo && 
+						((TelefonoFijo)s).getNumero().equals(numero)) {
+					existeEnDisponibles = true;
+
+				}
+			}
+
+			// Agregar a disponibles solo si no existe
+			if (!existeEnDisponibles) {
+				serviciosDisponibles.add(fijoAEliminar);
+			}
+
+			// Verificar si hay que eliminar al cliente
+			eliminarClienteServicio(titular);
 		}
 
-		if(fijo != null && encontrado){
-			servicios.remove(fijo);
-			fijo.getTitular().getServicios().remove(fijo);
-			serviciosDisponibles.add(fijo);
-			eliminarClienteServicio(fijo.getTitular());
-		}
-		return encontrado;
+		return eliminado;
 	}
 
 	// CRUD DE TELEFONO MOVIL TODO
 	// Agregar Telefono Movil
 	public void agregarTelefonoMovil(String numero, double montoPagar) {
 
-			Servicio s1 = new TelefonoMovil(numero, montoPagar);
-			serviciosDisponibles.add(s1);
+		Servicio s1 = new TelefonoMovil(numero, montoPagar);
+		serviciosDisponibles.add(s1);
 	}
 
 
@@ -390,35 +440,35 @@ public class EmpresaTelecomunicaciones {
 				disponible = (TelefonoMovil) serviciosDisponibles.get(i);
 			}
 		}
-		
+
 		if (disponible == null) 
-			throw new IllegalArgumentException("No hay telï¿½fono mï¿½vil disponible");
+			throw new IllegalArgumentException("No hay teléfono móvil disponible");
 
 		if(comprobarMovil(titular))
-			throw new IllegalArgumentException("Persona Natural no puede tener mï¿½s de 2 Telï¿½fonos Mï¿½viles");
-		
+			throw new IllegalArgumentException("Persona Natural no puede tener más de 2 Teléfonos Móviles");
+
 		disponible.setTitular(titular);
-		
+
 		servicios.add(disponible);
 		serviciosDisponibles.remove(disponible);
 
 	}
-	
+
 	// Comprobar si PERSONA NATURAL tiene mas de 2 telefonos moviles
-		public boolean comprobarMovil(Cliente titular){
+	public boolean comprobarMovil(Cliente titular){
 
-			int cantidad = 0;
-			
-			if(titular instanceof PersonaNatural){
-				PersonaNatural pn = (PersonaNatural) titular;
-				 for (Servicio s : pn.getServicios()) {
-			            if (s instanceof TelefonoMovil)
-			                cantidad++;
-				}
+		int cantidad = 0;
+
+		if(titular instanceof PersonaNatural){
+			PersonaNatural pn = (PersonaNatural) titular;
+			for (Servicio s : pn.getServicios()) {
+				if (s instanceof TelefonoMovil)
+					cantidad++;
 			}
-
-			return cantidad >= 2;
 		}
+
+		return cantidad >= 2;
+	}
 
 	// Eliminar Telefono Movil
 	public boolean eliminarTelefonoMovil(String numero){
@@ -460,7 +510,7 @@ public class EmpresaTelecomunicaciones {
 
 		return telefonosFijos;
 	}
-	
+
 
 
 	//Obtener los Telefonos Moviles
@@ -781,25 +831,25 @@ public class EmpresaTelecomunicaciones {
 		}
 	}
 	//Buscar Telefono (movil o fijo) a partir de su numero de telefono
-    public Telefono buscarTelefono(String numero){
-    	
-    	Telefono tlf = null;
-    	if(serviciosDisponibles != null){
-    		
-    		for(int i=0;i<serviciosDisponibles.size();i++){
-    		
-    		    if(serviciosDisponibles.get(i) instanceof Telefono){
-		        	
+	public Telefono buscarTelefono(String numero){
+
+		Telefono tlf = null;
+		if(serviciosDisponibles != null){
+
+			for(int i=0;i<serviciosDisponibles.size();i++){
+
+				if(serviciosDisponibles.get(i) instanceof Telefono){
 
 
-    				if(((Telefono)serviciosDisponibles.get(i)).getNumero().equals(numero)){
 
-    					tlf = (Telefono)serviciosDisponibles.get(i);
-    				}
-    			}
-    		}
-    	}
+					if(((Telefono)serviciosDisponibles.get(i)).getNumero().equals(numero)){
+
+						tlf = (Telefono)serviciosDisponibles.get(i);
+					}
+				}
+			}
+		}
 		return tlf;
-    }
+	}
 }
 
