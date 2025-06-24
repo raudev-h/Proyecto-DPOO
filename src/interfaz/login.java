@@ -36,11 +36,14 @@ public class login extends JFrame {
     private int segundosRestantes;
 
 
-    public static void main(String[] args) {
-        login frame = new login();
-        frame.setVisible(true);
-    }
+  
 
+    private boolean autenticado = false;
+
+    public boolean isAutenticado() {
+        return autenticado;
+    }
+    
     public login() {
         configurarVentana();
         inicializarComponentes();
@@ -176,9 +179,8 @@ public class login extends JFrame {
     }
 
     private void iniciarSesion() {
+        autenticado = true;
         dispose();
-        Principal principal = new Principal();
-        principal.setVisible(true);
     }
 
     private void manejarIntentoFallido() {
