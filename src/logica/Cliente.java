@@ -24,7 +24,7 @@ public abstract class Cliente {
 
     public void setDireccion(String direccion) throws UbicacionInvalidaException {
         if(direccion == null || direccion.trim().isEmpty()){
-           throw new UbicacionInvalidaException("La direccion no puede estar vacÌa");
+           throw new UbicacionInvalidaException("La direccion no puede estar vac√≠a");
         }
         else 
             this.direccion = direccion.trim();
@@ -60,7 +60,7 @@ public abstract class Cliente {
     public static void validarNombre(String nombre) throws NombreInvalidoException {
     
     	if(nombre == null || nombre.trim().isEmpty()){
-            throw new NombreInvalidoException("El nombre no puede estar vacÔøΩo");
+            throw new NombreInvalidoException("El nombre no puede estar vacÌo");
         }
         else if(!(nombre.trim().matches(("[a-zA-Z·ÈÌÛ˙¡…Õ”⁄Ò—]+( [a-zA-Z·ÈÌÛ˙¡…Õ”⁄Ò—]+)*")))){
             throw new NombreInvalidoException("El nombre solo puede contener letras");
@@ -77,7 +77,7 @@ public abstract class Cliente {
     
     //========================
 
-    // MÔøΩTODOS
+    // M…TODOS
     // Agregar Servicio
     public void addServicio(Servicio s) {
         servicios.add(s);
@@ -103,7 +103,7 @@ public abstract class Cliente {
 		
 		String numeroTelefono = "No diponible";
 		
-				if(this.obtenerTelefonos().isEmpty()){
+				if(!this.obtenerTelefonos().isEmpty()){
 					
 					numeroTelefono = this.obtenerTelefonos().get(0).getNumero();													
 				}
