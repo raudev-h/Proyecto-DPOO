@@ -4,12 +4,18 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.Color;
+
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -32,35 +38,39 @@ public class Ayuda extends JDialog {
         setTitle("Ayuda del Sistema");
         setModal(true);
         setSize(800, 600); // Tamaño consistente
-        
+
         // Centrar la ventana
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation((screenSize.width - getWidth()) / 2, (screenSize.height - getHeight()) / 2);
-        
+
         getContentPane().setLayout(new BorderLayout());
-        
+
         // Panel de contenido mejorado
         contentPanel.setBorder(new EmptyBorder(15, 15, 15, 15));
         contentPanel.setLayout(new BorderLayout(0, 0));
-        
-        // Área de texto con información de ayuda
-        JTextArea txtAyuda = new JTextArea();
+
+        // === Usamos JTextPane para formateo de color ===
+        JTextPane txtAyuda = new JTextPane();
         txtAyuda.setEditable(false);
-        txtAyuda.setFont(new Font("Serif", Font.PLAIN, 20)); // Fuente Serif tamaño 18
-        txtAyuda.setLineWrap(true);
-        txtAyuda.setWrapStyleWord(true);
+        txtAyuda.setFont(new Font("Serif", Font.PLAIN, 20));
         txtAyuda.setText(obtenerTextoAyuda());
-        
+
+        // Aplicar color oscuro a los correos
+        aplicarEstiloCorreos(txtAyuda);
+
+        // Asegurarse de que empiece desde arriba
+        txtAyuda.setCaretPosition(0);
+
         JScrollPane scrollPane = new JScrollPane(txtAyuda);
         contentPanel.add(scrollPane, BorderLayout.CENTER);
         getContentPane().add(contentPanel, BorderLayout.CENTER);
-        
+
         // Panel de botones
         JPanel buttonPane = new JPanel();
         buttonPane.setBorder(new EmptyBorder(10, 10, 10, 10));
         getContentPane().add(buttonPane, BorderLayout.SOUTH);
         buttonPane.setLayout(new BorderLayout(0, 0));
-        
+
         JButton btnCerrar = new JButton("Cerrar");
         btnCerrar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -71,32 +81,58 @@ public class Ayuda extends JDialog {
         buttonPane.add(btnCerrar, BorderLayout.EAST);
         getRootPane().setDefaultButton(btnCerrar);
     }
-    
+
     private String obtenerTextoAyuda() {
         StringBuilder sb = new StringBuilder();
         sb.append("SISTEMA DE GESTIÓN DE TELECOMUNICACIONES\n\n");
         sb.append("Manual de Usuario\n");
         sb.append("----------------\n\n");
-        
+
         sb.append("1. Gestión de Clientes\n");
         sb.append("   - Agregar nuevos clientes (Personas Naturales, Jurídicas o Entidades No Estatales)\n");
         sb.append("   - Editar información de clientes existentes\n");
         sb.append("   - Asignar servicios a clientes\n\n");
-        
+
         sb.append("2. Gestión de Servicios\n");
         sb.append("   - Teléfonos Fijos: Asignar a clientes, editar números\n");
         sb.append("   - Teléfonos Móviles: Asignar con sus montos correspondientes\n");
         sb.append("   - Cuentas Nauta: Asignar con nick único (Personas Naturales solo 1 cuenta)\n\n");
-        
+
         sb.append("3. Gestión de Representantes\n");
         sb.append("   - Asignar representantes a Entidades No Estatales o Personas Jurídicas\n\n");
-        
-        sb.append("Para soporte técnico contacte a:\n\n"); // Doble salto de línea
+
+        sb.append("Para soporte técnico contacte a:\n\n");
         sb.append("raulalbertohechavarria@gmail.com\n");
-        sb.append("anielvarela64@gmail.com\n\n\n"); // Triple salto de línea para separación
-        
+        sb.append("anielvarela64@gmail.com\n\n\n");
+
         sb.append("Versión del Sistema: 1.0.0");
-        
+
         return sb.toString();
+    }
+
+    /**
+     * Resalta los correos en negro más oscuro usando StyledDocument
+     */
+    private void aplicarEstiloCorreos(JTextPane txtPane) {
+        StyledDocument doc = txtPane.getStyledDocument();
+        String texto = txtPane.getText();
+
+        // Atributo: color negro fuerte
+        SimpleAttributeSet attrs = new SimpleAttributeSet();
+        new Color(20, 20, 20);
+		StyleConstants.setForeground(attrs, Color.BLACK); // Negro oscuro
+
+        // Buscar y aplicar a cada correo
+        String[] correos = {
+            "raulalbertohechavarria@gmail.com",
+            "anielvarela64@gmail.com"
+        };
+
+        for (String correo : correos) {
+            int pos = texto.indexOf(correo);
+            if (pos >= 0) {
+                doc.setCharacterAttributes(pos, correo.length(), attrs, false);
+            }
+        }
     }
 }
