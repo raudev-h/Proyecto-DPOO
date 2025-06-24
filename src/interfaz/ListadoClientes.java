@@ -139,10 +139,14 @@ public class ListadoClientes extends JDialog {
         getContentPane().setLayout(null);
         setTitle("Listado de Clientes");
         setModal(true);
+        setResizable(false); // ← Esto evita que la ventana se pueda redimensionar
+
         
         initComponents();
         configurarMenuContextual();
+        
     }
+    
 
 
     // Método Singleton para obtener la instancia
@@ -157,6 +161,7 @@ public class ListadoClientes extends JDialog {
     // Método estático para abrir la ventana
 
     public static void abrirListadoClientes() {
+    	
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -1698,6 +1703,8 @@ public class ListadoClientes extends JDialog {
         cbProvinciaCreate.setSelectedIndex(-1);
         cbMunicipioCreate.setSelectedIndex(-1);
     }
+    
+    
     
     
     

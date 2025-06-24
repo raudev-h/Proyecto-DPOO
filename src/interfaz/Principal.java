@@ -186,6 +186,10 @@ public class Principal extends JFrame {
 		mntmClientesCon.setFont(new Font("Serif", Font.PLAIN, 21));
 		mnClientes_1.add(mntmClientesCon);
 		
+		JMenuItem mntmClientesCon_1 = new JMenuItem("3. Clientes con todos los servicios contratados");
+		mntmClientesCon_1.setFont(new Font("Serif", Font.PLAIN, 18));
+		mnClientes_1.add(mntmClientesCon_1);
+		
 		JMenu mnAyuda = new JMenu("Ayuda       ");
 		mnAyuda.setFont(new Font("Serif", Font.BOLD, 22));
 		menuBar.add(mnAyuda);
