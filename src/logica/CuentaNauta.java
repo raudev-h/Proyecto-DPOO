@@ -48,7 +48,7 @@ public class CuentaNauta extends Servicio{
         mesDatos.put(mesValido,m1);
     }
 
-    // MÃ©todo para obtener los datos de un mes especÃ­fico
+    // Método para obtener los datos de un mes específico
     public MesDatos obtenerDatosMes(String mes){
         return mesDatos.get(mes.toUpperCase()); // convertimos el mes que quieras buscar en mayusculas
     }

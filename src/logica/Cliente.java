@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import excepciones.*;
 
 public abstract class Cliente {
+
     // Atributos
     protected String nombre;
     protected String direccion;
@@ -24,7 +25,7 @@ public abstract class Cliente {
 
     public void setDireccion(String direccion) throws UbicacionInvalidaException {
         if(direccion == null || direccion.trim().isEmpty()){
-           throw new UbicacionInvalidaException("La direccion no puede estar vac√≠a");
+           throw new UbicacionInvalidaException("La direccion no puede estar vac√É¬≠a");
         }
         else 
             this.direccion = direccion.trim();
@@ -47,9 +48,9 @@ public abstract class Cliente {
     public void setNombre(String nombre) throws NombreInvalidoException {
     
     	if(nombre == null || nombre.trim().isEmpty()){
-            throw new NombreInvalidoException("El nombre no puede estar vac√≠o");
+            throw new NombreInvalidoException("El nombre no puede estar vac√É¬≠o");
         }
-        else if(!(nombre.trim().matches(("[a-zA-Z·ÈÌÛ˙¡…Õ”⁄Ò—]+( [a-zA-Z·ÈÌÛ˙¡…Õ”⁄Ò—]+)*")))){
+        else if(!(nombre.trim().matches(("[a-zA-Z√°√©√≠√≥√∫√Å√â√ç√ì√ö√±√ë]+( [a-zA-Z√°√©√≠√≥√∫√Å√â√ç√ì√ö√±√ë]+)*")))){
             throw new NombreInvalidoException("El nombre solo puede contener letras");
         }
         else 
@@ -60,16 +61,16 @@ public abstract class Cliente {
     public static void validarNombre(String nombre) throws NombreInvalidoException {
     
     	if(nombre == null || nombre.trim().isEmpty()){
-            throw new NombreInvalidoException("El nombre no puede estar vacÌo");
+            throw new NombreInvalidoException("El nombre no puede estar vac√≠o");
         }
-        else if(!(nombre.trim().matches(("[a-zA-Z·ÈÌÛ˙¡…Õ”⁄Ò—]+( [a-zA-Z·ÈÌÛ˙¡…Õ”⁄Ò—]+)*")))){
+        else if(!(nombre.trim().matches(("[a-zA-Z√°√©√≠√≥√∫√Å√â√ç√ì√ö√±√ë]+( [a-zA-Z√°√©√≠√≥√∫√Å√â√ç√ì√ö√±√ë]+)*")))){
             throw new NombreInvalidoException("El nombre solo puede contener letras");
         }
 
     }
     public static void validarDireccion(String direccion) throws UbicacionInvalidaException {
         if(direccion == null || direccion.trim().isEmpty()){
-            throw new UbicacionInvalidaException("La direccion no puede estar vacÌa");
+            throw new UbicacionInvalidaException("La direccion no puede estar vac√≠a");
          }
 
      }
@@ -77,7 +78,7 @@ public abstract class Cliente {
     
     //========================
 
-    // M…TODOS
+    // M√âTODOS
     // Agregar Servicio
     public void addServicio(Servicio s) {
         servicios.add(s);
@@ -98,10 +99,12 @@ public abstract class Cliente {
     	return telefonos;
     }
         
+
 	//Buscar el primer telefono (Devuelve el numero solamente, No disponible en caso de no tener)
 	public String buscarPrimerTelefono(){
-		
+
 		String numeroTelefono = "No diponible";
+
 		
 				if(!this.obtenerTelefonos().isEmpty()){
 					
@@ -109,44 +112,46 @@ public abstract class Cliente {
 				}
 		
 			
+
 		return numeroTelefono;
 	}
-	
+
 	//Buscar el total de meses que superaron los 1000 cup de todas sus Cuentas Nautas
 	public int cantMesesMasMilCuentasNautas(){
-		
+
 		int cantidad = 0;
-		
+
 		for(Servicio s: servicios ){
-			
+
 			if(s instanceof CuentaNauta){
-				
+
 				cantidad += ((CuentaNauta)s).cantMesesMasMilGasto();
 			}
-			
+
 		}
-		
+
 		return cantidad;
 	}
-	
-    // Obtener el monto de las llamadas de los clientes
-    public double getMontoLlamadasLargaDistancia() {
-        double monto = 0;
 
-        for (Servicio s : servicios) {
-            if (s instanceof TelefonoFijo) {
-                TelefonoFijo tf = (TelefonoFijo) s;
-                for (int i = 0; i < tf.getLlamadasLargas().size(); i++)
-                    monto += tf.getLlamadasLargas().get(i).getTotalFacturar();
-            }
-        }
-        return monto;
-    }
-    
-    // Obtener el nombre en la interfaz
-    @Override
-    public String toString() {
-        return nombre; 
-    }
+	// Obtener el monto de las llamadas de los clientes
+	public double getMontoLlamadasLargaDistancia() {
+		double monto = 0;
+
+		for (Servicio s : servicios) {
+			if (s instanceof TelefonoFijo) {
+				TelefonoFijo tf = (TelefonoFijo) s;
+				for (LlamadaLargaDistancia llamada : tf.getLlamadasLargas()) {	       
+					monto += llamada.getTotalFacturar();
+				}
+			}
+		}
+		return monto;
+	}
+
+	// Obtener el nombre en la interfaz
+	@Override
+	public String toString() {
+		return nombre; 
+	}
 
 }
