@@ -49,7 +49,10 @@ public class Principal extends JFrame {
 		
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(0, 0, 1800, 900);
+		setBounds(0, 0, 1600, 900);
+        setLocationRelativeTo(null);
+
+
 			contentPane = new JPanel(){
 				/**
 				 * 

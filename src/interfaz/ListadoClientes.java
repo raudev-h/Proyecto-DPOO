@@ -25,7 +25,8 @@ public class ListadoClientes extends JDialog {
     private JTable table;
     private ClienteTableModel tableModel;
     private static ListadoClientes instance;
-    
+    private JTextField txtBusqueda;
+
 
     // Campos de edición
     private JPanel panelEdicion;
@@ -198,8 +199,6 @@ public class ListadoClientes extends JDialog {
     }
 
     private void initComponents() {
-    	
-    	
         tableModel = new ClienteTableModel();
         tableModel.cargarClientes();
         
@@ -208,31 +207,61 @@ public class ListadoClientes extends JDialog {
         getContentPane().add(panel);
         panel.setLayout(null);
         
-        JScrollPane scrollPane = new JScrollPane();
-        scrollPane.setViewportBorder(new LineBorder(new Color(0, 0, 0)));
-        scrollPane.setBounds(15, 36, 1014, 614);
-        panel.add(scrollPane);
+        // Panel de búsqueda
+        JPanel panelBusqueda = new JPanel();
+        panelBusqueda.setBounds(15, 30, 588, 40);
+        panelBusqueda.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 5));
+        panel.add(panelBusqueda);
         
-        table = new JTable(tableModel);
-        table.getTableHeader().setReorderingAllowed(false);
-        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        table.setFont(new Font("Serif", Font.PLAIN, 18));
-        scrollPane.setViewportView(table);
+        // Componente de búsqueda
+        JLabel lblBuscar = new JLabel("Buscar:");
+        lblBuscar.setFont(new Font("Serif", Font.PLAIN, 18));
+        panelBusqueda.add(lblBuscar);
         
-        JTableHeader header = table.getTableHeader();
-        Font headerFont = new Font("Serif",Font.PLAIN, 20);
-        header.setFont(headerFont);
-        
-        table.setFont(new Font("Serif", Font.PLAIN, 20));
-        table.setRowHeight(25);
+        txtBusqueda = new JTextField();
+        txtBusqueda.setFont(new Font("Serif", Font.PLAIN, 18));
+        txtBusqueda.setColumns(30);
+        txtBusqueda.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                filtrarTabla();
+            }
+        });
+        panelBusqueda.add(txtBusqueda);
         
         JLabel lblListadoDeClientes = new JLabel("Listado de Clientes");
         lblListadoDeClientes.setFont(new Font("Serif", Font.BOLD, 21));
         lblListadoDeClientes.setBounds(15, 0, 195, 20);
         panel.add(lblListadoDeClientes);
         
+        // Configuración única del JScrollPane y JTable
+        JScrollPane scrollPane = new JScrollPane();
+        scrollPane.setViewportBorder(new LineBorder(new Color(0, 0, 0)));
+        scrollPane.setBounds(15, 80, 1014, 570);
+        panel.add(scrollPane);
+        
+        table = new JTable(tableModel);
+        table.getTableHeader().setReorderingAllowed(false);
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        table.setFont(new Font("Serif", Font.PLAIN, 18));
+        table.setRowHeight(25);
+        scrollPane.setViewportView(table);
+        
+        // Configurar anchos de columnas
+        TableColumnModel columnModel = table.getColumnModel();
+        columnModel.getColumn(0).setPreferredWidth(200); // Nombre
+        columnModel.getColumn(1).setPreferredWidth(200); // Dirección
+        columnModel.getColumn(2).setPreferredWidth(150); // Tipo
+        
+        JTableHeader header = table.getTableHeader();
+        Font headerFont = new Font("Serif", Font.PLAIN, 20);
+        header.setFont(headerFont);
+        
+        // Configurar el TableRowSorter
+        sorter = new TableRowSorter<ClienteTableModel>(tableModel);
+        table.setRowSorter(sorter);
+        
         // Botón Crear Cliente
-
         btnCrearCliente = new JButton("Crear Cliente");
         btnCrearCliente.setForeground(new Color(0, 0, 153));
         btnCrearCliente.setBackground(Color.WHITE);
@@ -247,8 +276,46 @@ public class ListadoClientes extends JDialog {
         
         initPanelCreacion();
         initPanelEdicion();
-        
     }
+    
+ // Añadir nuevo método para filtrar la tabla (similar al de ListadoRepresentante)
+    private void filtrarTabla() {
+        final String textoBusqueda = txtBusqueda.getText().trim().toLowerCase();
+        
+        if (textoBusqueda.isEmpty()) {
+            tableModel.cargarClientes(); // Mostrar todos
+            return;
+        }
+        
+        try {
+            ArrayList<Cliente> clientesFiltrados = new ArrayList<>();
+            ArrayList<Cliente> todosClientes = EmpresaTelecomunicaciones.getInstancia().getClientes();
+            
+            for (Cliente cliente : todosClientes) {
+                boolean coincideNombre = cliente.getNombre().toLowerCase().contains(textoBusqueda);
+                boolean coincideCI = false;
+                
+                // Solo para PersonaNatural: buscar en el carnet
+                if (cliente instanceof PersonaNatural) {
+                    PersonaNatural pn = (PersonaNatural) cliente;
+                    String numId = pn.getNumId().toLowerCase();
+                    coincideCI = numId.contains(textoBusqueda);
+                }
+                
+                if (coincideNombre || coincideCI) {
+                    clientesFiltrados.add(cliente);
+                }
+            }
+            
+            tableModel.actualizarClientes(clientesFiltrados);
+            
+        } catch (Exception e) {
+            manejarError(e, "Error al aplicar el filtro de búsqueda");
+        }
+    }
+
+    // Añadir variable de clase para el sorter
+    private TableRowSorter<ClienteTableModel> sorter;
 
     private void abrirPanelCreacion() {
         modoEdicion = false;

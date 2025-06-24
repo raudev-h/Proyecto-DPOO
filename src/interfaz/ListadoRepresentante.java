@@ -9,6 +9,8 @@ import logica.Representante;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableRowSorter;
+import javax.swing.RowFilter;
 
 import excepciones.CarnetIdentidadInvalidoException;
 import excepciones.NombreInvalidoException;
@@ -16,6 +18,8 @@ import excepciones.NombreInvalidoException;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -24,6 +28,7 @@ public class ListadoRepresentante extends JDialog {
     private JTable table;
     private RepresentanteTableModel tableModel;
     private static ListadoRepresentante instance;
+    private TableRowSorter<RepresentanteTableModel> sorter;
     
     // Campos para edición/creación
     private JPanel panelEdicion;
@@ -38,7 +43,8 @@ public class ListadoRepresentante extends JDialog {
     private Representante representanteSeleccionado;
     private String numIdRepresentanteSeleccionado;
     
-
+    // Campo para búsqueda
+    private JTextField txtBusqueda;
 
     public static void main(String[] args) {
         try {
@@ -51,7 +57,7 @@ public class ListadoRepresentante extends JDialog {
     }
 
     private ListadoRepresentante() {
-    	setModal(true);
+        setModal(true);
         setBounds(100, 100, 1087, 790);
         setLocationRelativeTo(null);
         getContentPane().setLayout(null);
@@ -61,14 +67,38 @@ public class ListadoRepresentante extends JDialog {
         getContentPane().add(panel);
         panel.setLayout(null);
         
+        // Panel de búsqueda simplificado
+        JPanel panelBusqueda = new JPanel();
+        panelBusqueda.setBounds(15, 30, 588, 40);
+        panelBusqueda.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 5));
+        panel.add(panelBusqueda);
+        
+        // Componente de búsqueda único
+        JLabel lblBuscar = new JLabel("Buscar:");
+        lblBuscar.setFont(new Font("Serif", Font.PLAIN, 18));
+        panelBusqueda.add(lblBuscar);
+        
+        txtBusqueda = new JTextField();
+        txtBusqueda.setFont(new Font("Serif", Font.PLAIN, 18));
+        txtBusqueda.setColumns(30);
+        txtBusqueda.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                filtrarTabla();
+            }
+        });
+        panelBusqueda.add(txtBusqueda);
+        
         JScrollPane scrollPane = new JScrollPane();
-        scrollPane.setBounds(15, 55, 1005, 631);
+        scrollPane.setBounds(15, 80, 1005, 606);
         scrollPane.setViewportBorder(new LineBorder(new Color(0, 0, 0)));
         panel.add(scrollPane);
         
         // Inicializa el modelo y la tabla
         tableModel = new RepresentanteTableModel();
         table = new JTable(tableModel);
+        sorter = new TableRowSorter<RepresentanteTableModel>(tableModel);
+        table.setRowSorter(sorter);
         
         // Configuración de estilo idéntica a ListadoClientes
         table.getTableHeader().setReorderingAllowed(false);
@@ -92,7 +122,7 @@ public class ListadoRepresentante extends JDialog {
         btnCrearRepresentante.setFont(new Font("Serif", Font.PLAIN, 20));
         btnCrearRepresentante.setBackground(new Color(255, 255, 255));
         btnCrearRepresentante.setForeground(new Color(0, 0, 153));
-        btnCrearRepresentante.setBounds(799, 16, 203, 30);
+        btnCrearRepresentante.setBounds(794, 30, 203, 30);
         btnCrearRepresentante.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 abrirPanelCreacion();
@@ -105,7 +135,29 @@ public class ListadoRepresentante extends JDialog {
         initPanelEdicion();
     }
 
-    
+    // Método para filtrar la tabla mientras se escribe
+    private void filtrarTabla() {
+        final String textoBusqueda = txtBusqueda.getText().trim().toLowerCase();
+        
+        if (textoBusqueda.isEmpty()) {
+            sorter.setRowFilter(null);
+            return;
+        }
+        
+        try {
+            // Filtro que busca en ambas columnas (nombre y número de ID)
+            RowFilter<RepresentanteTableModel, Object> rf = new RowFilter<RepresentanteTableModel, Object>() {
+                public boolean include(Entry<? extends RepresentanteTableModel, ? extends Object> entry) {
+                    String nombre = entry.getStringValue(0).toLowerCase();
+                    String numId = entry.getStringValue(1).toLowerCase();
+                    return nombre.contains(textoBusqueda) || numId.contains(textoBusqueda);
+                }
+            };
+            sorter.setRowFilter(rf);
+        } catch (Exception e) {
+            manejarError(e, "Error al aplicar el filtro de búsqueda");
+        }
+    }   
      //Inicializa el panel de edición/creación con los componentes necesarios
      
     private void initPanelEdicion() {

@@ -25,6 +25,7 @@ public class login extends JFrame {
     private JLabel mensajeError;
     private JLabel mensajeIntentos;
     private JLabel lblTemporizador;
+    
 
     
     // Control de intentos
@@ -140,7 +141,7 @@ public class login extends JFrame {
         contentPane.add(salir);
         
         JLabel lblNewLabel = new JLabel("New label");
-        lblNewLabel.setIcon(new ImageIcon("C:\\Z\\Escuela\\DPOO\\Proyect DPOO\\Proyecto-DPOO\\src\\imagenes\\DB.png"));
+        lblNewLabel.setIcon(new ImageIcon(getClass().getResource("/imagenes/DB.png")));
         lblNewLabel.setBounds(401, 28, 298, 307);
         contentPane.add(lblNewLabel);
     }
