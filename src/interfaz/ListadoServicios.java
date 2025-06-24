@@ -5,8 +5,11 @@ import logica.*;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -718,16 +721,134 @@ public class ListadoServicios extends JDialog {
     }
 
 
-    private void editarCuentaNauta(CuentaNauta cuenta) {
-        // Implementación para editar cuenta nauta
-        String nuevoNick = JOptionPane.showInputDialog(
-            this, 
-            "Ingrese el nuevo nick:", 
-            cuenta.getNick());
+    private void editarCuentaNauta(final CuentaNauta cuenta) {
+        // 1. Crear panel de edición
+        final JPanel panel = new JPanel(new BorderLayout(10, 10));
         
-        if (nuevoNick != null && !nuevoNick.isEmpty()) {
-            cuenta.setNick(nuevoNick);
-            cargarDatos();
+        // 2. Campo de texto para el nuevo nick
+        final JTextField txtNick = new JTextField(cuenta.getNick());
+        txtNick.setFont(new Font("Serif", Font.PLAIN, 16));
+        
+        // 3. Panel para mensajes de validación
+        final JLabel lblMensaje = new JLabel(" ");
+        lblMensaje.setForeground(Color.RED);
+        
+        // 4. DocumentListener para validación en tiempo real
+        txtNick.getDocument().addDocumentListener(new DocumentListener() {
+            public void changedUpdate(DocumentEvent e) { validarNick(); }
+            public void removeUpdate(DocumentEvent e) { validarNick(); }
+            public void insertUpdate(DocumentEvent e) { validarNick(); }
+            
+            private void validarNick() {
+                String nuevoNick = txtNick.getText().trim();
+                boolean valido = true;
+                
+                if (nuevoNick.isEmpty()) {
+                    lblMensaje.setText("El nick no puede estar vacío");
+                    valido = false;
+                } else if (!nuevoNick.equals(cuenta.getNick())) {
+                    // Verificar si el nick ya existe
+                    boolean encontrado = false;
+                    for (Servicio s : empresa.getServicios()) {
+                        if (s instanceof CuentaNauta) {
+                            CuentaNauta otraCuenta = (CuentaNauta) s;
+                            if (otraCuenta.getNick().equalsIgnoreCase(nuevoNick)) {
+                                encontrado = true;
+                            }
+                        }
+                    }
+                    
+                    if (encontrado) {
+                        lblMensaje.setText("Este nick ya está en uso");
+                        valido = false;
+                    } else {
+                        lblMensaje.setText(" ");
+                    }
+                } else {
+                    lblMensaje.setText(" ");
+                }
+                
+                // Habilitar/deshabilitar botón OK según validación
+                Window window = SwingUtilities.getWindowAncestor(panel);
+                if (window instanceof JDialog) {
+                    JDialog dialog = (JDialog) window;
+                    JButton okButton = null;
+                    
+                    for (Component c : dialog.getRootPane().getComponents()) {
+                        if (c instanceof JButton) {
+                            JButton button = (JButton) c;
+                            if (button.getText().equals("OK") || button.getText().equals("Aceptar")) {
+                                okButton = button;
+                            }
+                        }
+                    }
+                    
+                    if (okButton != null) {
+                        okButton.setEnabled(valido);
+                    }
+                }
+            }
+        });
+        
+        panel.add(new JLabel("Nuevo nick:"), BorderLayout.NORTH);
+        panel.add(txtNick, BorderLayout.CENTER);
+        panel.add(lblMensaje, BorderLayout.SOUTH);
+        
+        // 5. Mostrar diálogo
+        int result = JOptionPane.showConfirmDialog(
+            this, 
+            panel, 
+            "Editar Nick de Cuenta Nauta", 
+            JOptionPane.OK_CANCEL_OPTION,
+            JOptionPane.PLAIN_MESSAGE);
+        
+        // 6. Procesar cambios si se hace clic en OK
+        if (result == JOptionPane.OK_OPTION) {
+            String nuevoNick = txtNick.getText().trim();
+            
+            // Validación final (por si acaso)
+            boolean nickValido = true;
+            String mensajeError = "";
+            
+            if (nuevoNick.isEmpty()) {
+                nickValido = false;
+                mensajeError = "El nick no puede estar vacío";
+            } else if (!nuevoNick.equals(cuenta.getNick())) {
+                // Verificar duplicados
+                boolean encontrado = false;
+                for (Servicio s : empresa.getServicios()) {
+                    if (s instanceof CuentaNauta) {
+                        CuentaNauta otraCuenta = (CuentaNauta) s;
+                        if (otraCuenta != cuenta && otraCuenta.getNick().equalsIgnoreCase(nuevoNick)) {
+                            encontrado = true;
+                        }
+                    }
+                }
+                
+                if (encontrado) {
+                    nickValido = false;
+                    mensajeError = "Este nick ya está en uso";
+                }
+            }
+            
+            if (nickValido) {
+                // Actualizar el nick
+                cuenta.setNick(nuevoNick);
+                cargarDatos();
+                
+                JOptionPane.showMessageDialog(this, 
+                    "Nick actualizado correctamente",
+                    "Éxito",
+                    JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this,
+                    mensajeError,
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+                
+                // Volver a mostrar el diálogo
+                editarCuentaNauta(cuenta);
+            }
         }
     }
 
