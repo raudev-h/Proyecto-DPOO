@@ -1034,43 +1034,45 @@ public class ListadoServicios extends JDialog {
         tabbedPane.setFocusable(false);
 
         // Acción Guardar
+     // Dentro del ActionListener del btnGuardar, después de asignar el servicio:
         btnGuardar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Cliente titular = listaClientes.getSelectedValue();
-               
+                
                 if (titular == null) {
                     JOptionPane.showMessageDialog(ListadoServicios.this,
                         "Debe seleccionar un titular.",
                         "Error", JOptionPane.ERROR_MESSAGE);
                     return;
-                    
                 }
-                
-                
 
                 try {
+                    String mensajeExito = "";
+                    
                     if (pestañaSeleccionada == 0) { // Teléfono Fijo
                         if (comboFijos.getSelectedIndex() == -1) {
                             throw new IllegalArgumentException("Debe seleccionar un teléfono fijo disponible");
                         }
                         String numeroFijo = (String) comboFijos.getSelectedItem();
                         empresa.asignarTelefonoFijo(titular, numeroFijo);
-                    } 
-                    else if (pestañaSeleccionada == 1) { // Teléfono Móvil
+                        mensajeExito = "Teléfono fijo asignado correctamente a " + titular.getNombre();
+                        
+                    } else if (pestañaSeleccionada == 1) { // Teléfono Móvil
                         if (comboMoviles.getSelectedIndex() == -1) {
                             throw new IllegalArgumentException("Debe seleccionar un teléfono móvil disponible");
                         }
                         empresa.asignarTelefonoMovil(titular);
-                    } 
-                    else if (pestañaSeleccionada == 2) { // Cuenta Nauta
+                        mensajeExito = "Teléfono móvil asignado correctamente a " + titular.getNombre();
+                        
+                    } else if (pestañaSeleccionada == 2) { // Cuenta Nauta
                         String nick = txtNick.getText();
                         if (nick.isEmpty()) {
                             throw new IllegalArgumentException("Debe ingresar un nick para la cuenta");
                         }
                         empresa.crearCuentaNauta(titular, nick);
+                        mensajeExito = "Cuenta Nauta creada y asignada correctamente a " + titular.getNombre();
                     }
-                    
 
                     cargarDatos();
                     panelFormulario.setVisible(false);
@@ -1080,7 +1082,14 @@ public class ListadoServicios extends JDialog {
                     tabbedPane.setFocusable(true);
                     setSize(1015, 800);
 
-                    
+                    // Mostrar mensaje de éxito
+                    UIManager.put("OptionPane.messageFont", new Font("Serif", Font.PLAIN, 18));
+                    JOptionPane.showMessageDialog(
+                        ListadoServicios.this,
+                        mensajeExito,
+                        "Asignación Exitosa",
+                        JOptionPane.INFORMATION_MESSAGE);
+
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(ListadoServicios.this,
                         "Error al asignar servicio: " + ex.getMessage(),
