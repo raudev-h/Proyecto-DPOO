@@ -55,6 +55,7 @@ public class Principal extends JFrame {
 
         setLocationRelativeTo(null);
 
+
         // Crear panel de fondo personalizado
         contentPane = new FondoPanel();
         ((FondoPanel) contentPane).setImagenFondo(imagenFondoActual); // Carga inicial
@@ -193,7 +194,7 @@ public class Principal extends JFrame {
         mnAyuda.add(mntmAcercaDe);
     }
     
-    // Método para cambiar la imagen de fondo
+    // MÃ©todo para cambiar la imagen de fondo
     public void cambiarImagenFondo(String nuevaImagen) {
         this.imagenFondoActual = nuevaImagen;
         ((FondoPanel) contentPane).setImagenFondo(nuevaImagen);
