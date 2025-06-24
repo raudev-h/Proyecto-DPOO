@@ -185,13 +185,20 @@ public class Principal extends JFrame {
         mntmClientesCon_1.setFont(new Font("Serif", Font.PLAIN, 21));
         mnClientes_1.add(mntmClientesCon_1);
         
-        JMenu mnAyuda = new JMenu("Ayuda       ");
-        mnAyuda.setFont(new Font("Serif", Font.BOLD, 22));
-        menuBar.add(mnAyuda);
         
-        JMenuItem mntmAcercaDe = new JMenuItem("Acerca de");
-        mntmAcercaDe.setFont(new Font("Serif", Font.PLAIN, 21));
-        mnAyuda.add(mntmAcercaDe);
+        JMenu mnAyuda = new JMenu("Ayuda       ");
+		mnAyuda.setFont(new Font("Serif", Font.BOLD, 22));
+		menuBar.add(mnAyuda);
+		
+		JMenuItem mntmAcercaDe = new JMenuItem("Acerca de");
+		mntmAcercaDe.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Ayuda ayuda = new Ayuda();
+				ayuda.setVisible(true);
+			}
+		});
+		mntmAcercaDe.setFont(new Font("Serif", Font.PLAIN, 21));
+		mnAyuda.add(mntmAcercaDe);
     }
     
     // Método para cambiar la imagen de fondo
