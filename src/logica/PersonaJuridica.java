@@ -35,6 +35,7 @@ public class PersonaJuridica extends ClientesConUbicacion {
         else    
             this.organismo = organismo;
     }
+    
 
     public Representante getRepresentante(){
     	return representantePersonaJuridica;
@@ -47,7 +48,16 @@ public class PersonaJuridica extends ClientesConUbicacion {
         this.representantePersonaJuridica = representante;
     }
 
-    
+   //METODOS 
+    //Validar Organismo 
+    public static void validarOrganismo(String organismo) throws NombreInvalidoException {
+        if(organismo == null || organismo.trim().isEmpty())
+            throw new NombreInvalidoException("El organismo al que pertenece no puede estar vacío");
+        
+        else if(!(organismo.trim().matches(("[a-zA-ZáéíóúÁÉÍÓÚñÑ]+( [a-zA-ZáéíóúÁÉÍÓÚñÑ]+)*"))))
+            throw new NombreInvalidoException("El organismo al que pertenece solo puede contener letras");
+
+    }
 
     
 }

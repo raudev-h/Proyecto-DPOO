@@ -23,14 +23,7 @@ public class Representante {
     public String getNombreCompleto() {
         return nombreCompleto;
     }
-    public void setNombreCompleto(String nombreCompleto) throws NombreInvalidoException {
-        if(nombreCompleto == null || nombreCompleto.trim().isEmpty())
-            throw new NombreInvalidoException("El nombre no puede estar vacÃ­o");
-        
-        else if(!(nombreCompleto.trim().matches(("[a-zA-ZáéíóúÁÉÍÓÚñÑ]+( [a-zA-ZáéíóúÁÉÍÓÚñÑ]+)*"))))
-            throw new NombreInvalidoException("El nombre solo puede contener letras");
-        
-        else 
+    public void setNombreCompleto(String nombreCompleto){      
             this.nombreCompleto = nombreCompleto.trim();
     }
     
@@ -41,7 +34,33 @@ public class Representante {
     public String getNumId() {
         return numId;
     }
-    public void setNumId(String numId) throws CarnetIdentidadInvalidoException{
+    public void setNumId(String numId){
+
+        this.numId = numId; 
+    }
+    
+    // Cliente representado
+    public synchronized void setClienteRepresentado(Cliente clienteRepresentado){
+    	this.clienteRepresentado = clienteRepresentado;
+    	
+    }
+    public Cliente getClienteRepresentado(){
+    	return clienteRepresentado;
+    } 
+    
+    //Validaciones 
+    public static void validarNombre(String nombre) throws NombreInvalidoException {
+        
+    	if(nombre == null || nombre.trim().isEmpty()){
+            throw new NombreInvalidoException("El nombre no puede estar vacío");
+        }
+        else if(!(nombre.trim().matches(("[a-zA-ZáéíóúÁÉÍÓÚñÑ]+( [a-zA-ZáéíóúÁÉÍÓÚñÑ]+)*")))){
+            throw new NombreInvalidoException("El nombre solo puede contener letras");
+        }
+
+    }
+    
+    public static void validarNumId(String numId) throws CarnetIdentidadInvalidoException{
         
     	if(numId == null || numId.trim().isEmpty())
         	throw new CarnetIdentidadInvalidoException("El carnet no puede estar vacío");
@@ -74,16 +93,8 @@ public class Representante {
          }catch(DateTimeException e){
         	throw new CarnetIdentidadInvalidoException("El carnet de identidad es incorrecto");
          }
-         	this.numId = numId; // luego de que se comprobó todo correctamente asignamos el valor final para el CI	
         }
     }
     
-    // Cliente representadoS
-    public void setClienteRepresentado(Cliente clienteRepresentado){
-    	this.clienteRepresentado = clienteRepresentado;
-    	
-    }
-    public Cliente getClienteRepresentado(){
-    	return clienteRepresentado;
-    } 
+    
 }

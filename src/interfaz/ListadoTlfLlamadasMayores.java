@@ -2,6 +2,7 @@ package interfaz;
 
 import auxiliares.*;
 import logica.*;
+import interfaz.Principal; // Importar la clase Principal
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -9,22 +10,22 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.JTableHeader;
-
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class ListadoTlfLlamadasMayores extends JDialog {
     private JTable table;
     private static ListadoTlfLlamadasMayores instance;
     private JSlider slider;
     private JTextField txtMinutos;
+    private static Principal ventanaPrincipal; // Referencia a Principal
     
     public static void main(String[] args) {
         try {
-            ListadoTlfLlamadasMayores dialog = new ListadoTlfLlamadasMayores();
+            ListadoTlfLlamadasMayores dialog = new ListadoTlfLlamadasMayores(null);
             dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
             dialog.setVisible(true);
         } catch (Exception e) {
@@ -32,15 +33,32 @@ public class ListadoTlfLlamadasMayores extends JDialog {
         }
     }
 
-    private ListadoTlfLlamadasMayores() {
+    private ListadoTlfLlamadasMayores(Principal principal) {
+    	setModal(true);
         setBounds(100, 100, 1126, 700); 
         setLocationRelativeTo(null);
         getContentPane().setLayout(null);
+        
+        ventanaPrincipal = principal; // Guardar referencia
         
         JPanel panel = new JPanel();
         panel.setBounds(15, 16, 1074, 550); 
         getContentPane().add(panel);
         panel.setLayout(null);
+        
+        // Cambiar imagen al abrir
+        if (ventanaPrincipal != null) {
+            ventanaPrincipal.cambiarImagenFondo("/imagenes/e.png");
+        }
+        
+        // Configurar el cierre para restaurar la imagen
+        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                restoreBackground();
+            }
+        });
         
         // Título de la ventana - Estilo igual a otras ventanas
         JLabel lblTitulo = new JLabel("Teléfonos con Llamadas Largas");
@@ -50,7 +68,7 @@ public class ListadoTlfLlamadasMayores extends JDialog {
         
         // Panel de controles
         JPanel panelControles = new JPanel();
-        panelControles.setBounds(10, 32, 1049, 100);
+        panelControles.setBounds(10, 32, 1049, 89);
         panelControles.setBorder(BorderFactory.createTitledBorder(
             BorderFactory.createLineBorder(Color.BLACK),
             "Seleccione el limite de minutos",
@@ -140,6 +158,12 @@ public class ListadoTlfLlamadasMayores extends JDialog {
         // Carga inicial
         cargarDatos(100);
     }
+    
+    private void restoreBackground() {
+        if (ventanaPrincipal != null) {
+            ventanaPrincipal.cambiarImagenFondo("/imagenes/d.png");
+        }
+    }
 
     private void cargarDatos(int limiteMinutos) {
         TlfLlamadasMas100min modelo = new TlfLlamadasMas100min();
@@ -149,9 +173,9 @@ public class ListadoTlfLlamadasMayores extends JDialog {
     }
     
     // Método para el patrón singleton
-    public static void abrirListadoLlamadasMayores() {
+    public static void abrirListadoLlamadasMayores(Principal principal) {
         if (instance == null) {
-            instance = new ListadoTlfLlamadasMayores();
+            instance = new ListadoTlfLlamadasMayores(principal);
             instance.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
             instance.setVisible(true);
         } else {
@@ -175,6 +199,7 @@ public class ListadoTlfLlamadasMayores extends JDialog {
     // Liberar la instancia al cerrar la pantalla
     @Override
     public void dispose() {
+        restoreBackground();
         instance = null;
         super.dispose();
     }
