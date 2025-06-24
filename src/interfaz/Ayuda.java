@@ -29,7 +29,6 @@ public class Ayuda extends JDialog {
     private static Ayuda instance; // Para patrón Singleton
 
 
-    private final JPanel contentPanel = new JPanel();
 
     public static void mostrarAyuda() {
         try {

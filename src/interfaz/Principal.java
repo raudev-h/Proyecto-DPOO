@@ -79,8 +79,7 @@ public class Principal extends JFrame {
         mntmCerrarSesin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 dispose();
-                login log = new login();
-                log.setVisible(true);
+                login.getInstance().setVisible(true);
             }
         });
         mntmCerrarSesin.setFont(new Font("Serif", Font.PLAIN, 21));
