@@ -27,23 +27,6 @@ public class Principal extends JFrame {
     private JPanel contentPane;
     private String imagenFondoActual = "/imagenes/d.png"; // Imagen por defecto
     
-    
-    /**
-     * Launch the application.
-     */
-    public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    Inicializadora.Inicializar();
-                    Principal frame = new Principal();
-                    frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
 
     /**
      * Create the frame.
@@ -79,8 +62,7 @@ public class Principal extends JFrame {
         mntmCerrarSesin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 dispose();
-                login log = new login();
-                log.setVisible(true);
+                login.getInstance().setVisible(true);
             }
         });
         mntmCerrarSesin.setFont(new Font("Serif", Font.PLAIN, 21));

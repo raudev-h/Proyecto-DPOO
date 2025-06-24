@@ -17,7 +17,7 @@ public class Runner {
         try {
             javax.swing.SwingUtilities.invokeAndWait(new Runnable() {
                 public void run() {
-                    loginWindow[0] = new login();
+                    loginWindow[0] = login.getInstance();
                     loginWindow[0].setVisible(true);
                 }
             });
