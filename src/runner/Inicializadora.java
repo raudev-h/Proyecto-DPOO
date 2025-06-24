@@ -505,6 +505,79 @@ public class Inicializadora {
 					llamada.getTotalFacturar()
 					);
 		}
+		
+		// TODO datos de prueba para cuentas nauta
+		// Busca las instancias de las cuentas en los servicios de cada cliente
+		CuentaNauta cn1 = null, cn2 = null, cn3 = null, cn4 = null, cn5 = null;
+		for (Servicio s : pn1.getServicios()) if (s instanceof CuentaNauta) cn1 = (CuentaNauta) s;
+		for (Servicio s : pn2.getServicios()) if (s instanceof CuentaNauta) cn2 = (CuentaNauta) s;
+		for (Servicio s : pn3.getServicios()) if (s instanceof CuentaNauta) cn3 = (CuentaNauta) s;
+		for (Servicio s : pn4.getServicios()) if (s instanceof CuentaNauta) cn4 = (CuentaNauta) s;
+		for (Servicio s : pn5.getServicios()) if (s instanceof CuentaNauta) cn5 = (CuentaNauta) s;
+
+		// Ahora inicializa datos de consumo en varios meses
+		if (cn1 != null) {
+		    cn1.agregarMesDatos(
+		        "2025-01",
+		        110,    // kbEnviadosInternacional
+		        1200,   // kbEnviadosNacional
+		        90,     // kbRecibidosInternacional
+		        1150,   // kbRecibidosNacional
+		        500,    // kbNavegacion
+		        25,     // montoEnvioInternacional
+		        35,     // montoEnvioNacional
+		        12,     // montoNavegacion
+		        10,     // montoRecepcionInternacional
+		        30,     // montoRecepcionNacional
+		        112     // montoTotal
+		    );
+		    cn1.agregarMesDatos(
+		        "2025-02",
+		        130, 1300, 100, 1210, 520, 30, 37, 14, 13, 32, 1260
+		    );
+		    cn1.agregarMesDatos("2025-03",
+			        130, 1300, 100, 1210, 520, 30, 37, 14, 13, 32, 1260);
+		    
+		    cn1.agregarMesDatos("2025-04",
+		        130, 1300, 100, 1210, 520, 30, 37, 14, 13, 32, 1890);
+		    
+		    cn1.agregarMesDatos("2025-05",
+		        130, 1300, 100, 1210, 520, 30, 37, 14, 13, 32, 1673);
+		    
+		    cn1.agregarMesDatos("2025-06",
+			        130, 1300, 100, 1210, 520, 30, 37, 14, 13, 32, 1446);
+		}
+
+		if (cn2 != null) {
+		    cn2.agregarMesDatos("2025-02", 215, 1500, 180, 1420, 610, 45, 55, 16, 18, 36, 1360);
+		    cn2.agregarMesDatos("2025-03", 220, 1510, 185, 1430, 615, 42, 54, 18, 19, 37, 1385);
+		    cn2.agregarMesDatos("2025-04", 230, 1520, 190, 1440, 620, 44, 56, 19, 20, 39, 1400);
+		    cn2.agregarMesDatos("2025-05", 225, 1550, 195, 1455, 625, 43, 57, 20, 21, 41, 1425);
+		}
+
+		if (cn3 != null) {
+		    cn3.agregarMesDatos("2025-02", 140, 1200, 120, 1100, 530, 34, 38, 15, 15, 33, 1120);
+		    cn3.agregarMesDatos("2025-03", 150, 1250, 130, 1150, 540, 36, 40, 15, 16, 35, 1155);
+		    cn3.agregarMesDatos("2025-04", 155, 1280, 135, 1170, 545, 35, 41, 17, 17, 36, 1170);
+		    cn3.agregarMesDatos("2025-05", 160, 1300, 140, 1190, 550, 36, 43, 18, 18, 38, 1195);
+		}
+
+		if (cn4 != null) {
+		    cn4.agregarMesDatos("2025-02", 200, 1400, 160, 1320, 600, 40, 50, 20, 22, 48, 1200);
+		    cn4.agregarMesDatos("2025-03", 210, 1410, 170, 1330, 610, 41, 51, 21, 23, 49, 1235);
+		    cn4.agregarMesDatos("2025-04", 215, 1420, 175, 1340, 620, 42, 52, 22, 24, 50, 1270);
+		    cn4.agregarMesDatos("2025-05", 220, 1430, 180, 1350, 630, 43, 53, 23, 25, 51, 1305);
+		}
+
+		if (cn5 != null) {
+		    cn5.agregarMesDatos("2025-02", 300, 2000, 280, 1900, 800, 70, 85, 32, 40, 60, 2200);
+		    cn5.agregarMesDatos("2025-03", 310, 2100, 290, 2000, 820, 71, 86, 33, 41, 61, 2250);
+		    cn5.agregarMesDatos("2025-04", 320, 2200, 300, 2100, 830, 72, 87, 34, 42, 62, 2300);
+		    cn5.agregarMesDatos("2025-05", 330, 2300, 310, 2200, 840, 73, 88, 35, 43, 63, 2350);
+		}
+		// TODO aquí cierra el bloque
+		
+		
 	}
 }
 

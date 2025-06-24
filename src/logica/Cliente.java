@@ -103,7 +103,7 @@ public abstract class Cliente {
 
 		String numeroTelefono = "No diponible";
 
-		if(this.obtenerTelefonos().isEmpty()){
+		if(!this.obtenerTelefonos().isEmpty()){
 
 			numeroTelefono = this.obtenerTelefonos().get(0).getNumero();													
 		}
