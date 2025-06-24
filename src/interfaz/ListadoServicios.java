@@ -6,7 +6,12 @@ import logica.*;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
+
 import javax.swing.border.TitledBorder;
+
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
@@ -569,62 +574,302 @@ public class ListadoServicios extends JDialog {
         }
     }
 
+    // EDITAR TELEFONO FIJO
     private void editarTelefonoFijo(TelefonoFijo telefono) {
-        // Implementación para editar teléfono fijo
-        String nuevoNumero = JOptionPane.showInputDialog(
-            this, 
-            "Ingrese el nuevo número:", 
-            telefono.getNumero());
+        JPanel panel = new JPanel(new GridLayout(1, 2, 10, 10));
+        panel.setPreferredSize(new Dimension(400, 40)); // Tamaño aumentado
         
-        if (nuevoNumero != null && !nuevoNumero.isEmpty()) {
-            telefono.setNumero(nuevoNumero);
-            cargarDatos();
+        JComboBox<String> comboFijos = new JComboBox<String>();
+        comboFijos.setFont(new Font("Serif", Font.PLAIN, 18));
+        
+        // Llenar combo con teléfonos fijos disponibles (excluyendo el actual)
+        for (Servicio s : empresa.getServiciosDisponibles()) {
+            if (s instanceof TelefonoFijo) {
+                String numero = ((TelefonoFijo) s).getNumero();
+                if (!numero.equals(telefono.getNumero())) {
+                    comboFijos.addItem(numero);
+                }
+            }
         }
-    }
-
-    private void editarTelefonoMovil(TelefonoMovil telefono) {
-        // Implementación para editar teléfono móvil
-        JPanel panel = new JPanel(new GridLayout(2, 2));
-        JTextField txtNumero = new JTextField(telefono.getNumero());
-        JTextField txtMonto = new JTextField(String.valueOf(telefono.getMontoApagar()));
         
-        panel.add(new JLabel("Número:"));
-        panel.add(txtNumero);
-        panel.add(new JLabel("Monto:"));
-        panel.add(txtMonto);
+        // Mantener el actual como primera opción
+        comboFijos.insertItemAt(telefono.getNumero(), 0);
+        comboFijos.setSelectedIndex(0);
+        
+        JLabel lblNumero = new JLabel("Nuevo número:", JLabel.RIGHT);
+        lblNumero.setFont(new Font("Serif", Font.PLAIN, 20));
+        lblNumero.setForeground(Color.BLACK);
+        
+        panel.add(lblNumero);
+        panel.add(comboFijos);
         
         int result = JOptionPane.showConfirmDialog(
             this, 
             panel, 
-            "Editar Teléfono Móvil", 
-            JOptionPane.OK_CANCEL_OPTION);
+            "Editar Teléfono Fijo", 
+            JOptionPane.OK_CANCEL_OPTION,
+            JOptionPane.PLAIN_MESSAGE);
         
         if (result == JOptionPane.OK_OPTION) {
-            telefono.setNumero(txtNumero.getText());
-            try {
-                double monto = Double.parseDouble(txtMonto.getText());
-                telefono.setMontoApagar(monto);
+            String nuevoNumero = (String) comboFijos.getSelectedItem();
+            if (nuevoNumero != null && !nuevoNumero.equals(telefono.getNumero())) {
+                // 1. Quitar el teléfono anterior del cliente y marcarlo como disponible
+                String numeroAnterior = telefono.getNumero();
+                
+                // 2. Si seleccionó un número diferente al actual
+                if (!nuevoNumero.equals(numeroAnterior)) {
+                    // 3. Buscar el servicio disponible correspondiente al nuevo número
+                	TelefonoFijo nuevoFijo = null;
+                	boolean encontrado = false;
+
+                	for (int i = 0; i < empresa.getServiciosDisponibles().size() && !encontrado; i++) {
+                	    Servicio s = empresa.getServiciosDisponibles().get(i);
+                	    if (s instanceof TelefonoFijo) {
+                	        TelefonoFijo fijo = (TelefonoFijo) s;
+                	        if (fijo.getNumero().equals(nuevoNumero)) {
+                	            nuevoFijo = fijo;
+                	            encontrado = true; // MARCA COMO ENCONTRADO PARA CORTAR EL BUCLE
+                	        }
+                	    }
+                	}
+                    
+                    if (nuevoFijo != null) {
+                        // 4. Realizar el cambio
+                        empresa.getServiciosDisponibles().remove(nuevoFijo);
+                        
+                        // 5. Crear un nuevo teléfono disponible con el número anterior
+                        empresa.agregarTelefonoFijo(numeroAnterior);
+                        
+                        // 6. Actualizar el teléfono del cliente
+                        telefono.setNumero(nuevoNumero);
+                        
+                        cargarDatos();
+                        JOptionPane.showMessageDialog(this, 
+                            "Teléfono cambiado exitosamente\n" +
+                            "Anterior: " + numeroAnterior + "\n" +
+                            "Nuevo: " + nuevoNumero, 
+                            "Éxito", 
+                            JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }
+            }
+        }
+    }
+    // EDITAR TELEFONO MOVIL
+    private void editarTelefonoMovil(final TelefonoMovil telefonoActual) {
+        // 1. Configurar panel del diálogo
+        JPanel panel = new JPanel(new BorderLayout(10, 10));
+        final JComboBox<TelefonoMovil> comboMoviles = new JComboBox<TelefonoMovil>();
+        comboMoviles.setFont(new Font("Serif", Font.PLAIN, 16));
+
+        // 2. Llenar combo con móviles disponibles (excepto el actual)
+        for (Servicio s : empresa.getServiciosDisponibles()) {
+            if (s instanceof TelefonoMovil) {
+                comboMoviles.addItem((TelefonoMovil) s);
+            }
+        }
+
+        // 3. Insertar el actual como primera opción
+        comboMoviles.insertItemAt(telefonoActual, 0);
+        comboMoviles.setSelectedItem(telefonoActual);
+
+        // 4. Panel de detalles
+        JPanel panelDetalles = new JPanel(new GridLayout(2, 1, 5, 5));
+        final JLabel lblNumero = new JLabel("Número: " + telefonoActual.getNumero());
+        final JLabel lblMonto = new JLabel("Monto: $" + telefonoActual.getMontoApagar());
+
+        panelDetalles.add(lblNumero);
+        panelDetalles.add(lblMonto);
+
+        // 5. Listener para actualizar info
+        comboMoviles.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                TelefonoMovil seleccionado = (TelefonoMovil) comboMoviles.getSelectedItem();
+                lblNumero.setText("Número: " + seleccionado.getNumero());
+                lblMonto.setText("Monto: $" + seleccionado.getMontoApagar());
+            }
+        });
+
+        panel.add(new JLabel("Seleccione un teléfono móvil:"), BorderLayout.NORTH);
+        panel.add(comboMoviles, BorderLayout.CENTER);
+        panel.add(panelDetalles, BorderLayout.SOUTH);
+
+        // 6. Mostrar diálogo
+        int result = JOptionPane.showConfirmDialog(
+            this,
+            panel,
+            "Editar Teléfono Móvil",
+            JOptionPane.OK_CANCEL_OPTION,
+            JOptionPane.PLAIN_MESSAGE);
+
+        if (result == JOptionPane.OK_OPTION) {
+            TelefonoMovil seleccionado = (TelefonoMovil) comboMoviles.getSelectedItem();
+
+            if (seleccionado != telefonoActual) {
+                Cliente titular = telefonoActual.getTitular();
+
+                // === PASO CLAVE ===
+                // 1) Quitar el móvil actual de TODAS las listas
+                titular.getServicios().remove(telefonoActual);
+                empresa.getServicios().remove(telefonoActual);
+                
+                // 2) Agregarlo a disponibles
+                empresa.getServiciosDisponibles().add(telefonoActual);
+
+                // 3) Quitar el nuevo de disponibles
+                empresa.getServiciosDisponibles().remove(seleccionado);
+
+                // 4) Vincular nuevo móvil
+                seleccionado.setTitular(titular);
+               
+                empresa.getServicios().add(seleccionado);
+
+                // 5) Actualizar
                 cargarDatos();
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(
-                    this, 
-                    "El monto debe ser un número válido", 
-                    "Error", 
-                    JOptionPane.ERROR_MESSAGE);
+
+                JOptionPane.showMessageDialog(this,
+                    "Teléfono móvil cambiado correctamente.\nNuevo número: " + seleccionado.getNumero(),
+                    "Éxito",
+                    JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this,
+                    "No se realizaron cambios.",
+                    "Información",
+                    JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }
 
-    private void editarCuentaNauta(CuentaNauta cuenta) {
-        // Implementación para editar cuenta nauta
-        String nuevoNick = JOptionPane.showInputDialog(
-            this, 
-            "Ingrese el nuevo nick:", 
-            cuenta.getNick());
+
+    private void editarCuentaNauta(final CuentaNauta cuenta) {
+        // 1. Crear panel de edición
+        final JPanel panel = new JPanel(new BorderLayout(10, 10));
         
-        if (nuevoNick != null && !nuevoNick.isEmpty()) {
-            cuenta.setNick(nuevoNick);
-            cargarDatos();
+        // 2. Campo de texto para el nuevo nick
+        final JTextField txtNick = new JTextField(cuenta.getNick());
+        txtNick.setFont(new Font("Serif", Font.PLAIN, 16));
+        
+        // 3. Panel para mensajes de validación
+        final JLabel lblMensaje = new JLabel(" ");
+        lblMensaje.setForeground(Color.RED);
+        
+        // 4. DocumentListener para validación en tiempo real
+        txtNick.getDocument().addDocumentListener(new DocumentListener() {
+            public void changedUpdate(DocumentEvent e) { validarNick(); }
+            public void removeUpdate(DocumentEvent e) { validarNick(); }
+            public void insertUpdate(DocumentEvent e) { validarNick(); }
+            
+            private void validarNick() {
+                String nuevoNick = txtNick.getText().trim();
+                boolean valido = true;
+                
+                if (nuevoNick.isEmpty()) {
+                    lblMensaje.setText("El nick no puede estar vacío");
+                    valido = false;
+                } else if (!nuevoNick.equals(cuenta.getNick())) {
+                    // Verificar si el nick ya existe
+                    boolean encontrado = false;
+                    for (Servicio s : empresa.getServicios()) {
+                        if (s instanceof CuentaNauta) {
+                            CuentaNauta otraCuenta = (CuentaNauta) s;
+                            if (otraCuenta.getNick().equalsIgnoreCase(nuevoNick)) {
+                                encontrado = true;
+                            }
+                        }
+                    }
+                    
+                    if (encontrado) {
+                        lblMensaje.setText("Este nick ya está en uso");
+                        valido = false;
+                    } else {
+                        lblMensaje.setText(" ");
+                    }
+                } else {
+                    lblMensaje.setText(" ");
+                }
+                
+                // Habilitar/deshabilitar botón OK según validación
+                Window window = SwingUtilities.getWindowAncestor(panel);
+                if (window instanceof JDialog) {
+                    JDialog dialog = (JDialog) window;
+                    JButton okButton = null;
+                    
+                    for (Component c : dialog.getRootPane().getComponents()) {
+                        if (c instanceof JButton) {
+                            JButton button = (JButton) c;
+                            if (button.getText().equals("OK") || button.getText().equals("Aceptar")) {
+                                okButton = button;
+                            }
+                        }
+                    }
+                    
+                    if (okButton != null) {
+                        okButton.setEnabled(valido);
+                    }
+                }
+            }
+        });
+        
+        panel.add(new JLabel("Nuevo nick:"), BorderLayout.NORTH);
+        panel.add(txtNick, BorderLayout.CENTER);
+        panel.add(lblMensaje, BorderLayout.SOUTH);
+        
+        // 5. Mostrar diálogo
+        int result = JOptionPane.showConfirmDialog(
+            this, 
+            panel, 
+            "Editar Nick de Cuenta Nauta", 
+            JOptionPane.OK_CANCEL_OPTION,
+            JOptionPane.PLAIN_MESSAGE);
+        
+        // 6. Procesar cambios si se hace clic en OK
+        if (result == JOptionPane.OK_OPTION) {
+            String nuevoNick = txtNick.getText().trim();
+            
+            // Validación final (por si acaso)
+            boolean nickValido = true;
+            String mensajeError = "";
+            
+            if (nuevoNick.isEmpty()) {
+                nickValido = false;
+                mensajeError = "El nick no puede estar vacío";
+            } else if (!nuevoNick.equals(cuenta.getNick())) {
+                // Verificar duplicados
+                boolean encontrado = false;
+                for (Servicio s : empresa.getServicios()) {
+                    if (s instanceof CuentaNauta) {
+                        CuentaNauta otraCuenta = (CuentaNauta) s;
+                        if (otraCuenta != cuenta && otraCuenta.getNick().equalsIgnoreCase(nuevoNick)) {
+                            encontrado = true;
+                        }
+                    }
+                }
+                
+                if (encontrado) {
+                    nickValido = false;
+                    mensajeError = "Este nick ya está en uso";
+                }
+            }
+            
+            if (nickValido) {
+                // Actualizar el nick
+                cuenta.setNick(nuevoNick);
+                cargarDatos();
+                
+                JOptionPane.showMessageDialog(this, 
+                    "Nick actualizado correctamente",
+                    "Éxito",
+                    JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this,
+                    mensajeError,
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+                
+                // Volver a mostrar el diálogo
+                editarCuentaNauta(cuenta);
+            }
         }
     }
 
@@ -632,6 +877,9 @@ public class ListadoServicios extends JDialog {
         boolean eliminado = false;
         
         if (servicio instanceof TelefonoFijo) {
+            // Primero marcamos el teléfono como disponible
+            empresa.agregarTelefonoFijo(((TelefonoFijo)servicio).getNumero());
+            // Luego lo eliminamos del cliente
             eliminado = empresa.eliminarTelefonoFIjo(((TelefonoFijo)servicio).getNumero());
         } else if (servicio instanceof TelefonoMovil) {
             eliminado = empresa.eliminarTelefonoMovil(((TelefonoMovil)servicio).getNumero());
@@ -647,7 +895,8 @@ public class ListadoServicios extends JDialog {
         modelMoviles.cargarDatos(empresa.getTelefonosMoviles());
         modelNauta.cargarDatos(empresa.getCuentasNautas());
     }
-
+    
+// TODO
     private void mostrarFormulario() {
         // Cerrar panel de creación si está abierto
         if (panelCreacion.isVisible()) {
@@ -852,11 +1101,12 @@ public class ListadoServicios extends JDialog {
         tabbedPane.setFocusable(false);
 
         // Acción Guardar
+     // Dentro del ActionListener del btnGuardar, después de asignar el servicio:
         btnGuardar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Cliente titular = listaClientes.getSelectedValue();
-               
+                
                 if (titular == null) {
                     UIManager.put("OptionPane.messageFont", fontLabels);
                     JOptionPane.showMessageDialog(ListadoServicios.this,
@@ -864,28 +1114,57 @@ public class ListadoServicios extends JDialog {
                         "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                
+
                 try {
+                    String mensajeExito = "";
+                    
                     if (pestañaSeleccionada == 0) { // Teléfono Fijo
                         if (comboFijos.getSelectedIndex() == -1) {
                             throw new IllegalArgumentException("Debe seleccionar un teléfono fijo disponible");
                         }
-                        empresa.asignarTelefonoFijo(titular);
-                    } 
-                    else if (pestañaSeleccionada == 1) { // Teléfono Móvil
+                        String numeroFijo = (String) comboFijos.getSelectedItem();
+                        empresa.asignarTelefonoFijo(titular, numeroFijo);
+                        mensajeExito = "Teléfono fijo asignado correctamente a " + titular.getNombre();
+                        
+                    } else if (pestañaSeleccionada == 1) { // Teléfono Móvil
                         if (comboMoviles.getSelectedIndex() == -1) {
                             throw new IllegalArgumentException("Debe seleccionar un teléfono móvil disponible");
                         }
                         empresa.asignarTelefonoMovil(titular);
-                    } 
-                    else if (pestañaSeleccionada == 2) { // Cuenta Nauta
-                        String nick = txtNick.getText();
-                        if (nick.isEmpty()) {
-                            throw new IllegalArgumentException("Debe ingresar un nick para la cuenta");
+                        mensajeExito = "Teléfono móvil asignado correctamente a " + titular.getNombre();
+                        
+                      //TODO
+                    } else if (pestañaSeleccionada == 2) { // Cuenta Nauta
+                        String nick = txtNick.getText().trim();
+                        
+                        try {
+                            // Validación básica del nick
+                            if (nick.isEmpty()) {
+                                throw new IllegalArgumentException("Debe ingresar un nick para la cuenta");
+                            }
+                            
+                            // Verificar nick repetido
+                            for (Servicio s : empresa.getServicios()) {
+                                if (s instanceof CuentaNauta) {
+                                    CuentaNauta cuentaExistente = (CuentaNauta) s;
+                                    if (cuentaExistente.getNick().equalsIgnoreCase(nick)) {
+                                        throw new IllegalArgumentException("El nick '" + nick + "' ya está en uso");
+                                    }
+                                }
+                            }
+                            
+                            // Usar el método de validación de la empresa que ya tiene las reglas implementadas
+                            empresa.crearCuentaNauta(titular, nick);
+                            
+                            mensajeExito = "Cuenta Nauta '" + nick + "' asignada correctamente a " + titular.getNombre();
+                            
+                        } catch (IllegalArgumentException ex) {
+                            throw ex; // Re-lanzamos la excepción para que la maneje el bloque principal
+                        } catch (Exception ex) {
+                            throw new IllegalArgumentException("Error al asignar cuenta Nauta: " + ex.getMessage());
                         }
-                        empresa.crearCuentaNauta(titular, nick);
                     }
-                    
+
                     cargarDatos();
                     panelFormulario.setVisible(false);
                     tablaActual.setEnabled(true);
@@ -893,7 +1172,17 @@ public class ListadoServicios extends JDialog {
                     tabbedPane.setEnabled(true);
                     tabbedPane.setFocusable(true);
                     setSize(1015, 800);
-                    
+
+
+                    // Mostrar mensaje de éxito
+                    UIManager.put("OptionPane.messageFont", new Font("Serif", Font.PLAIN, 18));
+                    JOptionPane.showMessageDialog(
+                        ListadoServicios.this,
+                        mensajeExito,
+                        "Asignación Exitosa",
+                        JOptionPane.INFORMATION_MESSAGE);
+
+
                 } catch (Exception ex) {
                     UIManager.put("OptionPane.messageFont", fontLabels);
                     JOptionPane.showMessageDialog(ListadoServicios.this,
@@ -922,6 +1211,10 @@ public class ListadoServicios extends JDialog {
         panelFormulario.repaint();
     }
     
+
+    // TODO
+    
+
     @Override
     public void dispose() {
         // Restaurar imagen al cerrar

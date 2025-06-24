@@ -90,8 +90,6 @@ public class TelefonoMovil extends Telefono {
     public String toString() {
         return numero; 
     }
-    
-   
 
  
     public static String validarTelefonoMovil(String telefono) throws IllegalArgumentException {

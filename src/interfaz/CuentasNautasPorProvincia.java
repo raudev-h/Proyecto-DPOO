@@ -96,7 +96,8 @@ public class CuentasNautasPorProvincia extends JDialog {
         table.repaint();
     }
     
-    // Patrón Singleton
+
+    // Patrón Singleton como en las otras ventanas
     public static void abrirCuentasNautasPorProvincia(Principal principal) {
         if (instance == null) {
             instance = new CuentasNautasPorProvincia(principal);
