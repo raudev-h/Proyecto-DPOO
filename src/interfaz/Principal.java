@@ -195,6 +195,12 @@ public class Principal extends JFrame {
 		menuBar.add(mnAyuda);
 		
 		JMenuItem mntmAcercaDe = new JMenuItem("Acerca de");
+		mntmAcercaDe.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Ayuda ayuda = new Ayuda();
+				ayuda.setVisible(true);
+			}
+		});
 		mntmAcercaDe.setFont(new Font("Serif", Font.PLAIN, 21));
 		mnAyuda.add(mntmAcercaDe);
 		
