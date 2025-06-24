@@ -81,6 +81,8 @@ public class ListadoClientes extends JDialog {
  // Componentes para seleccionar un servicio al crear un cliente
     private JButton btnSeleccionarServicio;
     private Servicio servicioSeleccionado;
+    private static Principal ventanaPrincipal;
+
 
     // Mapa de provincias y municipios de Cuba
     private static final Map<String, String[]> PROVINCIAS_MUNICIPIOS = new LinkedHashMap<String, String[]>() {{
@@ -134,14 +136,15 @@ public class ListadoClientes extends JDialog {
     }};
 
     // Constructor privado para Singleton
-    private ListadoClientes() {
+    private ListadoClientes(Principal principal) {
         setBounds(100, 100, 1087, 790);
+        ventanaPrincipal = principal;
         setLocationRelativeTo(null);
         getContentPane().setLayout(null);
         setTitle("Listado de Clientes");
         setModal(true);
         setResizable(false); // ← Esto evita que la ventana se pueda redimensionar
-
+        
         
         initComponents();
         configurarMenuContextual();
@@ -152,20 +155,25 @@ public class ListadoClientes extends JDialog {
 
     // Método Singleton para obtener la instancia
 
-    public static synchronized ListadoClientes getInstance() {
+    public static synchronized ListadoClientes getInstance(Principal principal) {
         if (instance == null) {
-            instance = new ListadoClientes();
+            instance = new ListadoClientes(principal);
+        } else {
+            // Actualizar referencia si ya existe
+            instance.ventanaPrincipal = principal;
         }
         return instance;
     }
 
     // Método estático para abrir la ventana
 
-    public static void abrirListadoClientes() {
-    	
+    public static void abrirListadoClientes(final Principal principal) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
+                // Pre-cambiar la imagen ANTES de crear el diálogo
+                principal.cambiarImagenFondo("/imagenes/e.png");
+                
                 if (instance != null && instance.isVisible()) {
                     JOptionPane.showMessageDialog(null, 
                         "El listado de clientes ya está abierto", 
@@ -174,16 +182,11 @@ public class ListadoClientes extends JDialog {
                     return;
                 }
                 
-                ListadoClientes dialog = ListadoClientes.getInstance();
-               dialog.mostrarVentana();
+                ListadoClientes dialog = ListadoClientes.getInstance(principal);
+                dialog.mostrarVentana();
                 
                 if (dialog.isVisible()) {
                     UIManager.put("OptionPane.messageFont", new Font("Serif", Font.BOLD, 20));
-                    UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.BOLD, 18));
-                    UIManager.put("OptionPane.background", new Color(240, 240, 240));
-                    UIManager.put("Panel.background", new Color(240, 240, 240));
-                    UIManager.put("OptionPane.title", new Font("Serif",Font.PLAIN,20));
-                    
                     dialog.toFront();
                 }
             }
@@ -192,12 +195,21 @@ public class ListadoClientes extends JDialog {
     
     
     //Liberar la instancia al cerrar el listado
+
     @Override
     public void dispose() {
+        // Restaurar imagen original SOLO cuando se cierra completamente
+        if (ventanaPrincipal != null) {
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    ventanaPrincipal.cambiarImagenFondo("/imagenes/d.png");
+                }
+            });
+        }
         instance = null;
         super.dispose();
     }
-
     private void initComponents() {
         tableModel = new ClienteTableModel();
         tableModel.cargarClientes();

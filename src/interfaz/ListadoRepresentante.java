@@ -29,6 +29,8 @@ public class ListadoRepresentante extends JDialog {
     private RepresentanteTableModel tableModel;
     private static ListadoRepresentante instance;
     private TableRowSorter<RepresentanteTableModel> sorter;
+    private static Principal ventanaPrincipal; 
+
     
     // Campos para edición/creación
     private JPanel panelEdicion;
@@ -46,17 +48,9 @@ public class ListadoRepresentante extends JDialog {
     // Campo para búsqueda
     private JTextField txtBusqueda;
 
-    public static void main(String[] args) {
-        try {
-            ListadoRepresentante dialog = new ListadoRepresentante();
-            dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-            dialog.setVisible(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+    
 
-    private ListadoRepresentante() {
+    private ListadoRepresentante(Principal principal) {
         setModal(true);
         setBounds(100, 100, 1087, 790);
         setLocationRelativeTo(null);
@@ -66,6 +60,10 @@ public class ListadoRepresentante extends JDialog {
         panel.setBounds(15, 16, 1035, 702);
         getContentPane().add(panel);
         panel.setLayout(null);
+        ventanaPrincipal = principal; // Guardar referencia
+        
+        // Cambiar imagen al abrir
+        ventanaPrincipal.cambiarImagenFondo("/imagenes/e.png");
         
         // Panel de búsqueda simplificado
         JPanel panelBusqueda = new JPanel();
@@ -558,19 +556,24 @@ public class ListadoRepresentante extends JDialog {
         });
     }
 
-    // Patrón Singleton como en ListadoClientes
-    public static void abrirListadoRepresentante() {
+ // Método Singleton 
+    public static void abrirListadoRepresentante(Principal principal) {
         if (instance == null) {
-            instance = new ListadoRepresentante();
+            instance = new ListadoRepresentante(principal);
             instance.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
             instance.setVisible(true);
         } else {
-            instance.toFront(); // Solo lleva la ventana al frente si ya existe
+            instance.toFront();
+            // Actualizar referencia si ya existe
+            instance.ventanaPrincipal = principal;
         }
     }
-
     @Override
     public void dispose() {
+        // Restaurar imagen al cerrar
+        if (ventanaPrincipal != null) {
+            ventanaPrincipal.cambiarImagenFondo("/imagenes/d.png");
+        }
         instance = null;
         super.dispose();
     }

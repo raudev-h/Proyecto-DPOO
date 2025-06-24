@@ -6,26 +6,23 @@ import auxiliares.*;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.table.JTableHeader;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 public class ClientesMayorConsumoLlamadasLargaDistancia extends JDialog {
     private JTable table;
     private static ClientesMayorConsumoLlamadasLargaDistancia instance;
-    
-    public static void main(String[] args) {
-        try {
-            ClientesMayorConsumoLlamadasLargaDistancia dialog = new ClientesMayorConsumoLlamadasLargaDistancia();
-            dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-            dialog.setVisible(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+    private static Principal ventanaPrincipal;
 
-    public ClientesMayorConsumoLlamadasLargaDistancia() {
+    
+ 
+
+    public ClientesMayorConsumoLlamadasLargaDistancia(Principal principal) {
     	setModal(true);
         setBounds(100, 100, 1126, 662);
         setLocationRelativeTo(null);
@@ -35,6 +32,8 @@ public class ClientesMayorConsumoLlamadasLargaDistancia extends JDialog {
         panel.setBounds(15, 16, 1074, 496);
         getContentPane().add(panel);
         panel.setLayout(null);
+        
+        ventanaPrincipal = principal;
         
         JScrollPane scrollPane = new JScrollPane();
         scrollPane.setViewportBorder(new LineBorder(new Color(0, 0, 0)));
@@ -61,9 +60,29 @@ public class ClientesMayorConsumoLlamadasLargaDistancia extends JDialog {
         lblTitulo.setBounds(15, 0, 600, 20);
         panel.add(lblTitulo);
         
+     // Cambiar imagen solo si tenemos referencia válida
+        if (ventanaPrincipal != null) {
+            ventanaPrincipal.cambiarImagenFondo("/imagenes/e.png");
+        }
+        
+        // Asegurarnos de manejar el cierre correctamente
+        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                restoreBackground();
+            }
+        });
         
         llenarTabla();
     }
+    
+    private void restoreBackground() {
+        if (ventanaPrincipal != null) {
+            ventanaPrincipal.cambiarImagenFondo("/imagenes/d.png");
+        }
+    }
+    
 
     private void llenarTabla() {
         ArrayList<Cliente> clientes = EmpresaTelecomunicaciones.getInstancia().clientesAltoConsumoLlamadaFijo();
@@ -73,9 +92,9 @@ public class ClientesMayorConsumoLlamadasLargaDistancia extends JDialog {
     }
     
     // Patrón Singleton
-    public static void abrirReporteLlamadasLargaDistancia() {
+    public static void abrirReporteLlamadasLargaDistancia(Principal principal) {
         if (instance == null) {
-            instance = new ClientesMayorConsumoLlamadasLargaDistancia();
+            instance = new ClientesMayorConsumoLlamadasLargaDistancia(principal);
             instance.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
             instance.setVisible(true);
         } else {
@@ -98,6 +117,7 @@ public class ClientesMayorConsumoLlamadasLargaDistancia extends JDialog {
 
     @Override
     public void dispose() {
+        restoreBackground();
         instance = null;
         super.dispose();
     }
