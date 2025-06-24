@@ -28,6 +28,7 @@ public class ListadoServicios extends JDialog {
     private JPanel panelFormulario;
     private JTable tablaBloqueada;
     private static ListadoServicios instance;
+    private static Principal ventanaPrincipal;
     
     // Campos para creación de servicios
     private JPanel panelCreacion;
@@ -49,13 +50,17 @@ public class ListadoServicios extends JDialog {
     private JLabel lblNumeroMovil;
     private JLabel lblMontoMovil;
 
-    private ListadoServicios() {
+    private ListadoServicios(Principal principal) {
         empresa = EmpresaTelecomunicaciones.getInstancia();
         setModal(true);
         setTitle("Listado de Servicios");
         setBounds(100, 100, 1015, 800);
         setLocationRelativeTo(null);
-
+        ventanaPrincipal = principal; // Guardar referencia
+        
+        // Cambiar imagen al abrir
+        ventanaPrincipal.cambiarImagenFondo("/imagenes/e.png");
+        
         initComponents();
         configurarMenuContextual();
     }
@@ -1206,23 +1211,30 @@ public class ListadoServicios extends JDialog {
         panelFormulario.repaint();
     }
     
+
     // TODO
     
+
     @Override
     public void dispose() {
+        // Restaurar imagen al cerrar
+        if (ventanaPrincipal != null) {
+            ventanaPrincipal.cambiarImagenFondo("/imagenes/d.png");
+        }
         instance = null;
         super.dispose();
     }
 
-    public static void abrirListadoServicio() {
+    public static void abrirListadoServicio(Principal principal) {
         if (instance == null) {
-            instance = new ListadoServicios();
+            instance = new ListadoServicios(principal);
             instance.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
             instance.setVisible(true);
         } else {
+            // Actualizar referencia si ya existe
+            instance.ventanaPrincipal = principal;
             if (!instance.isVisible()) instance.setVisible(true);
-            else JOptionPane.showMessageDialog(null, "La ventana ya está abierta");
-            instance.toFront();
+            else instance.toFront();
         }
     }
 }

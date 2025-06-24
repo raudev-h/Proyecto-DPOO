@@ -25,7 +25,8 @@ public class ListadoClientes extends JDialog {
     private JTable table;
     private ClienteTableModel tableModel;
     private static ListadoClientes instance;
-    
+    private JTextField txtBusqueda;
+
 
     // Campos de edición
     private JPanel panelEdicion;
@@ -80,6 +81,8 @@ public class ListadoClientes extends JDialog {
  // Componentes para seleccionar un servicio al crear un cliente
     private JButton btnSeleccionarServicio;
     private Servicio servicioSeleccionado;
+    private static Principal ventanaPrincipal;
+
 
     // Mapa de provincias y municipios de Cuba
     private static final Map<String, String[]> PROVINCIAS_MUNICIPIOS = new LinkedHashMap<String, String[]>() {{
@@ -133,14 +136,15 @@ public class ListadoClientes extends JDialog {
     }};
 
     // Constructor privado para Singleton
-    private ListadoClientes() {
+    private ListadoClientes(Principal principal) {
         setBounds(100, 100, 1087, 790);
+        ventanaPrincipal = principal;
         setLocationRelativeTo(null);
         getContentPane().setLayout(null);
         setTitle("Listado de Clientes");
         setModal(true);
         setResizable(false); // ← Esto evita que la ventana se pueda redimensionar
-
+        
         
         initComponents();
         configurarMenuContextual();
@@ -151,20 +155,25 @@ public class ListadoClientes extends JDialog {
 
     // Método Singleton para obtener la instancia
 
-    public static synchronized ListadoClientes getInstance() {
+    public static synchronized ListadoClientes getInstance(Principal principal) {
         if (instance == null) {
-            instance = new ListadoClientes();
+            instance = new ListadoClientes(principal);
+        } else {
+            // Actualizar referencia si ya existe
+            instance.ventanaPrincipal = principal;
         }
         return instance;
     }
 
     // Método estático para abrir la ventana
 
-    public static void abrirListadoClientes() {
-    	
+    public static void abrirListadoClientes(final Principal principal) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
+                // Pre-cambiar la imagen ANTES de crear el diálogo
+                principal.cambiarImagenFondo("/imagenes/e.png");
+                
                 if (instance != null && instance.isVisible()) {
                     JOptionPane.showMessageDialog(null, 
                         "El listado de clientes ya está abierto", 
@@ -173,16 +182,11 @@ public class ListadoClientes extends JDialog {
                     return;
                 }
                 
-                ListadoClientes dialog = ListadoClientes.getInstance();
-               dialog.mostrarVentana();
+                ListadoClientes dialog = ListadoClientes.getInstance(principal);
+                dialog.mostrarVentana();
                 
                 if (dialog.isVisible()) {
                     UIManager.put("OptionPane.messageFont", new Font("Serif", Font.BOLD, 20));
-                    UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.BOLD, 18));
-                    UIManager.put("OptionPane.background", new Color(240, 240, 240));
-                    UIManager.put("Panel.background", new Color(240, 240, 240));
-                    UIManager.put("OptionPane.title", new Font("Serif",Font.PLAIN,20));
-                    
                     dialog.toFront();
                 }
             }
@@ -191,15 +195,22 @@ public class ListadoClientes extends JDialog {
     
     
     //Liberar la instancia al cerrar el listado
+
     @Override
     public void dispose() {
+        // Restaurar imagen original SOLO cuando se cierra completamente
+        if (ventanaPrincipal != null) {
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    ventanaPrincipal.cambiarImagenFondo("/imagenes/d.png");
+                }
+            });
+        }
         instance = null;
         super.dispose();
     }
-
     private void initComponents() {
-    	
-    	
         tableModel = new ClienteTableModel();
         tableModel.cargarClientes();
         
@@ -208,31 +219,61 @@ public class ListadoClientes extends JDialog {
         getContentPane().add(panel);
         panel.setLayout(null);
         
-        JScrollPane scrollPane = new JScrollPane();
-        scrollPane.setViewportBorder(new LineBorder(new Color(0, 0, 0)));
-        scrollPane.setBounds(15, 36, 1014, 614);
-        panel.add(scrollPane);
+        // Panel de búsqueda
+        JPanel panelBusqueda = new JPanel();
+        panelBusqueda.setBounds(15, 30, 588, 40);
+        panelBusqueda.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 5));
+        panel.add(panelBusqueda);
         
-        table = new JTable(tableModel);
-        table.getTableHeader().setReorderingAllowed(false);
-        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        table.setFont(new Font("Serif", Font.PLAIN, 18));
-        scrollPane.setViewportView(table);
+        // Componente de búsqueda
+        JLabel lblBuscar = new JLabel("Buscar:");
+        lblBuscar.setFont(new Font("Serif", Font.PLAIN, 18));
+        panelBusqueda.add(lblBuscar);
         
-        JTableHeader header = table.getTableHeader();
-        Font headerFont = new Font("Serif",Font.PLAIN, 20);
-        header.setFont(headerFont);
-        
-        table.setFont(new Font("Serif", Font.PLAIN, 20));
-        table.setRowHeight(25);
+        txtBusqueda = new JTextField();
+        txtBusqueda.setFont(new Font("Serif", Font.PLAIN, 18));
+        txtBusqueda.setColumns(30);
+        txtBusqueda.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                filtrarTabla();
+            }
+        });
+        panelBusqueda.add(txtBusqueda);
         
         JLabel lblListadoDeClientes = new JLabel("Listado de Clientes");
         lblListadoDeClientes.setFont(new Font("Serif", Font.BOLD, 21));
         lblListadoDeClientes.setBounds(15, 0, 195, 20);
         panel.add(lblListadoDeClientes);
         
+        // Configuración única del JScrollPane y JTable
+        JScrollPane scrollPane = new JScrollPane();
+        scrollPane.setViewportBorder(new LineBorder(new Color(0, 0, 0)));
+        scrollPane.setBounds(15, 80, 1014, 570);
+        panel.add(scrollPane);
+        
+        table = new JTable(tableModel);
+        table.getTableHeader().setReorderingAllowed(false);
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        table.setFont(new Font("Serif", Font.PLAIN, 18));
+        table.setRowHeight(25);
+        scrollPane.setViewportView(table);
+        
+        // Configurar anchos de columnas
+        TableColumnModel columnModel = table.getColumnModel();
+        columnModel.getColumn(0).setPreferredWidth(200); // Nombre
+        columnModel.getColumn(1).setPreferredWidth(200); // Dirección
+        columnModel.getColumn(2).setPreferredWidth(150); // Tipo
+        
+        JTableHeader header = table.getTableHeader();
+        Font headerFont = new Font("Serif", Font.PLAIN, 20);
+        header.setFont(headerFont);
+        
+        // Configurar el TableRowSorter
+        sorter = new TableRowSorter<ClienteTableModel>(tableModel);
+        table.setRowSorter(sorter);
+        
         // Botón Crear Cliente
-
         btnCrearCliente = new JButton("Crear Cliente");
         btnCrearCliente.setForeground(new Color(0, 0, 153));
         btnCrearCliente.setBackground(Color.WHITE);
@@ -247,8 +288,46 @@ public class ListadoClientes extends JDialog {
         
         initPanelCreacion();
         initPanelEdicion();
-        
     }
+    
+ // Añadir nuevo método para filtrar la tabla (similar al de ListadoRepresentante)
+    private void filtrarTabla() {
+        final String textoBusqueda = txtBusqueda.getText().trim().toLowerCase();
+        
+        if (textoBusqueda.isEmpty()) {
+            tableModel.cargarClientes(); // Mostrar todos
+            return;
+        }
+        
+        try {
+            ArrayList<Cliente> clientesFiltrados = new ArrayList<>();
+            ArrayList<Cliente> todosClientes = EmpresaTelecomunicaciones.getInstancia().getClientes();
+            
+            for (Cliente cliente : todosClientes) {
+                boolean coincideNombre = cliente.getNombre().toLowerCase().contains(textoBusqueda);
+                boolean coincideCI = false;
+                
+                // Solo para PersonaNatural: buscar en el carnet
+                if (cliente instanceof PersonaNatural) {
+                    PersonaNatural pn = (PersonaNatural) cliente;
+                    String numId = pn.getNumId().toLowerCase();
+                    coincideCI = numId.contains(textoBusqueda);
+                }
+                
+                if (coincideNombre || coincideCI) {
+                    clientesFiltrados.add(cliente);
+                }
+            }
+            
+            tableModel.actualizarClientes(clientesFiltrados);
+            
+        } catch (Exception e) {
+            manejarError(e, "Error al aplicar el filtro de búsqueda");
+        }
+    }
+
+    // Añadir variable de clase para el sorter
+    private TableRowSorter<ClienteTableModel> sorter;
 
     private void abrirPanelCreacion() {
         modoEdicion = false;

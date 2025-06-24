@@ -25,6 +25,7 @@ public class login extends JFrame {
     private JLabel mensajeError;
     private JLabel mensajeIntentos;
     private JLabel lblTemporizador;
+    
 
     
     // Control de intentos
