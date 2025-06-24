@@ -199,123 +199,205 @@ public class Inicializadora {
 
 		// Agregar un Representante a una entidad no estatal( esto lo hice debajo de cada ENE)
 
+		// ==============================
+		// 1) CREAR TELÉFONOS FIJOS DISPONIBLES (sin titular)
+		// ==============================
+		empresa.agregarTelefonoFijo("78781234");
+		empresa.agregarTelefonoFijo("78451233");
+		empresa.agregarTelefonoFijo("76378134");
+		empresa.agregarTelefonoFijo("76410037");
+		empresa.agregarTelefonoFijo("78123456");
+		empresa.agregarTelefonoFijo("78234567");
+		empresa.agregarTelefonoFijo("76413700");
+		empresa.agregarTelefonoFijo("78567890");
+		empresa.agregarTelefonoFijo("78889999");
+		empresa.agregarTelefonoFijo("45789012");
+		empresa.agregarTelefonoFijo("78345678");
+		empresa.agregarTelefonoFijo("45234567");
+		empresa.agregarTelefonoFijo("78890012");
+		empresa.agregarTelefonoFijo("45781234");
+		empresa.agregarTelefonoFijo("78901234");
+		empresa.agregarTelefonoFijo("45783456");
+		empresa.agregarTelefonoFijo("78892345");
+		empresa.agregarTelefonoFijo("45789999");
+		empresa.agregarTelefonoFijo("78810023");
+		empresa.agregarTelefonoFijo("78832040");
+		empresa.agregarTelefonoFijo("56341234");
+		empresa.agregarTelefonoFijo("56234567");
+		empresa.agregarTelefonoFijo("56123456");
+		empresa.agregarTelefonoFijo("78817052");
+		empresa.agregarTelefonoFijo("56239876");
+		empresa.agregarTelefonoFijo("78654321");
+		empresa.agregarTelefonoFijo("78765432");
+		empresa.agregarTelefonoFijo("78876543");
+		empresa.agregarTelefonoFijo("78987654");
+		empresa.agregarTelefonoFijo("78234567");
+		empresa.agregarTelefonoFijo("78345678");
+		empresa.agregarTelefonoFijo("78456789");
+		empresa.agregarTelefonoFijo("78567890");
+		empresa.agregarTelefonoFijo("78678901");
+		empresa.agregarTelefonoFijo("78789012");
+		empresa.agregarTelefonoFijo("78890123");
+		empresa.agregarTelefonoFijo("78901234");
+		empresa.agregarTelefonoFijo("78012345");
+		empresa.agregarTelefonoFijo("78123456");
 
-		
+		// ==============================
+		// 2) CREAR TELÉFONOS MÓVILES DISPONIBLES (sin titular)
+		// ==============================
+		empresa.agregarTelefonoMovil("52345678", 350.50);
+		empresa.agregarTelefonoMovil("58901234", 420.75);
+		empresa.agregarTelefonoMovil("53456789", 380.00);
+		empresa.agregarTelefonoMovil("58907654", 450.25);
+		empresa.agregarTelefonoMovil("52349876", 370.75);
+		empresa.agregarTelefonoMovil("58906543", 400.00);
+		empresa.agregarTelefonoMovil("53456701", 360.00);
+		empresa.agregarTelefonoMovil("58903456", 410.50);
+		empresa.agregarTelefonoMovil("52345670", 390.00);
+		empresa.agregarTelefonoMovil("58909999", 420.00);
 
-		// Servicios para Personas Naturales
-		empresa.agregarTelefonoFijo(pn1, "78781234");
-		empresa.agregarTelefonoMovil(pn1, "52345678", 350.50);
+		empresa.agregarTelefonoMovil("58432109", 600.00);
+		empresa.agregarTelefonoMovil("57901234", 550.50);
+		empresa.agregarTelefonoMovil("58903456", 610.00);
+		empresa.agregarTelefonoMovil("58907654", 580.75);
+		empresa.agregarTelefonoMovil("58451234", 590.25);
+		empresa.agregarTelefonoMovil("57906543", 600.50);
+		empresa.agregarTelefonoMovil("58456789", 615.00);
+		empresa.agregarTelefonoMovil("58904567", 620.00);
+		empresa.agregarTelefonoMovil("58453456", 630.00);
+
+		empresa.agregarTelefonoMovil("56781234", 300.25);
+		empresa.agregarTelefonoMovil("56432109", 320.50);
+		empresa.agregarTelefonoMovil("56782345", 310.00);
+		empresa.agregarTelefonoMovil("56430987", 305.75);
+		empresa.agregarTelefonoMovil("56785432", 315.50);
+		empresa.agregarTelefonoMovil("56437890", 325.25);
+		empresa.agregarTelefonoMovil("56789012", 330.00);
+		empresa.agregarTelefonoMovil("56431234", 335.75);
+		empresa.agregarTelefonoMovil("56783456", 340.25);
+
+		empresa.agregarTelefonoMovil("51234567", 245.50);
+		empresa.agregarTelefonoMovil("58901234", 189.75);
+		empresa.agregarTelefonoMovil("54567890", 320.00);
+		empresa.agregarTelefonoMovil("52876543", 415.25);
+		empresa.agregarTelefonoMovil("52652109", 150.80);
+		empresa.agregarTelefonoMovil("53469012", 275.30);
+		empresa.agregarTelefonoMovil("52347890", 495.60);
+		empresa.agregarTelefonoMovil("53125678", 225.90);
+		empresa.agregarTelefonoMovil("54096543", 380.45);
+		empresa.agregarTelefonoMovil("54236789", 110.20);
+		empresa.agregarTelefonoMovil("55876541", 290.75);
+		empresa.agregarTelefonoMovil("55901236", 175.30);
+		empresa.agregarTelefonoMovil("56789014", 430.50);
+		empresa.agregarTelefonoMovil("56987652", 265.80);
+
+		// ==============================
+		// 3) ASIGNAR TELÉFONOS FIJOS A CLIENTES — usando número explícito
+		// ==============================
+
+		// Personas Naturales
+		empresa.asignarTelefonoFijo(pn1, "78781234");
+		empresa.asignarTelefonoFijo(pn2, "78451233");
+		empresa.asignarTelefonoFijo(pn3, "76378134");
+		empresa.asignarTelefonoFijo(pn4, "76410037");
+		empresa.asignarTelefonoFijo(pn5, "78123456");
+		empresa.asignarTelefonoFijo(pn6, "78234567");
+		empresa.asignarTelefonoFijo(pn7, "76413700");
+		empresa.asignarTelefonoFijo(pn8, "78567890");
+		empresa.asignarTelefonoFijo(pn9, "78889999");
+
+		// Personas Jurídicas
+		empresa.asignarTelefonoFijo(pj1, "45789012");
+		empresa.asignarTelefonoFijo(pj2, "78345678");
+		empresa.asignarTelefonoFijo(pj3, "45234567");
+		empresa.asignarTelefonoFijo(pj4, "78890012");
+		empresa.asignarTelefonoFijo(pj5, "45781234");
+		empresa.asignarTelefonoFijo(pj6, "78901234");
+		empresa.asignarTelefonoFijo(pj7, "45783456");
+		empresa.asignarTelefonoFijo(pj8, "78892345");
+		empresa.asignarTelefonoFijo(pj9, "45789999");
+		empresa.asignarTelefonoFijo(pj10, "78810023");
+
+		// Entidades No Estatales
+		empresa.asignarTelefonoFijo(ene1, "78832040");
+		empresa.asignarTelefonoFijo(ene2, "56341234");
+		empresa.asignarTelefonoFijo(ene3, "56234567");
+		empresa.asignarTelefonoFijo(ene4, "56123456");
+		empresa.asignarTelefonoFijo(ene5, "78817052");
+		empresa.asignarTelefonoFijo(ene6, "56239876");
+		empresa.asignarTelefonoFijo(ene7, "78654321");
+		empresa.asignarTelefonoFijo(ene8, "78765432");
+		empresa.asignarTelefonoFijo(ene9, "78876543");
+
+		// ==============================
+		// 4) ASIGNAR TELÉFONOS MÓVILES A CLIENTES
+		// ==============================
+		// Personas Naturales
+		empresa.asignarTelefonoMovil(pn1);
 		empresa.crearCuentaNauta(pn1, "carlos_mtz");
 
-		empresa.agregarTelefonoMovil(pn2, "58901234", 420.75);
-		empresa.agregarTelefonoFijo(pn2, "76378134");
+		empresa.asignarTelefonoMovil(pn2);
 		empresa.crearCuentaNauta(pn2, "laura_dz");
 
-		empresa.agregarTelefonoFijo(pn3, "78451233");
-		empresa.agregarTelefonoMovil(pn3, "53456789", 380.00);
+		empresa.asignarTelefonoMovil(pn3);
 		empresa.crearCuentaNauta(pn3, "mario_perez");
 
-		empresa.agregarTelefonoMovil(pn4, "58907654", 450.25);
-		empresa.agregarTelefonoFijo(pn4, "76410037");
+		empresa.asignarTelefonoMovil(pn4);
 		empresa.crearCuentaNauta(pn4, "ana_torres");
 
-		empresa.agregarTelefonoFijo(pn5, "78123456");
-		empresa.agregarTelefonoMovil(pn5, "52349876", 370.75);
+		empresa.asignarTelefonoMovil(pn5);
 		empresa.crearCuentaNauta(pn5, "luis_gomez");
 
-		empresa.agregarTelefonoMovil(pn6, "58906543", 400.00);
-		
+		empresa.asignarTelefonoMovil(pn6);
 
-		empresa.agregarTelefonoFijo(pn7, "78234567");
-		empresa.agregarTelefonoMovil(pn7, "53456701", 360.00);
+		empresa.asignarTelefonoMovil(pn7);
 		empresa.crearCuentaNauta(pn7, "ernesto_lopez");
 
-		empresa.agregarTelefonoMovil(pn8, "58903456", 410.50);
-		empresa.agregarTelefonoFijo(pn8, "76413700");
+		empresa.asignarTelefonoMovil(pn8);
 		empresa.crearCuentaNauta(pn8, "claudia_herrera");
 
-		empresa.agregarTelefonoFijo(pn9, "78567890");
-		empresa.agregarTelefonoMovil(pn9, "52345670", 390.00);
+		empresa.asignarTelefonoMovil(pn9);
 		empresa.crearCuentaNauta(pn9, "jorge_suarez");
 
-		empresa.agregarTelefonoMovil(pn10, "58909999", 420.00);
-		
+		empresa.asignarTelefonoMovil(pn10);
 
-		// Servicios para Personas Jurídicas
-		empresa.agregarTelefonoFijo(pj1, "78889999");
-		
+		// Personas Jurídicas
+		empresa.asignarTelefonoMovil(pj2);
+		empresa.asignarTelefonoMovil(pj3);
+		empresa.asignarTelefonoMovil(pj4);
+		empresa.asignarTelefonoMovil(pj5);
+		empresa.asignarTelefonoMovil(pj6);
+		empresa.asignarTelefonoMovil(pj7);
+		empresa.asignarTelefonoMovil(pj8);
+		empresa.asignarTelefonoMovil(pj9);
+		empresa.asignarTelefonoMovil(pj10);
 
-		empresa.agregarTelefonoMovil(pj2, "58432109", 600.00);
-		empresa.agregarTelefonoFijo(pj2, "45789012");
-
-		empresa.agregarTelefonoFijo(pj3, "78345678");
-		empresa.agregarTelefonoMovil(pj3, "57901234", 550.50);
-	
-
-
-		empresa.agregarTelefonoFijo(pj4, "45234567");
-		empresa.agregarTelefonoMovil(pj4, "58903456", 610.00);
-		
-		empresa.agregarTelefonoFijo(pj5, "78890012");
-		empresa.agregarTelefonoMovil(pj5, "58907654", 580.75);
-		
-
-		empresa.agregarTelefonoFijo(pj6, "45781234");
-		empresa.agregarTelefonoMovil(pj6, "58451234", 590.25);
-		
-
-		empresa.agregarTelefonoFijo(pj7, "78901234");
-		empresa.agregarTelefonoMovil(pj7, "57906543", 600.50);
-		
-
-		empresa.agregarTelefonoFijo(pj8, "45783456");
-		empresa.agregarTelefonoMovil(pj8, "58456789", 615.00);
-		
-
-		empresa.agregarTelefonoFijo(pj9, "78892345");
-		empresa.agregarTelefonoMovil(pj9, "58904567", 620.00);
-		
-
-		empresa.agregarTelefonoFijo(pj10, "45789999");
-		empresa.agregarTelefonoMovil(pj10, "58453456", 630.00);
-		
-
-		// Servicios para Entidades No Estatales
-		empresa.agregarTelefonoFijo(ene1, "78810023");
+		// Entidades No Estatales
 		empresa.crearCuentaNauta(ene1, "mipyme_techsolutions");
 
-		empresa.agregarTelefonoMovil(ene2, "56781234", 300.25);
-		empresa.agregarTelefonoFijo(ene2, "78832040");
+		empresa.asignarTelefonoMovil(ene2);
 		empresa.crearCuentaNauta(ene2, "panaderia_buenpan");
 
-		empresa.agregarTelefonoFijo(ene3, "56341234");
-		empresa.agregarTelefonoMovil(ene3, "56432109", 320.50);
+		empresa.asignarTelefonoMovil(ene3);
 		empresa.crearCuentaNauta(ene3, "mipyme_habanacode");
 
-		empresa.agregarTelefonoMovil(ene4, "56782345", 310.00);
-		
+		empresa.asignarTelefonoMovil(ene4);
 
-		empresa.agregarTelefonoFijo(ene5, "56234567");
-		empresa.agregarTelefonoMovil(ene5, "56430987", 305.75);
+		empresa.asignarTelefonoMovil(ene5);
 		empresa.crearCuentaNauta(ene5, "disenos_creativos");
 
-		empresa.agregarTelefonoMovil(ene6, "56785432", 315.50);
-		
-		
-		empresa.agregarTelefonoFijo(ene7, "56123456");
-		empresa.agregarTelefonoMovil(ene7, "56437890", 325.25);
+		empresa.asignarTelefonoMovil(ene6);
+
+		empresa.asignarTelefonoMovil(ene7);
 		empresa.crearCuentaNauta(ene7, "ecotrans");
 
-		empresa.agregarTelefonoMovil(ene8, "56789012", 330.00);
-		empresa.agregarTelefonoFijo(ene8, "78817052");
+		empresa.asignarTelefonoMovil(ene8);
 		empresa.crearCuentaNauta(ene8, "arte_en_casa");
 
-		empresa.agregarTelefonoFijo(ene9, "56239876");
-		empresa.agregarTelefonoMovil(ene9, "56431234", 335.75);
+		empresa.asignarTelefonoMovil(ene9);
 		empresa.crearCuentaNauta(ene9, "consultores_legales");
 
-		empresa.agregarTelefonoMovil(ene10, "56783456", 340.25);
-		
+		empresa.asignarTelefonoMovil(ene10);
 
 
 		// Obtener los dos primeros telefonos fijos
@@ -328,7 +410,7 @@ public class Inicializadora {
 		// Llamadas para el telefono movil 1 (52345678)
 
 		// ==============================================
-		// AGREGAR LLAMADAS MANUALMENTE A CADA TELéFONO
+		// AGREGAR LLAMADAS MANUALMENTE A CADA TELÉFONO
 		// ==============================================
 		//TODO Arreglar los numeros de los telefonos de los destinatarios 
 
@@ -370,21 +452,22 @@ public class Inicializadora {
 
 		//Creacion de al menos 20 representantes
 		// Representantes adicionales libres (sin cliente asignado)
-		empresa.agregarRepresentante("Zurdokar Plasencia", "84121501001");
-		empresa.agregarRepresentante("Yaxiry Solunare", "90070102002");
-		empresa.agregarRepresentante("Quiruvio Noreste", "78030603003");
-		empresa.agregarRepresentante("Xilena Marabú", "85082204004");
-		empresa.agregarRepresentante("Ozmart Yerbabuena", "91103005005");
-		empresa.agregarRepresentante("Ufrano Calipso", "79041406006");
-		empresa.agregarRepresentante("Ixchel Toronja", "88052507007");
-		empresa.agregarRepresentante("Yovankor del Monte", "83070808008");
-		empresa.agregarRepresentante("Zuleyka Ombú", "92090909009");
-		empresa.agregarRepresentante("Quirino Almíbar", "87121210010");
-		empresa.agregarRepresentante("Xarandí Cósmico", "89111111011");
-		empresa.agregarRepresentante("Odalisca Mercurio", "94020212012");
-		empresa.agregarRepresentante("Yerutí Pandora", "80030313013");
-		empresa.agregarRepresentante("Zacarias Neptuno", "91040414014");
-		empresa.agregarRepresentante("Ulpiano Cerezo", "85050515015");
+				empresa.agregarRepresentante("Zurdokar Plasencia", "84121501001");
+				empresa.agregarRepresentante("Yaxiry Solunare", "90070102002");
+				empresa.agregarRepresentante("Quiruvio Noreste", "78030603003");
+				empresa.agregarRepresentante("Xilena Marab", "85082204004");
+				empresa.agregarRepresentante("Ozmart Yerbabuena", "91103005005");
+				empresa.agregarRepresentante("Ufrano Calipso", "79041406006");
+				empresa.agregarRepresentante("Ixchel Toronja", "88052507007");
+				empresa.agregarRepresentante("Yovankor del Monte", "83070808008");
+				empresa.agregarRepresentante("Zuleyka Omb", "92090909009");
+				empresa.agregarRepresentante("Quirino Almbar", "87121210010");
+				empresa.agregarRepresentante("Xarand Csmico", "89111111011");
+				empresa.agregarRepresentante("Odalisca Mercurio", "94020212012");
+				empresa.agregarRepresentante("Yerut Pandora", "80030313013");
+				empresa.agregarRepresentante("Zacarias Neptuno", "91040414014");
+				empresa.agregarRepresentante("Ulpiano Cerezo", "85050515015");
+		
 	}
 
 }

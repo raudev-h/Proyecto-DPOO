@@ -43,7 +43,7 @@ public class CuentasNautasPorProvincia extends JDialog {
         
         table = new JTable();
         
-        // Configuraciï¿½n de estilo consistente
+        // Configuración de estilo consistente
         table.getTableHeader().setReorderingAllowed(false);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.setFont(new Font("Serif", Font.PLAIN, 18));
@@ -72,7 +72,7 @@ public class CuentasNautasPorProvincia extends JDialog {
         table.repaint();
     }
     
-    // Patrï¿½n Singleton como en las otras ventanas
+    // Patrón Singleton como en las otras ventanas
     public static void abrirCuentasNautasPorProvincia() {
         if (instance == null) {
             instance = new CuentasNautasPorProvincia();
