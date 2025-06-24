@@ -2,6 +2,8 @@ package runner;
 import java.beans.PropertyVetoException;
 
 
+import java.util.ArrayList;
+
 import excepciones.*;
 import logica.*;
 
@@ -203,9 +205,17 @@ public class Inicializadora {
 		// 1) CREAR TELÉFONOS FIJOS DISPONIBLES (sin titular)
 		// ==============================
 		empresa.agregarTelefonoFijo("78781234");
+		TelefonoFijo tf1 = empresa.getTelefonosFijos().get(0);
+
 		empresa.agregarTelefonoFijo("78451233");
+		TelefonoFijo tf2 = empresa.getTelefonosFijos().get(1);
+
 		empresa.agregarTelefonoFijo("76378134");
+		TelefonoFijo tf3 = empresa.getTelefonosFijos().get(2);
+
 		empresa.agregarTelefonoFijo("76410037");
+		TelefonoFijo tf4 = empresa.getTelefonosFijos().get(3);
+
 		empresa.agregarTelefonoFijo("78123456");
 		empresa.agregarTelefonoFijo("78234567");
 		empresa.agregarTelefonoFijo("76413700");
@@ -452,22 +462,51 @@ public class Inicializadora {
 
 		//Creacion de al menos 20 representantes
 		// Representantes adicionales libres (sin cliente asignado)
-				empresa.agregarRepresentante("Zurdokar Plasencia", "84121501001");
-				empresa.agregarRepresentante("Yaxiry Solunare", "90070102002");
-				empresa.agregarRepresentante("Quiruvio Noreste", "78030603003");
-				empresa.agregarRepresentante("Xilena Marab", "85082204004");
-				empresa.agregarRepresentante("Ozmart Yerbabuena", "91103005005");
-				empresa.agregarRepresentante("Ufrano Calipso", "79041406006");
-				empresa.agregarRepresentante("Ixchel Toronja", "88052507007");
-				empresa.agregarRepresentante("Yovankor del Monte", "83070808008");
-				empresa.agregarRepresentante("Zuleyka Omb", "92090909009");
-				empresa.agregarRepresentante("Quirino Almbar", "87121210010");
-				empresa.agregarRepresentante("Xarand Csmico", "89111111011");
-				empresa.agregarRepresentante("Odalisca Mercurio", "94020212012");
-				empresa.agregarRepresentante("Yerut Pandora", "80030313013");
-				empresa.agregarRepresentante("Zacarias Neptuno", "91040414014");
-				empresa.agregarRepresentante("Ulpiano Cerezo", "85050515015");
-		
-	}
+		empresa.agregarRepresentante("Zurdokar Plasencia", "84121501001");
+		empresa.agregarRepresentante("Yaxiry Solunare", "90070102002");
+		empresa.agregarRepresentante("Quiruvio Noreste", "78030603003");
+		empresa.agregarRepresentante("Xilena Marab", "85082204004");
+		empresa.agregarRepresentante("Ozmart Yerbabuena", "91103005005");
+		empresa.agregarRepresentante("Ufrano Calipso", "79041406006");
+		empresa.agregarRepresentante("Ixchel Toronja", "88052507007");
+		empresa.agregarRepresentante("Yovankor del Monte", "83070808008");
+		empresa.agregarRepresentante("Zuleyka Omb", "92090909009");
+		empresa.agregarRepresentante("Quirino Almbar", "87121210010");
+		empresa.agregarRepresentante("Xarand Csmico", "89111111011");
+		empresa.agregarRepresentante("Odalisca Mercurio", "94020212012");
+		empresa.agregarRepresentante("Yerut Pandora", "80030313013");
+		empresa.agregarRepresentante("Zacarias Neptuno", "91040414014");
+		empresa.agregarRepresentante("Ulpiano Cerezo", "85050515015");
 
+		TelefonoFijo[] telefonos = {tf1, tf2, tf3, tf4};
+
+		for (int i = 1; i <= 15; i++) {
+			double duracion = 20.0 + i;
+			String numeroDestino = "53" + String.format("%07d", i);
+			String provincia = "Provincia" + ((i % 5) + 1);
+			String municipio = "Municipio" + ((i % 3) + 1);
+			double totalFacturar = 510.0 + i * 10; // Siempre > 500
+
+			LlamadaLargaDistancia llamada = new LlamadaLargaDistancia(
+					duracion,
+					numeroDestino,
+					provincia,
+					municipio,
+					totalFacturar
+					);
+
+			// Asignar de forma rotativa y segura
+			telefonos[(i - 1) % telefonos.length].agregarLlamada(llamada);
+		}
+
+		// Print de verificación
+		for (int t = 0; t < telefonos.length; t++) {
+			System.out.println("Teléfono Fijo " + (t+1) + " (" + telefonos[t].getNumero() + ") tiene " + 
+					telefonos[t].getLlamadas().size() + " llamadas asignadas:");
+			for (Llamada llamada : telefonos[t].getLlamadas()) {
+				System.out.println("  - Destino: " + llamada.getNumeroDestino() + ", Duración: " + llamada.getDuracion());
+			}
+		}
+	}
 }
+

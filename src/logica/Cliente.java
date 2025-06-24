@@ -77,7 +77,7 @@ public abstract class Cliente {
     
     //========================
 
-    // Mï¿½TODOS
+    // MÉTODOS
     // Agregar Servicio
     public void addServicio(Servicio s) {
         servicios.add(s);
@@ -130,23 +130,27 @@ public abstract class Cliente {
 	}
 	
     // Obtener el monto de las llamadas de los clientes
-    public double getMontoLlamadasLargaDistancia() {
-        double monto = 0;
+	public double getMontoLlamadasLargaDistancia() {
+	    double monto = 0;
 
-        for (Servicio s : servicios) {
-            if (s instanceof TelefonoFijo) {
-                TelefonoFijo tf = (TelefonoFijo) s;
-                for (int i = 0; i < tf.getLlamadasLargas().size(); i++)
-                    monto += tf.getLlamadasLargas().get(i).getTotalFacturar();
-            }
-        }
-        return monto;
-    }
+	    for (Servicio s : servicios) {
+	        if (s instanceof TelefonoFijo) {
+	            TelefonoFijo tf = (TelefonoFijo) s;
+	            System.out.println("Teléfono: " + tf.getNumero() + " - Llamadas largas: " + tf.getLlamadasLargas().size());
+	            for (LlamadaLargaDistancia llamada : tf.getLlamadasLargas()) {
+	                System.out.println("  Llamada: " + llamada.getNumeroDestino() + " monto: " + llamada.getTotalFacturar());
+	                monto += llamada.getTotalFacturar();
+	            }
+	        }
+	    }
+	    System.out.println("Monto total: " + monto);
+	    return monto;
+	}
     
     // Obtener el nombre en la interfaz
     @Override
     public String toString() {
         return nombre; 
     }
-
+    
 }

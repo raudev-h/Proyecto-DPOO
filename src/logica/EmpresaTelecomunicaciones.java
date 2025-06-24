@@ -20,7 +20,6 @@ public class EmpresaTelecomunicaciones {
 		servicios = new ArrayList<Servicio>();
 		serviciosDisponibles = new ArrayList<Servicio>();
 		representantes = new ArrayList<Representante>();
-		serviciosDisponibles = new ArrayList<Servicio>();
 	}
 
 	// GETTERS Y SETTERS
@@ -502,7 +501,7 @@ public class EmpresaTelecomunicaciones {
 
 		ArrayList<TelefonoFijo> telefonosFijos = new ArrayList<TelefonoFijo>();
 
-		for(Servicio s: servicios){
+		for(Servicio s: serviciosDisponibles){
 			if(s instanceof TelefonoFijo){
 				telefonosFijos.add((TelefonoFijo)s);
 			}	
@@ -734,8 +733,7 @@ public class EmpresaTelecomunicaciones {
 
 		ArrayList<Cliente> clientes = new ArrayList<Cliente>();
 		ArrayList<Cliente> clientesEvaluados = new ArrayList<Cliente>();
-		int cantLlamadas = 0;
-
+		
 		for(Servicio s : servicios){
 			if(s instanceof TelefonoFijo){
 				TelefonoFijo tf = (TelefonoFijo)s;
@@ -744,6 +742,8 @@ public class EmpresaTelecomunicaciones {
 				// Analizamos a los clientes una sola vez
 				if(!clientesEvaluados.contains(titular)){
 					clientesEvaluados.add(titular);
+
+					int cantLlamadas = 0;
 
 					// Buscamos nuevamente en todos los servicios si ese cliente tiene mas de 1 telefono fijo
 					for(Servicio otro : servicios){
@@ -758,6 +758,7 @@ public class EmpresaTelecomunicaciones {
 						}
 					}
 					if(cantLlamadas >= 3)
+						System.out.println(titular.getNombre());
 						clientes.add(titular);
 				}
 			}
