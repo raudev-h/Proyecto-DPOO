@@ -279,6 +279,16 @@ public class ListadoRepresentante extends JDialog {
         				throw new IllegalArgumentException("Ya existe una representante con este número de identidad");
         			}
         		}
+        		
+        		for(Cliente c: EmpresaTelecomunicaciones.getInstancia().getClientes()){
+                	if(c instanceof PersonaNatural){
+                		if(((PersonaNatural)c).getNumId().equals(txtNumId.getText())){
+                            throw new CarnetIdentidadInvalidoException("Ya existe una persona con este número de identidad");
+                            
+                		}
+                	}
+                }
+        		
         		        		
         		numId = txtNumId.getText();
         		lblNumId.setForeground(Color.black);
@@ -359,8 +369,16 @@ public class ListadoRepresentante extends JDialog {
                 for (Representante r : EmpresaTelecomunicaciones.getInstancia().getRepresentantes()) {
                     if (r != representanteSeleccionado && r.getNumId().equals(txtNumId.getText())) {
 
-                        throw new CarnetIdentidadInvalidoException("Ya existe un representante con este número de identidad");
+                        throw new CarnetIdentidadInvalidoException("Ya existe una persona con este número de identidad");
                     }
+                }
+                for(Cliente c: EmpresaTelecomunicaciones.getInstancia().getClientes()){
+                	if(c instanceof PersonaNatural){
+                		if(((PersonaNatural)c).getNumId().equals(txtNumId.getText())){
+                            throw new CarnetIdentidadInvalidoException("Ya existe una persona con este número de identidad");
+                            
+                		}
+                	}
                 }
                 
                 lblNumId.setForeground(Color.BLACK);
