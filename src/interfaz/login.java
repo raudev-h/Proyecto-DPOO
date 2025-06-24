@@ -35,11 +35,14 @@ public class login extends JFrame {
     private int segundosRestantes;
 
 
-    public static void main(String[] args) {
-        login frame = new login();
-        frame.setVisible(true);
-    }
+  
 
+    private boolean autenticado = false;
+
+    public boolean isAutenticado() {
+        return autenticado;
+    }
+    
     public login() {
         configurarVentana();
         inicializarComponentes();
@@ -140,7 +143,7 @@ public class login extends JFrame {
         contentPane.add(salir);
         
         JLabel lblNewLabel = new JLabel("New label");
-        lblNewLabel.setIcon(new ImageIcon("C:\\Z\\Escuela\\DPOO\\Proyect DPOO\\Proyecto-DPOO\\src\\imagenes\\DB.png"));
+        lblNewLabel.setIcon(new ImageIcon(getClass().getResource("/imagenes/DB.png")));
         lblNewLabel.setBounds(401, 28, 298, 307);
         contentPane.add(lblNewLabel);
     }
@@ -175,9 +178,8 @@ public class login extends JFrame {
     }
 
     private void iniciarSesion() {
+        autenticado = true;
         dispose();
-        Principal principal = new Principal();
-        principal.setVisible(true);
     }
 
     private void manejarIntentoFallido() {
