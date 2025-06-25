@@ -254,7 +254,6 @@ public class ListadoClientes extends JDialog {
         
         table = new JTable(tableModel);
         table.getTableHeader().setReorderingAllowed(false);
-        
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.setFont(new Font("Serif", Font.PLAIN, 18));
         table.setRowHeight(25);
@@ -779,15 +778,15 @@ public class ListadoClientes extends JDialog {
          
             
             if (nuevoCliente != null) {
-            	
-            	
                 // Asignar el servicio seleccionado al cliente
-                servicioSeleccionado.setTitular(nuevoCliente);                
+                servicioSeleccionado.setTitular(nuevoCliente);
+                nuevoCliente.getServicios().add(servicioSeleccionado);
+                
                    
                     // Actualizar las listas de servicios
                  EmpresaTelecomunicaciones.getInstancia().getServicios().add(servicioSeleccionado);
                  EmpresaTelecomunicaciones.getInstancia().getServiciosDisponibles().remove(servicioSeleccionado);
-                 
+  
   
                 // Actualizar la tabla
                 tableModel.cargarClientes();
@@ -1159,25 +1158,6 @@ public class ListadoClientes extends JDialog {
                 
             	try{
                 	this.validarNumIdEdicion(txtNumIdEdit.getText(), clienteActual); 
-            	 // PRIMERO VERIFICAR SI EL NÚMERO YA EXISTE
-    	            for (Cliente c : EmpresaTelecomunicaciones.getInstancia().getClientes()) {
-    	                if (c instanceof PersonaNatural) {
-    	                    PersonaNatural pn = (PersonaNatural)c;
-    	                    if (pn != clienteActual && pn.getNumId().equals(txtNumIdEdit.getText() )) {
-
-    	                        throw new DuplicadosException("Ya existe una persona con este número de identidad");
-    	                    }
-    	                }
-    	            }
-    	            for(Representante r: EmpresaTelecomunicaciones.getInstancia().getRepresentantes()){
-    	            	System.out.println(r.getNumId()+" VS  "+ txtNumIdEdit.getText());
-    	            	if(txtNumIdEdit.getText().equals(r.getNumId())){
-    	            		 throw new DuplicadosException("Ya existe una persona con este número de identidad");
-    	            	}
-    	            	
-    	            	
-    	            	
-    	            }
             	    lblNumIdEdit.setForeground(Color.BLACK); 
 
                 }catch(Exception e){
@@ -1537,13 +1517,6 @@ public class ListadoClientes extends JDialog {
 	                        throw new DuplicadosException("Ya existe una persona con este número de identidad");
 	                    }
 	                }
-	            }
-	            for(Representante r: EmpresaTelecomunicaciones.getInstancia().getRepresentantes()){
-	            	if(r.getNumId().equals(txtNumIdCreate.getText())){
-	            		 throw new DuplicadosException("Ya existe una persona con este número de identidad");
-	            	}
-	            	
-	            	
 	            }
 	            	    	    
 	    	    numId = txtNumIdCreate.getText();

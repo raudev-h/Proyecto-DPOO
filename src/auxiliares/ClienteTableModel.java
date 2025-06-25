@@ -1,4 +1,6 @@
 package auxiliares;
+import java.util.ArrayList;
+
 import logica.*;
 
 import javax.swing.table.DefaultTableModel;
@@ -26,9 +28,7 @@ public class ClienteTableModel  extends DefaultTableModel  {
 			
 			//Obtener la informacion de todos los clientes de la empresa
 			for(Cliente cliente: EmpresaTelecomunicaciones.getInstancia().getClientes()){
-				
-				System.out.println("Si, he encontrado un cliente");
-				
+								
 				String nombre = cliente.getNombre();
 				String direccion = cliente.getDireccion();
 				int cantServicios = cliente.getServicios().size();
@@ -55,14 +55,22 @@ public class ClienteTableModel  extends DefaultTableModel  {
 	    	
 	    	this.cargarClientes();
 	    	
-	    	
-	    	
-	    	
-	    	
-	    	
+    	
 	    	
 	    }
-	    
+	    public void actualizarClientes(ArrayList<Cliente> clientesFiltrados) {
+	        // Limpiar los datos existentes
+	        this.setRowCount(0);
+	        
+	        // Agregar los clientes filtrados
+	        for(Cliente cliente : clientesFiltrados) {
+	            String nombre = cliente.getNombre();
+	            String direccion = cliente.getDireccion();
+	            int cantServicios = cliente.getServicios().size();
+	            String tipoCliente = cliente.getClass().getSimpleName();
+	            this.adicionar(nombre, direccion, cantServicios, tipoCliente);
+	        }
+	    }
 		
 		
 	}

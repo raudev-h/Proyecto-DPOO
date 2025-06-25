@@ -202,7 +202,7 @@ public class Inicializadora {
 		// Agregar un Representante a una entidad no estatal( esto lo hice debajo de cada ENE)
 
 		// ==============================
-		// 1) CREAR TELÃ‰FONOS FIJOS DISPONIBLES (sin titular)
+		// 1) CREAR TELÉFONOS FIJOS DISPONIBLES (sin titular)
 		// ==============================
 		empresa.agregarTelefonoFijo("78781234");
 		
@@ -250,7 +250,7 @@ public class Inicializadora {
 		empresa.agregarTelefonoFijo("78123456");
 
 		// ==============================
-		// 2) CREAR TELÃ‰FONOS MÃ“VILES DISPONIBLES (sin titular)
+		// 2) CREAR TELÉFONOS MÓVILES DISPONIBLES (sin titular)
 		// ==============================
 		empresa.agregarTelefonoMovil("52345678", 350.50);
 		empresa.agregarTelefonoMovil("58901234", 420.75);
@@ -299,7 +299,7 @@ public class Inicializadora {
 		empresa.agregarTelefonoMovil("56987652", 265.80);
 
 		// ==============================
-		// 3) ASIGNAR TELÃ‰FONOS FIJOS A CLIENTES Â— usando nÃºmero explÃ­cito
+		// 3) ASIGNAR TELÉFONOS FIJOS A CLIENTES — usando número explícito
 		// ==============================
 
 		// Personas Naturales
@@ -313,7 +313,7 @@ public class Inicializadora {
 		empresa.asignarTelefonoFijo(pn8, "78567890");
 		empresa.asignarTelefonoFijo(pn9, "78889999");
 
-		// Personas JurÃ­dicas
+		// Personas Jurídicas
 		empresa.asignarTelefonoFijo(pj1, "45789012");
 		empresa.asignarTelefonoFijo(pj2, "78345678");
 		empresa.asignarTelefonoFijo(pj3, "45234567");
@@ -337,7 +337,7 @@ public class Inicializadora {
 		empresa.asignarTelefonoFijo(ene9, "78876543");
 
 		// ==============================
-		// 4) ASIGNAR TELÃ‰FONOS MÃ“VILES A CLIENTES
+		// 4) ASIGNAR TELÉFONOS MÓVILES A CLIENTES
 		// ==============================
 		// Personas Naturales
 		empresa.asignarTelefonoMovil(pn1);
@@ -368,7 +368,7 @@ public class Inicializadora {
 
 		empresa.asignarTelefonoMovil(pn10);
 
-		// Personas JurÃ­dicas
+		// Personas Jurídicas
 		empresa.asignarTelefonoMovil(pj2);
 		empresa.asignarTelefonoMovil(pj3);
 		empresa.asignarTelefonoMovil(pj4);
@@ -417,7 +417,7 @@ public class Inicializadora {
 		// Llamadas para el telefono movil 1 (52345678)
 
 		// ==============================================
-		// AGREGAR LLAMADAS MANUALMENTE A CADA TELÃ‰FONO
+		// AGREGAR LLAMADAS MANUALMENTE A CADA TELÉFONO
 		// ==============================================
 		//TODO Arreglar los numeros de los telefonos de los destinatarios 
 
@@ -577,8 +577,10 @@ public class Inicializadora {
 		    cn5.agregarMesDatos("2025-04", 320, 2200, 300, 2100, 830, 72, 87, 34, 42, 62, 2300);
 		    cn5.agregarMesDatos("2025-05", 330, 2300, 310, 2200, 840, 73, 88, 35, 43, 63, 2350);
 		}
-		// TODO aquÃ­ cierra el bloque
+		// TODO aquí cierra el bloque
 		
 		
 	}
 }
+
+

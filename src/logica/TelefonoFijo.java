@@ -1,6 +1,7 @@
 package logica;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 public class TelefonoFijo extends Telefono {
 
@@ -16,6 +17,14 @@ public class TelefonoFijo extends Telefono {
         facturas = new ArrayList<Factura>();
         llamadasLargas = new ArrayList<LlamadaLargaDistancia>();
 
+    }
+    
+    // TELEFONO SIN TITULAR
+    public TelefonoFijo(String numero) {
+        super(null, numero);
+        
+        facturas = new ArrayList<Factura>();
+        llamadasLargas = new ArrayList<LlamadaLargaDistancia>();
     }
 
     // GETTER Y SETTER
@@ -45,6 +54,13 @@ public class TelefonoFijo extends Telefono {
 
         return llamada;
     }
+   
+    //Ignored 
+   public Llamada hacerLlamada(String numero, double duracion){
+	   
+	   return null;
+   }
+    
 
     // Agregar llamada larga distancia
     public void agregarLlamadaLargaDistancia(double duracion, String numeroDestino, String provincia,
@@ -52,6 +68,26 @@ public class TelefonoFijo extends Telefono {
         LlamadaLargaDistancia llamada = new LlamadaLargaDistancia(duracion, numeroDestino, provincia, municipio,
                 totalFacturar);
         llamadasLargas.add(llamada);
-    }   
+    } 
+
+    
+
+    //Valida un número de teléfono fijo cubano.
+
+    public static void validarTelefonoFijo(String telefono) throws IllegalArgumentException {
+    	
+        if (telefono == null || telefono.trim().isEmpty()) {
+            throw new IllegalArgumentException("El número de teléfono no puede estar vacío.");
+        }
+       
+     // Regex para teléfonos fijos cubanos (soporta +53 opcional y formatos con/sin espacios)
+        String REGEX_FIJO = "^(\\+53[\\s-]?)?[7]\\d{7}$|^(\\+53[\\s-]?)?[2-4][1-9]\\d{6}$";
+        // Elimina espacios y guiones para simplificar la validación
+        String numeroLimpio = telefono.replaceAll("[\\s-]", "");
+        // Verifica el formato con regex
+        if (!Pattern.matches(REGEX_FIJO, numeroLimpio)) {          
+            throw new IllegalArgumentException("Número de teléfono móvil inválido");
+        }
+    }
 
 }

@@ -9,6 +9,8 @@ public class LlamadaMovil extends Llamada{
         super(duracion,numeroDestino);
     }
     
+    
+    
     //METODOS
     
 }

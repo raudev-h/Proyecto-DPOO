@@ -48,7 +48,7 @@ public class CuentaNauta extends Servicio{
         mesDatos.put(mesValido,m1);
     }
 
-    // MÃ©todo para obtener los datos de un mes especifico
+    // Método para obtener los datos de un mes específico
     public MesDatos obtenerDatosMes(String mes){
         return mesDatos.get(mes.toUpperCase()); // convertimos el mes que quieras buscar en mayusculas
     }
@@ -66,7 +66,7 @@ public class CuentaNauta extends Servicio{
     }
 
     //Buscar los KB gastados tanto internacionales como nacionales en todos los meses
-    public static  HashMap<String, Double > calcularKbGastadosMeses(){
+    public static HashMap<String, Double > calcularKbGastadosMeses(){
 
         HashMap <String, Double> mesesKb = new HashMap<String, Double>();
 

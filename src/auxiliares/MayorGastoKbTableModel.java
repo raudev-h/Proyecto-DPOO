@@ -33,21 +33,19 @@ public class MayorGastoKbTableModel extends DefaultTableModel {
         // Limpiar datos existentes
         this.setRowCount(0);
     }
+        	public void cargarConsumos(long[] calcularKbGastadosMeses) {
+        	    this.setRowCount(0);
 
-        public void cargarConsumos(long[]calcularKbGastadosMeses) {
-            // Limpiar datos existentes
-            this.setRowCount(0);
-
-            int index = 0;
-            for (String mes : MESES) {
-                long consumo = 0;
-                if (index < calcularKbGastadosMeses.length) {
-                    consumo = calcularKbGastadosMeses[index];
-                }
-                this.adicionar(mes, consumo);
-                index++;
-            }
-        }
+        	    int index = 0;
+        	    for (String mes : MESES) {
+        	        long consumo = 0;
+        	        if (index < calcularKbGastadosMeses.length) {
+        	            consumo = calcularKbGastadosMeses[index];
+        	        }
+        	        this.adicionar(mes, consumo);
+        	        index++;
+        	    }
+        	}
 
     @Override
     public boolean isCellEditable(int row, int column) {
