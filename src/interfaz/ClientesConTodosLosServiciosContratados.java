@@ -30,7 +30,7 @@ public class ClientesConTodosLosServiciosContratados extends JDialog {
         
         JScrollPane scrollPane = new JScrollPane();
         scrollPane.setViewportBorder(new LineBorder(new Color(0, 0, 0)));
-        scrollPane.setBounds(15, 36, 1044, 452);
+        scrollPane.setBounds(15, 36, 1044, 383);
         panel.add(scrollPane);
         
         tableModel = new ClientesServiciosTableModel();
