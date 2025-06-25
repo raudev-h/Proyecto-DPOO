@@ -77,4 +77,20 @@ public abstract class Cliente {
         }
         return monto;
     }
+    //Clientes con todos los servicios contratados (mejorando la escalabilidad
+    
+    public boolean tieneTodosLosTiposServicio() {
+        boolean tieneFijo = false;
+        boolean tieneMovil = false;
+        boolean tieneNauta = false;
+
+        for (Servicio s : servicios) {
+            if (s instanceof TelefonoFijo) tieneFijo = true;
+            else if (s instanceof TelefonoMovil) tieneMovil = true;
+            else if (s instanceof CuentaNauta) tieneNauta = true;
+        }
+
+        return tieneFijo && tieneMovil && tieneNauta;
+    }
+
 }

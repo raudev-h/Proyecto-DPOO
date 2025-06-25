@@ -412,4 +412,18 @@ public boolean eliminarCliente(String nombreCliente){
         }
         return clientes;
     }
+    
+   //Clientes con todos los servicios contratados(logica y escalabilidad mejorada) :)
+    
+    public ArrayList<Cliente> clientesConTodosLosTiposServicio() {
+        ArrayList<Cliente> resultado = new ArrayList<>();
+
+        for (Cliente cliente : clientes) {
+            if (cliente.tieneTodosLosTiposServicio()) {
+                resultado.add(cliente);
+            }
+        }
+
+        return resultado;
+    }
 }
