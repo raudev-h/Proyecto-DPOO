@@ -70,7 +70,6 @@ public class ClienteTableModel  extends DefaultTableModel  {
 	            String tipoCliente = cliente.getClass().getSimpleName();
 	            this.adicionar(nombre, direccion, cantServicios, tipoCliente);
 	        }
-	        
 	    }
 		
 		
