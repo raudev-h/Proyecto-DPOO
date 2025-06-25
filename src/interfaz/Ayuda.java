@@ -101,7 +101,7 @@ public class Ayuda extends JDialog {
         sb.append("   - Editar información de clientes existentes\n");
         sb.append("   - Asignar servicios a clientes\n\n");
 
-        sb.append("2. GestiÃ³n de Servicios\n");
+        sb.append("2. Gestion de Servicios\n");
         sb.append("   - Teléfonos Fijos: Asignar a clientes, editar números\n");
         sb.append("   - Teléfonos Móviles: Asignar con sus montos correspondientes\n");
         sb.append("   - Cuentas Nauta: Asignar con nick único (Personas Naturales solo 1 cuenta)\n\n");
@@ -112,6 +112,7 @@ public class Ayuda extends JDialog {
         sb.append("Para soporte técnico contacte a:\n\n");
         sb.append("raulalbertohechavarria@gmail.com\n");
         sb.append("anielvarela64@gmail.com\n\n\n");
+        sb.append("rubenanazco0@gmail.com\n\n\n");
 
         sb.append("Versión del Sistema: 1.0.0");
 
