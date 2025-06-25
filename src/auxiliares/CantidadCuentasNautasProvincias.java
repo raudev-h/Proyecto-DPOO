@@ -8,7 +8,7 @@ public class CantidadCuentasNautasProvincias extends DefaultTableModel {
     private static final long serialVersionUID = 1L; 
     
     public CantidadCuentasNautasProvincias(ArrayList<Map.Entry<String, Integer>> lista) { 
-        String[] columnNames = {"Índice", "Provincias", "Cantidad de Cuentas"}; 
+        String[] columnNames = {"Indice", "Provincias", "Cantidad de Cuentas"}; 
         this.setColumnIdentifiers(columnNames); 
      
         for (int i = 0; i < lista.size(); i++) {

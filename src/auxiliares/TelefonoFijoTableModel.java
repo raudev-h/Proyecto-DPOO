@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TelefonoFijoTableModel extends DefaultTableModel {
-	
+    private ArrayList<TelefonoFijo> telefonos = new ArrayList<>(); // Inicializado aquí
 
     public TelefonoFijoTableModel() {
         String[] columnNames = {"Número", "Cliente", "Cant. Llamadas", "Facturas", "Llam. Larga Distancia"};
@@ -15,18 +15,26 @@ public class TelefonoFijoTableModel extends DefaultTableModel {
     }
     
     public void cargarDatos(ArrayList<TelefonoFijo> telefonos) {
-        setRowCount(0); // Limpiar datos anteriores 
+        this.telefonos = new ArrayList<>(telefonos); // Guarda la referencia
+        setRowCount(0);
         for (TelefonoFijo tf : telefonos) {
-            addRow(new Object[]{ tf.getNumero(),tf.getTitular().getNombre(), tf.getLlamadas().size(), tf.getFacturas().size(),
+            String nombreCliente = tf.getTitular() != null ? tf.getTitular().getNombre() : "Sin titular";
+            addRow(new Object[]{
+                tf.getNumero(),
+                nombreCliente,
+                tf.getLlamadas().size(),
+                tf.getFacturas().size(),
                 tf.getLlamadasLargas().size()
             });
         }
     }
     
+    public TelefonoFijo getServicioAt(int row) {
+        return (row >= 0 && row < telefonos.size()) ? telefonos.get(row) : null; // Validación de rango
+    }
 
     @Override
     public boolean isCellEditable(int row, int column) {
-        return false; // Hacer la Tabla no editable
+        return false;
     }
-
 }
