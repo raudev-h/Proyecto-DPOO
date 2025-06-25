@@ -38,8 +38,7 @@ public class Runner {
         if (loginWindow[0].isAutenticado()) {
             javax.swing.SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
-                    Principal principal = new Principal();
-                    principal.setVisible(true);
+                    Principal.getInstance().setVisible(true);
                 }
             });
         }

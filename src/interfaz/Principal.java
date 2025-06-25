@@ -26,15 +26,18 @@ public class Principal extends JFrame {
 
     private JPanel contentPane;
     private String imagenFondoActual = "/imagenes/d.png"; // Imagen por defecto
-    
+    private static Principal instance = null;
+
 
     /**
      * Create the frame.
      */
-    public Principal() {
+    private Principal() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
        // setBounds(0, 0, 1600, 900);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+
 
         setLocationRelativeTo(null);
 
@@ -63,6 +66,8 @@ public class Principal extends JFrame {
             public void actionPerformed(ActionEvent arg0) {
                 dispose();
                 login.getInstance().setVisible(true);
+                login.getInstance().resetearCampos();
+
             }
         });
         mntmCerrarSesin.setFont(new Font("Serif", Font.PLAIN, 21));
@@ -217,5 +222,11 @@ public class Principal extends JFrame {
                 g.drawImage(img, 0, 0, getWidth(), getHeight(), this);
             }
         }
+    }
+    public static Principal getInstance() {
+        if (instance == null) {
+            instance = new Principal();
+        }       
+        return instance;
     }
 }
