@@ -56,6 +56,8 @@ public class ListadoServicios extends JDialog {
         setTitle("Listado de Servicios");
         setBounds(100, 100, 1015, 800);
         setLocationRelativeTo(null);
+        
+        
         ventanaPrincipal = principal; // Guardar referencia
         
         // Cambiar imagen al abrir
@@ -434,9 +436,11 @@ public class ListadoServicios extends JDialog {
         tablaBloqueada.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tablaBloqueada.setFont(new Font("Serif", Font.PLAIN, 18));
         tablaBloqueada.setRowHeight(25);
-
+        
         JTableHeader header = tablaBloqueada.getTableHeader();
         header.setFont(new Font("Serif", Font.PLAIN, 20));
+        header.setReorderingAllowed(false); // <-- Esta línea evita que se muevan las columnas
+
 
         JScrollPane scrollPane = new JScrollPane(tablaBloqueada);
         scrollPane.setViewportBorder(new LineBorder(new Color(0, 0, 0)));

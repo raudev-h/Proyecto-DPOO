@@ -501,7 +501,7 @@ public class EmpresaTelecomunicaciones {
 
 		ArrayList<TelefonoFijo> telefonosFijos = new ArrayList<TelefonoFijo>();
 
-		for(Servicio s: serviciosDisponibles){
+		for(Servicio s: servicios){
 			if(s instanceof TelefonoFijo){
 				telefonosFijos.add((TelefonoFijo)s);
 			}	

@@ -27,23 +27,6 @@ public class Principal extends JFrame {
     private JPanel contentPane;
     private String imagenFondoActual = "/imagenes/d.png"; // Imagen por defecto
     
-    
-    /**
-     * Launch the application.
-     */
-    public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    Inicializadora.Inicializar();
-                    Principal frame = new Principal();
-                    frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
 
     /**
      * Create the frame.
@@ -79,8 +62,7 @@ public class Principal extends JFrame {
         mntmCerrarSesin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 dispose();
-                login log = new login();
-                log.setVisible(true);
+                login.getInstance().setVisible(true);
             }
         });
         mntmCerrarSesin.setFont(new Font("Serif", Font.PLAIN, 21));
@@ -185,13 +167,20 @@ public class Principal extends JFrame {
         mntmClientesCon_1.setFont(new Font("Serif", Font.PLAIN, 21));
         mnClientes_1.add(mntmClientesCon_1);
         
-        JMenu mnAyuda = new JMenu("Ayuda       ");
-        mnAyuda.setFont(new Font("Serif", Font.BOLD, 22));
-        menuBar.add(mnAyuda);
         
-        JMenuItem mntmAcercaDe = new JMenuItem("Acerca de");
-        mntmAcercaDe.setFont(new Font("Serif", Font.PLAIN, 21));
-        mnAyuda.add(mntmAcercaDe);
+        JMenu mnAyuda = new JMenu("Ayuda       ");
+		mnAyuda.setFont(new Font("Serif", Font.BOLD, 22));
+		menuBar.add(mnAyuda);
+		
+		JMenuItem mntmAcercaDe = new JMenuItem("Acerca de");
+		mntmAcercaDe.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Ayuda ayuda = new Ayuda();
+				ayuda.setVisible(true);
+			}
+		});
+		mntmAcercaDe.setFont(new Font("Serif", Font.PLAIN, 21));
+		mnAyuda.add(mntmAcercaDe);
     }
     
     // Método para cambiar la imagen de fondo

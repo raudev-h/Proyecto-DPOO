@@ -28,9 +28,7 @@ public class Ayuda extends JDialog {
     private static Principal ventanaPrincipal; // Referencia a Principal
     private static Ayuda instance; // Para patrón Singleton
 
-
-    private final JPanel contentPanel = new JPanel();
-
+  
     public static void mostrarAyuda() {
         try {
             Ayuda dialog = new Ayuda();
@@ -47,7 +45,7 @@ public class Ayuda extends JDialog {
     public Ayuda() {
         setTitle("Ayuda del Sistema");
         setModal(true);
-        setSize(800, 600); // Tamaño consistente
+        setSize(800, 600); // TamaÃ±o consistente
 
         // Centrar la ventana
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -103,7 +101,7 @@ public class Ayuda extends JDialog {
         sb.append("   - Editar información de clientes existentes\n");
         sb.append("   - Asignar servicios a clientes\n\n");
 
-        sb.append("2. Gestión de Servicios\n");
+        sb.append("2. GestiÃ³n de Servicios\n");
         sb.append("   - Teléfonos Fijos: Asignar a clientes, editar números\n");
         sb.append("   - Teléfonos Móviles: Asignar con sus montos correspondientes\n");
         sb.append("   - Cuentas Nauta: Asignar con nick único (Personas Naturales solo 1 cuenta)\n\n");
