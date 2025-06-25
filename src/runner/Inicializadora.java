@@ -1,11 +1,20 @@
 package runner;
+import java.beans.PropertyVetoException;
+
+
+import java.util.ArrayList;
+
+import excepciones.*;
 import logica.*;
+
 //import java.util.ArrayList;
 
 public class Inicializadora {
 
+
 	// Metodo que inicializa servicios, clientes y representante
-	public static void Inicializar(){
+	public static void Inicializar() throws NombreInvalidoException, UbicacionInvalidaException, 
+	ProvinciaInvalidaException, CarnetIdentidadInvalidoException, DuplicadosException{
 
 		EmpresaTelecomunicaciones empresa = EmpresaTelecomunicaciones.getInstancia();
 
@@ -50,13 +59,13 @@ public class Inicializadora {
 		empresa.agregarRepresentante("Dayana Martinez Suarez", "93071825641");
 		Representante r13 = empresa.getRepresentantes().get(12);
 
-		empresa.agregarRepresentante("Yanet González Rojas", "95061478952");
+		empresa.agregarRepresentante("Yanet Gonzalez Rojas", "95061478952");
 		Representante r14 = empresa.getRepresentantes().get(13);
 
 		empresa.agregarRepresentante("Rafael Alvarez Quintana", "89081245236");
 		Representante r15 = empresa.getRepresentantes().get(14);
 
-		empresa.agregarRepresentante("Lianet Castillo Pérez", "91012987451");
+		empresa.agregarRepresentante("Lianet Castillo Perez", "91012987451");
 		Representante r16 = empresa.getRepresentantes().get(15);
 
 		empresa.agregarRepresentante("Jose Manuel Estrada", "94021036574");
@@ -65,12 +74,11 @@ public class Inicializadora {
 		empresa.agregarRepresentante("Camila Rodriguez Soto", "96083014523");
 		Representante r18 = empresa.getRepresentantes().get(17);
 
-		empresa.agregarRepresentante("Leonardo Vázquez Díaz", "88041596324");
+		empresa.agregarRepresentante("Leonardo Vazquez Diaz", "88041596324");
 		Representante r19 = empresa.getRepresentantes().get(18);
 
-		empresa.agregarRepresentante("Patricia Montes Pérez", "92072315874");
+		empresa.agregarRepresentante("Patricia Montes Perez", "92072315874");
 		Representante r20 = empresa.getRepresentantes().get(19);
-
 
 
 
@@ -78,31 +86,31 @@ public class Inicializadora {
 		//  Crear clientes
 		// Personas Naturales
 
-		empresa.agregarPersonaNatural("Carlos Martínez", "Calle 10 #45", "Playa", "La Habana", "85102578945");
+		empresa.agregarPersonaNatural("Carlos Martinez", "Calle 10 #45", "Playa", "La Habana", "85102578945");
 		Cliente pn1 = empresa.getClientes().get(0);
 
-		empresa.agregarPersonaNatural("Laura Díaz", "Avenida 5ta #1208", "Centro Habana", "La Habana", "90031545678");
+		empresa.agregarPersonaNatural("Laura Diaz", "Avenida 5ta #1208", "Centro Habana", "La Habana", "90031545678");
 		Cliente pn2 = empresa.getClientes().get(1);
 
-		empresa.agregarPersonaNatural("Mario Pérez", "Calle 12 #304", "Vedado", "La Habana", "87042178912");
+		empresa.agregarPersonaNatural("Mario Perez", "Calle 12 #304", "Vedado", "La Habana", "87042178912");
 		Cliente pn3 = empresa.getClientes().get(2);
 
 		empresa.agregarPersonaNatural("Ana Torres", "Calle 19 #89", "Miramar", "La Habana", "91061234567");
 		Cliente pn4 = empresa.getClientes().get(3);
 
-		empresa.agregarPersonaNatural("Luis Gómez", "Avenida 26 #150", "Nuevo Vedado", "La Habana", "88010145678");
+		empresa.agregarPersonaNatural("Luis Gomez", "Avenida 26 #150", "Nuevo Vedado", "La Habana", "88010145678");
 		Cliente pn5 = empresa.getClientes().get(4);
 
-		empresa.agregarPersonaNatural("Yasmin Rodríguez", "Calle Línea #502", "Vedado", "La Habana", "95072498765");
+		empresa.agregarPersonaNatural("Yasmin Rodriguez", "Calle Linea #502", "Vedado", "La Habana", "95072498765");
 		Cliente pn6 = empresa.getClientes().get(5);
 
-		empresa.agregarPersonaNatural("Ernesto López", "Calle 100 #456", "Boyeros", "La Habana", "92031532145");
+		empresa.agregarPersonaNatural("Ernesto Lopez", "Calle 100 #456", "Boyeros", "La Habana", "92031532145");
 		Cliente pn7 = empresa.getClientes().get(6);
 
 		empresa.agregarPersonaNatural("Claudia Herrera", "Avenida Rancho Boyeros #789", "Boyeros", "La Habana", "89091465432");
 		Cliente pn8 = empresa.getClientes().get(7);
 
-		empresa.agregarPersonaNatural("Jorge Suárez", "Calle San Miguel #23", "Centro Habana", "La Habana", "87082478910");
+		empresa.agregarPersonaNatural("Jorge Suarez", "Calle San Miguel #23", "Centro Habana", "La Habana", "87082478910");
 		Cliente pn9 = empresa.getClientes().get(8);
 
 		empresa.agregarPersonaNatural("Daniela Rivas", "Avenida Salvador Allende #78", "Cerro", "La Habana", "93031578941");
@@ -121,11 +129,11 @@ public class Inicializadora {
 		Cliente pj3 = empresa.getClientes().get(12);
 		r3.setClienteRepresentado(pj3);
 
-		empresa.agregarPersonaJuridica("AgroCuba S.A.", "Carretera Central #300", "Boyeros", "La Habana", "MINAG", r4);
+		empresa.agregarPersonaJuridica("AgroCuba SA", "Carretera Central #300", "Boyeros", "La Habana", "MINAG", r4);
 		Cliente pj4 = empresa.getClientes().get(13);
 		r4.setClienteRepresentado(pj4);
 
-		empresa.agregarPersonaJuridica("BioFarmacéutica Habana", "Avenida Independencia #456", "Cerro", "La Habana", "BIOCUBAFARMA", r5);
+		empresa.agregarPersonaJuridica("BioFarmaceutica Habana", "Avenida Independencia #456", "Cerro", "La Habana", "BIOCUBAFARMA", r5);
 		Cliente pj5 = empresa.getClientes().get(14);
 		r5.setClienteRepresentado(pj5);
 
@@ -141,7 +149,7 @@ public class Inicializadora {
 		Cliente pj8 = empresa.getClientes().get(17);
 		r8.setClienteRepresentado(pj8);
 
-		empresa.agregarPersonaJuridica("HabanaTur S.A.", "Avenida del Puerto #10", "Habana Vieja", "La Habana", "MINTUR", r9);
+		empresa.agregarPersonaJuridica("HabanaTur SA", "Avenida del Puerto #10", "Habana Vieja", "La Habana", "MINTUR", r9);
 		Cliente pj9 = empresa.getClientes().get(18);
 		r9.setClienteRepresentado(pj9);
 
@@ -155,7 +163,7 @@ public class Inicializadora {
 		Cliente ene1 = empresa.getClientes().get(20);
 		r11.setClienteRepresentado(ene1);
 
-		empresa.agregarEntidadNoEstatal("Panadería El Buen Pan", "Calle M #12", r12);
+		empresa.agregarEntidadNoEstatal("Panaderia El Buen Pan", "Calle M #12", r12);
 		Cliente ene2 = empresa.getClientes().get(21);
 		r12.setClienteRepresentado(ene2);
 
@@ -163,15 +171,15 @@ public class Inicializadora {
 		Cliente ene3 = empresa.getClientes().get(22);
 		r13.setClienteRepresentado(ene3);
 
-		empresa.agregarEntidadNoEstatal("Café Aromas", "Calle 8 #43", r14);
+		empresa.agregarEntidadNoEstatal("Cafe Aromas", "Calle 8 #43", r14);
 		Cliente ene4 = empresa.getClientes().get(23);
 		r14.setClienteRepresentado(ene4);
 
-		empresa.agregarEntidadNoEstatal("Diseños Creativos", "Calle F #55", r15);
+		empresa.agregarEntidadNoEstatal("Inventos Creativos", "Calle F #55", r15);
 		Cliente ene5 = empresa.getClientes().get(24);
 		r15.setClienteRepresentado(ene5);
 
-		empresa.agregarEntidadNoEstatal("Soluciones Médicas", "Avenida 41 #900", r16);
+		empresa.agregarEntidadNoEstatal("Soluciones Modicas", "Avenida 41 #900", r16);
 		Cliente ene6 = empresa.getClientes().get(25);
 		r16.setClienteRepresentado(ene6);
 
@@ -183,7 +191,7 @@ public class Inicializadora {
 		Cliente ene8 = empresa.getClientes().get(27);
 		r18.setClienteRepresentado(ene8);
 
-		empresa.agregarEntidadNoEstatal("Consultores Legales S.A.", "Calle 25 #301", r19);
+		empresa.agregarEntidadNoEstatal("Consultores Legales SA", "Calle 25 #301", r19);
 		Cliente ene9 = empresa.getClientes().get(28);
 		r19.setClienteRepresentado(ene9);
 
@@ -192,212 +200,385 @@ public class Inicializadora {
 		r20.setClienteRepresentado(ene10);
 
 		// Agregar un Representante a una entidad no estatal( esto lo hice debajo de cada ENE)
+
+		// ==============================
+		// 1) CREAR TELÃ‰FONOS FIJOS DISPONIBLES (sin titular)
+		// ==============================
+		empresa.agregarTelefonoFijo("78781234");
 		
 
+		empresa.agregarTelefonoFijo("78451233");
 
-		// Servicios para Personas Naturales
-		empresa.agregarTelefonoFijo(pn1, "78781234");
-		empresa.agregarTelefonoMovil(pn1, "52345678", 350.50);
+		empresa.agregarTelefonoFijo("76378134");
+
+		empresa.agregarTelefonoFijo("76410037");
+
+		empresa.agregarTelefonoFijo("78123456");
+		empresa.agregarTelefonoFijo("78234567");
+		empresa.agregarTelefonoFijo("76413700");
+		empresa.agregarTelefonoFijo("78567890");
+		empresa.agregarTelefonoFijo("78889999");
+		empresa.agregarTelefonoFijo("45789012");
+		empresa.agregarTelefonoFijo("78345678");
+		empresa.agregarTelefonoFijo("45234567");
+		empresa.agregarTelefonoFijo("78890012");
+		empresa.agregarTelefonoFijo("45781234");
+		empresa.agregarTelefonoFijo("78901234");
+		empresa.agregarTelefonoFijo("45783456");
+		empresa.agregarTelefonoFijo("78892345");
+		empresa.agregarTelefonoFijo("45789999");
+		empresa.agregarTelefonoFijo("78810023");
+		empresa.agregarTelefonoFijo("78832040");
+		empresa.agregarTelefonoFijo("56341234");
+		empresa.agregarTelefonoFijo("56234567");
+		empresa.agregarTelefonoFijo("56123456");
+		empresa.agregarTelefonoFijo("78817052");
+		empresa.agregarTelefonoFijo("56239876");
+		empresa.agregarTelefonoFijo("78654321");
+		empresa.agregarTelefonoFijo("78765432");
+		empresa.agregarTelefonoFijo("78876543");
+		empresa.agregarTelefonoFijo("78987654");
+		empresa.agregarTelefonoFijo("78234567");
+		empresa.agregarTelefonoFijo("78345678");
+		empresa.agregarTelefonoFijo("78456789");
+		empresa.agregarTelefonoFijo("78567890");
+		empresa.agregarTelefonoFijo("78678901");
+		empresa.agregarTelefonoFijo("78789012");
+		empresa.agregarTelefonoFijo("78890123");
+		empresa.agregarTelefonoFijo("78901234");
+		empresa.agregarTelefonoFijo("78012345");
+		empresa.agregarTelefonoFijo("78123456");
+
+		// ==============================
+		// 2) CREAR TELÃ‰FONOS MÃ“VILES DISPONIBLES (sin titular)
+		// ==============================
+		empresa.agregarTelefonoMovil("52345678", 350.50);
+		empresa.agregarTelefonoMovil("58901234", 420.75);
+		empresa.agregarTelefonoMovil("53456789", 380.00);
+		empresa.agregarTelefonoMovil("58907654", 450.25);
+		empresa.agregarTelefonoMovil("52349876", 370.75);
+		empresa.agregarTelefonoMovil("58906543", 400.00);
+		empresa.agregarTelefonoMovil("53456701", 360.00);
+		empresa.agregarTelefonoMovil("58903456", 410.50);
+		empresa.agregarTelefonoMovil("52345670", 390.00);
+		empresa.agregarTelefonoMovil("58909999", 420.00);
+
+		empresa.agregarTelefonoMovil("58432109", 600.00);
+		empresa.agregarTelefonoMovil("57901234", 550.50);
+		empresa.agregarTelefonoMovil("58903456", 610.00);
+		empresa.agregarTelefonoMovil("58907654", 580.75);
+		empresa.agregarTelefonoMovil("58451234", 590.25);
+		empresa.agregarTelefonoMovil("57906543", 600.50);
+		empresa.agregarTelefonoMovil("58456789", 615.00);
+		empresa.agregarTelefonoMovil("58904567", 620.00);
+		empresa.agregarTelefonoMovil("58453456", 630.00);
+
+		empresa.agregarTelefonoMovil("56781234", 300.25);
+		empresa.agregarTelefonoMovil("56432109", 320.50);
+		empresa.agregarTelefonoMovil("56782345", 310.00);
+		empresa.agregarTelefonoMovil("56430987", 305.75);
+		empresa.agregarTelefonoMovil("56785432", 315.50);
+		empresa.agregarTelefonoMovil("56437890", 325.25);
+		empresa.agregarTelefonoMovil("56789012", 330.00);
+		empresa.agregarTelefonoMovil("56431234", 335.75);
+		empresa.agregarTelefonoMovil("56783456", 340.25);
+
+		empresa.agregarTelefonoMovil("51234567", 245.50);
+		empresa.agregarTelefonoMovil("58901234", 189.75);
+		empresa.agregarTelefonoMovil("54567890", 320.00);
+		empresa.agregarTelefonoMovil("52876543", 415.25);
+		empresa.agregarTelefonoMovil("52652109", 150.80);
+		empresa.agregarTelefonoMovil("53469012", 275.30);
+		empresa.agregarTelefonoMovil("52347890", 495.60);
+		empresa.agregarTelefonoMovil("53125678", 225.90);
+		empresa.agregarTelefonoMovil("54096543", 380.45);
+		empresa.agregarTelefonoMovil("54236789", 110.20);
+		empresa.agregarTelefonoMovil("55876541", 290.75);
+		empresa.agregarTelefonoMovil("55901236", 175.30);
+		empresa.agregarTelefonoMovil("56789014", 430.50);
+		empresa.agregarTelefonoMovil("56987652", 265.80);
+
+		// ==============================
+		// 3) ASIGNAR TELÃ‰FONOS FIJOS A CLIENTES Â— usando nÃºmero explÃ­cito
+		// ==============================
+
+		// Personas Naturales
+		empresa.asignarTelefonoFijo(pn1, "78781234");
+		empresa.asignarTelefonoFijo(pn2, "78451233");
+		empresa.asignarTelefonoFijo(pn3, "76378134");
+		empresa.asignarTelefonoFijo(pn4, "76410037");
+		empresa.asignarTelefonoFijo(pn5, "78123456");
+		empresa.asignarTelefonoFijo(pn6, "78234567");
+		empresa.asignarTelefonoFijo(pn7, "76413700");
+		empresa.asignarTelefonoFijo(pn8, "78567890");
+		empresa.asignarTelefonoFijo(pn9, "78889999");
+
+		// Personas JurÃ­dicas
+		empresa.asignarTelefonoFijo(pj1, "45789012");
+		empresa.asignarTelefonoFijo(pj2, "78345678");
+		empresa.asignarTelefonoFijo(pj3, "45234567");
+		empresa.asignarTelefonoFijo(pj4, "78890012");
+		empresa.asignarTelefonoFijo(pj5, "45781234");
+		empresa.asignarTelefonoFijo(pj6, "78901234");
+		empresa.asignarTelefonoFijo(pj7, "45783456");
+		empresa.asignarTelefonoFijo(pj8, "78892345");
+		empresa.asignarTelefonoFijo(pj9, "45789999");
+		empresa.asignarTelefonoFijo(pj10, "78810023");
+
+		// Entidades No Estatales
+		empresa.asignarTelefonoFijo(ene1, "78832040");
+		empresa.asignarTelefonoFijo(ene2, "56341234");
+		empresa.asignarTelefonoFijo(ene3, "56234567");
+		empresa.asignarTelefonoFijo(ene4, "56123456");
+		empresa.asignarTelefonoFijo(ene5, "78817052");
+		empresa.asignarTelefonoFijo(ene6, "56239876");
+		empresa.asignarTelefonoFijo(ene7, "78654321");
+		empresa.asignarTelefonoFijo(ene8, "78765432");
+		empresa.asignarTelefonoFijo(ene9, "78876543");
+
+		// ==============================
+		// 4) ASIGNAR TELÃ‰FONOS MÃ“VILES A CLIENTES
+		// ==============================
+		// Personas Naturales
+		empresa.asignarTelefonoMovil(pn1);
 		empresa.crearCuentaNauta(pn1, "carlos_mtz");
 
-		empresa.agregarTelefonoMovil(pn2, "58901234", 420.75);
+		empresa.asignarTelefonoMovil(pn2);
 		empresa.crearCuentaNauta(pn2, "laura_dz");
 
-		empresa.agregarTelefonoFijo(pn3, "78451233");
-		empresa.agregarTelefonoMovil(pn3, "53456789", 380.00);
+		empresa.asignarTelefonoMovil(pn3);
 		empresa.crearCuentaNauta(pn3, "mario_perez");
 
-		empresa.agregarTelefonoMovil(pn4, "58907654", 450.25);
+		empresa.asignarTelefonoMovil(pn4);
 		empresa.crearCuentaNauta(pn4, "ana_torres");
 
-		empresa.agregarTelefonoFijo(pn5, "78123456");
-		empresa.agregarTelefonoMovil(pn5, "52349876", 370.75);
+		empresa.asignarTelefonoMovil(pn5);
 		empresa.crearCuentaNauta(pn5, "luis_gomez");
 
-		empresa.agregarTelefonoMovil(pn6, "58906543", 400.00);
-		empresa.crearCuentaNauta(pn6, "yasmin_rodriguez");
+		empresa.asignarTelefonoMovil(pn6);
 
-		empresa.agregarTelefonoFijo(pn7, "78234567");
-		empresa.agregarTelefonoMovil(pn7, "53456701", 360.00);
+		empresa.asignarTelefonoMovil(pn7);
 		empresa.crearCuentaNauta(pn7, "ernesto_lopez");
 
-		empresa.agregarTelefonoMovil(pn8, "58903456", 410.50);
+		empresa.asignarTelefonoMovil(pn8);
 		empresa.crearCuentaNauta(pn8, "claudia_herrera");
 
-		empresa.agregarTelefonoFijo(pn9, "78567890");
-		empresa.agregarTelefonoMovil(pn9, "52345670", 390.00);
+		empresa.asignarTelefonoMovil(pn9);
 		empresa.crearCuentaNauta(pn9, "jorge_suarez");
 
-		empresa.agregarTelefonoMovil(pn10, "58909999", 420.00);
-		empresa.crearCuentaNauta(pn10, "daniela_rivas");
+		empresa.asignarTelefonoMovil(pn10);
 
-		// Servicios para Personas Jurídicas
-		empresa.agregarTelefonoFijo(pj1, "78889999");
+		// Personas JurÃ­dicas
+		empresa.asignarTelefonoMovil(pj2);
+		empresa.asignarTelefonoMovil(pj3);
+		empresa.asignarTelefonoMovil(pj4);
+		empresa.asignarTelefonoMovil(pj5);
+		empresa.asignarTelefonoMovil(pj6);
+		empresa.asignarTelefonoMovil(pj7);
+		empresa.asignarTelefonoMovil(pj8);
+		empresa.asignarTelefonoMovil(pj9);
+		empresa.asignarTelefonoMovil(pj10);
 
-		empresa.agregarTelefonoMovil(pj2, "58432109", 600.00);
-		empresa.agregarTelefonoFijo(pj2, "45789012");
-		
-		empresa.agregarTelefonoFijo(pj3, "78345678");
-		empresa.agregarTelefonoMovil(pj3, "57901234", 550.50);
-		
-		empresa.agregarTelefonoFijo(pj4, "45234567");
-		empresa.agregarTelefonoMovil(pj4, "58903456", 610.00);
-	
-		empresa.agregarTelefonoFijo(pj5, "78890012");
-		empresa.agregarTelefonoMovil(pj5, "58907654", 580.75);
-	
-		empresa.agregarTelefonoFijo(pj6, "45781234");
-		empresa.agregarTelefonoMovil(pj6, "58451234", 590.25);
-
-		empresa.agregarTelefonoFijo(pj7, "78901234");
-		empresa.agregarTelefonoMovil(pj7, "57906543", 600.50);
-	
-		empresa.agregarTelefonoFijo(pj8, "45783456");
-		empresa.agregarTelefonoMovil(pj8, "58456789", 615.00);
-
-		empresa.agregarTelefonoFijo(pj9, "78892345");
-		empresa.agregarTelefonoMovil(pj9, "58904567", 620.00);
-		
-		empresa.agregarTelefonoFijo(pj10, "45789999");
-		empresa.agregarTelefonoMovil(pj10, "58453456", 630.00);
-
-		// Servicios para Entidades No Estatales
+		// Entidades No Estatales
 		empresa.crearCuentaNauta(ene1, "mipyme_techsolutions");
-		
-		empresa.agregarTelefonoMovil(ene2, "56781234", 300.25);
+
+		empresa.asignarTelefonoMovil(ene2);
 		empresa.crearCuentaNauta(ene2, "panaderia_buenpan");
 
-		empresa.agregarTelefonoFijo(ene3, "56341234");
-		empresa.agregarTelefonoMovil(ene3, "56432109", 320.50);
+		empresa.asignarTelefonoMovil(ene3);
 		empresa.crearCuentaNauta(ene3, "mipyme_habanacode");
 
-		empresa.agregarTelefonoMovil(ene4, "56782345", 310.00);
-		empresa.crearCuentaNauta(ene4, "cafe_aromas");
+		empresa.asignarTelefonoMovil(ene4);
 
-		empresa.agregarTelefonoFijo(ene5, "56234567");
-		empresa.agregarTelefonoMovil(ene5, "56430987", 305.75);
+		empresa.asignarTelefonoMovil(ene5);
 		empresa.crearCuentaNauta(ene5, "disenos_creativos");
 
-		empresa.agregarTelefonoMovil(ene6, "56785432", 315.50);
-		empresa.crearCuentaNauta(ene6, "soluciones_medicas");
+		empresa.asignarTelefonoMovil(ene6);
 
-		empresa.agregarTelefonoFijo(ene7, "56123456");
-		empresa.agregarTelefonoMovil(ene7, "56437890", 325.25);
+		empresa.asignarTelefonoMovil(ene7);
 		empresa.crearCuentaNauta(ene7, "ecotrans");
 
-		empresa.agregarTelefonoMovil(ene8, "56789012", 330.00);
+		empresa.asignarTelefonoMovil(ene8);
 		empresa.crearCuentaNauta(ene8, "arte_en_casa");
 
-		empresa.agregarTelefonoFijo(ene9, "56239876");
-		empresa.agregarTelefonoMovil(ene9, "56431234", 335.75);
+		empresa.asignarTelefonoMovil(ene9);
 		empresa.crearCuentaNauta(ene9, "consultores_legales");
 
-		empresa.agregarTelefonoMovil(ene10, "56783456", 340.25);
-		empresa.crearCuentaNauta(ene10, "coop_esperanza");
+		empresa.asignarTelefonoMovil(ene10);
 
-	
 
+		// Obtener los dos primeros telefonos fijos
+
+		TelefonoMovil movil1 = empresa.getTelefonosMoviles().get(0);
+		TelefonoMovil movil2 = empresa.getTelefonosMoviles().get(1);
+		TelefonoMovil movil3 = empresa.getTelefonosMoviles().get(2);
+
+		//		Agregarle 10 llamadas a los telefonos Moviles obtenidos
+		// Llamadas para el telefono movil 1 (52345678)
+
+		// ==============================================
+		// AGREGAR LLAMADAS MANUALMENTE A CADA TELÃ‰FONO
+		// ==============================================
+		//TODO Arreglar los numeros de los telefonos de los destinatarios 
+
+		// Llamadas para el telefono movil 1 (52345678)
+		movil1.agregarLlamada(movil1.hacerLlamada("5355551111", 1500));    //  25 min = 180 min
+		movil1.agregarLlamada(movil1.hacerLlamada("5355552222", 10800));   // 180 min = 10800 seg
+		movil1.agregarLlamada(movil1.hacerLlamada("5355553333", 2700));    // 45 min = 2700 seg
+		movil1.agregarLlamada(movil1.hacerLlamada("5355554444", 7200));     // 120 min = 7200 seg
+		movil1.agregarLlamada(movil1.hacerLlamada("5355555555", 1800));     // 30 min = 1800 seg
+		movil1.agregarLlamada(movil1.hacerLlamada("5355556666", 9000));     // 150 min = 9000 seg
+		movil1.agregarLlamada(movil1.hacerLlamada("5355557777", 3600));     // 60 min = 3600 seg
+		movil1.agregarLlamada(movil1.hacerLlamada("5355558888", 5400));     // 90 min = 5400 seg
+		movil1.agregarLlamada(movil1.hacerLlamada("5355559999", 12000));    // 200 min = 12000 seg
+		movil1.agregarLlamada(movil1.hacerLlamada("5355550000", 900));      // 15 min = 900 seg
+
+		// Llamadas para el telefono movil 2 (58901234)
+		movil2.agregarLlamada(movil2.hacerLlamada("5377771111", 1800));     // 30 min = 1800 seg
+		movil2.agregarLlamada(movil2.hacerLlamada("5377772222", 2700));     // 45 min = 2700 seg
+		movil2.agregarLlamada(movil2.hacerLlamada("5377773333", 6600));     // 110 min = 6600 seg
+		movil2.agregarLlamada(movil2.hacerLlamada("5377774444", 1500));     // 25 min = 1500 seg
+		movil2.agregarLlamada(movil2.hacerLlamada("5377775555", 10800));    // 180 min = 10800 seg
+		movil2.agregarLlamada(movil2.hacerLlamada("5377776666", 3000));     // 50 min = 3000 seg
+		movil2.agregarLlamada(movil2.hacerLlamada("5377777777", 7800));     // 130 min = 7800 seg
+		movil2.agregarLlamada(movil2.hacerLlamada("5377778888", 1200));     // 20 min = 1200 seg
+		movil2.agregarLlamada(movil2.hacerLlamada("5377779999", 4200));     // 70 min = 4200 seg
+		movil2.agregarLlamada(movil2.hacerLlamada("5377770000", 9600));     // 160 min = 9600 seg
+
+		// Llamadas para el telefono movil 3 (58432109)
+		movil3.agregarLlamada(movil3.hacerLlamada("5388881111", 2700));     // 45 min = 2700 seg
+		movil3.agregarLlamada(movil3.hacerLlamada("5388882222", 1800));     // 30 min = 1800 seg
+		movil3.agregarLlamada(movil3.hacerLlamada("5388883333", 8400));     // 140 min = 8400 seg
+		movil3.agregarLlamada(movil3.hacerLlamada("5388884444", 1500));     // 25 min = 1500 seg
+		movil3.agregarLlamada(movil3.hacerLlamada("5388885555", 11400));    // 190 min = 11400 seg
+		movil3.agregarLlamada(movil3.hacerLlamada("5388886666", 3300));     // 55 min = 3300 seg
+		movil3.agregarLlamada(movil3.hacerLlamada("5388887777", 7200));     // 120 min = 7200 seg
+		movil3.agregarLlamada(movil3.hacerLlamada("5388888888", 2400));     // 40 min = 2400 seg
+		movil3.agregarLlamada(movil3.hacerLlamada("5388889999", 10200));    // 170 min = 10200 seg
+		movil3.agregarLlamada(movil3.hacerLlamada("5388880000", 2100));     // 35 min = 2100 seg
+
+		//Creacion de al menos 20 representantes
+		// Representantes adicionales libres (sin cliente asignado)
+		empresa.agregarRepresentante("Zurdokar Plasencia", "84121501001");
+		empresa.agregarRepresentante("Yaxiry Solunare", "90070102002");
+		empresa.agregarRepresentante("Quiruvio Noreste", "78030603003");
+		empresa.agregarRepresentante("Xilena Marab", "85082204004");
+		empresa.agregarRepresentante("Ozmart Yerbabuena", "91103005005");
+		empresa.agregarRepresentante("Ufrano Calipso", "79041406006");
+		empresa.agregarRepresentante("Ixchel Toronja", "88052507007");
+		empresa.agregarRepresentante("Yovankor del Monte", "83070808008");
+		empresa.agregarRepresentante("Zuleyka Omb", "92090909009");
+		empresa.agregarRepresentante("Quirino Almbar", "87121210010");
+		empresa.agregarRepresentante("Xarand Csmico", "89111111011");
+		empresa.agregarRepresentante("Odalisca Mercurio", "94020212012");
+		empresa.agregarRepresentante("Yerut Pandora", "80030313013");
+		empresa.agregarRepresentante("Zacarias Neptuno", "91040414014");
+		empresa.agregarRepresentante("Ulpiano Cerezo", "85050515015");
+
+		TelefonoFijo tf1 = empresa.getTelefonosFijos().get(0);
+		TelefonoFijo tf2 = empresa.getTelefonosFijos().get(1);
+		TelefonoFijo tf3 = empresa.getTelefonosFijos().get(2);
+		TelefonoFijo tf4 = empresa.getTelefonosFijos().get(3);
+
+		TelefonoFijo[] telefonos = {tf1, tf2, tf3, tf4};
+
+		for (int i = 1; i <= 15; i++) {
+			double duracion = 20.0 + i;
+			String numeroDestino = "53" + String.format("%07d", i);
+			String provincia = "Provincia" + ((i % 5) + 1);
+			String municipio = "Municipio" + ((i % 3) + 1);
+			double totalFacturar = 510.0 + i * 10; // Siempre > 500
+
+			LlamadaLargaDistancia llamada = new LlamadaLargaDistancia(
+					duracion,
+					numeroDestino,
+					provincia,
+					municipio,
+					totalFacturar
+					);
+
+			// Asignar de forma rotativa y segura
+			TelefonoFijo telFijo = telefonos[(i - 1) % telefonos.length];
+			telFijo.agregarLlamadaLargaDistancia(
+					llamada.getDuracion(),
+					llamada.getNumeroDestino(),
+					llamada.getProvincia(),
+					llamada.getMunicipio(),
+					llamada.getTotalFacturar()
+					);
+		}
 		
-		//asignacion de servicios a clientes
+		// TODO datos de prueba para cuentas nauta
+		// Busca las instancias de las cuentas en los servicios de cada cliente
+		CuentaNauta cn1 = null, cn2 = null, cn3 = null, cn4 = null, cn5 = null;
+		for (Servicio s : pn1.getServicios()) if (s instanceof CuentaNauta) cn1 = (CuentaNauta) s;
+		for (Servicio s : pn2.getServicios()) if (s instanceof CuentaNauta) cn2 = (CuentaNauta) s;
+		for (Servicio s : pn3.getServicios()) if (s instanceof CuentaNauta) cn3 = (CuentaNauta) s;
+		for (Servicio s : pn4.getServicios()) if (s instanceof CuentaNauta) cn4 = (CuentaNauta) s;
+		for (Servicio s : pn5.getServicios()) if (s instanceof CuentaNauta) cn5 = (CuentaNauta) s;
+
+		// Ahora inicializa datos de consumo en varios meses
+		if (cn1 != null) {
+		    cn1.agregarMesDatos(
+		        "2025-01",
+		        110,    // kbEnviadosInternacional
+		        1200,   // kbEnviadosNacional
+		        90,     // kbRecibidosInternacional
+		        1150,   // kbRecibidosNacional
+		        500,    // kbNavegacion
+		        25,     // montoEnvioInternacional
+		        35,     // montoEnvioNacional
+		        12,     // montoNavegacion
+		        10,     // montoRecepcionInternacional
+		        30,     // montoRecepcionNacional
+		        112     // montoTotal
+		    );
+		    cn1.agregarMesDatos(
+		        "2025-02",
+		        130, 1300, 100, 1210, 520, 30, 37, 14, 13, 32, 1260
+		    );
+		    cn1.agregarMesDatos("2025-03",
+			        130, 1300, 100, 1210, 520, 30, 37, 14, 13, 32, 1260);
+		    
+		    cn1.agregarMesDatos("2025-04",
+		        130, 1300, 100, 1210, 520, 30, 37, 14, 13, 32, 1890);
+		    
+		    cn1.agregarMesDatos("2025-05",
+		        130, 1300, 100, 1210, 520, 30, 37, 14, 13, 32, 1673);
+		    
+		    cn1.agregarMesDatos("2025-06",
+			        130, 1300, 100, 1210, 520, 30, 37, 14, 13, 32, 1446);
+		}
+
+		if (cn2 != null) {
+		    cn2.agregarMesDatos("2025-02", 215, 1500, 180, 1420, 610, 45, 55, 16, 18, 36, 1360);
+		    cn2.agregarMesDatos("2025-03", 220, 1510, 185, 1430, 615, 42, 54, 18, 19, 37, 1385);
+		    cn2.agregarMesDatos("2025-04", 230, 1520, 190, 1440, 620, 44, 56, 19, 20, 39, 1400);
+		    cn2.agregarMesDatos("2025-05", 225, 1550, 195, 1455, 625, 43, 57, 20, 21, 41, 1425);
+		}
+
+		if (cn3 != null) {
+		    cn3.agregarMesDatos("2025-02", 140, 1200, 120, 1100, 530, 34, 38, 15, 15, 33, 1120);
+		    cn3.agregarMesDatos("2025-03", 150, 1250, 130, 1150, 540, 36, 40, 15, 16, 35, 1155);
+		    cn3.agregarMesDatos("2025-04", 155, 1280, 135, 1170, 545, 35, 41, 17, 17, 36, 1170);
+		    cn3.agregarMesDatos("2025-05", 160, 1300, 140, 1190, 550, 36, 43, 18, 18, 38, 1195);
+		}
+
+		if (cn4 != null) {
+		    cn4.agregarMesDatos("2025-02", 200, 1400, 160, 1320, 600, 40, 50, 20, 22, 48, 1200);
+		    cn4.agregarMesDatos("2025-03", 210, 1410, 170, 1330, 610, 41, 51, 21, 23, 49, 1235);
+		    cn4.agregarMesDatos("2025-04", 215, 1420, 175, 1340, 620, 42, 52, 22, 24, 50, 1270);
+		    cn4.agregarMesDatos("2025-05", 220, 1430, 180, 1350, 630, 43, 53, 23, 25, 51, 1305);
+		}
+
+		if (cn5 != null) {
+		    cn5.agregarMesDatos("2025-02", 300, 2000, 280, 1900, 800, 70, 85, 32, 40, 60, 2200);
+		    cn5.agregarMesDatos("2025-03", 310, 2100, 290, 2000, 820, 71, 86, 33, 41, 61, 2250);
+		    cn5.agregarMesDatos("2025-04", 320, 2200, 300, 2100, 830, 72, 87, 34, 42, 62, 2300);
+		    cn5.agregarMesDatos("2025-05", 330, 2300, 310, 2200, 840, 73, 88, 35, 43, 63, 2350);
+		}
+		// TODO aquÃ­ cierra el bloque
 		
-	 int indiceServicios = 0;
-
-		empresa.getClientes().get(0).addServicio(empresa.getServicios().get(indiceServicios++));
-		empresa.getClientes().get(0).addServicio(empresa.getServicios().get(indiceServicios++));
-		empresa.getClientes().get(0).addServicio(empresa.getServicios().get(indiceServicios++));
-
-		empresa.getClientes().get(1).addServicio(empresa.getServicios().get(indiceServicios++));
-		empresa.getClientes().get(1).addServicio(empresa.getServicios().get(indiceServicios++));
-
-		empresa.getClientes().get(2).addServicio(empresa.getServicios().get(indiceServicios++));
-		empresa.getClientes().get(2).addServicio(empresa.getServicios().get(indiceServicios++));
-		empresa.getClientes().get(2).addServicio(empresa.getServicios().get(indiceServicios++));
-
-		empresa.getClientes().get(3).addServicio(empresa.getServicios().get(indiceServicios++));
-		empresa.getClientes().get(3).addServicio(empresa.getServicios().get(indiceServicios++));
-
-		empresa.getClientes().get(4).addServicio(empresa.getServicios().get(indiceServicios++));
-		empresa.getClientes().get(4).addServicio(empresa.getServicios().get(indiceServicios++));
-		empresa.getClientes().get(4).addServicio(empresa.getServicios().get(indiceServicios++));
-
-		empresa.getClientes().get(5).addServicio(empresa.getServicios().get(indiceServicios++));
-		empresa.getClientes().get(5).addServicio(empresa.getServicios().get(indiceServicios++));
-
-		empresa.getClientes().get(6).addServicio(empresa.getServicios().get(indiceServicios++));
-		empresa.getClientes().get(6).addServicio(empresa.getServicios().get(indiceServicios++));
-		empresa.getClientes().get(6).addServicio(empresa.getServicios().get(indiceServicios++));
-
-		empresa.getClientes().get(7).addServicio(empresa.getServicios().get(indiceServicios++));
-		empresa.getClientes().get(7).addServicio(empresa.getServicios().get(indiceServicios++));
-
-		empresa.getClientes().get(8).addServicio(empresa.getServicios().get(indiceServicios++));
-		empresa.getClientes().get(8).addServicio(empresa.getServicios().get(indiceServicios++));
-		empresa.getClientes().get(8).addServicio(empresa.getServicios().get(indiceServicios++));
-
-		empresa.getClientes().get(9).addServicio(empresa.getServicios().get(indiceServicios++));
-		empresa.getClientes().get(9).addServicio(empresa.getServicios().get(indiceServicios++));
-
-		empresa.getClientes().get(10).addServicio(empresa.getServicios().get(indiceServicios++));
-
-		empresa.getClientes().get(11).addServicio(empresa.getServicios().get(indiceServicios++));
-		empresa.getClientes().get(11).addServicio(empresa.getServicios().get(indiceServicios++));
-
-		empresa.getClientes().get(12).addServicio(empresa.getServicios().get(indiceServicios++));
-		empresa.getClientes().get(12).addServicio(empresa.getServicios().get(indiceServicios++));
-
-		empresa.getClientes().get(13).addServicio(empresa.getServicios().get(indiceServicios++));
-		empresa.getClientes().get(13).addServicio(empresa.getServicios().get(indiceServicios++));
-
-		empresa.getClientes().get(14).addServicio(empresa.getServicios().get(indiceServicios++));
-		empresa.getClientes().get(14).addServicio(empresa.getServicios().get(indiceServicios++));
-
-		empresa.getClientes().get(15).addServicio(empresa.getServicios().get(indiceServicios++));
-		empresa.getClientes().get(15).addServicio(empresa.getServicios().get(indiceServicios++));
-
-		empresa.getClientes().get(16).addServicio(empresa.getServicios().get(indiceServicios++));
-		empresa.getClientes().get(16).addServicio(empresa.getServicios().get(indiceServicios++));
-
-		empresa.getClientes().get(17).addServicio(empresa.getServicios().get(indiceServicios++));
-		empresa.getClientes().get(17).addServicio(empresa.getServicios().get(indiceServicios++));
-
-		empresa.getClientes().get(18).addServicio(empresa.getServicios().get(indiceServicios++));
-		empresa.getClientes().get(18).addServicio(empresa.getServicios().get(indiceServicios++));
 		
-		empresa.getClientes().get(19).addServicio(empresa.getServicios().get(indiceServicios++));
-		empresa.getClientes().get(19).addServicio(empresa.getServicios().get(indiceServicios++));
-
-		empresa.getClientes().get(20).addServicio(empresa.getServicios().get(indiceServicios++));
-
-		empresa.getClientes().get(21).addServicio(empresa.getServicios().get(indiceServicios++));
-		empresa.getClientes().get(21).addServicio(empresa.getServicios().get(indiceServicios++));
-
-		empresa.getClientes().get(22).addServicio(empresa.getServicios().get(indiceServicios++));
-		empresa.getClientes().get(22).addServicio(empresa.getServicios().get(indiceServicios++));
-		empresa.getClientes().get(22).addServicio(empresa.getServicios().get(indiceServicios++));
-
-		empresa.getClientes().get(23).addServicio(empresa.getServicios().get(indiceServicios++));
-		empresa.getClientes().get(23).addServicio(empresa.getServicios().get(indiceServicios++));
-
-		empresa.getClientes().get(24).addServicio(empresa.getServicios().get(indiceServicios++));
-		empresa.getClientes().get(24).addServicio(empresa.getServicios().get(indiceServicios++));
-		empresa.getClientes().get(24).addServicio(empresa.getServicios().get(indiceServicios++));
-
-		empresa.getClientes().get(25).addServicio(empresa.getServicios().get(indiceServicios++));
-		empresa.getClientes().get(25).addServicio(empresa.getServicios().get(indiceServicios++));
-
-		empresa.getClientes().get(26).addServicio(empresa.getServicios().get(indiceServicios++));
-		empresa.getClientes().get(26).addServicio(empresa.getServicios().get(indiceServicios++));
-		empresa.getClientes().get(26).addServicio(empresa.getServicios().get(indiceServicios++));
-
-		empresa.getClientes().get(27).addServicio(empresa.getServicios().get(indiceServicios++));
-		empresa.getClientes().get(27).addServicio(empresa.getServicios().get(indiceServicios++));
-
-		empresa.getClientes().get(28).addServicio(empresa.getServicios().get(indiceServicios++));
-		empresa.getClientes().get(28).addServicio(empresa.getServicios().get(indiceServicios++));
-		empresa.getClientes().get(28).addServicio(empresa.getServicios().get(indiceServicios++));
-
-		empresa.getClientes().get(29).addServicio(empresa.getServicios().get(indiceServicios++));
-		empresa.getClientes().get(29).addServicio(empresa.getServicios().get(indiceServicios++));
 	}
 }
-
