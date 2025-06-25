@@ -89,7 +89,7 @@ public class MesesMayorConsumoMBnauta extends JDialog {
         // Extraer los datos del modelo para graficar
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
-        // Los meses los tienes definidos en el TableModel, pero aquí los definimos igual:
+       
         String[] meses = {
             "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
             "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
