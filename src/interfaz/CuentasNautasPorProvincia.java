@@ -2,25 +2,23 @@ package interfaz;
 
 import auxiliares.*;
 import logica.EmpresaTelecomunicaciones;
-import interfaz.Principal; // Importar la clase Principal
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Map;
 
 public class CuentasNautasPorProvincia extends JDialog {
     private JTable table;
     private static CuentasNautasPorProvincia instance;
-    private static Principal ventanaPrincipal; // Referencia a Principal
     
     public static void main(String[] args) {
         try {
-            CuentasNautasPorProvincia dialog = new CuentasNautasPorProvincia(null);
+            CuentasNautasPorProvincia dialog = new CuentasNautasPorProvincia();
             dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
             dialog.setVisible(true);
         } catch (Exception e) {
@@ -28,13 +26,10 @@ public class CuentasNautasPorProvincia extends JDialog {
         }
     }
 
-    public CuentasNautasPorProvincia(Principal principal) {
-        setModal(true);
+    public CuentasNautasPorProvincia() {
         setBounds(100, 100, 1126, 662);
         setLocationRelativeTo(null);
         getContentPane().setLayout(null);
-        
-        ventanaPrincipal = principal; // Guardar referencia
         
         JPanel panel = new JPanel();
         panel.setBounds(15, 16, 1074, 496);
@@ -66,27 +61,8 @@ public class CuentasNautasPorProvincia extends JDialog {
         lblTitulo.setBounds(15, 0, 300, 20);
         panel.add(lblTitulo);
         
-        // Cambiar imagen al abrir
-        if (ventanaPrincipal != null) {
-            ventanaPrincipal.cambiarImagenFondo("/imagenes/e.png");
-        }
-        
-        // Configurar el cierre para restaurar la imagen
-        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosed(WindowEvent e) {
-                restoreBackground();
-            }
-        });
-        
+              
         llenarTabla();
-    }
-    
-    private void restoreBackground() {
-        if (ventanaPrincipal != null) {
-            ventanaPrincipal.cambiarImagenFondo("/imagenes/d.png");
-        }
     }
 
     private void llenarTabla() {
@@ -96,11 +72,10 @@ public class CuentasNautasPorProvincia extends JDialog {
         table.repaint();
     }
     
-
     // Patrón Singleton como en las otras ventanas
-    public static void abrirCuentasNautasPorProvincia(Principal principal) {
+    public static void abrirCuentasNautasPorProvincia() {
         if (instance == null) {
-            instance = new CuentasNautasPorProvincia(principal);
+            instance = new CuentasNautasPorProvincia();
             instance.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
             instance.setVisible(true);
         } else {
@@ -123,7 +98,6 @@ public class CuentasNautasPorProvincia extends JDialog {
 
     @Override
     public void dispose() {
-        restoreBackground();
         instance = null;
         super.dispose();
     }

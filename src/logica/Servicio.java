@@ -14,8 +14,6 @@ public abstract class Servicio{
     //titular
     public void setTitular(Cliente titular){
         this.titular = titular;
-        if(titular != null)
-        	titular.addServicio(this);
     }
 
     public Cliente getTitular(){

@@ -18,7 +18,6 @@ public abstract class Telefono extends Servicio implements Llamador {
     //GETTER Y SETTER 
     //numero
     public void setNumero(String numero){
-    	
         this.numero = numero;
     }
 
@@ -30,10 +29,6 @@ public abstract class Telefono extends Servicio implements Llamador {
     	return llamadas;
     }
     //METODOS
-  //Agregar una llamada a la lista de llamadas del telefono
-    public void agregarLlamada(Llamada ll){
-    	llamadas.add(ll);
-    }
     
     
     

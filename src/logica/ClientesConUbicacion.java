@@ -1,6 +1,4 @@
-package logica;
-
-import excepciones.*;
+package logica;                                             
 
 public abstract class ClientesConUbicacion extends Cliente {
     // Atributos
@@ -8,9 +6,7 @@ public abstract class ClientesConUbicacion extends Cliente {
     protected String provincia;
     
     // Constructor
-    public ClientesConUbicacion(String nombre,String direccion, String municipio, 
-                                String provincia) throws NombreInvalidoException, UbicacionInvalidaException,
-                                ProvinciaInvalidaException {
+    public ClientesConUbicacion(String nombre,String direccion, String municipio, String provincia) {
         super(nombre,direccion);
        setMunicipio(municipio);
        setProvincia(provincia);
@@ -21,10 +17,7 @@ public abstract class ClientesConUbicacion extends Cliente {
     public String getMunicipio() {
         return municipio;
     }
-    public void setMunicipio(String municipio) throws UbicacionInvalidaException {
-        if(municipio == null || municipio.trim().isEmpty())
-            throw new UbicacionInvalidaException("El municipio no puede estar vacio");   
-        else
+    public void setMunicipio(String municipio) {
         this.municipio = municipio;
     }
 
@@ -32,13 +25,8 @@ public abstract class ClientesConUbicacion extends Cliente {
     public String getProvincia() {
         return provincia;
     }
-    // Esta validacion pienso que debemos mejorarla ya que no es dificil
-    // comprobar con las provincias reales de Cuba a pesar de no tener BD
-    public void setProvincia(String provincia) throws ProvinciaInvalidaException {
-        if(provincia == null || provincia.trim().isEmpty()){
-            throw new ProvinciaInvalidaException("La provincia no puede estar vacia");
-        }
-        else
-            this.provincia = provincia;
+    public void setProvincia(String provincia) {
+        this.provincia = provincia;
     }
+    
 }
