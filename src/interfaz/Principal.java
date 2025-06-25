@@ -17,7 +17,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import auxiliares.ClientesConTodosLosServiciosContratados;
+import auxiliares.ClientesServiciosTableModel;
 import auxiliares.CuentaNautaTableModel;
 import runner.Inicializadora;
 
@@ -26,8 +26,15 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
+import logica.Cliente;
+import logica.EmpresaTelecomunicaciones;
+
 public class Principal extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	
 
@@ -193,11 +200,41 @@ public class Principal extends JFrame {
 		
 		JMenuItem mntmNewMenuItem_2 = new JMenuItem("3. Clientes con todos los servicios contratados");
 		mntmNewMenuItem_2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				ClientesConTodosLosServiciosContratados clientesFull= new ClientesConTodosLosServiciosContratados();
-				clientesFull.setVisible(true);
-			}
+		    public void actionPerformed(ActionEvent arg0) {
+		        try {
+		        // Verificar que la instancia no sea null
+		           EmpresaTelecomunicaciones empresa = EmpresaTelecomunicaciones.getInstancia();
+		           if (empresa == null) {
+		             JOptionPane.showMessageDialog(null, "Error: La empresa no está inicializada", 
+		                                            "Error", JOptionPane.ERROR_MESSAGE);
+		               return;
+		            }
+		            
+		            // Obtener los clientes
+		            ArrayList<Cliente> clientesConTodos = empresa.clientesConTodosLosTiposServicio();
+		            if (clientesConTodos == null) {
+		                JOptionPane.showMessageDialog(null, "Error: No se pudieron obtener los clientes", 
+		                                            "Error", JOptionPane.ERROR_MESSAGE);
+		                return;
+		            }
+		            
+		            // Crear la ventana
+		            ClientesConTodosLosServiciosContratados clientesFull = new ClientesConTodosLosServiciosContratados();
+		            
+		            // Cargar datos y mostrar
+		            clientesFull.cargarDatos(clientesConTodos);
+		            clientesFull.setVisible(true);
+		            
+		        } catch (Exception e) {
+		            JOptionPane.showMessageDialog(null, 
+		                "Error al abrir la ventana: " + e.getMessage(), 
+		                "Error", JOptionPane.ERROR_MESSAGE);
+		            e.printStackTrace();
+		        }
+		    }
 		});
+		    
+
 		mntmNewMenuItem_2.setFont(new Font("Serif", Font.PLAIN, 21));
 		mnClientes_1.add(mntmNewMenuItem_2);
 		

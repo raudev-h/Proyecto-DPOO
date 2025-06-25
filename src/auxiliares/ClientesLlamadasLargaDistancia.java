@@ -1,7 +1,4 @@
 package auxiliares;
-
-
-
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import logica.Cliente;
