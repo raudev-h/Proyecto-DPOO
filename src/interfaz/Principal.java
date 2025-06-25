@@ -1,6 +1,4 @@
 package interfaz;
-import imagenes.*;
-
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Graphics;
@@ -116,7 +114,7 @@ public class Principal extends JFrame {
 		JMenuItem mntmClientes = new JMenuItem("Clientes");
 		mntmClientes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				ListadoClientes.abrirListadoClientes();
+				ListadoClientes.abrirListadoClientes(null);
 			}
 		});
 		mntmClientes.setFont(new Font("Serif", Font.PLAIN, 21));
@@ -126,7 +124,7 @@ public class Principal extends JFrame {
 		mntmServicios.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				 ListadoServicios.abrirListadoServicio();
+				 ListadoServicios.abrirListadoServicio(null);
 			}
 		});
 		mntmServicios.setFont(new Font("Serif", Font.PLAIN, 20));
@@ -135,7 +133,7 @@ public class Principal extends JFrame {
 		JMenuItem mntmRepresentantes = new JMenuItem("Representantes");
 		mntmRepresentantes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				 ListadoRepresentante.abrirListadoRepresentante();;
+				 ListadoRepresentante.abrirListadoRepresentante(null);;
 				
 				
 			}

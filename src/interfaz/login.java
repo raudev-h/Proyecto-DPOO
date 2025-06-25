@@ -43,7 +43,7 @@ public class login extends JFrame {
     }
     
     // 2. Constructor privado para evitar instanciación externa
-    private login() {
+    login() {
         configurarVentana();
         inicializarComponentes();
     }
