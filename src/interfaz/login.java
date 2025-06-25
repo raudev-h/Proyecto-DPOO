@@ -52,7 +52,7 @@ public class login extends JFrame {
     public static login getInstance() {
         if (instance == null) {
             instance = new login();
-        }
+        }       
         return instance;
     }
 
@@ -153,6 +153,7 @@ public class login extends JFrame {
         lblNewLabel.setIcon(new ImageIcon(getClass().getResource("/imagenes/DB.png")));
         lblNewLabel.setBounds(401, 28, 298, 307);
         contentPane.add(lblNewLabel);
+
     }
 
     private void verificarCredenciales() {
@@ -186,6 +187,7 @@ public class login extends JFrame {
     private void iniciarSesion() {
         autenticado = true;
         dispose();
+        Principal.getInstance().setVisible(true);
     }
 
     private void manejarIntentoFallido() {
@@ -233,4 +235,16 @@ public class login extends JFrame {
         mensajeError.setVisible(false);
         lblTemporizador.setVisible(false);
     }
+    
+    public void  resetearCampos(){
+    	textFieldUsuario.setText("");
+    	textFieldPassword.setText("");
+        intentosFallidos = 0;
+        mensajeError.setVisible(false);
+        mensajeIntentos.setVisible(false);
+        lblTemporizador.setVisible(false);
+   	
+    }
+    
+    
 }
