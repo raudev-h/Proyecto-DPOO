@@ -17,6 +17,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+import auxiliares.ClientesConTodosLosServiciosContratados;
 import auxiliares.CuentaNautaTableModel;
 import runner.Inicializadora;
 
@@ -189,6 +190,16 @@ public class Principal extends JFrame {
 		});
 		mntmClientesCon.setFont(new Font("Serif", Font.PLAIN, 21));
 		mnClientes_1.add(mntmClientesCon);
+		
+		JMenuItem mntmNewMenuItem_2 = new JMenuItem("3. Clientes con todos los servicios contratados");
+		mntmNewMenuItem_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				ClientesConTodosLosServiciosContratados clientesFull= new ClientesConTodosLosServiciosContratados();
+				clientesFull.setVisible(true);
+			}
+		});
+		mntmNewMenuItem_2.setFont(new Font("Serif", Font.PLAIN, 21));
+		mnClientes_1.add(mntmNewMenuItem_2);
 		
 		JMenu mnAyuda = new JMenu("Ayuda       ");
 		mnAyuda.setFont(new Font("Serif", Font.BOLD, 22));
