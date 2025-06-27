@@ -123,7 +123,8 @@ public class login extends JFrame {
         iniciarSesion.setForeground(Color.WHITE);
         iniciarSesion.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                verificarCredenciales();
+               // verificarCredenciales(); <---- Se comenta para inicio de sesion rapido en etapa de desarrollo de la app
+                iniciarSesion();
             }
         });
         contentPane.add(iniciarSesion);
