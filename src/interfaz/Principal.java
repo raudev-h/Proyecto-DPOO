@@ -26,8 +26,7 @@ public class Principal extends JFrame {
 
     private JPanel contentPane;
     private String imagenFondoActual = "/imagenes/d.png"; // Imagen por defecto
-    private ClientesConTodosLosServiciosContratados ventanaClientes = null;
-    private MesesMayorConsumoMBnauta ventanaMesesKb = null;
+ 
     
     
     private static Principal instance = null;
