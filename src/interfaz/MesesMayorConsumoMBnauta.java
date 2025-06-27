@@ -1,9 +1,11 @@
 package interfaz;
 
+/*
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.DefaultCategoryDataset;
+*/
 
 import auxiliares.MayorGastoKbTableModel;
 import logica.CuentaNauta;
@@ -27,7 +29,7 @@ import javax.swing.table.JTableHeader;
 
 public class MesesMayorConsumoMBnauta extends JDialog {
     private static final long serialVersionUID = 1L;
-    private ChartPanel chartPanel;
+  //  private ChartPanel chartPanel;
     private JTable table;
     private MayorGastoKbTableModel tableModel;
     private JPanel panel;
@@ -73,18 +75,19 @@ public class MesesMayorConsumoMBnauta extends JDialog {
         
         btnCargarGrafico.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                cargarGrafico();
+               // cargarGrafico();
             }
         });
         
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        
     }
     
     // Método para cargar los datos usando arreglo de consumos (12 meses)
     public void cargarDatos(long[] consumosTotalesPorMes) {
         tableModel.cargarConsumos(consumosTotalesPorMes);
     }
-    
+/*    
     private void cargarGrafico() {
         // Extraer los datos del modelo para graficar
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
@@ -119,5 +122,6 @@ public class MesesMayorConsumoMBnauta extends JDialog {
         panel.repaint();
         panel.revalidate();
     }
+    */
 
 }

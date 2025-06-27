@@ -1,17 +1,14 @@
 package interfaz;
-
+import logica.*;
 import auxiliares.*;
 import logica.*;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
-
 import javax.swing.border.TitledBorder;
-
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 

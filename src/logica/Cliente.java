@@ -25,7 +25,7 @@ public abstract class Cliente {
 
     public void setDireccion(String direccion) throws UbicacionInvalidaException {
         if(direccion == null || direccion.trim().isEmpty()){
-           throw new UbicacionInvalidaException("La direccion no puede estar vacÃ­a");
+           throw new UbicacionInvalidaException("La direccion no puede estar vacÃƒÂ­a");
         }
         else 
             this.direccion = direccion.trim();
@@ -48,9 +48,9 @@ public abstract class Cliente {
     public void setNombre(String nombre) throws NombreInvalidoException {
     
     	if(nombre == null || nombre.trim().isEmpty()){
-            throw new NombreInvalidoException("El nombre no puede estar vacÃ­o");
+            throw new NombreInvalidoException("El nombre no puede estar vacÃƒÂ­o");
         }
-        else if(!(nombre.trim().matches(("[a-zA-ZáéíóúÁÉÍÓÚñÑ]+( [a-zA-ZáéíóúÁÉÍÓÚñÑ]+)*")))){
+        else if(!(nombre.trim().matches(("[a-zA-ZÃ¡Ã©Ã­Ã³ÃºÃ�Ã‰Ã�Ã“ÃšÃ±Ã‘]+( [a-zA-ZÃ¡Ã©Ã­Ã³ÃºÃ�Ã‰Ã�Ã“ÃšÃ±Ã‘]+)*")))){
             throw new NombreInvalidoException("El nombre solo puede contener letras");
         }
         else 
@@ -61,16 +61,16 @@ public abstract class Cliente {
     public static void validarNombre(String nombre) throws NombreInvalidoException {
     
     	if(nombre == null || nombre.trim().isEmpty()){
-            throw new NombreInvalidoException("El nombre no puede estar vacío");
+            throw new NombreInvalidoException("El nombre no puede estar vacÃ­o");
         }
-        else if(!(nombre.trim().matches(("[a-zA-ZáéíóúÁÉÍÓÚñÑ]+( [a-zA-ZáéíóúÁÉÍÓÚñÑ]+)*")))){
+        else if(!(nombre.trim().matches(("[a-zA-ZÃ¡Ã©Ã­Ã³ÃºÃ�Ã‰Ã�Ã“ÃšÃ±Ã‘]+( [a-zA-ZÃ¡Ã©Ã­Ã³ÃºÃ�Ã‰Ã�Ã“ÃšÃ±Ã‘]+)*")))){
             throw new NombreInvalidoException("El nombre solo puede contener letras");
         }
 
     }
     public static void validarDireccion(String direccion) throws UbicacionInvalidaException {
         if(direccion == null || direccion.trim().isEmpty()){
-            throw new UbicacionInvalidaException("La direccion no puede estar vacía");
+            throw new UbicacionInvalidaException("La direccion no puede estar vacÃ­a");
          }
 
      }
@@ -78,7 +78,7 @@ public abstract class Cliente {
     
     //========================
 
-    // MÉTODOS
+    // MÃ‰TODOS
     // Agregar Servicio
     public void addServicio(Servicio s) {
         servicios.add(s);
@@ -153,5 +153,20 @@ public abstract class Cliente {
 	public String toString() {
 		return nombre; 
 	}
+//Clientes con todos los servicios contratados (mejorando la escalabilidadAdd commentMore actions
+    
+    public boolean tieneTodosLosTiposServicio() {
+        boolean tieneFijo = false;
+        boolean tieneMovil = false;
+        boolean tieneNauta = false;
+
+        for (Servicio s : servicios) {
+            if (s instanceof TelefonoFijo) tieneFijo = true;
+            else if (s instanceof TelefonoMovil) tieneMovil = true;
+            else if (s instanceof CuentaNauta) tieneNauta = true;
+        }
+
+        return tieneFijo && tieneMovil && tieneNauta;
+    }
 
 }

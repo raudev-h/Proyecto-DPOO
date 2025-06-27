@@ -128,6 +128,12 @@ public class Principal extends JFrame {
         JMenuItem mntmMesesConMayor = new JMenuItem("1. Meses con mayor gasto en kb de Cuentas Nautas");
         mntmMesesConMayor.setFont(new Font("Serif", Font.PLAIN, 21));
         mnServicios_1.add(mntmMesesConMayor);
+        mntmMesesConMayor.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+            	MesesMayorConsumoMBnauta m = new MesesMayorConsumoMBnauta();
+            	m.setVisible(true);
+            }
+        });
         
         JMenuItem mntmNewMenuItem = new JMenuItem("2. Provincias con la menor cantidad de Cuentas Nautas de Personas Naturales\r\n");
         mntmNewMenuItem.addActionListener(new ActionListener() {
@@ -174,6 +180,13 @@ public class Principal extends JFrame {
         JMenuItem mntmClientesCon_1 = new JMenuItem("3. Clientes con todos los servicios contratados");
         mntmClientesCon_1.setFont(new Font("Serif", Font.PLAIN, 21));
         mnClientes_1.add(mntmClientesCon_1);
+        mntmClientesCon_1.addActionListener(new ActionListener(){
+        	 public void actionPerformed(ActionEvent arg0) {
+        		 ClientesConTodosLosServiciosContratados ct = new ClientesConTodosLosServiciosContratados();
+        		 ct.setVisible(true);
+                
+             }
+         });
         
         
         JMenu mnAyuda = new JMenu("Ayuda       ");
