@@ -26,9 +26,9 @@ import java.awt.event.ActionListener;
 public class Ayuda extends JDialog {
     private final JPanel contentPanel = new JPanel();
     private static Principal ventanaPrincipal; // Referencia a Principal
-    private static Ayuda instance; // Para patrón Singleton
+    private static Ayuda instance; // Para patrÃ³n Singleton
 
-
+  
     public static void mostrarAyuda() {
         try {
             Ayuda dialog = new Ayuda();
@@ -45,7 +45,7 @@ public class Ayuda extends JDialog {
     public Ayuda() {
         setTitle("Ayuda del Sistema");
         setModal(true);
-        setSize(800, 600); // TamaÃ±o consistente
+        setSize(800, 600); // TamaÃƒÂ±o consistente
 
         // Centrar la ventana
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -80,6 +80,8 @@ public class Ayuda extends JDialog {
         buttonPane.setLayout(new BorderLayout(0, 0));
 
         JButton btnCerrar = new JButton("Cerrar");
+        btnCerrar.setBackground(new Color(255, 255, 255));
+        btnCerrar.setForeground(new Color(0, 0, 153));
         btnCerrar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 dispose();
@@ -101,7 +103,7 @@ public class Ayuda extends JDialog {
         sb.append("   - Editar información de clientes existentes\n");
         sb.append("   - Asignar servicios a clientes\n\n");
 
-        sb.append("2. Gestion de Servicios\n");
+        sb.append("2. Gestión de Servicios\n");
         sb.append("   - Teléfonos Fijos: Asignar a clientes, editar números\n");
         sb.append("   - Teléfonos Móviles: Asignar con sus montos correspondientes\n");
         sb.append("   - Cuentas Nauta: Asignar con nick único (Personas Naturales solo 1 cuenta)\n\n");
@@ -112,7 +114,6 @@ public class Ayuda extends JDialog {
         sb.append("Para soporte técnico contacte a:\n\n");
         sb.append("raulalbertohechavarria@gmail.com\n");
         sb.append("anielvarela64@gmail.com\n\n\n");
-        sb.append("rubenanazco0@gmail.com\n\n\n");
 
         sb.append("Versión del Sistema: 1.0.0");
 
@@ -120,7 +121,7 @@ public class Ayuda extends JDialog {
     }
 
     /**
-     * Resalta los correos en negro más oscuro usando StyledDocument
+     * Resalta los correos en negro mÃ¡s oscuro usando StyledDocument
      */
     private void aplicarEstiloCorreos(JTextPane txtPane) {
         StyledDocument doc = txtPane.getStyledDocument();

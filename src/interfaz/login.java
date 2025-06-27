@@ -19,6 +19,9 @@ import javax.swing.ImageIcon;
 
 public class login extends JFrame {
 
+    // 1. Variable estática para la instancia única
+    private static login instance = null;
+    
     private JPanel contentPane;
     private JTextField textFieldUsuario;
     private JPasswordField textFieldPassword;
@@ -26,17 +29,12 @@ public class login extends JFrame {
     private JLabel mensajeIntentos;
     private JLabel lblTemporizador;
     
-
-    
     // Control de intentos
     private int intentosFallidos = 0;
     private static final int MAX_INTENTOS = 3;
-    private static final int TIEMPO_BLOQUEO = 60* 1000; // 1 min de espera
+    private static final int TIEMPO_BLOQUEO = 60 * 1000; // 1 min de espera
     private Timer bloqueoTimer;
     private int segundosRestantes;
-
-
-  
 
     private boolean autenticado = false;
 
@@ -44,9 +42,18 @@ public class login extends JFrame {
         return autenticado;
     }
     
-    public login() {
+    // 2. Constructor privado para evitar instanciación externa
+    private login() {
         configurarVentana();
         inicializarComponentes();
+    }
+    
+    // 3. Método estático para obtener la instancia única
+    public static login getInstance() {
+        if (instance == null) {
+            instance = new login();
+        }       
+        return instance;
     }
 
     private void configurarVentana() {
@@ -93,7 +100,7 @@ public class login extends JFrame {
         textFieldPassword.setBounds(57, 177, 259, 26);
         contentPane.add(textFieldPassword);
 
-        // Mensaje de error (estilo original pero con funcionalidad mejorada)
+        // Mensaje de error
         mensajeError = new JLabel("Usuario o contraseña incorrectos");
         mensajeError.setForeground(Color.RED);
         mensajeError.setFont(new Font("Serif", Font.PLAIN, 18));
@@ -101,7 +108,6 @@ public class login extends JFrame {
         mensajeError.setVisible(false);
         contentPane.add(mensajeError);
         
-     // Mensaje de error (estilo original pero con funcionalidad mejorada)
         mensajeIntentos = new JLabel("");
         mensajeIntentos.setForeground(Color.RED);
         mensajeIntentos.setFont(new Font("Serif", Font.PLAIN, 18));
@@ -109,7 +115,7 @@ public class login extends JFrame {
         mensajeIntentos.setVisible(false);
         contentPane.add(mensajeIntentos);
 
-        // Botón Iniciar Sesión (estilo original + nueva lógica)
+        // Botón Iniciar Sesión
         JButton iniciarSesion = new JButton("Iniciar Sesión");
         iniciarSesion.setFont(new Font("Serif", Font.PLAIN, 21));
         iniciarSesion.setBounds(47, 292, 152, 29);
@@ -122,7 +128,7 @@ public class login extends JFrame {
         });
         contentPane.add(iniciarSesion);
 
-        //Temporizador
+        // Temporizador
         lblTemporizador = new JLabel("");
         lblTemporizador.setForeground(Color.RED);
         lblTemporizador.setFont(new Font("Serif", Font.PLAIN, 18));
@@ -130,7 +136,7 @@ public class login extends JFrame {
         lblTemporizador.setVisible(false);
         contentPane.add(lblTemporizador);
         
-        // Botón Salir (estilo original)
+        // Botón Salir
         JButton salir = new JButton("Salir");
         salir.setFont(new Font("Serif", Font.PLAIN, 21));
         salir.setForeground(Color.WHITE);
@@ -147,26 +153,26 @@ public class login extends JFrame {
         lblNewLabel.setIcon(new ImageIcon(getClass().getResource("/imagenes/DB.png")));
         lblNewLabel.setBounds(401, 28, 298, 307);
         contentPane.add(lblNewLabel);
+
     }
 
     private void verificarCredenciales() {
         if (intentosFallidos >= MAX_INTENTOS) {
-        	 UIManager.put("OptionPane.messageFont", new Font("Serif", Font.PLAIN, 20));
-             UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.PLAIN, 18));
+            UIManager.put("OptionPane.messageFont", new Font("Serif", Font.PLAIN, 20));
+            UIManager.put("OptionPane.buttonFont", new Font("Serif", Font.PLAIN, 18));
             JOptionPane.showMessageDialog(this, 
                 "Demasiados intentos. Espere 1 minuto.", 
                 "Cuenta Bloqueada", 
                 JOptionPane.ERROR_MESSAGE);
-        }else{
-        
-        String usuario = textFieldUsuario.getText();
-        String password = new String(textFieldPassword.getPassword());
-
-        if (validarUsuario(usuario) && validarPassword(password)) {
-            iniciarSesion();
         } else {
-            manejarIntentoFallido();
-        }
+            String usuario = textFieldUsuario.getText();
+            String password = new String(textFieldPassword.getPassword());
+
+            if (validarUsuario(usuario) && validarPassword(password)) {
+                iniciarSesion();
+            } else {
+                manejarIntentoFallido();
+            }
         }
     }
 
@@ -181,11 +187,12 @@ public class login extends JFrame {
     private void iniciarSesion() {
         autenticado = true;
         dispose();
+        Principal.getInstance().setVisible(true);
     }
 
     private void manejarIntentoFallido() {
         intentosFallidos++;
-        mensajeError.setText("Usuario o Contraseña incorrectos" );
+        mensajeError.setText("Usuario o Contraseña incorrectos");
         mensajeIntentos.setText("Intentos: "+ intentosFallidos + "/" + MAX_INTENTOS);
         mensajeError.setVisible(true);
         mensajeIntentos.setVisible(true);
@@ -194,7 +201,6 @@ public class login extends JFrame {
             bloquearSistema();
         }
     }
-
 
     private void bloquearSistema() {
         textFieldUsuario.setEnabled(false);
@@ -221,13 +227,24 @@ public class login extends JFrame {
         bloqueoTimer.start();
     }
 
-     private void desbloquearSistema() {
-           bloqueoTimer.stop();
-           intentosFallidos = 0;
-           textFieldUsuario.setEnabled(true);
-           textFieldPassword.setEnabled(true);
-           mensajeError.setVisible(false);
-           lblTemporizador.setVisible(false);
-            }
-   }
-
+    private void desbloquearSistema() {
+        bloqueoTimer.stop();
+        intentosFallidos = 0;
+        textFieldUsuario.setEnabled(true);
+        textFieldPassword.setEnabled(true);
+        mensajeError.setVisible(false);
+        lblTemporizador.setVisible(false);
+    }
+    
+    public void  resetearCampos(){
+    	textFieldUsuario.setText("");
+    	textFieldPassword.setText("");
+        intentosFallidos = 0;
+        mensajeError.setVisible(false);
+        mensajeIntentos.setVisible(false);
+        lblTemporizador.setVisible(false);
+   	
+    }
+    
+    
+}
