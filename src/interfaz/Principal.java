@@ -23,6 +23,7 @@ import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 
 public class Principal extends JFrame {
 
@@ -39,7 +40,8 @@ public class Principal extends JFrame {
      */
     private Principal() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(0, 0, 1600, 900);
+        java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        setBounds(0, 0, screenSize.width , screenSize.height);
         //setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
@@ -65,7 +67,8 @@ public class Principal extends JFrame {
         JMenu menu = new JMenu("");
         menuBar.add(menu);
         
-        JMenu mnArchivo = new JMenu("Archivo     ");
+        JMenu mnArchivo = new JMenu("Sesión     ");
+        mnArchivo.setIcon(new ImageIcon("C:\\Z\\Escuela\\DPOO\\Proyect DPOO\\Proyecto-DPOO\\src\\imagenes\\LogOut.png"));
         mnArchivo.setFont(new Font("Serif", Font.BOLD, 24));
         menuBar.add(mnArchivo);
         
@@ -213,16 +216,17 @@ public class Principal extends JFrame {
 		
 		
 		menuBar.add(Box.createHorizontalGlue());
-		JMenu mnNewMenu = new JMenu("Ajustes  ");
-		mnNewMenu.addActionListener(new ActionListener() {
+		
+		JButton btnAjustes = new JButton("Ajustes");
+		btnAjustes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Ajustes a = new Ajustes();
-				a.setVisible(true);
+				new Ajustes().setVisible(true);
 			}
 		});
-		mnNewMenu.setIcon(new ImageIcon("C:\\Z\\Escuela\\DPOO\\Proyect DPOO\\Proyecto-DPOO\\src\\imagenes\\IconoAjustes.png"));
-		mnNewMenu.setFont(new Font("Serif", Font.BOLD, 24));
-		menuBar.add(mnNewMenu);
+		btnAjustes.setIcon(new ImageIcon("C:\\Z\\Escuela\\DPOO\\Proyect DPOO\\Proyecto-DPOO\\src\\imagenes\\IconoAjustes.png"));
+		btnAjustes.setBackground(Color.WHITE);
+		btnAjustes.setFont(new Font("Serif", Font.BOLD, 22));
+		menuBar.add(btnAjustes);
     }
     
     // MÃ©todo para cambiar la imagen de fondo
