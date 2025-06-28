@@ -103,6 +103,7 @@ public class Principal extends JFrame {
             public void actionPerformed(ActionEvent arg0) {
                 // Pasar referencia de Principal al abrir el listado
                 ListadoClientes.abrirListadoClientes(Principal.this);
+                
             }
         });
         mntmClientes.setFont(new Font("Serif", Font.PLAIN, 22));
