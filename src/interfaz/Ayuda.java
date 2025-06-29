@@ -102,7 +102,7 @@ public class Ayuda extends JDialog {
         sb.append("----------------\n\n");
 
         sb.append("1. Gestión de Clientes\n");
-        sb.append("   - Agregar nuevos clientes (Personas Naturales, Jur�dicas o Entidades No Estatales)\n");
+        sb.append("   - Agregar nuevos clientes (Personas Naturales, Jurídicas o Entidades No Estatales)\n");
         sb.append("   - Editar información de clientes existentes\n");
         sb.append("   - Asignar servicios a clientes\n\n");
 
@@ -139,7 +139,8 @@ public class Ayuda extends JDialog {
         // Buscar y aplicar a cada correo
         String[] correos = {
             "raulalbertohechavarria@gmail.com",
-            "anielvarela64@gmail.com"
+            "anielvarela64@gmail.com",
+            "rubenanazco0@gmail.com"
         };
 
         for (String correo : correos) {

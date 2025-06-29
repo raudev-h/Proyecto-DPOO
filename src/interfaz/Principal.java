@@ -203,8 +203,7 @@ public class Principal extends JFrame {
 		JMenuItem mntmAcercaDe = new JMenuItem("Acerca de");
 		mntmAcercaDe.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Ayuda.mostrarAyuda(Principal.this);;
-				
+				Ayuda.mostrarAyuda(Principal.this);
 			}
 		});
 		mntmAcercaDe.setFont(new Font("Serif", Font.PLAIN, 22));
