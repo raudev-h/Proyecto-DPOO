@@ -338,7 +338,6 @@ public class ListadoServicios extends JDialog {
                 try{
 	                
                 	numero2 = TelefonoMovil.validarTelefonoMovil(txtNumeroMovil.getText());
-                	System.out.println(numero2);
 	                
 	              //Comprobar repetidos en los telefonos Activos
 	                for(Servicio s: EmpresaTelecomunicaciones.getInstancia().getServicios()){

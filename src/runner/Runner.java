@@ -7,10 +7,21 @@ import excepciones.ProvinciaInvalidaException;
 import excepciones.UbicacionInvalidaException;
 import interfaz.login;
 import interfaz.Principal;
+import com.formdev.flatlaf.FlatLightLaf;
 
 public class Runner {
     public static void main(String[] args) throws NombreInvalidoException, UbicacionInvalidaException, ProvinciaInvalidaException, CarnetIdentidadInvalidoException, DuplicadosException {
-        Inicializadora.Inicializar();
+    	 try {
+             javax.swing.UIManager.setLookAndFeel(new FlatLightLaf());
+             // Fuerza líneas en tablas
+             javax.swing.UIManager.put("Table.showVerticalLines", true);
+             javax.swing.UIManager.put("Table.showHorizontalLines", true);
+         } catch (Exception e) {
+             e.printStackTrace();
+         }
+
+    	
+    	Inicializadora.Inicializar();
 
         // Crear y mostrar el login EN el hilo EDT
         final login[] loginWindow = new login[1];

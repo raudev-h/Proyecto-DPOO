@@ -12,6 +12,7 @@ import java.awt.Toolkit;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.Box;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -21,6 +22,8 @@ import runner.Inicializadora;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 
 public class Principal extends JFrame {
 
@@ -37,31 +40,36 @@ public class Principal extends JFrame {
      */
     private Principal() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-       // setBounds(0, 0, 1600, 900);
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        setBounds(0, 0, screenSize.width , screenSize.height);
+        //setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
 
         setLocationRelativeTo(null);
 
-
-        // Crear panel de fondo personalizado
+        //======= Content Panel =========
+        
+        //Crear panel de fondo personalizado
         contentPane = new FondoPanel();
         ((FondoPanel) contentPane).setImagenFondo(imagenFondoActual); // Carga inicial
+//        contentPane = new JPanel();
+        
+        //=================
 
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
         contentPane.setLayout(null);
         
         JMenuBar menuBar = new JMenuBar();
-        menuBar.setBounds(0, 0, 3000, 39);
-        contentPane.add(menuBar);
+        setJMenuBar(menuBar);
         
         JMenu menu = new JMenu("");
         menuBar.add(menu);
         
-        JMenu mnArchivo = new JMenu("Archivo     ");
-        mnArchivo.setFont(new Font("Serif", Font.BOLD, 22));
+        JMenu mnArchivo = new JMenu("Sesión     ");
+        mnArchivo.setIcon(new ImageIcon("C:\\Z\\Escuela\\DPOO\\Proyect DPOO\\Proyecto-DPOO\\src\\imagenes\\LogOut.png"));
+        mnArchivo.setFont(new Font("Serif", Font.BOLD, 24));
         menuBar.add(mnArchivo);
         
         JMenuItem mntmCerrarSesin = new JMenuItem("Cerrar Sesi\u00F3n");
@@ -73,7 +81,7 @@ public class Principal extends JFrame {
 
             }
         });
-        mntmCerrarSesin.setFont(new Font("Serif", Font.PLAIN, 21));
+        mntmCerrarSesin.setFont(new Font("Serif", Font.PLAIN, 22));
         mnArchivo.add(mntmCerrarSesin);
         
         JMenuItem mntmSalir = new JMenuItem("Salir");
@@ -82,11 +90,12 @@ public class Principal extends JFrame {
                 dispose();
             }
         });
-        mntmSalir.setFont(new Font("Serif", Font.PLAIN, 21));
+        mntmSalir.setFont(new Font("Serif", Font.PLAIN, 22));
         mnArchivo.add(mntmSalir);
         
         JMenu mnGestion = new JMenu("Gesti\u00F3n      ");
-        mnGestion.setFont(new Font("Serif", Font.BOLD, 22));
+        mnGestion.setIcon(new ImageIcon("C:\\Z\\Escuela\\DPOO\\Proyect DPOO\\Proyecto-DPOO\\src\\imagenes\\IconoGestion.png"));
+        mnGestion.setFont(new Font("Serif", Font.BOLD, 24));
         menuBar.add(mnGestion);
         
         JMenuItem mntmClientes = new JMenuItem("Clientes");
@@ -94,9 +103,10 @@ public class Principal extends JFrame {
             public void actionPerformed(ActionEvent arg0) {
                 // Pasar referencia de Principal al abrir el listado
                 ListadoClientes.abrirListadoClientes(Principal.this);
+                
             }
         });
-        mntmClientes.setFont(new Font("Serif", Font.PLAIN, 21));
+        mntmClientes.setFont(new Font("Serif", Font.PLAIN, 22));
         mnGestion.add(mntmClientes);
         
         JMenuItem mntmServicios = new JMenuItem("Servicios");
@@ -105,7 +115,7 @@ public class Principal extends JFrame {
                 ListadoServicios.abrirListadoServicio(Principal.this);
             }
         });
-        mntmServicios.setFont(new Font("Serif", Font.PLAIN, 20));
+        mntmServicios.setFont(new Font("Serif", Font.PLAIN, 22));
         mnGestion.add(mntmServicios);
         
         JMenuItem mntmRepresentantes = new JMenuItem("Representantes");
@@ -114,19 +124,20 @@ public class Principal extends JFrame {
                 ListadoRepresentante.abrirListadoRepresentante(Principal.this);
             }
         });
-        mntmRepresentantes.setFont(new Font("Serif", Font.PLAIN, 20));
+        mntmRepresentantes.setFont(new Font("Serif", Font.PLAIN, 22));
         mnGestion.add(mntmRepresentantes);
         
         JMenu mnReportes = new JMenu("Reportes        ");
-        mnReportes.setFont(new Font("Serif", Font.BOLD, 22));
+        mnReportes.setIcon(new ImageIcon("C:\\Z\\Escuela\\DPOO\\Proyect DPOO\\Proyecto-DPOO\\src\\imagenes\\IconoReporte.png"));
+        mnReportes.setFont(new Font("Serif", Font.BOLD, 24));
         menuBar.add(mnReportes);
         
         JMenu mnServicios_1 = new JMenu("Servicios");
-        mnServicios_1.setFont(new Font("Serif", Font.PLAIN, 21));
+        mnServicios_1.setFont(new Font("Serif", Font.PLAIN, 22));
         mnReportes.add(mnServicios_1);
         
         JMenuItem mntmMesesConMayor = new JMenuItem("1. Meses con mayor gasto en kb de Cuentas Nautas");
-        mntmMesesConMayor.setFont(new Font("Serif", Font.PLAIN, 21));
+        mntmMesesConMayor.setFont(new Font("Serif", Font.PLAIN, 22));
         mnServicios_1.add(mntmMesesConMayor);
         mntmMesesConMayor.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
@@ -142,7 +153,7 @@ public class Principal extends JFrame {
                 cuentasNautas.setVisible(true);
             }
         });
-        mntmNewMenuItem.setFont(new Font("Serif", Font.PLAIN, 21));
+        mntmNewMenuItem.setFont(new Font("Serif", Font.PLAIN, 22));
         mnServicios_1.add(mntmNewMenuItem);
         
         JMenuItem mntmTelefonosMovil = new JMenuItem("3. Telefonos movil que tienen al menos una llamada que supera la duracion ");
@@ -151,11 +162,11 @@ public class Principal extends JFrame {
                 ListadoTlfLlamadasMayores.abrirListadoLlamadasMayores(Principal.this);	
             }
         });
-        mntmTelefonosMovil.setFont(new Font("Serif", Font.PLAIN, 21));
+        mntmTelefonosMovil.setFont(new Font("Serif", Font.PLAIN, 22));
         mnServicios_1.add(mntmTelefonosMovil);
         
         JMenu mnClientes_1 = new JMenu("Clientes");
-        mnClientes_1.setFont(new Font("Serif", Font.PLAIN, 21));
+        mnClientes_1.setFont(new Font("Serif", Font.PLAIN, 22));
         mnReportes.add(mnClientes_1);
         
         JMenuItem mntmNewMenuItem_1 = new JMenuItem("1. Clientes Premium de Cuenta Nauta");
@@ -164,7 +175,7 @@ public class Principal extends JFrame {
                 ListadoClientesPremiumNauta.abrirListadoClientesPremium(Principal.this);
             }
         });
-        mntmNewMenuItem_1.setFont(new Font("Serif", Font.PLAIN, 21));
+        mntmNewMenuItem_1.setFont(new Font("Serif", Font.PLAIN, 22));
         mnClientes_1.add(mntmNewMenuItem_1);
         
         JMenuItem mntmClientesCon = new JMenuItem("2. Clientes con mayor consumo en Llamadas de Larga Distancia");
@@ -178,7 +189,7 @@ public class Principal extends JFrame {
         mnClientes_1.add(mntmClientesCon);
         
         JMenuItem mntmClientesCon_1 = new JMenuItem("3. Clientes con todos los servicios contratados");
-        mntmClientesCon_1.setFont(new Font("Serif", Font.PLAIN, 21));
+        mntmClientesCon_1.setFont(new Font("Serif", Font.PLAIN, 22));
         mnClientes_1.add(mntmClientesCon_1);
         mntmClientesCon_1.addActionListener(new ActionListener(){
         	 public void actionPerformed(ActionEvent arg0) {
@@ -190,7 +201,8 @@ public class Principal extends JFrame {
         
         
         JMenu mnAyuda = new JMenu("Ayuda       ");
-		mnAyuda.setFont(new Font("Serif", Font.BOLD, 22));
+        mnAyuda.setIcon(new ImageIcon("C:\\Z\\Escuela\\DPOO\\Proyect DPOO\\Proyecto-DPOO\\src\\imagenes\\IconoAyuda.png"));
+		mnAyuda.setFont(new Font("Serif", Font.BOLD, 24));
 		menuBar.add(mnAyuda);
 		
 		JMenuItem mntmAcercaDe = new JMenuItem("Acerca de");
@@ -200,8 +212,22 @@ public class Principal extends JFrame {
 				ayuda.setVisible(true);
 			}
 		});
-		mntmAcercaDe.setFont(new Font("Serif", Font.PLAIN, 21));
+		mntmAcercaDe.setFont(new Font("Serif", Font.PLAIN, 22));
 		mnAyuda.add(mntmAcercaDe);
+		
+		
+		menuBar.add(Box.createHorizontalGlue());
+		
+		JButton btnAjustes = new JButton("Ajustes");
+		btnAjustes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				new Ajustes().setVisible(true);
+			}
+		});
+		btnAjustes.setIcon(new ImageIcon("C:\\Z\\Escuela\\DPOO\\Proyect DPOO\\Proyecto-DPOO\\src\\imagenes\\IconoAjustes.png"));
+		btnAjustes.setBackground(Color.WHITE);
+		btnAjustes.setFont(new Font("Serif", Font.BOLD, 22));
+		menuBar.add(btnAjustes);
     }
     
     // MÃ©todo para cambiar la imagen de fondo

@@ -118,12 +118,12 @@ public class login extends JFrame {
         // Botón Iniciar Sesión
         JButton iniciarSesion = new JButton("Iniciar Sesión");
         iniciarSesion.setFont(new Font("Serif", Font.PLAIN, 21));
-        iniciarSesion.setBounds(47, 292, 152, 29);
+        iniciarSesion.setBounds(47, 292, 162, 29);
         iniciarSesion.setBackground(new Color(0, 0, 153));
         iniciarSesion.setForeground(Color.WHITE);
         iniciarSesion.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                verificarCredenciales();
+               verificarCredenciales();
             }
         });
         contentPane.add(iniciarSesion);

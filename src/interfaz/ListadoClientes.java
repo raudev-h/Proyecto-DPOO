@@ -687,10 +687,10 @@ public class ListadoClientes extends JDialog {
 
     
     private void resetearValidacionesCreacion() {
-        lblNombreCreate.setForeground(Color.BLACK);
-        lblDireccionCreate.setForeground(Color.BLACK);
-        lblNumIdCreate.setForeground(Color.BLACK);
-        lblOrganismoCreate.setForeground(Color.BLACK);
+        lblNombreCreate.setForeground(UIManager.getColor("Label.foreground"));
+        lblDireccionCreate.setForeground(UIManager.getColor("Label.foreground"));
+        lblNumIdCreate.setForeground(UIManager.getColor("Label.foreground"));
+        lblOrganismoCreate.setForeground(UIManager.getColor("Label.foreground"));
     }
 
     //Metodo para crear un nuevo cliente en dependencia del cliente que se este intentnando crear 
@@ -1101,10 +1101,10 @@ public class ListadoClientes extends JDialog {
     }
 
     private void resetearValidacionesEdicion() {
-        lblNombreEdit.setForeground(Color.BLACK);
-        lblDireccionEdit.setForeground(Color.BLACK);
-        lblNumIdEdit.setForeground(Color.BLACK);
-        lblOrganismoEdit.setForeground(Color.BLACK);
+        lblNombreEdit.setForeground(UIManager.getColor("Label.foreground"));
+        lblDireccionEdit.setForeground(UIManager.getColor("Label.foreground"));
+        lblNumIdEdit.setForeground(UIManager.getColor("Label.foreground"));
+        lblOrganismoEdit.setForeground(UIManager.getColor("Label.foreground"));
     }
 
 	    private void actualizarCliente() {
@@ -1138,7 +1138,7 @@ public class ListadoClientes extends JDialog {
             		this.validarNombreEdicionRobustaE(txtNombreEdit.getText(), clienteActual);
             		
             	}
-        	    lblNombreEdit.setForeground(Color.BLACK); 
+        	    lblNombreEdit.setForeground(UIManager.getColor("Label.foreground")); 
 
             }catch(Exception e){
             	errores.append("- ").append(e.getMessage()).append("\n");
@@ -1148,7 +1148,7 @@ public class ListadoClientes extends JDialog {
             // Validar Direccion
             try{
             	this.validarDireccionEdicion(txtDireccionEdit.getText());
-        	    lblDireccionEdit.setForeground(Color.BLACK); 
+        	    lblDireccionEdit.setForeground(UIManager.getColor("Label.foreground")); 
 
             }catch(Exception e){
             	errores.append("- ").append(e.getMessage()).append("\n");
@@ -1170,7 +1170,6 @@ public class ListadoClientes extends JDialog {
     	                }
     	            }
     	            for(Representante r: EmpresaTelecomunicaciones.getInstancia().getRepresentantes()){
-    	            	System.out.println(r.getNumId()+" VS  "+ txtNumIdEdit.getText());
     	            	if(txtNumIdEdit.getText().equals(r.getNumId())){
     	            		 throw new DuplicadosException("Ya existe una persona con este número de identidad");
     	            	}
@@ -1178,7 +1177,7 @@ public class ListadoClientes extends JDialog {
     	            	
     	            	
     	            }
-            	    lblNumIdEdit.setForeground(Color.BLACK); 
+            	    lblNumIdEdit.setForeground(UIManager.getColor("Label.foreground")); 
 
                 }catch(Exception e){
                 	errores.append("- ").append(e.getMessage()).append("\n");
@@ -1190,7 +1189,7 @@ public class ListadoClientes extends JDialog {
             	
             	try{
                 	this.validarOrganismoEdicion(txtOrganismoEdit.getText());
-            	    lblNumIdEdit.setForeground(Color.BLACK); 
+            	    lblNumIdEdit.setForeground(UIManager.getColor("Label.foreground")); 
 
                 }catch(Exception e){
                 	errores.append("- ").append(e.getMessage()).append("\n");
@@ -1506,7 +1505,7 @@ public class ListadoClientes extends JDialog {
 	    	    Cliente.validarNombre(txtNombreCreate.getText());
 	    	    
 	    	    nombre = txtNombreCreate.getText();
-	    	    lblNombreCreate.setForeground(Color.black); 
+	    	    lblNombreCreate.setForeground(UIManager.getColor("Label.foreground")); 
 	    	   
 	    	} catch (NombreInvalidoException e) {
 	    	    errores.append("- ").append(e.getMessage()).append("\n");
@@ -1518,7 +1517,7 @@ public class ListadoClientes extends JDialog {
 	    		Cliente.validarDireccion(txtDireccionCreate.getText());
 	    		
 	    		direccion = txtDireccionCreate.getText();
-	    		lblDireccionCreate.setForeground(Color.black);
+	    		lblDireccionCreate.setForeground(UIManager.getColor("Label.foreground"));
 
 	    	}catch(UbicacionInvalidaException e) {
 	        	    errores.append("- ").append(e.getMessage()).append("\n");
@@ -1548,7 +1547,7 @@ public class ListadoClientes extends JDialog {
 	            	    	    
 	    	    numId = txtNumIdCreate.getText();
 	    	    PersonaNatural.validarNumId(numId);
-	    	    lblNumIdCreate.setForeground(Color.BLACK);
+	    	    lblNumIdCreate.setForeground(UIManager.getColor("Label.foreground"));
 	    	    
 	    	}catch(DuplicadosException e){
 
@@ -1635,9 +1634,9 @@ public class ListadoClientes extends JDialog {
 	    	    	
 	    	    }
 	    	    
-	    	    	//
+	    	    	
 	    	    nombre = txtNombreCreate.getText();
-	    	    lblNombreCreate.setForeground(Color.black); 
+	    	   lblNombreCreate.setForeground(UIManager.getColor("Label.foreground")); 
 	    	   
 	    	} catch (Exception e) {
 	    	    errores.append("- ").append(e.getMessage()).append("\n");
@@ -1649,7 +1648,7 @@ public class ListadoClientes extends JDialog {
 	    		Cliente.validarDireccion(txtDireccionCreate.getText());
 	    		
 	    		direccion = txtDireccionCreate.getText();
-	    		lblDireccionCreate.setForeground(Color.black);
+	    		lblDireccionCreate.setForeground(UIManager.getColor("Label.foreground"));
 
 	    	}catch(UbicacionInvalidaException e) {
 	        	    errores.append("- ").append(e.getMessage()).append("\n");
@@ -1660,7 +1659,7 @@ public class ListadoClientes extends JDialog {
 	    	try {
 	    		PersonaJuridica.validarOrganismo(txtOrganismoCreate.getText());
 	    	    organismo = txtOrganismoCreate.getText();
-	    	    lblOrganismoCreate.setForeground(Color.black); 
+	    	    lblOrganismoCreate.setForeground(UIManager.getColor("Label.foreground")); 
 	    	   
 	    	} catch (Exception e) {
 
@@ -1739,7 +1738,7 @@ public class ListadoClientes extends JDialog {
 	    	    
 	    	    	//
 	    	    nombre = txtNombreCreate.getText();
-	    	    lblNombreCreate.setForeground(Color.black); 
+	    	    lblNombreCreate.setForeground(UIManager.getColor("Label.foreground")); 
 	    	   
 	    	} catch (Exception e) {
 	    	    errores.append("- ").append(e.getMessage()).append("\n");
@@ -1751,7 +1750,7 @@ public class ListadoClientes extends JDialog {
 	    		Cliente.validarDireccion(txtDireccionCreate.getText());
 	    		
 	    		direccion = txtDireccionCreate.getText();
-	    		lblDireccionCreate.setForeground(Color.black);
+	    		lblDireccionCreate.setForeground(UIManager.getColor("Label.foreground"));
 
 	    	}catch(UbicacionInvalidaException e) {
 	        	    errores.append("- ").append(e.getMessage()).append("\n");

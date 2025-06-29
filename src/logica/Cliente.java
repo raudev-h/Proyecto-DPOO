@@ -61,7 +61,7 @@ public abstract class Cliente {
     public static void validarNombre(String nombre) throws NombreInvalidoException {
     
     	if(nombre == null || nombre.trim().isEmpty()){
-            throw new NombreInvalidoException("El nombre no puede estar vacÃ­o");
+            throw new NombreInvalidoException("El nombre no puede estar vacío");
         }
         else if(!(nombre.trim().matches(("[a-zA-ZÃ¡Ã©Ã­Ã³ÃºÃ�Ã‰Ã�Ã“ÃšÃ±Ã‘]+( [a-zA-ZÃ¡Ã©Ã­Ã³ÃºÃ�Ã‰Ã�Ã“ÃšÃ±Ã‘]+)*")))){
             throw new NombreInvalidoException("El nombre solo puede contener letras");
