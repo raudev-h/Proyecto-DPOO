@@ -86,7 +86,7 @@ public class TelefonoFijo extends Telefono {
         String numeroLimpio = telefono.replaceAll("[\\s-]", "");
         // Verifica el formato con regex
         if (!Pattern.matches(REGEX_FIJO, numeroLimpio)) {          
-            throw new IllegalArgumentException("Número de teléfono móvil inválido");
+            throw new IllegalArgumentException("Número de teléfono fijo inválido");
         }
     }
 

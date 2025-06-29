@@ -10,6 +10,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.JTableHeader;
+
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -75,7 +76,7 @@ public class ListadoTlfLlamadasMayores extends JDialog {
             TitledBorder.DEFAULT_JUSTIFICATION,
             TitledBorder.DEFAULT_POSITION,
             new Font("Serif", Font.BOLD, 18), // Fuente del título del borde
-            Color.BLACK
+            UIManager.getColor("Label.foreground")
         ));
         panel.add(panelControles);
         

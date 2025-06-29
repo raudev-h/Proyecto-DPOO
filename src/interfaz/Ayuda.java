@@ -1,13 +1,12 @@
 package interfaz;
 
 import java.awt.BorderLayout;
-
 import java.awt.FlowLayout;
-
 import java.awt.Font;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.Color;
+
 
 
 import javax.swing.JButton;
@@ -15,6 +14,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
@@ -111,7 +111,7 @@ public class Ayuda extends JDialog {
 
         sb.append("Para soporte técnico contacte a:\n\n");
         sb.append("raulalbertohechavarria@gmail.com\n");
-        sb.append("anielvarela64@gmail.com\n\n\n");
+        sb.append("anielvarela64@gmail.com\n");
         sb.append("rubenanazco0@gmail.com\n\n\n");
 
         sb.append("Versión del Sistema: 1.0.0");
@@ -129,7 +129,7 @@ public class Ayuda extends JDialog {
         // Atributo: color negro fuerte
         SimpleAttributeSet attrs = new SimpleAttributeSet();
         new Color(20, 20, 20);
-		StyleConstants.setForeground(attrs, Color.BLACK); // Negro oscuro
+		StyleConstants.setForeground(attrs, UIManager.getColor("Label.foreground")); // Negro oscuro
 
         // Buscar y aplicar a cada correo
         String[] correos = {

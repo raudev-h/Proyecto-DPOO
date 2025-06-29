@@ -2,15 +2,18 @@ package interfaz;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.JButton;
+import java.awt.Window;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.border.EmptyBorder;
+
+import auxiliares.ToggleSwitch;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
@@ -28,49 +31,51 @@ public class Ajustes extends JDialog {
         getContentPane().add(contentPanel, BorderLayout.CENTER);
         setLocationRelativeTo(null);
 
-        // Botón para cambiar a Modo Oscuro (FlatLaf Dark)
-        JButton btnOscuro = new JButton("Modo Oscuro");
-        btnOscuro.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    UIManager.setLookAndFeel(new FlatDarkLaf());
-                    // Cambia el Look & Feel de toda la aplicación
-                    for (java.awt.Window window : java.awt.Window.getWindows()) {
-                        SwingUtilities.updateComponentTreeUI(window);
-                    }
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
-        });
-        contentPanel.add(btnOscuro);
+        JLabel lblSwitch = new JLabel("Modo Oscuro:");
+        lblSwitch.setFont(new java.awt.Font("Serif", java.awt.Font.BOLD, 18));
+        contentPanel.add(lblSwitch);
 
-        // Botón para cambiar a Modo Normal (FlatLaf Light)
-        JButton btnClaro = new JButton("Modo Claro");
-        btnClaro.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+        // Usa tu switch personalizado
+        final ToggleSwitch toggleSwitch = new ToggleSwitch();
+        toggleSwitch.setToolTipText("Activa/desactiva modo oscuro");
+
+        // --- ARREGLO: Estado inicial sincronizado con el modo actual ---
+        boolean darkMode = UIManager.getLookAndFeel() instanceof FlatDarkLaf;
+        toggleSwitch.setSelected(darkMode);
+
+        toggleSwitch.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                boolean dark = toggleSwitch.isSelected();
                 try {
-                    UIManager.setLookAndFeel(new FlatLightLaf());
-                    // Cambia el Look & Feel de toda la aplicación
-                    for (java.awt.Window window : java.awt.Window.getWindows()) {
-                        SwingUtilities.updateComponentTreeUI(window);
+                    if (dark) {
+                        UIManager.setLookAndFeel(new FlatDarkLaf());
+                    } else {
+                        UIManager.setLookAndFeel(new FlatLightLaf());
                     }
-                    javax.swing.UIManager.put("Table.showVerticalLines", true);
-                    javax.swing.UIManager.put("Table.showHorizontalLines", true);
+                    // Forzar líneas en tablas tras el cambio
+                    UIManager.put("Table.showVerticalLines", Boolean.TRUE);
+                    UIManager.put("Table.showHorizontalLines", Boolean.TRUE);
+                    // Actualizar todas las ventanas y limpiar personalizaciones de color
+                    Window[] windows = Window.getWindows();
+                    for (int i = 0; i < windows.length; i++) {
+                        resetColorsAndBorders(windows[i]);
+                        SwingUtilities.updateComponentTreeUI(windows[i]);
+                    }
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
             }
         });
-        contentPanel.add(btnClaro);
+        contentPanel.add(toggleSwitch);
 
         JPanel buttonPane = new JPanel();
         buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
         getContentPane().add(buttonPane, BorderLayout.SOUTH);
 
         JButton okButton = new JButton("OK");
-        okButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+        okButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent e) {
                 dispose();
             }
         });
@@ -78,15 +83,23 @@ public class Ajustes extends JDialog {
         getRootPane().setDefaultButton(okButton);
     }
 
-    // Método main solo para pruebas individuales de este diálogo
-    public static void main(String[] args) {
-        try {
-            UIManager.setLookAndFeel(new FlatLightLaf());
-        } catch (Exception e) {
-            e.printStackTrace();
+    /**
+     * Restablece los colores (foreground/background) y bordes personalizados
+     * de todos los componentes dentro del contenedor dado (recursivo).
+     */
+    private static void resetColorsAndBorders(java.awt.Container container) {
+        java.awt.Component[] comps = container.getComponents();
+        for (int i = 0; i < comps.length; i++) {
+            comps[i].setForeground(null);
+            comps[i].setBackground(null);
+            if (comps[i] instanceof javax.swing.JComponent) {
+                ((javax.swing.JComponent) comps[i]).setBorder(null);
+            }
+            if (comps[i] instanceof java.awt.Container) {
+                resetColorsAndBorders((java.awt.Container) comps[i]);
+            }
         }
-        Ajustes dialog = new Ajustes();
-        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        dialog.setVisible(true);
     }
+
+  
 }
