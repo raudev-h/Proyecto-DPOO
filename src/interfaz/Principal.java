@@ -29,11 +29,8 @@ public class Principal extends JFrame {
 
     private JPanel contentPane;
     private String imagenFondoActual = "/imagenes/d.png"; // Imagen por defecto
- 
-    
     
     private static Principal instance = null;
-
 
     /**
      * Create the frame.
@@ -44,7 +41,6 @@ public class Principal extends JFrame {
         setBounds(0, 0, screenSize.width , screenSize.height);
         //setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-
 
         setLocationRelativeTo(null);
 
@@ -67,8 +63,8 @@ public class Principal extends JFrame {
         JMenu menu = new JMenu("");
         menuBar.add(menu);
         
-        JMenu mnArchivo = new JMenu("Sesi�n     ");
-        mnArchivo.setIcon(new ImageIcon("C:\\Z\\Escuela\\DPOO\\Proyect DPOO\\Proyecto-DPOO\\src\\imagenes\\LogOut.png"));
+        JMenu mnArchivo = new JMenu("Sesión     ");
+        mnArchivo.setIcon(new ImageIcon(getClass().getResource("/imagenes/LogOut.png")));
         mnArchivo.setFont(new Font("Serif", Font.BOLD, 24));
         menuBar.add(mnArchivo);
         
@@ -94,14 +90,13 @@ public class Principal extends JFrame {
         mnArchivo.add(mntmSalir);
         
         JMenu mnGestion = new JMenu("Gesti\u00F3n      ");
-        mnGestion.setIcon(new ImageIcon("C:\\Z\\Escuela\\DPOO\\Proyect DPOO\\Proyecto-DPOO\\src\\imagenes\\IconoGestion.png"));
+        mnGestion.setIcon(new ImageIcon(getClass().getResource("/imagenes/IconoGestion.png")));
         mnGestion.setFont(new Font("Serif", Font.BOLD, 24));
         menuBar.add(mnGestion);
         
         JMenuItem mntmClientes = new JMenuItem("Clientes");
         mntmClientes.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                // Pasar referencia de Principal al abrir el listado
                 ListadoClientes.abrirListadoClientes(Principal.this);
                 
             }
@@ -128,7 +123,7 @@ public class Principal extends JFrame {
         mnGestion.add(mntmRepresentantes);
         
         JMenu mnReportes = new JMenu("Reportes        ");
-        mnReportes.setIcon(new ImageIcon("C:\\Z\\Escuela\\DPOO\\Proyect DPOO\\Proyecto-DPOO\\src\\imagenes\\IconoReporte.png"));
+        mnReportes.setIcon(new ImageIcon(getClass().getResource("/imagenes/IconoReporte.png")));
         mnReportes.setFont(new Font("Serif", Font.BOLD, 24));
         menuBar.add(mnReportes);
         
@@ -201,15 +196,15 @@ public class Principal extends JFrame {
         
         
         JMenu mnAyuda = new JMenu("Ayuda       ");
-        mnAyuda.setIcon(new ImageIcon("C:\\Z\\Escuela\\DPOO\\Proyect DPOO\\Proyecto-DPOO\\src\\imagenes\\IconoAyuda.png"));
+        mnAyuda.setIcon(new ImageIcon(getClass().getResource("/imagenes/IconoAyuda.png")));
 		mnAyuda.setFont(new Font("Serif", Font.BOLD, 24));
 		menuBar.add(mnAyuda);
 		
 		JMenuItem mntmAcercaDe = new JMenuItem("Acerca de");
 		mntmAcercaDe.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Ayuda ayuda = new Ayuda();
-				ayuda.setVisible(true);
+				Ayuda.mostrarAyuda(Principal.this);;
+				
 			}
 		});
 		mntmAcercaDe.setFont(new Font("Serif", Font.PLAIN, 22));
@@ -221,16 +216,16 @@ public class Principal extends JFrame {
 		JButton btnAjustes = new JButton("Ajustes");
 		btnAjustes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				new Ajustes().setVisible(true);
+				Ajustes.mostrarAjustes(Principal.this);
 			}
 		});
-		btnAjustes.setIcon(new ImageIcon("C:\\Z\\Escuela\\DPOO\\Proyect DPOO\\Proyecto-DPOO\\src\\imagenes\\IconoAjustes.png"));
+		btnAjustes.setIcon(new ImageIcon(getClass().getResource("/imagenes/IconoAjustes.png")));
 		btnAjustes.setBackground(Color.WHITE);
 		btnAjustes.setFont(new Font("Serif", Font.BOLD, 22));
 		menuBar.add(btnAjustes);
     }
     
-    // Método para cambiar la imagen de fondo
+    // M�todo para cambiar la imagen de fondo
     public void cambiarImagenFondo(String nuevaImagen) {
         this.imagenFondoActual = nuevaImagen;
         ((FondoPanel) contentPane).setImagenFondo(nuevaImagen);

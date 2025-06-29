@@ -7,8 +7,6 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.Color;
 
-
-
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
@@ -26,23 +24,28 @@ import java.awt.event.ActionListener;
 public class Ayuda extends JDialog {
     private final JPanel contentPanel = new JPanel();
     private static Principal ventanaPrincipal; // Referencia a Principal
-    private static Ayuda instance; // Para patr髇 Singleton
+    private static Ayuda instance; // Para patr贸n Singleton
 
-
-    public static void mostrarAyuda() {
-        try {
-            Ayuda dialog = new Ayuda();
-            dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-            dialog.setLocationRelativeTo(null); // Centrar en pantalla
-
-            dialog.setVisible(true);
-        } catch (Exception e) {
-            e.printStackTrace();
+    // Nuevo m茅todo Singleton para mostrar ayuda
+    public static void mostrarAyuda(Principal principal) {
+        if (instance == null) {
+            instance = new Ayuda(principal);
+            instance.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+            instance.setModal(true); // Bloquea la aplicaci贸n hasta cerrar
+            instance.setLocationRelativeTo(null); // Centrar en pantalla
+            ventanaPrincipal = principal;
+            if (ventanaPrincipal != null) {
+                ventanaPrincipal.cambiarImagenFondo("/imagenes/e.png");
+            }
+            instance.setVisible(true);
+        } else {
+            instance.toFront();
+            ventanaPrincipal = principal;
         }
     }
 
-
-    public Ayuda() {
+    // Constructor privado para Singleton
+    private Ayuda(Principal principal) {
         setTitle("Ayuda del Sistema");
         setModal(true);
         setSize(800, 600); // Tama帽o consistente
@@ -88,39 +91,41 @@ public class Ayuda extends JDialog {
         btnCerrar.setFont(new Font("Serif", Font.BOLD, 18)); // Fuente consistente
         buttonPane.add(btnCerrar, BorderLayout.EAST);
         getRootPane().setDefaultButton(btnCerrar);
+
+        ventanaPrincipal = principal;
     }
 
     private String obtenerTextoAyuda() {
         StringBuilder sb = new StringBuilder();
-        sb.append("SISTEMA DE GESTI覰 DE TELECOMUNICACIONES\n\n");
+        sb.append("SISTEMA DE GESTI脫N DE TELECOMUNICACIONES\n\n");
         sb.append("Manual de Usuario\n");
         sb.append("----------------\n\n");
 
-        sb.append("1. Gesti髇 de Clientes\n");
-        sb.append("   - Agregar nuevos clientes (Personas Naturales, Jur韉icas o Entidades No Estatales)\n");
-        sb.append("   - Editar informaci髇 de clientes existentes\n");
+        sb.append("1. Gesti贸n de Clientes\n");
+        sb.append("   - Agregar nuevos clientes (Personas Naturales, Jur锟絛icas o Entidades No Estatales)\n");
+        sb.append("   - Editar informaci贸n de clientes existentes\n");
         sb.append("   - Asignar servicios a clientes\n\n");
 
         sb.append("2. Gestion de Servicios\n");
-        sb.append("   - Tel閒onos Fijos: Asignar a clientes, editar n鷐eros\n");
-        sb.append("   - Tel閒onos M髒iles: Asignar con sus montos correspondientes\n");
-        sb.append("   - Cuentas Nauta: Asignar con nick 鷑ico (Personas Naturales solo 1 cuenta)\n\n");
+        sb.append("   - Tel茅fonos Fijos: Asignar a clientes, editar n煤meros\n");
+        sb.append("   - Tel茅fonos M贸viles: Asignar con sus montos correspondientes\n");
+        sb.append("   - Cuentas Nauta: Asignar con nick 煤nico (Personas Naturales solo 1 cuenta)\n\n");
 
-        sb.append("3. Gesti髇 de Representantes\n");
-        sb.append("   - Asignar representantes a Entidades No Estatales o Personas Jur韉icas\n\n");
+        sb.append("3. Gesti贸n de Representantes\n");
+        sb.append("   - Asignar representantes a Entidades No Estatales o Personas Jur铆dicas\n\n");
 
-        sb.append("Para soporte t閏nico contacte a:\n\n");
+        sb.append("Para soporte t茅cnico contacte a:\n\n");
         sb.append("raulalbertohechavarria@gmail.com\n");
         sb.append("anielvarela64@gmail.com\n");
         sb.append("rubenanazco0@gmail.com\n\n\n");
 
-        sb.append("Versi髇 del Sistema: 1.0.0");
+        sb.append("Versi贸n del Sistema: 1.0.0");
 
         return sb.toString();
     }
 
     /**
-     * Resalta los correos en negro m醩 oscuro usando StyledDocument
+     * Resalta los correos en negro m锟絪 oscuro usando StyledDocument
      */
     private void aplicarEstiloCorreos(JTextPane txtPane) {
         StyledDocument doc = txtPane.getStyledDocument();
@@ -144,5 +149,14 @@ public class Ayuda extends JDialog {
             }
         }
     }
-}
 
+    @Override
+    public void dispose() {
+        // Restaurar imagen al cerrar
+        if (ventanaPrincipal != null) {
+            ventanaPrincipal.cambiarImagenFondo("/imagenes/d.png");
+        }
+        instance = null;
+        super.dispose();
+    }
+}

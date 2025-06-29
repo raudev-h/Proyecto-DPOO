@@ -92,7 +92,7 @@ public class ListadoServicios extends JDialog {
         	    TitledBorder.LEFT,  
         	    TitledBorder.TOP,
         	    new Font("Serif", Font.BOLD, 21),
-        	    Color.black
+        	    UIManager.getColor("Label.foreground")
         	);
         panelFormulario.setLayout(new GridBagLayout());
         panelFormulario.setVisible(false);
@@ -1072,7 +1072,7 @@ public class ListadoServicios extends JDialog {
         btnCancelar.setBackground(Color.WHITE);
 
         // Establecer tamaño fijo más pequeño
-        Dimension buttonSize = new Dimension(110, 30);
+        Dimension buttonSize = new Dimension(130, 30);
         btnGuardar.setPreferredSize(buttonSize);
         btnGuardar.setMinimumSize(buttonSize);
         btnGuardar.setMaximumSize(buttonSize);

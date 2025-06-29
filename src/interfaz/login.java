@@ -123,7 +123,8 @@ public class login extends JFrame {
         iniciarSesion.setForeground(Color.WHITE);
         iniciarSesion.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-               verificarCredenciales();
+               //verificarCredenciales();
+            	iniciarSesion();
             }
         });
         contentPane.add(iniciarSesion);
