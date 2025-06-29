@@ -21,8 +21,30 @@ import com.formdev.flatlaf.FlatLightLaf;
 public class Ajustes extends JDialog {
 
     private final JPanel contentPanel = new JPanel();
+    private static Principal ventanaPrincipal; // Referencia a Principal
+    private static Ajustes instance; // Singleton
 
-    public Ajustes() {
+    // Método para mostrar Ajustes en modo Singleton, y cambiar imagen
+    public static void mostrarAjustes(Principal principal) {
+        if (instance == null) {
+            instance = new Ajustes(principal);
+            instance.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+            instance.setModal(true); // Bloquea la aplicación hasta cerrar
+            instance.setLocationRelativeTo(null); // Centrar
+            // Cambiar imagen al abrir
+            ventanaPrincipal = principal;
+            if (ventanaPrincipal != null) {
+                ventanaPrincipal.cambiarImagenFondo("/imagenes/e.png");
+            }
+            instance.setVisible(true);
+        } else {
+            instance.toFront();
+            ventanaPrincipal = principal;
+        }
+    }
+
+    // Constructor privado para Singleton
+    private Ajustes(Principal principal) {
         setTitle("Ajustes");
         setBounds(100, 100, 400, 250);
         getContentPane().setLayout(new BorderLayout());
@@ -30,6 +52,7 @@ public class Ajustes extends JDialog {
         contentPanel.setBorder(new EmptyBorder(15, 15, 15, 15));
         getContentPane().add(contentPanel, BorderLayout.CENTER);
         setLocationRelativeTo(null);
+        ventanaPrincipal = principal;
 
         JLabel lblSwitch = new JLabel("Modo Oscuro:");
         lblSwitch.setFont(new java.awt.Font("Serif", java.awt.Font.BOLD, 18));
@@ -101,5 +124,14 @@ public class Ajustes extends JDialog {
         }
     }
 
-  
+    @Override
+    public void dispose() {
+        // Restaurar imagen al cerrar
+        if (ventanaPrincipal != null) {
+            ventanaPrincipal.cambiarImagenFondo("/imagenes/d.png");
+        }
+        instance = null;
+        super.dispose();
+    }
+
 }

@@ -208,8 +208,7 @@ public class Principal extends JFrame {
 		JMenuItem mntmAcercaDe = new JMenuItem("Acerca de");
 		mntmAcercaDe.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Ayuda ayuda = new Ayuda();
-				ayuda.setVisible(true);
+				Ayuda.mostrarAyuda(Principal.this);
 			}
 		});
 		mntmAcercaDe.setFont(new Font("Serif", Font.PLAIN, 22));
@@ -221,7 +220,7 @@ public class Principal extends JFrame {
 		JButton btnAjustes = new JButton("Ajustes");
 		btnAjustes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				new Ajustes().setVisible(true);
+				Ajustes.mostrarAjustes(Principal.this);
 			}
 		});
 		btnAjustes.setIcon(new ImageIcon("C:\\Z\\Escuela\\DPOO\\Proyect DPOO\\Proyecto-DPOO\\src\\imagenes\\IconoAjustes.png"));
