@@ -422,7 +422,7 @@ public class Inicializadora {
 		//TODO Arreglar los numeros de los telefonos de los destinatarios 
 
 		// Llamadas para el telefono movil 1 (52345678)
-		movil1.agregarLlamada(movil1.hacerLlamada("5355551111", 1500));    //  25 min = 180 min
+		movil1.agregarLlamada(movil1.hacerLlamada("5355551111", 1500));    //  25 min = 1500 seg
 		movil1.agregarLlamada(movil1.hacerLlamada("5355552222", 10800));   // 180 min = 10800 seg
 		movil1.agregarLlamada(movil1.hacerLlamada("5355553333", 2700));    // 45 min = 2700 seg
 		movil1.agregarLlamada(movil1.hacerLlamada("5355554444", 7200));     // 120 min = 7200 seg
