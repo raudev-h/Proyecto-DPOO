@@ -89,5 +89,18 @@ public class TelefonoFijo extends Telefono {
             throw new IllegalArgumentException("Número de teléfono fijo inválido");
         }
     }
+    
+    public double calcularCostoTotalLlamadas(){
+    	
+    	double costo = 0;
+    	
+    	for(Llamada ll: llamadas){
+    		
+    		costo += Math.round(ll.getDuracion() * 0.048 * 100.0) / 100.0;
+    	}
+    	
+    	
+    	return costo;
+    }
 
 }

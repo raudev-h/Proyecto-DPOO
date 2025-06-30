@@ -1,29 +1,31 @@
 package interfaz;
 
 import auxiliares.llamadasMovilTableModel;
-import logica.*;
+import logica.Telefono;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.table.JTableHeader;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class ListadoLlamadasMovil extends JDialog {
+public class ListadoLlamadasFijo extends JDialog {
     private JTable table;
     private llamadasMovilTableModel tableModel;
     private Telefono telefono;
 
-    private static ListadoLlamadasMovil instance; // Singleton
+    private static ListadoLlamadasFijo instance; // Singleton
 
     private JLabel lblTitulo;
+    private JButton btnCerrar;
 
-    public ListadoLlamadasMovil(Principal principal, TelefonoMovil telefono) {
+    public ListadoLlamadasFijo(Principal principal, Telefono telefono) {
         this.telefono = telefono;
 
         setModal(true);
-        setTitle("Listado de Llamadas del Teléfono Móvil");
+        setTitle("Listado de Llamadas del Teléfono Fijo");
         setBounds(100, 100, 781, 713);
         setLocationRelativeTo(null);
         getContentPane().setLayout(null);
@@ -34,8 +36,8 @@ public class ListadoLlamadasMovil extends JDialog {
         getContentPane().add(panel);
 
         // Título
-        lblTitulo = new JLabel("Teléfono: " + telefono.getNumero());
-        lblTitulo.setFont(new Font("Serif", Font.BOLD, 20));
+        lblTitulo = new JLabel("Teléfono Fijo: " + telefono.getNumero());
+        lblTitulo.setFont(new Font("Serif", Font.BOLD, 21));
         lblTitulo.setBounds(20, 45, 500, 25);
         panel.add(lblTitulo);
         
@@ -63,7 +65,7 @@ public class ListadoLlamadasMovil extends JDialog {
         header.setFont(new Font("Serif", Font.BOLD, 18));
 
         scrollPane.setViewportView(table);
-        
+
         JLabel lblTotalLlamadas = new JLabel("Total llamadas: " + telefono.getLlamadas().size());
         lblTotalLlamadas.setBounds(20, 594, 185, 20);
         lblTotalLlamadas.setFont(new Font("Serif", Font.BOLD, 18));
@@ -79,17 +81,22 @@ public class ListadoLlamadasMovil extends JDialog {
         cargarLlamadas();
     }
 
-    // Método para cargar las llamadas del teléfono móvil en la tabla
+    // Método para cargar las llamadas del teléfono fijo en la tabla
     private void cargarLlamadas() {
         if (telefono != null) {
             tableModel.cargarLlamadas(telefono);
         }
     }
 
+    // Método para cerrar la ventana
+    private void cerrarVentana() {
+        dispose();
+    }
+
     // Método Singleton para abrir la ventana
-    public static void abrirListadoLlamadasMovil(Principal principal, TelefonoMovil telefono) {
+    public static void abrirListadoLlamadasFijo(Principal principal, Telefono telefono) {
         if (instance == null || !instance.isDisplayable()) {
-            instance = new ListadoLlamadasMovil(principal, telefono);
+            instance = new ListadoLlamadasFijo(principal, telefono);
             instance.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
             instance.setVisible(true);
         } else {

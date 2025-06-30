@@ -465,6 +465,7 @@ public class ListadoServicios extends JDialog {
 
 			menuEditar.setFont(new Font("Serif", Font.PLAIN, 20));
 			menuEliminar.setFont(new Font("Serif", Font.PLAIN, 20));
+			menuEliminar.setForeground(Color.RED);
 			registroLlamadas.setFont(new Font("Serif", Font.PLAIN, 20));
 
 			menuEditar.addActionListener(new ActionListener() {
@@ -534,8 +535,12 @@ public class ListadoServicios extends JDialog {
 					int selectedRow = tabla.getSelectedRow();
 					if (selectedRow >= 0) {
 						if(obtenerServicioSeleccionado(tabla, selectedRow) instanceof TelefonoMovil){
-							TelefonoMovil tlf = (TelefonoMovil)obtenerServicioSeleccionado(tabla, selectedRow);
-						ListadoLlamadasMovil.abrirListadoLlamadasMovil(Principal.getInstance(), tlf);
+							TelefonoMovil tlfMovil = (TelefonoMovil)obtenerServicioSeleccionado(tabla, selectedRow);
+						ListadoLlamadasMovil.abrirListadoLlamadasMovil(Principal.getInstance(), tlfMovil);
+						}
+						else{
+							TelefonoFijo tlfFijo = (TelefonoFijo)obtenerServicioSeleccionado(tabla, selectedRow);
+							ListadoLlamadasFijo.abrirListadoLlamadasFijo(Principal.getInstance(), tlfFijo);
 						}
 						
 
@@ -550,7 +555,6 @@ public class ListadoServicios extends JDialog {
 			});
 
 			popupMenu.add(menuEditar);
-			popupMenu.add(menuEliminar);
 			//Obtener en que Tipo de Servicio se encuentra el administrador
 			int tabIndex = tabbedPane.indexOfComponent(tabla.getParent()
 					.getParent());
@@ -559,6 +563,7 @@ public class ListadoServicios extends JDialog {
 
 				popupMenu.add(registroLlamadas);
 			}
+			popupMenu.add(menuEliminar);
 
 			tabla.addMouseListener(new MouseAdapter() {
 				@Override
