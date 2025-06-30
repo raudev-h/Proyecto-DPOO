@@ -3,11 +3,12 @@ import java.beans.PropertyVetoException;
 
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import excepciones.*;
 import logica.*;
-
-//import java.util.ArrayList;
+import logica.*
+;//import java.util.ArrayList;
 
 public class Inicializadora {
 
@@ -422,42 +423,104 @@ public class Inicializadora {
 		//TODO Arreglar los numeros de los telefonos de los destinatarios 
 
 		// Llamadas para el telefono movil 1 (52345678)
-		movil1.agregarLlamada(movil1.hacerLlamada("5355551111", 1500));    //  25 min = 1500 seg
-		movil1.agregarLlamada(movil1.hacerLlamada("5355552222", 10800));   // 180 min = 10800 seg
-		movil1.agregarLlamada(movil1.hacerLlamada("5355553333", 2700));    // 45 min = 2700 seg
-		movil1.agregarLlamada(movil1.hacerLlamada("5355554444", 7200));     // 120 min = 7200 seg
-		movil1.agregarLlamada(movil1.hacerLlamada("5355555555", 1800));     // 30 min = 1800 seg
-		movil1.agregarLlamada(movil1.hacerLlamada("5355556666", 9000));     // 150 min = 9000 seg
-		movil1.agregarLlamada(movil1.hacerLlamada("5355557777", 3600));     // 60 min = 3600 seg
-		movil1.agregarLlamada(movil1.hacerLlamada("5355558888", 5400));     // 90 min = 5400 seg
-		movil1.agregarLlamada(movil1.hacerLlamada("5355559999", 12000));    // 200 min = 12000 seg
-		movil1.agregarLlamada(movil1.hacerLlamada("5355550000", 900));      // 15 min = 900 seg
+		// Llamadas para el telefono movil 1 (52345678)
+		movil1.agregarLlamada(movil1.hacerLlamada("52678901", 1500));    //  25 min = 1500 seg (móvil)
+		movil1.agregarLlamada(movil1.hacerLlamada("78345678", 10800));   // 180 min = 10800 seg (fijo)
+		movil1.agregarLlamada(movil1.hacerLlamada("58901234", 2700));    // 45 min = 2700 seg (móvil)
+		movil1.agregarLlamada(movil1.hacerLlamada("76413700", 7200));    // 120 min = 7200 seg (fijo)
+		movil1.agregarLlamada(movil1.hacerLlamada("58432109", 1800));    // 30 min = 1800 seg (móvil)
+		movil1.agregarLlamada(movil1.hacerLlamada("78234567", 9000));    // 150 min = 9000 seg (fijo)
+		movil1.agregarLlamada(movil1.hacerLlamada("58907777", 3600));    // 60 min = 3600 seg (móvil)
+		movil1.agregarLlamada(movil1.hacerLlamada("45789012", 5400));    // 90 min = 5400 seg (fijo)
+		movil1.agregarLlamada(movil1.hacerLlamada("58906543", 12000));   // 200 min = 12000 seg (móvil)
+		movil1.agregarLlamada(movil1.hacerLlamada("78654321", 900));     // 15 min = 900 seg (fijo)
 
 		// Llamadas para el telefono movil 2 (58901234)
-		movil2.agregarLlamada(movil2.hacerLlamada("5377771111", 1800));     // 30 min = 1800 seg
-		movil2.agregarLlamada(movil2.hacerLlamada("5377772222", 2700));     // 45 min = 2700 seg
-		movil2.agregarLlamada(movil2.hacerLlamada("5377773333", 6600));     // 110 min = 6600 seg
-		movil2.agregarLlamada(movil2.hacerLlamada("5377774444", 1500));     // 25 min = 1500 seg
-		movil2.agregarLlamada(movil2.hacerLlamada("5377775555", 10800));    // 180 min = 10800 seg
-		movil2.agregarLlamada(movil2.hacerLlamada("5377776666", 3000));     // 50 min = 3000 seg
-		movil2.agregarLlamada(movil2.hacerLlamada("5377777777", 7800));     // 130 min = 7800 seg
-		movil2.agregarLlamada(movil2.hacerLlamada("5377778888", 1200));     // 20 min = 1200 seg
-		movil2.agregarLlamada(movil2.hacerLlamada("5377779999", 4200));     // 70 min = 4200 seg
-		movil2.agregarLlamada(movil2.hacerLlamada("5377770000", 9600));     // 160 min = 9600 seg
+		movil2.agregarLlamada(movil2.hacerLlamada("58909999", 1800));    // 30 min = 1800 seg (móvil)
+		movil2.agregarLlamada(movil2.hacerLlamada("56123456", 2700));    // 45 min = 2700 seg (fijo)
+		movil2.agregarLlamada(movil2.hacerLlamada("56432109", 6600));    // 110 min = 6600 seg (fijo)
+		movil2.agregarLlamada(movil2.hacerLlamada("78832040", 1500));    // 25 min = 1500 seg (fijo)
+		movil2.agregarLlamada(movil2.hacerLlamada("58901234", 10800));   // 180 min = 10800 seg (móvil)
+		movil2.agregarLlamada(movil2.hacerLlamada("78456789", 3000));    // 50 min = 3000 seg (fijo)
+		movil2.agregarLlamada(movil2.hacerLlamada("52347890", 7800));    // 130 min = 7800 seg (móvil)
+		movil2.agregarLlamada(movil2.hacerLlamada("78234567", 1200));    // 20 min = 1200 seg (fijo)
+		movil2.agregarLlamada(movil2.hacerLlamada("58907777", 4200));    // 70 min = 4200 seg (móvil)
+		movil2.agregarLlamada(movil2.hacerLlamada("45789012", 9600));    // 160 min = 9600 seg (fijo)
 
 		// Llamadas para el telefono movil 3 (58432109)
-		movil3.agregarLlamada(movil3.hacerLlamada("5388881111", 2700));     // 45 min = 2700 seg
-		movil3.agregarLlamada(movil3.hacerLlamada("5388882222", 1800));     // 30 min = 1800 seg
-		movil3.agregarLlamada(movil3.hacerLlamada("5388883333", 8400));     // 140 min = 8400 seg
-		movil3.agregarLlamada(movil3.hacerLlamada("5388884444", 1500));     // 25 min = 1500 seg
-		movil3.agregarLlamada(movil3.hacerLlamada("5388885555", 11400));    // 190 min = 11400 seg
-		movil3.agregarLlamada(movil3.hacerLlamada("5388886666", 3300));     // 55 min = 3300 seg
-		movil3.agregarLlamada(movil3.hacerLlamada("5388887777", 7200));     // 120 min = 7200 seg
-		movil3.agregarLlamada(movil3.hacerLlamada("5388888888", 2400));     // 40 min = 2400 seg
-		movil3.agregarLlamada(movil3.hacerLlamada("5388889999", 10200));    // 170 min = 10200 seg
-		movil3.agregarLlamada(movil3.hacerLlamada("5388880000", 2100));     // 35 min = 2100 seg
+		movil3.agregarLlamada(movil3.hacerLlamada("52345678", 2700));    // 45 min = 2700 seg (móvil)
+		movil3.agregarLlamada(movil3.hacerLlamada("78817052", 1800));    // 30 min = 1800 seg (fijo)
+		movil3.agregarLlamada(movil3.hacerLlamada("58909999", 8400));    // 140 min = 8400 seg (móvil)
+		movil3.agregarLlamada(movil3.hacerLlamada("56123456", 1500));    // 25 min = 1500 seg (fijo)
+		movil3.agregarLlamada(movil3.hacerLlamada("56432109", 11400));   // 190 min = 11400 seg (fijo)
+		movil3.agregarLlamada(movil3.hacerLlamada("52345678", 3300));    // 55 min = 3300 seg (móvil)
+		movil3.agregarLlamada(movil3.hacerLlamada("58901234", 7200));    // 120 min = 7200 seg (móvil)
+		movil3.agregarLlamada(movil3.hacerLlamada("78456789", 2400));    // 40 min = 2400 seg (fijo)
+		movil3.agregarLlamada(movil3.hacerLlamada("52347890", 10200));   // 170 min = 10200 seg (móvil)
+		movil3.agregarLlamada(movil3.hacerLlamada("78654321", 2100));    // 35 min = 2100 seg (fijo)
+		
+		//=================================================
+		//AGREGAR LLAMADAS A TELEFONOS FIJOS
+		//===================================================
 
-		//Creacion de al menos 20 representantes
+		//=================================================
+		// AGREGAR LLAMADAS A TODOS LOS TELÉFONOS FIJOS DE LA EMPRESA
+		// Provincias y municipios válidos de la base de datos
+		//=================================================
+
+		// Ejemplo de números válidos cubanos (móviles y fijos)
+
+		String[] telefonosValidos = {
+			    "52678901", "58901234", "53456789", "54567890", "58432109", "56789012",
+			    "78345678", "76413700", "78234567", "78654321", "78901234", "76410037",
+			    "78123456", "78451233", "76378134", "78889999", "45789012", "45234567",
+			    "52678901", "58901234", "53456789", "54567890", "58432109", "56789012",
+			    "78345678", "76413700", "78234567", "78654321", "78901234", "76410037",
+			    "78123456", "78451233", "76378134", "78889999", "45789012", "45234567"
+			};
+
+		// Usa la base de datos de provincias y municipios
+		// import tu.paquete.MunicipiosPorProvincia;
+
+		Random rand = new Random();
+
+		Object[] provincias = MunicipiosPorProvincia.MUNICIPIOS_PROVINCIA.keySet().toArray();
+		int totalTelefonos = empresa.getTelefonosFijos().size();
+
+		for (int idx = 0; idx < totalTelefonos; idx++) {
+		    TelefonoFijo tf = empresa.getTelefonosFijos().get(idx);
+
+		    int cantidadLlamadas = 10 + rand.nextInt(11); // Entre 10 y 20 llamadas por teléfono
+
+		    for (int i = 0; i < cantidadLlamadas; i++) {
+		        // Selecciona un número de destino válido, diferente al propio
+		        String numeroDestino = telefonosValidos[rand.nextInt(telefonosValidos.length)];
+		        while (numeroDestino.equals(tf.getNumero())) {
+		            numeroDestino = telefonosValidos[rand.nextInt(telefonosValidos.length)];
+		        }
+
+		        // Provincia válida de la base de datos
+		        String provincia = (String) provincias[rand.nextInt(provincias.length)];
+
+		        // Municipio válido para la provincia
+		        String[] municipiosProvincia = MunicipiosPorProvincia.MUNICIPIOS_PROVINCIA.get(provincia);
+		        String municipio = "";
+		        if (municipiosProvincia != null && municipiosProvincia.length > 0) {
+		            municipio = municipiosProvincia[rand.nextInt(municipiosProvincia.length)];
+		        }
+
+		        // Duración aleatoria entre 60 y 3600 segundos (1 a 60 min)
+		        double duracion = 60 + rand.nextInt(3541);
+
+		        // Crear llamada usando el método de la interfaz Llamador
+		        Llamada llamada = tf.hacerLlamada(numeroDestino, duracion, provincia);
+
+		        // Agregar la llamada al teléfono fijo
+		        tf.agregarLlamada(llamada);
+		    }
+		}
+		
+	//Creacion de al menos 20 representantes
 		// Representantes adicionales libres (sin cliente asignado)
 		empresa.agregarRepresentante("Zurdokar Plasencia", "84121501001");
 		empresa.agregarRepresentante("Yaxiry Solunare", "90070102002");
@@ -475,37 +538,43 @@ public class Inicializadora {
 		empresa.agregarRepresentante("Zacarias Neptuno", "91040414014");
 		empresa.agregarRepresentante("Ulpiano Cerezo", "85050515015");
 
-		TelefonoFijo tf1 = empresa.getTelefonosFijos().get(0);
-		TelefonoFijo tf2 = empresa.getTelefonosFijos().get(1);
-		TelefonoFijo tf3 = empresa.getTelefonosFijos().get(2);
-		TelefonoFijo tf4 = empresa.getTelefonosFijos().get(3);
+		//================================================================
+		//AGREGAR LLAMADAS LARGA DISTANCIA A TELÉFONOS FIJOS
+		//========================================================
+	
+		Object[] provincias1 = MunicipiosPorProvincia.MUNICIPIOS_PROVINCIA.keySet().toArray();
 
-		TelefonoFijo[] telefonos = {tf1, tf2, tf3, tf4};
+		for (int idx = 0; idx < totalTelefonos; idx++) {
+		    TelefonoFijo tf = empresa.getTelefonosFijos().get(idx);
 
-		for (int i = 1; i <= 15; i++) {
-			double duracion = 20.0 + i;
-			String numeroDestino = "53" + String.format("%07d", i);
-			String provincia = "Provincia" + ((i % 5) + 1);
-			String municipio = "Municipio" + ((i % 3) + 1);
-			double totalFacturar = 510.0 + i * 10; // Siempre > 500
+		    int cantidadLlamadas = 1 + rand.nextInt(30); // Entre 1 y 30 llamadas
 
-			LlamadaLargaDistancia llamada = new LlamadaLargaDistancia(
-					duracion,
-					numeroDestino,
-					provincia,
-					municipio,
-					totalFacturar
-					);
+		    for (int i = 0; i < cantidadLlamadas; i++) {
+		        // Selecciona un número de destino válido, diferente al propio
+		        String numeroDestino = telefonosValidos[rand.nextInt(telefonosValidos.length)];
+		        while (numeroDestino.equals(tf.getNumero())) {
+		            numeroDestino = telefonosValidos[rand.nextInt(telefonosValidos.length)];
+		        }
 
-			// Asignar de forma rotativa y segura
-			TelefonoFijo telFijo = telefonos[(i - 1) % telefonos.length];
-			telFijo.agregarLlamadaLargaDistancia(
-					llamada.getDuracion(),
-					llamada.getNumeroDestino(),
-					llamada.getProvincia(),
-					llamada.getMunicipio(),
-					llamada.getTotalFacturar()
-					);
+		        // Duración aleatoria entre 30 segundos y 2 horas (7200 segundos)
+		        double duracion = 30 + rand.nextInt(7171);
+
+		        // Provincia y municipio válidos usando la base de datos
+		        String provincia = (String) provincias1[rand.nextInt(provincias1.length)];
+		        String[] municipiosProvincia = MunicipiosPorProvincia.MUNICIPIOS_PROVINCIA.get(provincia);
+		        String municipio = municipiosProvincia[rand.nextInt(municipiosProvincia.length)];
+
+		        double totalFacturar = duracion * 0.75;
+
+		        // Agrega la llamada usando el método adecuado
+		        tf.agregarLlamadaLargaDistancia(
+		            duracion,
+		            numeroDestino,
+		            provincia,
+		            municipio,
+		            totalFacturar
+		        );
+		    }
 		}
 		
 		// TODO datos de prueba para cuentas nauta

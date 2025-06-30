@@ -22,7 +22,7 @@ public class TelefonoFijoTableModel extends DefaultTableModel {
             addRow(new Object[]{
                 tf.getNumero(),
                 nombreCliente,
-                tf.getLlamadas().size(),
+                tf.getLlamadas().size() + tf.getLlamadasLargas().size(),
                 tf.getFacturas().size(),
                 tf.getLlamadasLargas().size()
             });
