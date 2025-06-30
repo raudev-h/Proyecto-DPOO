@@ -87,7 +87,7 @@ public class ListadoClientes extends JDialog {
     // Mapa de provincias y municipios de Cuba
     private static final Map<String, String[]> PROVINCIAS_MUNICIPIOS = new LinkedHashMap<String, String[]>() {{
         put("Pinar del Río", new String[]{"Consolación del Sur", "Guane", "La Palma", "Los Palacios", 
-            "Mantua", "Minas de Matahambre", "Pinar del Río", "San Juan y Martínez", 
+            "Mantua", "Minas de Mateliahambre", "Pinar del Río", "San Juan y Martínez", 
             "San Luis", "Sandino", "Viñales"});
         put("Artemisa", new String[]{"Alquízar", "Artemisa", "Bahía Honda", "Bauta", 
             "Caimito", "Candelaria", "Guanajay", "Güira de Melena", "Mariel", 
@@ -1369,6 +1369,7 @@ public class ListadoClientes extends JDialog {
         
         menuEditar.setFont(new Font("Serif", Font.PLAIN, 20));
         menuEliminar.setFont(new Font("Serif", Font.PLAIN, 20));
+        menuEliminar.setForeground(Color.RED);
         
         menuEditar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {

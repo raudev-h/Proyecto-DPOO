@@ -26,7 +26,7 @@ public class llamadasMovilTableModel  extends DefaultTableModel  {
 			//Limpiar los datos de las llamadas existentes
 			this.setRowCount(0);
 			
-			//Obtener la informacion de todos los clientes de la empresa
+			//Obtener la informacion de todos las llamadas del telefono
 			for(Llamada ll : telefono.getLlamadas() ){
 				String numeroDestino = ll.getNumeroDestino();
 				String duracion = convertirDuracion(ll.getDuracion());

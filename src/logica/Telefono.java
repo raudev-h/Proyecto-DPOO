@@ -34,6 +34,7 @@ public abstract class Telefono extends Servicio implements Llamador {
     public void agregarLlamada(Llamada ll){
     	llamadas.add(ll);
     }
+    public abstract double calcularCostoTotalLlamadas();
     
     
     
