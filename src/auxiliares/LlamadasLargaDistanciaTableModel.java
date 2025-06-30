@@ -27,13 +27,16 @@ public class LlamadasLargaDistanciaTableModel extends DefaultTableModel{
 		
 		//Limpiar los datos de las llamadas existentes
 		this.setRowCount(0);
-		
+		System.out.println("Entra2:"+telefono.getNumero() );
+
 		//Obtener la informacion de todas las llamadas de larga distancia del telefono Fijo
 		for(Llamada ll : telefono.getLlamadasLargas() ){
 			String numeroDestino = ll.getNumeroDestino();
 			String duracion = convertirDuracion(ll.getDuracion());
 			double costo = Math.round(ll.getDuracion() * 0.75 * 100.0) / 100.0;	
 			String provincia = ((LlamadaFijo)ll).getProvincia();
+			System.out.println("Aquiii2:" + costo);
+
 			String municipio = ((LlamadaLargaDistancia)ll).getMunicipio();
 			
 			this.adicionar(numeroDestino, duracion, provincia,municipio, costo);			

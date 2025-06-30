@@ -1,6 +1,6 @@
 package interfaz;
 
-import auxiliares.llamadasMovilTableModel;
+import auxiliares.LlamadaFijoTableModel;
 import auxiliares.LlamadasLargaDistanciaTableModel;
 import logica.TelefonoFijo;
 import logica.Telefono;
@@ -12,6 +12,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.JTableHeader;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,7 +22,7 @@ public class ListadoLlamadasFijo extends JDialog {
     private JTabbedPane tabbedPane;
     private JTable tableLlamadas;
     private JTable tableLargaDistancia;
-    private llamadasMovilTableModel modelLlamadas;
+    private LlamadaFijoTableModel modelLlamadas;
     private LlamadasLargaDistanciaTableModel modelLargaDistancia;
     private TelefonoFijo telefonoFijo;
 
@@ -63,7 +64,7 @@ public class ListadoLlamadasFijo extends JDialog {
         panel.add(tabbedPane);
 
         // Modelo y tabla de llamadas normales
-        modelLlamadas = new llamadasMovilTableModel();
+        modelLlamadas = new LlamadaFijoTableModel();
         tableLlamadas = new JTable(modelLlamadas);
         tableLlamadas.setFont(new Font("Serif", Font.PLAIN, 17));
         tableLlamadas.setRowHeight(25);
@@ -119,6 +120,7 @@ public class ListadoLlamadasFijo extends JDialog {
 
     // Actualizar etiquetas de totales en función de la pestaña activa
     private void actualizarTotales() {
+    	
         int selectedTab = tabbedPane.getSelectedIndex();
         if (selectedTab == 0) { // Llamadas Locales
             int total = telefonoFijo.getLlamadas().size();
