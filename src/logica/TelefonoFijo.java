@@ -97,7 +97,7 @@ public class TelefonoFijo extends Telefono {
             costo += ll.getDuracion() * 0.048;
             System.out.println("costo: " + costo);
         }
-        System.out.println(Math.round(costo * 100.0) / 100.0);
+        System.out.println("Costo Total"+    Math.round(costo * 100.0) / 100.0);
         return Math.round(costo * 100.0) / 100.0;
     }
     

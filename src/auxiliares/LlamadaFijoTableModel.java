@@ -27,19 +27,15 @@ public class LlamadaFijoTableModel extends DefaultTableModel{
 		
 		//Limpiar los datos de las llamadas existentes
 		this.setRowCount(0);
-		System.out.println("===========Entra==========");
 
 		//Obtener la informacion de todas las llamadas del telefono Fijo
 		for(Llamada ll : telefono.getLlamadas() ){
 				if(!(ll instanceof LlamadaLargaDistancia)){
 				String numeroDestino = ll.getNumeroDestino();
 				String duracion = convertirDuracion(ll.getDuracion());
-				double costo = Math.round(ll.getDuracion() * 0.048 * 100.0) / 100.0;	
+				double costo = Math.round(ll.getDuracion() * 0.048 * 100.0) / 100.0;
 				String provincia = ((LlamadaFijo)ll).getProvincia();
-				System.out.println("Duracion: " + ll.getDuracion());
-				System.out.println("Costo: " + costo);
-				System.out.println("=====================");
-						
+
 				this.adicionar(numeroDestino, duracion, provincia,costo);
 			}
 			
