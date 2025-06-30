@@ -3,7 +3,7 @@ package logica;
 public abstract class Llamada {
 
      //ATRIBUTOS
-    protected double duracion;
+    protected double duracion; // En segundos 
     protected String numeroDestino;
 
     //CONSTRUCTOR
