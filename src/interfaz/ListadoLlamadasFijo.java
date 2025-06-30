@@ -1,101 +1,149 @@
 package interfaz;
 
 import auxiliares.llamadasMovilTableModel;
+import auxiliares.LlamadasLargaDistanciaTableModel;
+import logica.TelefonoFijo;
 import logica.Telefono;
+import logica.Llamada;
+import logica.LlamadaLargaDistancia;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.table.JTableHeader;
-
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ListadoLlamadasFijo extends JDialog {
-    private JTable table;
-    private llamadasMovilTableModel tableModel;
-    private Telefono telefono;
+
+    private JTabbedPane tabbedPane;
+    private JTable tableLlamadas;
+    private JTable tableLargaDistancia;
+    private llamadasMovilTableModel modelLlamadas;
+    private LlamadasLargaDistanciaTableModel modelLargaDistancia;
+    private TelefonoFijo telefonoFijo;
 
     private static ListadoLlamadasFijo instance; // Singleton
 
-    private JLabel lblTitulo;
-    private JButton btnCerrar;
+    private JLabel lblCliente;
+    private JLabel lblTelefono;
+    private JLabel lblTotalLlamadas;
+    private JLabel lblCostoTotal;
 
     public ListadoLlamadasFijo(Principal principal, Telefono telefono) {
-        this.telefono = telefono;
+        this.telefonoFijo = (TelefonoFijo)telefono;
 
         setModal(true);
         setTitle("Listado de Llamadas del Teléfono Fijo");
-        setBounds(100, 100, 781, 713);
+        setBounds(100, 100, 820, 760);
         setLocationRelativeTo(null);
         getContentPane().setLayout(null);
 
         JPanel panel = new JPanel();
-        panel.setBounds(10, 11, 734, 630);
+        panel.setBounds(10, 11, 784, 677);
         panel.setLayout(null);
         getContentPane().add(panel);
 
-        // Título
-        lblTitulo = new JLabel("Teléfono Fijo: " + telefono.getNumero());
-        lblTitulo.setFont(new Font("Serif", Font.BOLD, 21));
-        lblTitulo.setBounds(20, 45, 500, 25);
-        panel.add(lblTitulo);
-        
-        lblTitulo = new JLabel("Cliente: " + telefono.getTitular().getNombre());
-        lblTitulo.setFont(new Font("Serif", Font.BOLD, 20));
-        lblTitulo.setBounds(20, 0, 500, 25);
-        panel.add(lblTitulo);
+        lblCliente = new JLabel("Cliente: " + telefonoFijo.getTitular().getNombre());
+        lblCliente.setFont(new Font("Serif", Font.BOLD, 20));
+        lblCliente.setBounds(20, 0, 500, 25);
+        panel.add(lblCliente);
 
-        // ScrollPane para la tabla
-        JScrollPane scrollPane = new JScrollPane();
-        scrollPane.setBounds(20, 77, 699, 501);
-        scrollPane.setViewportBorder(new LineBorder(new Color(0, 0, 0)));
-        panel.add(scrollPane);
+        lblTelefono = new JLabel("Teléfono Fijo: " + telefonoFijo.getNumero());
+        lblTelefono.setFont(new Font("Serif", Font.BOLD, 21));
+        lblTelefono.setBounds(20, 35, 500, 25);
+        panel.add(lblTelefono);
 
-        // Inicializar modelo y tabla
-        tableModel = new llamadasMovilTableModel();
-        table = new JTable(tableModel);
-        table.setFont(new Font("Serif", Font.PLAIN, 17));
-        table.setRowHeight(25);
-        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        table.getTableHeader().setReorderingAllowed(false);
+        // Crear el tabbedPane
+        tabbedPane = new JTabbedPane();
+        tabbedPane.setBounds(20, 70, 740, 520);
+        tabbedPane.setFont(new Font("Serif", Font.PLAIN, 18));
+        panel.add(tabbedPane);
 
-        // Estilo header
-        JTableHeader header = table.getTableHeader();
-        header.setFont(new Font("Serif", Font.BOLD, 18));
+        // Modelo y tabla de llamadas normales
+        modelLlamadas = new llamadasMovilTableModel();
+        tableLlamadas = new JTable(modelLlamadas);
+        tableLlamadas.setFont(new Font("Serif", Font.PLAIN, 17));
+        tableLlamadas.setRowHeight(25);
+        tableLlamadas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tableLlamadas.getTableHeader().setReorderingAllowed(false);
+        JTableHeader header1 = tableLlamadas.getTableHeader();
+        header1.setFont(new Font("Serif", Font.BOLD, 18));
+        JScrollPane scrollLlamadas = new JScrollPane(tableLlamadas);
+        scrollLlamadas.setViewportBorder(new LineBorder(new Color(0, 0, 0)));
+        tabbedPane.addTab("Llamadas Locales", scrollLlamadas);
 
-        scrollPane.setViewportView(table);
+        // Modelo y tabla de llamadas larga distancia
+        modelLargaDistancia = new LlamadasLargaDistanciaTableModel();
+        tableLargaDistancia = new JTable(modelLargaDistancia);
+        tableLargaDistancia.setFont(new Font("Serif", Font.PLAIN, 17));
+        tableLargaDistancia.setRowHeight(25);
+        tableLargaDistancia.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tableLargaDistancia.getTableHeader().setReorderingAllowed(false);
+        JTableHeader header2 = tableLargaDistancia.getTableHeader();
+        header2.setFont(new Font("Serif", Font.BOLD, 18));
+        JScrollPane scrollLargaDistancia = new JScrollPane(tableLargaDistancia);
+        scrollLargaDistancia.setViewportBorder(new LineBorder(new Color(0, 0, 0)));
+        tabbedPane.addTab("Llamadas Larga Distancia", scrollLargaDistancia);
 
-        JLabel lblTotalLlamadas = new JLabel("Total llamadas: " + telefono.getLlamadas().size());
-        lblTotalLlamadas.setBounds(20, 594, 185, 20);
+        // Etiquetas para total llamadas y costo
+        lblTotalLlamadas = new JLabel();
+        lblTotalLlamadas.setBounds(20, 610, 300, 20);
         lblTotalLlamadas.setFont(new Font("Serif", Font.BOLD, 18));
-
         panel.add(lblTotalLlamadas);
-        
 
-        JLabel lblCostoTotal = new JLabel("Costo Total: " + telefono.calcularCostoTotalLlamadas() );
-        lblCostoTotal.setBounds(502, 594, 165, 20);
+        lblCostoTotal = new JLabel();
+        lblCostoTotal.setBounds(520, 610, 230, 20);
         lblCostoTotal.setFont(new Font("Serif", Font.BOLD, 18));
         panel.add(lblCostoTotal);
 
-        cargarLlamadas();
+        cargarTablas();
+        actualizarTotales();
+
+        tabbedPane.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
+                actualizarTotales();
+            }
+        });
     }
 
-    // Método para cargar las llamadas del teléfono fijo en la tabla
-    private void cargarLlamadas() {
-        if (telefono != null) {
-            tableModel.cargarLlamadas(telefono);
+    // Cargar los datos en ambas tablas
+    private void cargarTablas() {
+        if (telefonoFijo != null) {
+            modelLlamadas.cargarLlamadas(telefonoFijo); // Carga todas las llamadas normales (no largas)
+            modelLargaDistancia.cargarLlamadas(telefonoFijo); // Carga todas las largas distancia
         }
     }
 
-    // Método para cerrar la ventana
-    private void cerrarVentana() {
-        dispose();
+    // Actualizar etiquetas de totales en función de la pestaña activa
+    private void actualizarTotales() {
+        int selectedTab = tabbedPane.getSelectedIndex();
+        if (selectedTab == 0) { // Llamadas Locales
+            int total = telefonoFijo.getLlamadas().size();
+            double costo = telefonoFijo.calcularCostoTotalLlamadas();
+            lblTotalLlamadas.setText("Total llamadas locales: " + total);
+            lblCostoTotal.setText("Costo Total: " + String.format("%.2f", costo));
+        } else {
+            int totalLargas = telefonoFijo.getLlamadasLargas().size();
+            double costoLargas = telefonoFijo.calcularCostoTotalLlamadasLargas();
+            lblTotalLlamadas.setText("Total llamadas larga distancia: " + totalLargas);
+            lblCostoTotal.setText("Costo Total: " + String.format("%.2f", costoLargas));
+        }
     }
+
+
 
     // Método Singleton para abrir la ventana
     public static void abrirListadoLlamadasFijo(Principal principal, Telefono telefono) {
-        if (instance == null || !instance.isDisplayable()) {
+        boolean crearNueva = false;
+        if (instance == null) {
+            crearNueva = true;
+        } else if (!instance.isDisplayable()) {
+            crearNueva = true;
+        }
+        if (crearNueva) {
             instance = new ListadoLlamadasFijo(principal, telefono);
             instance.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
             instance.setVisible(true);
@@ -104,7 +152,6 @@ public class ListadoLlamadasFijo extends JDialog {
         }
     }
 
-    // Para Java 1.7, sobreescribir dispose para limpiar instancia
     @Override
     public void dispose() {
         instance = null;

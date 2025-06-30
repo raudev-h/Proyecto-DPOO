@@ -134,16 +134,11 @@ public class TelefonoMovil extends Telefono {
     }
     
     public double calcularCostoTotalLlamadas(){
-    	
-    	double costo = 0;
-    	
-    	for(Llamada ll: llamadas){
-    		
-    		costo += Math.round(ll.getDuracion() * 0.14 * 100.0) / 100.0;
-    	}
-    	
-    	
-    	return costo;
+        double costo = 0;
+        for(Llamada ll: llamadas){
+            costo += ll.getDuracion() * 0.14;
+        }
+        return Math.round(costo * 100.0) / 100.0;
     }
 
     

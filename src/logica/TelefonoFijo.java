@@ -91,16 +91,22 @@ public class TelefonoFijo extends Telefono {
     }
     
     public double calcularCostoTotalLlamadas(){
-    	
+        double costo = 0;
+        for(Llamada ll: llamadas){
+        	 
+            costo += ll.getDuracion() * 0.048;
+            System.out.println("costo: " + costo);
+        }
+        System.out.println(Math.round(costo * 100.0) / 100.0);
+        return Math.round(costo * 100.0) / 100.0;
+    }
+    
+    public double calcularCostoTotalLlamadasLargas(){
     	double costo = 0;
-    	
-    	for(Llamada ll: llamadas){
-    		
-    		costo += Math.round(ll.getDuracion() * 0.048 * 100.0) / 100.0;
-    	}
-    	
-    	
-    	return costo;
+        for(Llamada ll: llamadasLargas){
+            costo += ll.getDuracion() * 0.75;
+        }
+        return Math.round(costo * 100.0) / 100.0;
     }
 
 }
