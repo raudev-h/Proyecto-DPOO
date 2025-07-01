@@ -15,6 +15,7 @@ import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class ListadoServicios extends JDialog {
     private EmpresaTelecomunicaciones empresa;
@@ -452,9 +453,11 @@ public class ListadoServicios extends JDialog {
             
             JMenuItem menuEditar = new JMenuItem("Editar");
             JMenuItem menuEliminar = new JMenuItem("Eliminar");
+            JMenuItem menuVerMesDatos = new JMenuItem("Ver Datos Mensuales");
             
             menuEditar.setFont(new Font("Serif", Font.PLAIN, 20));
             menuEliminar.setFont(new Font("Serif", Font.PLAIN, 20));
+            menuVerMesDatos.setFont(new Font("Serif", Font.PLAIN, 20));
             
             menuEditar.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
@@ -464,6 +467,21 @@ public class ListadoServicios extends JDialog {
                     } else {
                         JOptionPane.showMessageDialog(ListadoServicios.this,
                             "Por favor seleccione un servicio para editar",
+                            "Advertencia", JOptionPane.WARNING_MESSAGE);
+                    }
+                }
+                
+                
+            });
+            
+            menuVerMesDatos.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    int selectedRow = tabla.getSelectedRow();
+                    if (selectedRow >= 0) {
+                        verMesDatos(tabla, selectedRow);
+                    } else {
+                        JOptionPane.showMessageDialog(ListadoServicios.this,
+                            "Por favor seleccione una cuenta Nauta para ver sus datos",
                             "Advertencia", JOptionPane.WARNING_MESSAGE);
                     }
                 }
@@ -514,6 +532,12 @@ public class ListadoServicios extends JDialog {
                     }
                 }
             });
+            
+            // Solo mostrar esta opción en la pestaña de Cuentas Nauta
+            if (i == 2) { 
+                popupMenu.add(menuVerMesDatos);
+                popupMenu.addSeparator(); 
+                }
             
             popupMenu.add(menuEditar);
             popupMenu.add(menuEliminar);
@@ -1214,6 +1238,100 @@ public class ListadoServicios extends JDialog {
 
     // TODO
     
+    private void verMesDatos(JTable tabla, int row) {
+        // Obtener la cuenta Nauta seleccionada
+        CuentaNauta cuenta = (CuentaNauta) obtenerServicioSeleccionado(tabla, row);
+        
+        if (cuenta == null || cuenta.getMesDatos().isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                "La cuenta seleccionada no tiene datos mensuales registrados",
+                "Información", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        
+        // Crear el modelo de tabla para los datos mensuales
+        DefaultTableModel model = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        
+        // Configurar columnas
+        model.addColumn("Mes");
+        model.addColumn("KB Enviados Nacional");
+        model.addColumn("KB Recibidos Nacional");
+        model.addColumn("KB Enviados Internacional");
+        model.addColumn("KB Recibidos Internacional");
+        model.addColumn("KB Navegación");
+        model.addColumn("Monto Total");
+        
+        // Llenar con datos
+        for (Map.Entry<String, MesDatos> entry : cuenta.getMesDatosOrdenados()) {
+            MesDatos md = entry.getValue();
+            model.addRow(new Object[]{
+                entry.getKey(),
+                md.getKbEnviadosNacional(),
+                md.getKbRecibidosNacional(),
+                md.getKbEnviadosInternacional(),
+                md.getKbRecibidosInternacional(),
+                md.getKbNavegacion(),
+                md.getMontoTotal()
+            });
+        }
+        
+        // Crear y configurar la tabla
+        JTable tablaMesDatos = new JTable(model);
+        tablaMesDatos.setFont(new Font("Serif", Font.PLAIN, 16));
+        tablaMesDatos.setRowHeight(25);
+        
+        JTableHeader header = tablaMesDatos.getTableHeader();
+        header.setFont(new Font("Serif", Font.BOLD, 18));
+        
+        // Crear el diálogo
+        JDialog dialog = new JDialog(this, "Datos Mensuales de " + cuenta.getNick(), true);
+        dialog.setLayout(new BorderLayout());
+        
+        // Panel superior con información de la cuenta
+        JPanel panelInfo = new JPanel(new GridLayout(2, 1));
+        panelInfo.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        
+        JLabel lblNick = new JLabel("Cuenta: " + cuenta.getNick());
+        JLabel lblCliente = new JLabel("Cliente: " + 
+            (cuenta.getTitular() != null ? cuenta.getTitular().getNombre() : "Sin titular"));
+        
+        lblNick.setFont(new Font("Serif", Font.BOLD, 18));
+        lblCliente.setFont(new Font("Serif", Font.PLAIN, 16));
+        
+        panelInfo.add(lblNick);
+        panelInfo.add(lblCliente);
+        
+        // Panel de la tabla
+        JScrollPane scrollPane = new JScrollPane(tablaMesDatos);
+        
+        // Panel inferior con estadísticas
+        JPanel panelStats = new JPanel(new GridLayout(1, 2));
+        panelStats.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        
+        JLabel lblTotalMB = new JLabel("Total MB gastados: " + String.format("%.2f", cuenta.calcularMbTotalesGastados()));
+        JLabel lblMesesMil = new JLabel("Meses >1000 cup: " + cuenta.cantMesesMasMilGasto());
+        
+        lblTotalMB.setFont(new Font("Serif", Font.PLAIN, 16));
+        lblMesesMil.setFont(new Font("Serif", Font.PLAIN, 16));
+        
+        panelStats.add(lblTotalMB);
+        panelStats.add(lblMesesMil);
+        
+        // Agregar componentes al diálogo
+        dialog.add(panelInfo, BorderLayout.NORTH);
+        dialog.add(scrollPane, BorderLayout.CENTER);
+        dialog.add(panelStats, BorderLayout.SOUTH);
+        
+        // Configurar y mostrar el diálogo
+        dialog.setSize(900, 500);
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+    }
 
     @Override
     public void dispose() {
