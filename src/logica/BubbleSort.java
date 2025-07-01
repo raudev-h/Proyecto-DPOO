@@ -31,8 +31,8 @@ public class BubbleSort {
     	for(int i = 0; i < n - 1; i++){
     		for (int j = 0; j < n - i - 1; j++){
     			
-    			LocalDate fecha1 = LocalDate.parse(lista.get(j).getKey());
-    			LocalDate fecha2 = LocalDate.parse(lista.get(j + 1).getKey());
+    			LocalDate fecha1 = LocalDate.parse(lista.get(j).getKey()  + "-01");
+    			LocalDate fecha2 = LocalDate.parse(lista.get(j + 1).getKey() + "-01");
     			
     			if(fecha1.isAfter(fecha2)){
     				// Intercambiar posiciones
