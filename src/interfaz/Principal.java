@@ -16,19 +16,26 @@ import javax.swing.Box;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 import runner.Inicializadora;
 
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+
+import logica.*;
 
 public class Principal extends JFrame {
 
     private JPanel contentPane;
     private String imagenFondoActual = "/imagenes/d.png"; // Imagen por defecto
+    private MesesMayorConsumoMBnauta ventanaMesesKb = null;
     
     private static Principal instance = null;
 
@@ -38,8 +45,8 @@ public class Principal extends JFrame {
     private Principal() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds(0, 0, screenSize.width , screenSize.height);
-        //setExtendedState(JFrame.MAXIMIZED_BOTH);
+        //setBounds(0, 0, screenSize.width , screenSize.height);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
         setLocationRelativeTo(null);
@@ -132,14 +139,55 @@ public class Principal extends JFrame {
         mnReportes.add(mnServicios_1);
         
         JMenuItem mntmMesesConMayor = new JMenuItem("1. Meses con mayor gasto en kb de Cuentas Nautas");
-        mntmMesesConMayor.setFont(new Font("Serif", Font.PLAIN, 22));
-        mnServicios_1.add(mntmMesesConMayor);
         mntmMesesConMayor.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
-            	MesesMayorConsumoMBnauta m = new MesesMayorConsumoMBnauta();
-            	m.setVisible(true);
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    EmpresaTelecomunicaciones empresa = EmpresaTelecomunicaciones.getInstancia();
+
+                    if (empresa == null) {
+                        JOptionPane.showMessageDialog(null, "La empresa no está inicializada.",
+                                                      "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+                    // Inicializar arreglo de consumos totales por mes (12 meses)
+                    long[] consumosTotalesPorMes = new long[12]; // todos 0 al inicio
+
+                    // Sumar consumos de todas las cuentas nauta mes a mes
+                    for (Servicio s : empresa.getServicios()) {
+                        if (s instanceof CuentaNauta) {
+                            CuentaNauta c = (CuentaNauta) s;
+                            
+                            HashMap<String, Double> consumosCuenta = c.calcularKbGastadosMeses();
+                            for (Map.Entry<String, Double> entry : consumosCuenta.entrySet()) {
+                            	int mesIndex = mesAIndice(entry.getKey());
+                                if (mesIndex >= 0 && mesIndex < 12) {
+                                    consumosTotalesPorMes[mesIndex] += entry.getValue().longValue();
+                                }
+                            }
+                        }
+                    }
+
+                    // Mostrar la ventana con el arreglo de consumos por mes
+                    if (ventanaMesesKb == null || !ventanaMesesKb.isDisplayable()) {
+                        ventanaMesesKb = new MesesMayorConsumoMBnauta();
+                    }
+                    ventanaMesesKb.cargarDatos(consumosTotalesPorMes);
+                    ventanaMesesKb.setVisible(true);
+                    ventanaMesesKb.toFront();
+                    ventanaMesesKb.requestFocus();
+
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null,
+                        "Error al mostrar los meses de mayor consumo: " + ex.getMessage(),
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                    ex.printStackTrace();
+                }
             }
         });
+        mntmMesesConMayor.setFont(new Font("Serif", Font.PLAIN, 21));
+        mnServicios_1.add(mntmMesesConMayor);
         
         JMenuItem mntmNewMenuItem = new JMenuItem("2. Provincias con la menor cantidad de Cuentas Nautas de Personas Naturales\r\n");
         mntmNewMenuItem.addActionListener(new ActionListener() {
@@ -224,7 +272,12 @@ public class Principal extends JFrame {
 		menuBar.add(btnAjustes);
     }
     
-    // M�todo para cambiar la imagen de fondo
+    protected int mesAIndice(String key) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	// M�todo para cambiar la imagen de fondo
     public void cambiarImagenFondo(String nuevaImagen) {
         this.imagenFondoActual = nuevaImagen;
         ((FondoPanel) contentPane).setImagenFondo(nuevaImagen);
