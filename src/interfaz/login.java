@@ -42,13 +42,13 @@ public class login extends JFrame {
         return autenticado;
     }
     
-    // 2. Constructor privado para evitar instanciaciï¿½n externa
+    // 2. Constructor privado para evitar instanciación externa
     private login() {
         configurarVentana();
         inicializarComponentes();
     }
     
-    // 3. Mï¿½todo estï¿½tico para obtener la instancia ï¿½nica
+    // 3. Método estático para obtener la instancia única
     public static login getInstance() {
         if (instance == null) {
             instance = new login();
@@ -67,7 +67,7 @@ public class login extends JFrame {
     }
 
     private void inicializarComponentes() {
-        // Elementos de diseï¿½o (manteniendo tu estilo original)
+        // Elementos de diseñoo (manteniendo tu estilo original)
         JLabel lblBienvenido = new JLabel("Bienvenido ");
         lblBienvenido.setFont(new Font("Serif", Font.BOLD, 32));
         lblBienvenido.setBounds(47, 28, 269, 35);
@@ -83,7 +83,7 @@ public class login extends JFrame {
         lblUsuario.setBounds(57, 79, 128, 29);
         contentPane.add(lblUsuario);
 
-        JLabel lblContrasena = new JLabel("Contraseï¿½a");
+        JLabel lblContrasena = new JLabel("Contraseña");
         lblContrasena.setFont(new Font("Serif", Font.PLAIN, 22));
         lblContrasena.setBounds(61, 151, 115, 20);
         contentPane.add(lblContrasena);
@@ -115,8 +115,8 @@ public class login extends JFrame {
         mensajeIntentos.setVisible(false);
         contentPane.add(mensajeIntentos);
 
-        // Botï¿½n Iniciar Sesiï¿½n
-        JButton iniciarSesion = new JButton("Iniciar Sesiï¿½n");
+        // Botón Iniciar Sesión
+        JButton iniciarSesion = new JButton("Iniciar Sesión");
         iniciarSesion.setFont(new Font("Serif", Font.PLAIN, 21));
         iniciarSesion.setBounds(47, 292, 162, 29);
         iniciarSesion.setBackground(new Color(0, 0, 153));
