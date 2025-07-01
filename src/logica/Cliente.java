@@ -25,7 +25,7 @@ public abstract class Cliente {
 
     public void setDireccion(String direccion) throws UbicacionInvalidaException {
         if(direccion == null || direccion.trim().isEmpty()){
-           throw new UbicacionInvalidaException("La direccion no puede estar vacÃƒÂ­a");
+           throw new UbicacionInvalidaException("La direccion no puede estar vacía");
         }
         else 
             this.direccion = direccion.trim();
@@ -48,9 +48,9 @@ public abstract class Cliente {
     public void setNombre(String nombre) throws NombreInvalidoException {
     
     	if(nombre == null || nombre.trim().isEmpty()){
-            throw new NombreInvalidoException("El nombre no puede estar vacÃƒÂ­o");
+            throw new NombreInvalidoException("El nombre no puede estar vacío");
         }
-        else if(!(nombre.trim().matches(("[a-zA-ZÃ¡Ã©Ã­Ã³ÃºÃ�Ã‰Ã�Ã“ÃšÃ±Ã‘]+( [a-zA-ZÃ¡Ã©Ã­Ã³ÃºÃ�Ã‰Ã�Ã“ÃšÃ±Ã‘]+)*")))){
+        else if(!(nombre.trim().matches(("[a-zA-ZáéíóúÁÉÍÓÚñÑ]+( [a-zA-ZáéíóúÁÉÍÓÚñÑ]+)*")))){
             throw new NombreInvalidoException("El nombre solo puede contener letras");
         }
         else 
@@ -63,14 +63,14 @@ public abstract class Cliente {
     	if(nombre == null || nombre.trim().isEmpty()){
             throw new NombreInvalidoException("El nombre no puede estar vacío");
         }
-        else if(!(nombre.trim().matches(("[a-zA-ZÃ¡Ã©Ã­Ã³ÃºÃ�Ã‰Ã�Ã“ÃšÃ±Ã‘]+( [a-zA-ZÃ¡Ã©Ã­Ã³ÃºÃ�Ã‰Ã�Ã“ÃšÃ±Ã‘]+)*")))){
+        else if(!(nombre.trim().matches(("[a-zA-ZáéíóúÁÉÍÓÚñÑ]+( [a-zA-ZáéíóúÁÉÍÓÚñÑ]+)*")))){
             throw new NombreInvalidoException("El nombre solo puede contener letras");
         }
 
     }
     public static void validarDireccion(String direccion) throws UbicacionInvalidaException {
         if(direccion == null || direccion.trim().isEmpty()){
-            throw new UbicacionInvalidaException("La direccion no puede estar vacÃ­a");
+            throw new UbicacionInvalidaException("La direccion no puede estar vacía");
          }
 
      }
