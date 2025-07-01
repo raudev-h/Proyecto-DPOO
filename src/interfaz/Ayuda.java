@@ -102,7 +102,7 @@ public class Ayuda extends JDialog {
         sb.append("----------------\n\n");
 
         sb.append("1. Gestión de Clientes\n");
-        sb.append("   - Agregar nuevos clientes (Personas Naturales, Jur�dicas o Entidades No Estatales)\n");
+        sb.append("   - Agregar nuevos clientes (Personas Naturales, Jurídicas o Entidades No Estatales)\n");
         sb.append("   - Editar información de clientes existentes\n");
         sb.append("   - Asignar servicios a clientes\n\n");
 
