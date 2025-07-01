@@ -465,7 +465,7 @@ public class ListadoServicios extends JDialog {
 			JMenuItem menuEliminar = new JMenuItem("Eliminar");
 			JMenuItem registroLlamadas = new JMenuItem("Registro Llamadas");
             JMenuItem menuVerMesDatos = new JMenuItem("Ver Datos Mensuales");
-            JMenuItem menuVerMesDatos = new JMenuItem("Ver Datos Mensuales");
+           
 
 			menuEditar.setFont(new Font("Serif", Font.PLAIN, 20));
 			menuEliminar.setFont(new Font("Serif", Font.PLAIN, 20));
