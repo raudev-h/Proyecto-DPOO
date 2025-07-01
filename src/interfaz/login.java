@@ -124,7 +124,6 @@ public class login extends JFrame {
         iniciarSesion.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                verificarCredenciales();
-            
             }
         });
         contentPane.add(iniciarSesion);
