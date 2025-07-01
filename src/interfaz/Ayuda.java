@@ -125,7 +125,7 @@ public class Ayuda extends JDialog {
     }
 
     /**
-     * Resalta los correos en negro m�s oscuro usando StyledDocument
+     * Resalta los correos en negro más oscuro usando StyledDocument
      */
     private void aplicarEstiloCorreos(JTextPane txtPane) {
         StyledDocument doc = txtPane.getStyledDocument();
@@ -139,7 +139,8 @@ public class Ayuda extends JDialog {
         // Buscar y aplicar a cada correo
         String[] correos = {
             "raulalbertohechavarria@gmail.com",
-            "anielvarela64@gmail.com"
+            "anielvarela64@gmail.com", 
+            "rubenanazco0@gmail.com"
         };
 
         for (String correo : correos) {

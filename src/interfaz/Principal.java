@@ -199,7 +199,7 @@ public class Principal extends JFrame {
         mntmNewMenuItem.setFont(new Font("Serif", Font.PLAIN, 22));
         mnServicios_1.add(mntmNewMenuItem);
         
-        JMenuItem mntmTelefonosMovil = new JMenuItem("3. Telefonos movil que tienen al menos una llamada que supera la duracion ");
+        JMenuItem mntmTelefonosMovil = new JMenuItem("3. Teléfonos movil que tienen al menos una llamada que supera la duracion ");
         mntmTelefonosMovil.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 ListadoTlfLlamadasMayores.abrirListadoLlamadasMayores(Principal.this);	

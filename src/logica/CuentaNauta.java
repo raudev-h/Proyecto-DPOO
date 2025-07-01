@@ -1,4 +1,5 @@
 package logica;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,7 +34,7 @@ public class CuentaNauta extends Servicio{
         this.mesDatos = mesDatos;
     }
     
-    // MÃ©todo para agregar los datos de un mes dado
+    // Método para agregar los datos de un mes dado
     // Si hay una mejor manera de hacer esto, por favor comunicar
     public void agregarMesDatos(String mes, double kbEnviadosInternacional, double kbEnviadosNacional, double kbRecibidosInternacional,
      double kbRecibidosNacional, double kbNavegacion, 
@@ -126,4 +127,19 @@ public class CuentaNauta extends Servicio{
     }
         return mesesMayoresKb;
     }
+    
+    // Método para mostrar los datos del cliente 
+    public ArrayList<Map.Entry<String, MesDatos>> getMesDatosOrdenados(){
+    	
+    	ArrayList<Map.Entry<String, MesDatos>> meses = new ArrayList<>(mesDatos.entrySet());
+    	
+    	
+    	BubbleSort.sortMesDatos(meses);
+    	
+    	return meses;
+    	
+    }
+    
+    
+    
 }
