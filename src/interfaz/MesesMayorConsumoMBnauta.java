@@ -36,6 +36,7 @@ public class MesesMayorConsumoMBnauta extends JDialog {
         setBounds(100, 100, 1126, 662);
         setLocationRelativeTo(null);
         getContentPane().setLayout(null);
+        setModal(true);
         
         panel = new JPanel();
         panel.setBounds(15, 16, 1074, 496);

@@ -236,8 +236,8 @@ public class Principal extends JFrame {
         mnClientes_1.add(mntmClientesCon_1);
         mntmClientesCon_1.addActionListener(new ActionListener(){
         	 public void actionPerformed(ActionEvent arg0) {
-        		 ClientesConTodosLosServiciosContratados ct = new ClientesConTodosLosServiciosContratados();
-        		 ct.setVisible(true);
+        		 ClientesConTodosLosServiciosContratados.mostrarClientesConTodosLosServiciosContratados(Principal.this);
+
                 
              }
          });

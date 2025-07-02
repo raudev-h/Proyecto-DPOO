@@ -101,7 +101,7 @@ public class login extends JFrame {
         contentPane.add(textFieldPassword);
 
         // Mensaje de error
-        mensajeError = new JLabel("Usuario o contraseï¿½a incorrectos");
+        mensajeError = new JLabel("Usuario o contraseña incorrectos");
         mensajeError.setForeground(Color.RED);
         mensajeError.setFont(new Font("Serif", Font.PLAIN, 18));
         mensajeError.setBounds(57, 206, 346, 20);
@@ -192,7 +192,7 @@ public class login extends JFrame {
 
     private void manejarIntentoFallido() {
         intentosFallidos++;
-        mensajeError.setText("Usuario o Contraseï¿½a incorrectos");
+        mensajeError.setText("Usuario o Contraseña incorrectos");
         mensajeIntentos.setText("Intentos: "+ intentosFallidos + "/" + MAX_INTENTOS);
         mensajeError.setVisible(true);
         mensajeIntentos.setVisible(true);

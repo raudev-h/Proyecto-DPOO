@@ -1270,7 +1270,7 @@ public class ListadoServicios extends JDialog {
 							// Usar el método de validación de la empresa que ya
 							// tiene las reglas implementadas
 							empresa.crearCuentaNauta(titular, nick);
-
+							setLocationRelativeTo(null);
 							mensajeExito = "Cuenta Nauta '" + nick
 									+ "' asignada correctamente a "
 									+ titular.getNombre();
