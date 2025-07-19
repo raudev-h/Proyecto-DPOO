@@ -5,6 +5,7 @@ import excepciones.*;
 
 public abstract class Cliente {
 
+
     // Atributos
     protected String nombre;
     protected String direccion;
@@ -78,7 +79,7 @@ public abstract class Cliente {
     
     //========================
 
-    // MÃ‰TODOS
+    // MÉTODOS
     // Agregar Servicio
     public void addServicio(Servicio s) {
         servicios.add(s);
@@ -103,29 +104,27 @@ public abstract class Cliente {
 	//Buscar el primer telefono (Devuelve el numero solamente, No disponible en caso de no tener)
 	public String buscarPrimerTelefono(){
 
-		String numeroTelefono = "No diponible";
+    String numeroTelefono = "No diponible";
 
-		
-				if(!this.obtenerTelefonos().isEmpty()){
-					
-					numeroTelefono = this.obtenerTelefonos().get(0).getNumero();													
-				}
-		
-			
+		if (!this.obtenerTelefonos().isEmpty()) {
+
+			numeroTelefono = this.obtenerTelefonos().get(0).getNumero();
+		}
 
 		return numeroTelefono;
 	}
 
-	//Buscar el total de meses que superaron los 1000 cup de todas sus Cuentas Nautas
-	public int cantMesesMasMilCuentasNautas(){
+	// Buscar el total de meses que superaron los 1000 cup de todas sus Cuentas
+	// Nautas
+	public int cantMesesMasMilCuentasNautas() {
 
 		int cantidad = 0;
 
-		for(Servicio s: servicios ){
+		for (Servicio s : servicios) {
 
-			if(s instanceof CuentaNauta){
+			if (s instanceof CuentaNauta) {
 
-				cantidad += ((CuentaNauta)s).cantMesesMasMilGasto();
+				cantidad += ((CuentaNauta) s).cantMesesMasMilGasto();
 			}
 
 		}
@@ -140,7 +139,7 @@ public abstract class Cliente {
 		for (Servicio s : servicios) {
 			if (s instanceof TelefonoFijo) {
 				TelefonoFijo tf = (TelefonoFijo) s;
-				for (LlamadaLargaDistancia llamada : tf.getLlamadasLargas()) {	       
+				for (LlamadaLargaDistancia llamada : tf.getLlamadasLargas()) {
 					monto += llamada.getTotalFacturar();
 				}
 			}
@@ -151,22 +150,27 @@ public abstract class Cliente {
 	// Obtener el nombre en la interfaz
 	@Override
 	public String toString() {
-		return nombre; 
+		return nombre;
 	}
-//Clientes con todos los servicios contratados (mejorando la escalabilidadAdd commentMore actions
-    
-    public boolean tieneTodosLosTiposServicio() {
-        boolean tieneFijo = false;
-        boolean tieneMovil = false;
-        boolean tieneNauta = false;
 
-        for (Servicio s : servicios) {
-            if (s instanceof TelefonoFijo) tieneFijo = true;
-            else if (s instanceof TelefonoMovil) tieneMovil = true;
-            else if (s instanceof CuentaNauta) tieneNauta = true;
-        }
+	// Clientes con todos los servicios contratados (mejorando la
+	// escalabilidadAdd commentMore actions
 
-        return tieneFijo && tieneMovil && tieneNauta;
-    }
+	public boolean tieneTodosLosTiposServicio() {
+		boolean tieneFijo = false;
+		boolean tieneMovil = false;
+		boolean tieneNauta = false;
+
+		for (Servicio s : servicios) {
+			if (s instanceof TelefonoFijo)
+				tieneFijo = true;
+			else if (s instanceof TelefonoMovil)
+				tieneMovil = true;
+			else if (s instanceof CuentaNauta)
+				tieneNauta = true;
+		}
+
+		return tieneFijo && tieneMovil && tieneNauta;
+	}
 
 }

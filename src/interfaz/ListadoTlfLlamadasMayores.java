@@ -18,6 +18,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class ListadoTlfLlamadasMayores extends JDialog {
+
     private JTable table;
     private static ListadoTlfLlamadasMayores instance;
     private JSlider slider;
@@ -61,8 +62,8 @@ public class ListadoTlfLlamadasMayores extends JDialog {
             }
         });
         
-        // TÌtulo de la ventana - Estilo igual a otras ventanas
-        JLabel lblTitulo = new JLabel("TelÈfonos con Llamadas Largas");
+        // T√≠tulo de la ventana - Estilo igual a otras ventanas
+        JLabel lblTitulo = new JLabel("Tel√©fonos con Llamadas Largas");
         lblTitulo.setFont(new Font("Serif", Font.BOLD, 24));
         lblTitulo.setBounds(0, 0, 500, 30);
         panel.add(lblTitulo);
@@ -75,19 +76,19 @@ public class ListadoTlfLlamadasMayores extends JDialog {
             "Seleccione el limite de minutos",
             TitledBorder.DEFAULT_JUSTIFICATION,
             TitledBorder.DEFAULT_POSITION,
-            new Font("Serif", Font.BOLD, 18), // Fuente del tÌtulo del borde
+            new Font("Serif", Font.BOLD, 18), // Fuente del t√≠tulo del borde
             UIManager.getColor("Label.foreground")
         ));
         panel.add(panelControles);
         
-        // Slider para selecciÛn de minutos - Estilo mejorado
+        // Slider para selecci√≥n de minutos - Estilo mejorado
         slider = new JSlider(JSlider.HORIZONTAL, 1, 300, 100);
         slider.setBounds(168, 23, 600, 60);
         slider.setMajorTickSpacing(50);
         slider.setMinorTickSpacing(10);
         slider.setPaintTicks(true);
         slider.setPaintLabels(true);
-        slider.setFont(new Font("Serif", Font.PLAIN, 18)); // Fuente m·s grande
+        slider.setFont(new Font("Serif", Font.PLAIN, 18)); // Fuente m√°s grande
         slider.setPreferredSize(new Dimension(600, 60)); 
         panelControles.setLayout(null);
         
@@ -108,12 +109,12 @@ public class ListadoTlfLlamadasMayores extends JDialog {
         txtMinutos = new JTextField();
         txtMinutos.setBounds(876, 56, 80, 30);
         txtMinutos.setHorizontalAlignment(JTextField.CENTER);
-        txtMinutos.setFont(new Font("Serif", Font.PLAIN, 18)); // Fuente m·s grande
+        txtMinutos.setFont(new Font("Serif", Font.PLAIN, 18)); // Fuente m√°s grande
         txtMinutos.setPreferredSize(new Dimension(80, 30));
         txtMinutos.setText("100");
         panelControles.add(txtMinutos);
         
-        // Tabla - Estilo idÈntico a otras ventanas
+        // Tabla - Estilo id√©ntico a otras ventanas
         JScrollPane scrollPane = new JScrollPane();
         scrollPane.setViewportBorder(new LineBorder(new Color(0, 0, 0)));
         scrollPane.setBounds(15, 120, 1044, 400); 
@@ -122,7 +123,7 @@ public class ListadoTlfLlamadasMayores extends JDialog {
         table = new JTable();
         table.getTableHeader().setReorderingAllowed(false);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        table.setFont(new Font("Serif", Font.PLAIN, 18)); // Fuente m·s grande
+        table.setFont(new Font("Serif", Font.PLAIN, 18)); // Fuente m√°s grande
         scrollPane.setViewportView(table);
         
         JTableHeader header = table.getTableHeader();
@@ -151,7 +152,7 @@ public class ListadoTlfLlamadasMayores extends JDialog {
                         }
                     }
                 } catch (NumberFormatException ex) {
-                    // No hacer nada si no es n˙mero
+                    // No hacer nada si no es n√∫mero
                 }
             }
         });
@@ -173,7 +174,7 @@ public class ListadoTlfLlamadasMayores extends JDialog {
         table.repaint();
     }
     
-    // MÈtodo para el patrÛn singleton
+    // M√©todo para el patr√≥n singleton
     public static void abrirListadoLlamadasMayores(Principal principal) {
         if (instance == null) {
             instance = new ListadoTlfLlamadasMayores(principal);
@@ -189,8 +190,8 @@ public class ListadoTlfLlamadasMayores extends JDialog {
                 UIManager.put("Panel.background", new Color(240, 240, 240));
                 
                 JOptionPane.showMessageDialog(null, 
-                    "El listado de telÈfonos con llamadas largas ya est· abierto",
-                    "InformaciÛn",
+                    "El listado de tel√©fonos con llamadas largas ya est√° abierto",
+                    "Informaci√≥n",
                     JOptionPane.INFORMATION_MESSAGE);
                 instance.toFront();
             }

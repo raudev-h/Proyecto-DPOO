@@ -125,7 +125,7 @@ public class EmpresaTelecomunicaciones {
 				if(c instanceof PersonaJuridica){
 					PersonaJuridica pj = (PersonaJuridica)c;
 					if(pj.getDireccion().equalsIgnoreCase(direccion))
-						throw new DuplicadosException("Esa persona jurídica ya existe en nuestro sistema");
+						throw new DuplicadosException("Esa persona jurÃ­dica ya existe en nuestro sistema");
 				}
 			}
 
@@ -293,7 +293,7 @@ public class EmpresaTelecomunicaciones {
 				}
 			}
 			if(!tieneTelefono)
-				throw new IllegalArgumentException("Para contratar el nauta debe tener teléfono fijo");	
+				throw new IllegalArgumentException("Para contratar el nauta debe tener telÃ©fono fijo");	
 
 			if(titular instanceof PersonaJuridica)
 				throw new IllegalArgumentException("Este tipo de cliente no puede tener CuentaNauta");
@@ -370,10 +370,10 @@ public class EmpresaTelecomunicaciones {
 			}
 
 			if (disponible == null)
-				throw new IllegalArgumentException("No hay teléfono fijo disponible con el número especificado.");
+				throw new IllegalArgumentException("No hay telÃ©fono fijo disponible con el nÃºmero especificado.");
 
 			if (comprobarFijoPersonaNatural(titular))
-				throw new IllegalArgumentException("Persona Natural no puede tener más de 1 teléfono fijo.");
+				throw new IllegalArgumentException("Persona Natural no puede tener mÃ¡s de 1 telÃ©fono fijo.");
 
 			disponible.setTitular(titular);
 			
@@ -387,7 +387,7 @@ public class EmpresaTelecomunicaciones {
 			TelefonoFijo fijoAEliminar = null;
 			int indice = -1;
 
-			// Buscar el teléfono fijo en servicios activos
+			// Buscar el telÃ©fono fijo en servicios activos
 					for (int i = 0; i < servicios.size() && !eliminado; i++) {
 						if (servicios.get(i) instanceof TelefonoFijo) {
 							TelefonoFijo fijo = (TelefonoFijo) servicios.get(i);
@@ -485,10 +485,10 @@ public class EmpresaTelecomunicaciones {
 			}
 
 			if (disponible == null) 
-				throw new IllegalArgumentException("No hay teléfono móvil disponible");
+				throw new IllegalArgumentException("No hay telÃ©fono mÃ³vil disponible");
 
 			if(comprobarMovil(titular))
-				throw new IllegalArgumentException("Persona Natural no puede tener más de 2 Teléfonos Móviles");
+				throw new IllegalArgumentException("Persona Natural no puede tener mÃ¡s de 2 TelÃ©fonos MÃ³viles");
 
 			disponible.setTitular(titular);
 
@@ -630,13 +630,13 @@ public class EmpresaTelecomunicaciones {
 			return representantesLibres;
 		}
 
-		// Metodo para asignar representante a un cliente (Persona Jurï¿½dica o Entidad No Estatal)
+		// Metodo para asignar representante a un cliente (Persona JurÃ¯Â¿Â½dica o Entidad No Estatal)
 		public void asignarRepresentanteACliente(Cliente cliente, Representante representante) {
 
 			if (cliente != null && representante != null){
 
 
-				// Si el cliente ya tenï¿½a un representante, lo liberamos
+				// Si el cliente ya tenÃ¯Â¿Â½a un representante, lo liberamos
 				if (cliente instanceof PersonaJuridica) {
 					PersonaJuridica pj = (PersonaJuridica) cliente;
 					if (pj.getRepresentantePersonaJuridica() != null) {
@@ -881,4 +881,3 @@ public class EmpresaTelecomunicaciones {
         return resultado;
     }
 }
-

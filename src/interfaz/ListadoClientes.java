@@ -21,6 +21,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class ListadoClientes extends JDialog {
+
     // Componentes de la interfaz
     private JTable table;
     private ClienteTableModel tableModel;
@@ -1809,11 +1810,5 @@ public class ListadoClientes extends JDialog {
         cbProvinciaCreate.setSelectedIndex(-1);
         cbMunicipioCreate.setSelectedIndex(-1);
     }
-    
-    
-    
-    
-    
-    
     
 }

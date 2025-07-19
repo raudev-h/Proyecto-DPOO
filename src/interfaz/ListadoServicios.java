@@ -18,7 +18,6 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Map;
 
-
 public class ListadoServicios extends JDialog {
 	private EmpresaTelecomunicaciones empresa;
 	private JTabbedPane tabbedPane;
@@ -88,11 +87,13 @@ public class ListadoServicios extends JDialog {
 		panelFormulario = new JPanel();
 		panelFormulario.setBounds(973, 33, 370, 629);
 		panelFormulario.setPreferredSize(new Dimension(300, getHeight()));
+
 		Border titledBorder = BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Color.BLACK),
 				"Formulario de Asignación", TitledBorder.LEFT,
 				TitledBorder.TOP, new Font("Serif", Font.BOLD, 21),
 				UIManager.getColor("Label.foreground"));
+
 		panelFormulario.setLayout(new GridBagLayout());
 		panelFormulario.setVisible(false);
 		panelFormulario.setBorder(titledBorder);
@@ -463,6 +464,7 @@ public class ListadoServicios extends JDialog {
 
 			JMenuItem menuEditar = new JMenuItem("Editar");
 			JMenuItem menuEliminar = new JMenuItem("Eliminar");
+
 			JMenuItem registroLlamadas = new JMenuItem("Registro Llamadas");
             JMenuItem menuVerMesDatos = new JMenuItem("Ver Datos Mensuales");
             
@@ -471,6 +473,7 @@ public class ListadoServicios extends JDialog {
             menuVerMesDatos.setFont(new Font("Serif", Font.PLAIN, 20));
 			menuEliminar.setForeground(Color.RED);
 			registroLlamadas.setFont(new Font("Serif", Font.PLAIN, 20));
+
 
 			menuEditar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -483,6 +486,7 @@ public class ListadoServicios extends JDialog {
 								"Advertencia", JOptionPane.WARNING_MESSAGE);
 					}
 				}
+
                 
                 
             });
@@ -498,6 +502,7 @@ public class ListadoServicios extends JDialog {
                             "Advertencia", JOptionPane.WARNING_MESSAGE);
                     }
                 }
+
 			});
 
 			menuEliminar.addActionListener(new ActionListener() {
@@ -538,7 +543,9 @@ public class ListadoServicios extends JDialog {
 							}
 						}
 					} else {
+
 						JOptionPane.showMessageDialog(
+
 										ListadoServicios.this,
 										"Por favor seleccione un servicio para eliminar",
 										"Advertencia",
@@ -546,6 +553,7 @@ public class ListadoServicios extends JDialog {
 					}
 				}
 			});
+
 			
 			//Action Performance de JMenu para el Registro de llamadas 
 			int selectedRow = tabla.getSelectedRow();
@@ -588,6 +596,7 @@ public class ListadoServicios extends JDialog {
 
 				popupMenu.add(registroLlamadas);
 			}
+
 			popupMenu.add(menuEliminar);
 
 			tabla.addMouseListener(new MouseAdapter() {
@@ -1175,7 +1184,9 @@ public class ListadoServicios extends JDialog {
 		btnCancelar.setBackground(Color.WHITE);
 
 		// Establecer tamaño fijo más pequeño
+
 		Dimension buttonSize = new Dimension(130, 30);
+
 		btnGuardar.setPreferredSize(buttonSize);
 		btnGuardar.setMinimumSize(buttonSize);
 		btnGuardar.setMaximumSize(buttonSize);
@@ -1270,7 +1281,9 @@ public class ListadoServicios extends JDialog {
 							// Usar el método de validación de la empresa que ya
 							// tiene las reglas implementadas
 							empresa.crearCuentaNauta(titular, nick);
+
 							setLocationRelativeTo(null);
+
 							mensajeExito = "Cuenta Nauta '" + nick
 									+ "' asignada correctamente a "
 									+ titular.getNombre();
@@ -1327,6 +1340,7 @@ public class ListadoServicios extends JDialog {
 		panelFormulario.revalidate();
 		panelFormulario.repaint();
 	}
+
 
     // TODO
     
@@ -1424,6 +1438,7 @@ public class ListadoServicios extends JDialog {
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
     }
+
 
 	@Override
 	public void dispose() {
