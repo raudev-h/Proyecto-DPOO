@@ -477,6 +477,7 @@ public class ListadoRepresentante extends JDialog {
         // Personalización de los menús
         menuEditar.setFont(new Font("Serif", Font.PLAIN, 20));
         menuEliminar.setFont(new Font("Serif", Font.PLAIN, 20));
+        menuEliminar.setForeground(Color.RED);
         
         // Acción para editar representante
         menuEditar.addActionListener(new ActionListener() {

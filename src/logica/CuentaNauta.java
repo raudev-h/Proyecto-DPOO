@@ -1,4 +1,5 @@
 package logica;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -6,7 +7,7 @@ public class CuentaNauta extends Servicio{
     // TODO
     // Es de tipo Mapa para que despues podamos cambiarlo en caso de que necesitemos algo especifico de un mapa 
     // con caracteristicas propias, ver en la documentacion que Map es un tipo de Interfaz y HashMap una implementacion
-    private Map<String, MesDatos> mesDatos; 
+    private  Map<String, MesDatos> mesDatos; 
     private String nick;
 
 
@@ -33,7 +34,7 @@ public class CuentaNauta extends Servicio{
         this.mesDatos = mesDatos;
     }
     
-    // MÃ©todo para agregar los datos de un mes dado
+    // Método para agregar los datos de un mes dado
     // Si hay una mejor manera de hacer esto, por favor comunicar
     public void agregarMesDatos(String mes, double kbEnviadosInternacional, double kbEnviadosNacional, double kbRecibidosInternacional,
      double kbRecibidosNacional, double kbNavegacion, 
@@ -91,7 +92,7 @@ public class CuentaNauta extends Servicio{
     }
 
     //Calcular el gasto en kb Internacionales y nacionales de un mes en especifico en el mesDatos
-    public double calcularGastoKbMes(String mes){
+    public  double calcularGastoKbMes(String mes){
 
         double total = 0;
         if(mesDatos.keySet().contains(mes)){
@@ -126,4 +127,19 @@ public class CuentaNauta extends Servicio{
     }
         return mesesMayoresKb;
     }
+    
+    // Método para mostrar los datos del cliente 
+    public ArrayList<Map.Entry<String, MesDatos>> getMesDatosOrdenados(){
+    	
+    	ArrayList<Map.Entry<String, MesDatos>> meses = new ArrayList<>(mesDatos.entrySet());
+    	
+    	
+    	BubbleSort.sortMesDatos(meses);
+    	
+    	return meses;
+    	
+    }
+    
+    
+    
 }

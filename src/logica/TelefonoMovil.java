@@ -132,6 +132,14 @@ public class TelefonoMovil extends Telefono {
         }
         System.out.print(montoStr + ": Paso por todas las validaciones");
     }
+    
+    public double calcularCostoTotalLlamadas(){
+        double costo = 0;
+        for(Llamada ll: llamadas){
+            costo += ll.getDuracion() * 0.14;
+        }
+        return Math.round(costo * 100.0) / 100.0;
+    }
 
     
 }

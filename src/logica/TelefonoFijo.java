@@ -86,8 +86,27 @@ public class TelefonoFijo extends Telefono {
         String numeroLimpio = telefono.replaceAll("[\\s-]", "");
         // Verifica el formato con regex
         if (!Pattern.matches(REGEX_FIJO, numeroLimpio)) {          
-            throw new IllegalArgumentException("Número de teléfono móvil inválido");
+            throw new IllegalArgumentException("Número de teléfono fijo inválido");
         }
+    }
+    
+    public double calcularCostoTotalLlamadas(){
+        double costo = 0;
+        for(Llamada ll: llamadas){
+        	 
+            costo += ll.getDuracion() * 0.048;
+            System.out.println("costo: " + costo);
+        }
+        System.out.println("Costo Total"+    Math.round(costo * 100.0) / 100.0);
+        return Math.round(costo * 100.0) / 100.0;
+    }
+    
+    public double calcularCostoTotalLlamadasLargas(){
+    	double costo = 0;
+        for(Llamada ll: llamadasLargas){
+            costo += ll.getDuracion() * 0.75;
+        }
+        return Math.round(costo * 100.0) / 100.0;
     }
 
 }

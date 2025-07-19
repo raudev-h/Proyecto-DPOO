@@ -27,7 +27,7 @@ public class PersonaJuridica extends ClientesConUbicacion {
     }
     public void setOrganismo(String organismo) throws NombreInvalidoException {
         if(organismo == null || organismo.trim().isEmpty())
-            throw new NombreInvalidoException("El organismo al que pertenece no puede estar vacio");
+            throw new NombreInvalidoException("El organismo al que pertenece no puede estar vacoí");
         
         else if(!(nombre.trim().matches(("[a-zA-ZáéíóúÁÉÍÓÚñÑ]+( [a-zA-ZáéíóúÁÉÍÓÚñÑ]+)*"))))
             throw new NombreInvalidoException("El organismo al que pertenece solo puede contener letras");

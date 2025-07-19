@@ -5,111 +5,106 @@ import excepciones.*;
 
 public abstract class Cliente {
 
-	// Atributos
-	protected String nombre;
-	protected String direccion;
-	protected ArrayList<Servicio> servicios;
 
-	// Constructor
-	public Cliente(String nombre, String direccion)
-			throws NombreInvalidoException, UbicacionInvalidaException {
-		setDireccion(direccion);
-		setNombre(nombre);
-		servicios = new ArrayList<Servicio>();
-	}
+    // Atributos
+    protected String nombre;
+    protected String direccion;
+    protected ArrayList<Servicio> servicios;
 
-	// GETTERS Y SETTERS
-	// Direccion
-	public String getDireccion() {
-		return direccion;
-	}
+    // Constructor
+    public Cliente(String nombre, String direccion) throws NombreInvalidoException, UbicacionInvalidaException {
+        setDireccion(direccion);
+        setNombre(nombre);
+        servicios = new ArrayList<Servicio>();
+    }
 
-	public void setDireccion(String direccion)
-			throws UbicacionInvalidaException {
-		if (direccion == null || direccion.trim().isEmpty()) {
-			throw new UbicacionInvalidaException(
-					"La direccion no puede estar vacía");
-		} else
-			this.direccion = direccion.trim();
-	}
+    // GETTERS Y SETTERS
+    // Direccion
+    public String getDireccion() {
+        return direccion;
+    }
 
-	// Servicios
-	public ArrayList<Servicio> getServicios() {
-		return servicios;
-	}
+    public void setDireccion(String direccion) throws UbicacionInvalidaException {
+        if(direccion == null || direccion.trim().isEmpty()){
+           throw new UbicacionInvalidaException("La direccion no puede estar vacía");
+        }
+        else 
+            this.direccion = direccion.trim();
+    }
 
-	public void setServicios(ArrayList<Servicio> servicios) {
-		this.servicios = servicios;
-	}
+    // Servicios
+    public ArrayList<Servicio> getServicios() {
+        return servicios;
+    }
 
-	// Nombre
-	public String getNombre() {
-		return nombre;
-	}
+    public void setServicios(ArrayList<Servicio> servicios) {
+        this.servicios = servicios;
+    }
 
-	public void setNombre(String nombre) throws NombreInvalidoException {
+    // Nombre
+    public String getNombre() {
+        return nombre;
+    }
 
-		if (nombre == null || nombre.trim().isEmpty()) {
-			throw new NombreInvalidoException("El nombre no puede estar vacío");
-		} else if (!nombre.trim().matches(
-				"[a-zA-ZáéíóúÁÉÍÓÚñÑ]+( [a-zA-ZáéíóúÁÉÍÓÚñÑ]+)*")) {
-			throw new NombreInvalidoException(
-					"El nombre solo puede contener letras");
-		} else
-			this.nombre = nombre.trim();
-	}
+    public void setNombre(String nombre) throws NombreInvalidoException {
+    
+    	if(nombre == null || nombre.trim().isEmpty()){
+            throw new NombreInvalidoException("El nombre no puede estar vacío");
+        }
+        else if(!(nombre.trim().matches(("[a-zA-ZáéíóúÁÉÍÓÚñÑ]+( [a-zA-ZáéíóúÁÉÍÓÚñÑ]+)*")))){
+            throw new NombreInvalidoException("El nombre solo puede contener letras");
+        }
+        else 
+            this.nombre = nombre.trim();
+    }
+    
+    //======================= Aniel  metodos estaticos para validar 
+    public static void validarNombre(String nombre) throws NombreInvalidoException {
+    
+    	if(nombre == null || nombre.trim().isEmpty()){
+            throw new NombreInvalidoException("El nombre no puede estar vacío");
+        }
+        else if(!(nombre.trim().matches(("[a-zA-ZáéíóúÁÉÍÓÚñÑ]+( [a-zA-ZáéíóúÁÉÍÓÚñÑ]+)*")))){
+            throw new NombreInvalidoException("El nombre solo puede contener letras");
+        }
 
-	// ======================= Aniel metodos estaticos para validar
-	public static void validarNombre(String nombre)
-			throws NombreInvalidoException {
+    }
+    public static void validarDireccion(String direccion) throws UbicacionInvalidaException {
+        if(direccion == null || direccion.trim().isEmpty()){
+            throw new UbicacionInvalidaException("La direccion no puede estar vacía");
+         }
 
-		if (nombre == null || nombre.trim().isEmpty()) {
-			throw new NombreInvalidoException("El nombre no puede estar vacío");
-		} else if (!nombre.trim().matches(
-				"[a-zA-ZáéíóúÁÉÍÓÚñÑ]+( [a-zA-ZáéíóúÁÉÍÓÚñÑ]+)*")) {
-			throw new NombreInvalidoException(
-					"El nombre solo puede contener letras");
-		}
+     }
+    
+    
+    //========================
 
-	}
+    // MÉTODOS
+    // Agregar Servicio
+    public void addServicio(Servicio s) {
+        servicios.add(s);
+    }
+    
+  // Obtener todos los telefonos existentes
+    public ArrayList<Telefono> obtenerTelefonos(){
+    	
+    	ArrayList<Telefono> telefonos = new ArrayList<Telefono>();
+    	
+    	for(Servicio s: servicios){
+    		
+    		if(s instanceof Telefono){
+    			telefonos.add((Telefono)s);
+    		}
+    	}	
+    		
+    	return telefonos;
+    }
+        
 
-	public static void validarDireccion(String direccion)
-			throws UbicacionInvalidaException {
-		if (direccion == null || direccion.trim().isEmpty()) {
-			throw new UbicacionInvalidaException(
-					"La direccion no puede estar vacía");
-		}
+	//Buscar el primer telefono (Devuelve el numero solamente, No disponible en caso de no tener)
+	public String buscarPrimerTelefono(){
 
-	}
-
-	// ========================
-
-	// MÃ‰TODOS
-	// Agregar Servicio
-	public void addServicio(Servicio s) {
-		servicios.add(s);
-	}
-
-	// Obtener todos los telefonos existentes
-	public ArrayList<Telefono> obtenerTelefonos() {
-
-		ArrayList<Telefono> telefonos = new ArrayList<Telefono>();
-
-		for (Servicio s : servicios) {
-
-			if (s instanceof Telefono) {
-				telefonos.add((Telefono) s);
-			}
-		}
-
-		return telefonos;
-	}
-
-	// Buscar el primer telefono (Devuelve el numero solamente, No disponible en
-	// caso de no tener)
-	public String buscarPrimerTelefono() {
-
-		String numeroTelefono = "No diponible";
+    String numeroTelefono = "No diponible";
 
 		if (!this.obtenerTelefonos().isEmpty()) {
 
